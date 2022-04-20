@@ -13,6 +13,12 @@ using namespace DirectX;
 #include <d3dcompiler.h>
 #pragma comment(lib,"d3dcompiler.lib")
 
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+
+#pragma comment(lib,"dinput8.lib")
+#pragma comment(lib,"dxguid.lib")
+
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	switch (msg)
@@ -36,6 +42,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		debugController->EnableDebugLayer();
 	}
 #endif
+
+	//windowAPI初期化処理ここから
 
 	//ウィンドウサイズ
 	const int window_width = 1280;
@@ -72,6 +80,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ウィンドウを表示状態にする
 	ShowWindow(hwnd, SW_SHOW);
+
+	//windowAPI初期化処理ここまで
+
+	//directx初期化処理ここから
 
 	//OutputDebugStringA("Hello,DirectX!!\n");
 
@@ -237,6 +249,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
+	//DirectInputの初期化
+	IDirectInput8* directInput = nullptr;
+	result = DirectInput8Create(
+		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		(void**)&directInput, nullptr);
+	assert(SUCCEEDED(result));
+
+	//キーボードデバイスの生成
+	IDirectInputDevice8* keyboard = nullptr;
+	result = directInput->CreateDevice(GUID_SysKeyboard,
+		&keyboard, NULL);
+
+	//入力データ形式のセット
+	//標準形式
+	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+	assert(SUCCEEDED(result));
+
+	//排他制御レベルのセット
+	result = keyboard->SetCooperativeLevel(
+		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	assert(SUCCEEDED(result));
+
+	//DirectX初期化処理ここまで
+
+	//描画初期化処理ここから
 
 	//頂点データ
 	XMFLOAT3 vertices[] =
@@ -371,9 +408,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
 	{
 		{
-			"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
+			"POSITION",
+			0,DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
 		},
 	};
 
@@ -441,9 +481,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
+	//描画初期化処理ここまで
+
 	//ゲームループ1
 	while (true)
 	{
+		//ウィンドウメッセージ処理
+
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -456,8 +500,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
-
 		//毎フレーム処理ここから
+
+		//キーボード情報の取得開始
+		keyboard->Acquire();
+
+		//全キーの入力状態を保存する
+		BYTE key[256] = {};
+		keyboard->GetDeviceState(sizeof(key), key);
+
+		if (key[DIK_0])
+		{
+			OutputDebugStringA("Hit 0\n");
+		}
+
+
+
+		//毎フレーム処理ここまで
+
+		//グラフィックスコマンド
 
 		//バックバッファの番号を取得(0番と1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
@@ -483,9 +544,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
 		//3.画面クリア
-		//青っぽい色
-		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
-		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		if (key[DIK_SPACE])
+		{
+			//赤っぽい色
+			FLOAT color[] = { 0.5f,0.0f,0.5f };
+			commandList->ClearRenderTargetView(rtvHandle, color, 0, nullptr);
+		}
+		else
+		{
+			//青っぽい色
+			FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
+			commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		}
 
 		//4.描画処理ここから
 
@@ -566,7 +636,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(result));
 	}
 
-	//毎フレーム処理ここまで
+	//windowAPI後始末
 
 	//ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
