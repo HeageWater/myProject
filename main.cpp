@@ -418,45 +418,51 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	//グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc{};
 
 	//シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
+	gpipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
+	gpipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
+	gpipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
+	gpipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
 
 	//サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
+	gpipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
 
 	//ラスタライザの設定
 
 	//カリングしない
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+	gpipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	//ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 	//深度クリッピングを有効に
-	pipelineDesc.RasterizerState.DepthClipEnable = true;
+	gpipelineDesc.RasterizerState.DepthClipEnable = true;
 
 	//ブレンドステート
-	pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
+	gpipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
 		= D3D12_COLOR_WRITE_ENABLE_ALL;
 	//RBGA全てのチャンネルを描画
 
+	//ポリゴン内塗りつぶし
+	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+
+	//ワイヤーフレーム
+	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+
 	//頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	gpipelineDesc.InputLayout.pInputElementDescs = inputLayout;
+	gpipelineDesc.InputLayout.NumElements = _countof(inputLayout);
 
 	//図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	gpipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	//その他の設定
 	//描画対象は一つ
-	pipelineDesc.NumRenderTargets = 1;
+	gpipelineDesc.NumRenderTargets = 1;
 	//0~255指定のRGBA
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	gpipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	//1ピクセルのつき1回サンプリング
-	pipelineDesc.SampleDesc.Count = 1;
+	gpipelineDesc.SampleDesc.Count = 1;
 
 	//ルートシグネチャ
 	ID3D12RootSignature* rootSignature;
@@ -474,11 +480,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	assert(SUCCEEDED(result));
 	rootSigBlob->Release();
 	//パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature;
+	gpipelineDesc.pRootSignature = rootSignature;
 
 	//パイプランステートの生成
 	ID3D12PipelineState* pipelineState = nullptr;
-	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = device->CreateGraphicsPipelineState(&gpipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
 	//描画初期化処理ここまで
@@ -544,18 +550,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
 		//3.画面クリア
+		
+		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
+
 		if (key[DIK_SPACE])
-		{
+		{ 
 			//赤っぽい色
-			FLOAT color[] = { 0.5f,0.0f,0.5f };
-			commandList->ClearRenderTargetView(rtvHandle, color, 0, nullptr);
+			clearColor[0] = { 0.75f};
 		}
-		else
-		{
-			//青っぽい色
-			FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
-			commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		}
+
+		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 		//4.描画処理ここから
 
@@ -563,8 +567,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		D3D12_VIEWPORT viewport{};
 		viewport.Width = window_width;
 		viewport.Height = window_height;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
+		viewport.TopLeftX = -30;
+		viewport.TopLeftY = 40;
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
 
