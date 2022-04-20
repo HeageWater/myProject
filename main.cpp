@@ -235,12 +235,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 
-
+	//頂点データ
 	XMFLOAT3 vertices[] =
 	{
-		{-0.5f,-0.5f,0.0f},
-		{-0.5f,+0.5f,0.0f},
-		{+0.5f,-0.5f,0.0f},
+		{-0.5f,-0.5f,0.0f},//左下
+		{-0.5f,+0.5f,0.0f},//左上
+		{+0.5f,-0.5f,0.0f},//右下
 	};
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
