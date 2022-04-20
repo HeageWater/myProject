@@ -447,7 +447,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 
 	//ワイヤーフレーム
-	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+	//gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 
 	//頂点レイアウトの設定
 	gpipelineDesc.InputLayout.pInputElementDescs = inputLayout;
@@ -550,13 +550,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
 		//3.画面クリア
-		
+
+		//青っぽい色
 		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
 
 		if (key[DIK_SPACE])
-		{ 
+		{
 			//赤っぽい色
-			clearColor[0] = { 0.75f};
+			clearColor[0] = { 0.75f };
 		}
 
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
@@ -564,25 +565,59 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//4.描画処理ここから
 
 		//ビューポート設定コマンド
-		D3D12_VIEWPORT viewport{};
-		viewport.Width = window_width;
-		viewport.Height = window_height;
-		viewport.TopLeftX = -30;
-		viewport.TopLeftY = 40;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
+		D3D12_VIEWPORT viewport[2][2]{};
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				float w = window_width / 2;
+				float h = window_height / 2;
 
-		//ビューポート設定コマンドを、コマンドリストに積む
-		commandList->RSSetViewports(1, &viewport);
+				viewport[i][j].Width = (i - 1) * w;
+				viewport[i][j].Height = (j - 1) * h;
+				viewport[i][j].TopLeftX = 0;
+				viewport[i][j].TopLeftY = 40;
+				viewport[i][j].MinDepth = 0.0f;
+				viewport[i][j].MaxDepth = 1.0f;
+
+				//ビューポート設定コマンドを、コマンドリストに積む
+				commandList->RSSetViewports(1, &viewport[i][j]);
+			}
+		}
+
+
 
 		//シザー矩形
-		D3D12_RECT scissorRect{};
-		scissorRect.left = 0;									  //切り抜き座標左
-		scissorRect.right = scissorRect.left + window_width;	  //切り抜き座標右
-		scissorRect.top = 0;									  //切り抜き座標上
-		scissorRect.bottom = scissorRect.top + window_height;	  //切り抜き座標下
-		//シザー矩形設定コマンドを、コマンドリストに積む
-		commandList->RSSetScissorRects(1, &scissorRect);
+		//D3D12_RECT scissorRect[4]{};
+		//for (int i = 0; i < sizeof(scissorRect); i++)
+		//{
+		//	scissorRect[i].left = 0;									  //切り抜き座標左
+		//	scissorRect[i].right = scissorRect[i].left + (window_width / 2);	  //切り抜き座標右
+		//	scissorRect[i].top = 0;									  //切り抜き座標上
+		//	scissorRect[i].bottom = scissorRect[i].top + (window_height / 2);	  //切り抜き座標下
+		//	シザー矩形設定コマンドを、コマンドリストに積む
+		//	commandList->RSSetScissorRects(1, &scissorRect[i]);
+		//}
+
+		D3D12_RECT scissorRect[2][2]{};
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				float w = window_width / 2;
+				float h = window_height / 2;
+
+				scissorRect[i][j].left = i * w;									  //切り抜き座標左
+				scissorRect[i][j].right
+					= scissorRect[i][j].left + w;	  //切り抜き座標右
+				scissorRect[i][j].top = i * h;							  //切り抜き座標上
+				scissorRect[i][j].bottom
+					= scissorRect[i][j].top + h;	  //切り抜き座標下
+
+				//シザー矩形設定コマンドを、コマンドリストに積む
+				commandList->RSSetScissorRects(1, &scissorRect[i][j]);
+			}
+		}
 
 		//パイプラインステートとルートシグネチャの設定コマンド
 		commandList->SetPipelineState(pipelineState);
