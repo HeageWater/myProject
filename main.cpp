@@ -520,8 +520,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			OutputDebugStringA("Hit 0\n");
 		}
 
-
-
 		//毎フレーム処理ここまで
 
 		//グラフィックスコマンド
@@ -564,59 +562,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//4.描画処理ここから
 
-		//ビューポート設定コマンド
-		D3D12_VIEWPORT viewport[2][2]{};
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 2; j++)
-			{
-				float w = window_width / 2;
-				float h = window_height / 2;
-
-				viewport[i][j].Width = i * w;
-				viewport[i][j].Height = j * h;
-				viewport[i][j].TopLeftX = 0;
-				viewport[i][j].TopLeftY = 30;
-				viewport[i][j].MinDepth = 0.0f;
-				viewport[i][j].MaxDepth = 1.0f;
-
-				//ビューポート設定コマンドを、コマンドリストに積む
-				commandList->RSSetViewports(1, &viewport[i][j]);
-			}
-		}
-
-		//シザー矩形
-		D3D12_RECT scissorRect{};
-		for (int i = 0; i < sizeof(scissorRect); i++)
-		{
-			scissorRect.left = 0;									  //切り抜き座標左
-			scissorRect.right = scissorRect.left + window_width;	  //切り抜き座標右
-			scissorRect.top = 0;									  //切り抜き座標上
-			scissorRect.bottom = scissorRect.top + window_height;	  //切り抜き座標下
-			//シザー矩形設定コマンドを、コマンドリストに積む
-			commandList->RSSetScissorRects(1, &scissorRect);
-		}
-
-		//D3D12_RECT scissorRect[2][2]{};
-		//for (int i = 0; i < 2; i++)
-		//{
-		//	for (int j = 0; j < 2; j++)
-		//	{
-		//		float w = window_width / 2;
-		//		float h = window_height / 2;
-
-		//		scissorRect[i][j].left = i * w;									  //切り抜き座標左
-		//		scissorRect[i][j].right
-		//			= scissorRect[i][j].left + w;	  //切り抜き座標右
-		//		scissorRect[i][j].top = i * h;							  //切り抜き座標上
-		//		scissorRect[i][j].bottom
-		//			= scissorRect[i][j].top + h;	  //切り抜き座標下
-
-		//		//シザー矩形設定コマンドを、コマンドリストに積む
-		//		commandList->RSSetScissorRects(1, &scissorRect[i][j]);
-		//	}
-		//}
-
 		//パイプラインステートとルートシグネチャの設定コマンド
 		commandList->SetPipelineState(pipelineState);
 		commandList->SetGraphicsRootSignature(rootSignature);
@@ -628,9 +573,42 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//頂点バッファビューの設定コマンド
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
-		//描画コマンド
-		//全ての頂点を使って描画
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		//ビューポート設定コマンド
+		D3D12_VIEWPORT viewport[2][2]{};
+		float w = window_width / 2;
+		float h = window_height / 2;
+
+		//ビューポート設定コマンドを、コマンドリストに積む
+		//commandList->RSSetViewports(1, &viewport[i][j]);
+
+		D3D12_RECT scissorRect[2][2]{};
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				scissorRect[i][j].left = w * i;							 //切り抜き座標左
+				scissorRect[i][j].right = scissorRect[i][j].left + w;	 //切り抜き座標右
+				scissorRect[i][j].top = h * j;							 //切り抜き座標上
+				scissorRect[i][j].bottom = scissorRect[i][j].top + h;	 //切り抜き座標下
+
+				viewport[i][j].Width = scissorRect[i][j].right;
+				viewport[i][j].Height = scissorRect[i][j].bottom;
+				viewport[i][j].TopLeftX = -100;
+				viewport[i][j].TopLeftY = 100;
+				viewport[i][j].MinDepth = 0.0f;
+				viewport[i][j].MaxDepth = 1.0f;
+
+				//シザー矩形設定コマンドを、コマンドリストに積む
+				commandList->RSSetScissorRects(1, &scissorRect[i][j]);
+
+				//ビューポート設定コマンドを、コマンドリストに積む
+				commandList->RSSetViewports(1, &viewport[i][j]);
+
+				//描画コマンド
+				//全ての頂点を使って描画
+				commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+			}
+		}
 
 		//4.描画処理ここまで
 
