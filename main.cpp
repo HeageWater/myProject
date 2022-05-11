@@ -399,74 +399,86 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	//グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc{};
-
-	//シェーダーの設定
-	gpipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	gpipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	gpipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	gpipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	//サンプルマスクの設定
-	gpipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
-
-	//ラスタライザの設定
-
-	//カリングしない
-	gpipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//ポリゴン内塗りつぶし
-	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-	//深度クリッピングを有効に
-	gpipelineDesc.RasterizerState.DepthClipEnable = true;
-
-	//ブレンドステート
-	gpipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-		= D3D12_COLOR_WRITE_ENABLE_ALL;
-	//RBGA全てのチャンネルを描画
-
-	//ポリゴン内塗りつぶし
-	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-
-	//ワイヤーフレーム
-	//gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-
-	//頂点レイアウトの設定
-	gpipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	gpipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
-	//図形の形状設定
-	gpipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	//その他の設定
-	//描画対象は一つ
-	gpipelineDesc.NumRenderTargets = 1;
-	//0~255指定のRGBA
-	gpipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	//1ピクセルのつき1回サンプリング
-	gpipelineDesc.SampleDesc.Count = 1;
-
-	//ルートシグネチャ
-	ID3D12RootSignature* rootSignature;
-	//ルートシグネチャの設定
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//ルートシグネチャのシリアライズ
-	ID3DBlob* rootSigBlob = nullptr;
-	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result));
-
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
-		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
-	assert(SUCCEEDED(result));
-	rootSigBlob->Release();
-	//パイプラインにルートシグネチャをセット
-	gpipelineDesc.pRootSignature = rootSignature;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc[2]{};
 
 	//パイプランステートの生成
-	ID3D12PipelineState* pipelineState = nullptr;
-	result = device->CreateGraphicsPipelineState(&gpipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result));
+	ID3D12PipelineState* pipelineState[2] = { nullptr };
+
+	//ルートシグネチャ
+	ID3D12RootSignature* rootSignature[2];
+
+	for (int i = 0; i < _countof(gpipelineDesc); i++)
+	{
+
+		//シェーダーの設定
+		gpipelineDesc[i].VS.pShaderBytecode = vsBlob->GetBufferPointer();
+		gpipelineDesc[i].VS.BytecodeLength = vsBlob->GetBufferSize();
+		gpipelineDesc[i].PS.pShaderBytecode = psBlob->GetBufferPointer();
+		gpipelineDesc[i].PS.BytecodeLength = psBlob->GetBufferSize();
+
+		//サンプルマスクの設定
+		gpipelineDesc[i].SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
+
+		//ラスタライザの設定
+
+		//カリングしない
+		gpipelineDesc[i].RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+		//ポリゴン内塗りつぶし
+		gpipelineDesc[i].RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		//深度クリッピングを有効に
+		gpipelineDesc[i].RasterizerState.DepthClipEnable = true;
+
+		//ブレンドステート
+		gpipelineDesc[i].BlendState.RenderTarget[0].RenderTargetWriteMask
+			= D3D12_COLOR_WRITE_ENABLE_ALL;
+		//RBGA全てのチャンネルを描画
+
+		if (i == 0)
+		{
+			//ポリゴン内塗りつぶし
+			gpipelineDesc[i].RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		}
+		else
+		{
+			//ワイヤーフレーム
+			gpipelineDesc[i].RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+		}
+
+		//頂点レイアウトの設定
+		gpipelineDesc[i].InputLayout.pInputElementDescs = inputLayout;
+		gpipelineDesc[i].InputLayout.NumElements = _countof(inputLayout);
+
+		//図形の形状設定
+		gpipelineDesc[i].PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+		//その他の設定
+		//描画対象は一つ
+		gpipelineDesc[i].NumRenderTargets = 1;
+		//0~255指定のRGBA
+		gpipelineDesc[i].RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		//1ピクセルのつき1回サンプリング
+		gpipelineDesc[i].SampleDesc.Count = 1;
+
+		//ルートシグネチャの設定
+		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+		rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+		//ルートシグネチャのシリアライズ
+		ID3DBlob* rootSigBlob = nullptr;
+		result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+			&rootSigBlob, &errorBlob);
+		assert(SUCCEEDED(result));
+
+		result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
+			rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature[i]));
+		assert(SUCCEEDED(result));
+		rootSigBlob->Release();
+		//パイプラインにルートシグネチャをセット
+		gpipelineDesc[i].pRootSignature = rootSignature[i];
+
+
+		result = device->CreateGraphicsPipelineState(&gpipelineDesc[i], IID_PPV_ARGS(&pipelineState[i]));
+		assert(SUCCEEDED(result));
+	}
 
 	//描画初期化処理ここまで
 
@@ -495,17 +507,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (key->PushKey(DIK_2))
 		{
 			wireFlg = !wireFlg;
-		}
-
-		if (wireFlg)
-		{
-			//ポリゴン内塗りつぶし
-			gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-		}
-		else
-		{
-			//ワイヤーフレーム
-			gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 		}
 
 		//毎フレーム処理ここまで
@@ -550,10 +551,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 		//4.描画処理ここから
-
-		//パイプラインステートとルートシグネチャの設定コマンド
-		commandList->SetPipelineState(pipelineState);
-		commandList->SetGraphicsRootSignature(rootSignature);
+		if (wireFlg)
+		{
+			//パイプラインステートとルートシグネチャの設定コマンド
+			commandList->SetPipelineState(pipelineState[0]);
+			commandList->SetGraphicsRootSignature(rootSignature[0]);
+		}
+		else
+		{
+			commandList->SetPipelineState(pipelineState[1]);
+			commandList->SetGraphicsRootSignature(rootSignature[1]);
+		}
 
 		//プリミティブ形状の設定コマンド
 		//三角形リスト
