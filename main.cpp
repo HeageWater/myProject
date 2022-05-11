@@ -1,10 +1,9 @@
 #include <Windows.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
-#include <cassert>
 #include <vector>
 #include <string>
-#include <DirectXMath.h>
+#include "key.h"
 using namespace DirectX;
 
 #pragma comment(lib,"d3d12.lib")
@@ -12,12 +11,6 @@ using namespace DirectX;
 
 #include <d3dcompiler.h>
 #pragma comment(lib,"d3dcompiler.lib")
-
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
-
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -33,6 +26,10 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+	//宣言
+	bool shapeFlg = false;
+	bool wireFlg = false;
+
 	//初期化
 #ifdef _DEBUG
 	//デバッグレイヤーをオンに
@@ -83,9 +80,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//windowAPI初期化処理ここまで
 
+	//クラス生成
+	Key* key = new Key(w, hwnd);
+
+
 	//directx初期化処理ここから
 
 	//OutputDebugStringA("Hello,DirectX!!\n");
+
 
 	MSG msg{};
 
@@ -249,28 +251,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
-
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard,
-		&keyboard, NULL);
-
-	//入力データ形式のセット
-	//標準形式
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
-		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
-
 	//DirectX初期化処理ここまで
 
 	//描画初期化処理ここから
@@ -281,6 +261,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{-0.5f,-0.5f,0.0f},//左下
 		{-0.5f,+0.5f,0.0f},//左上
 		{+0.5f,-0.5f,0.0f},//右下
+		{+0.5f,-0.5f,0.0f},//右下
+		{-0.5f,+0.5f,0.0f},//左上
+		{+0.5f,+0.5f,0.0f},//右上
 	};
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
@@ -418,80 +401,95 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	//グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc{};
-
-	//シェーダーの設定
-	gpipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	gpipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	gpipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	gpipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	//サンプルマスクの設定
-	gpipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
-
-	//ラスタライザの設定
-
-	//カリングしない
-	gpipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//ポリゴン内塗りつぶし
-	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-	//深度クリッピングを有効に
-	gpipelineDesc.RasterizerState.DepthClipEnable = true;
-
-	//ブレンドステート
-	gpipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-		= D3D12_COLOR_WRITE_ENABLE_ALL;
-	//RBGA全てのチャンネルを描画
-
-	//ポリゴン内塗りつぶし
-	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-
-	//ワイヤーフレーム
-	//gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-
-	//頂点レイアウトの設定
-	gpipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	gpipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
-	//図形の形状設定
-	gpipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	//その他の設定
-	//描画対象は一つ
-	gpipelineDesc.NumRenderTargets = 1;
-	//0~255指定のRGBA
-	gpipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	//1ピクセルのつき1回サンプリング
-	gpipelineDesc.SampleDesc.Count = 1;
-
-	//ルートシグネチャ
-	ID3D12RootSignature* rootSignature;
-	//ルートシグネチャの設定
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//ルートシグネチャのシリアライズ
-	ID3DBlob* rootSigBlob = nullptr;
-	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result));
-
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
-		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
-	assert(SUCCEEDED(result));
-	rootSigBlob->Release();
-	//パイプラインにルートシグネチャをセット
-	gpipelineDesc.pRootSignature = rootSignature;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc[2]{};
 
 	//パイプランステートの生成
-	ID3D12PipelineState* pipelineState = nullptr;
-	result = device->CreateGraphicsPipelineState(&gpipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result));
+	ID3D12PipelineState* pipelineState[2] = { nullptr };
+
+	//ルートシグネチャ
+	ID3D12RootSignature* rootSignature[2];
+
+	for (int i = 0; i < _countof(gpipelineDesc); i++)
+	{
+
+		//シェーダーの設定
+		gpipelineDesc[i].VS.pShaderBytecode = vsBlob->GetBufferPointer();
+		gpipelineDesc[i].VS.BytecodeLength = vsBlob->GetBufferSize();
+		gpipelineDesc[i].PS.pShaderBytecode = psBlob->GetBufferPointer();
+		gpipelineDesc[i].PS.BytecodeLength = psBlob->GetBufferSize();
+
+		//サンプルマスクの設定
+		gpipelineDesc[i].SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
+
+		//ラスタライザの設定
+
+		//カリングしない
+		gpipelineDesc[i].RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+		//ポリゴン内塗りつぶし
+		gpipelineDesc[i].RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		//深度クリッピングを有効に
+		gpipelineDesc[i].RasterizerState.DepthClipEnable = true;
+
+		//ブレンドステート
+		gpipelineDesc[i].BlendState.RenderTarget[0].RenderTargetWriteMask
+			= D3D12_COLOR_WRITE_ENABLE_ALL;
+		//RBGA全てのチャンネルを描画
+
+		if (i == 0)
+		{
+			//ポリゴン内塗りつぶし
+			gpipelineDesc[i].RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		}
+		else
+		{
+			//ワイヤーフレーム
+			gpipelineDesc[i].RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+		}
+
+		//頂点レイアウトの設定
+		gpipelineDesc[i].InputLayout.pInputElementDescs = inputLayout;
+		gpipelineDesc[i].InputLayout.NumElements = _countof(inputLayout);
+
+		//図形の形状設定
+		gpipelineDesc[i].PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+		//その他の設定
+		//描画対象は一つ
+		gpipelineDesc[i].NumRenderTargets = 1;
+		//0~255指定のRGBA
+		gpipelineDesc[i].RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		//1ピクセルのつき1回サンプリング
+		gpipelineDesc[i].SampleDesc.Count = 1;
+
+		//ルートシグネチャの設定
+		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+		rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+		//ルートシグネチャのシリアライズ
+		ID3DBlob* rootSigBlob = nullptr;
+		result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+			&rootSigBlob, &errorBlob);
+		assert(SUCCEEDED(result));
+
+		result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
+			rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature[i]));
+		assert(SUCCEEDED(result));
+		rootSigBlob->Release();
+		//パイプラインにルートシグネチャをセット
+		gpipelineDesc[i].pRootSignature = rootSignature[i];
+
+
+		result = device->CreateGraphicsPipelineState(&gpipelineDesc[i], IID_PPV_ARGS(&pipelineState[i]));
+		assert(SUCCEEDED(result));
+	}
 
 	//描画初期化処理ここまで
 
 	//ゲームループ1
 	while (true)
 	{
+		//key更新
+		key->Update();
+
 		//ウィンドウメッセージ処理
 
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -508,16 +506,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//毎フレーム処理ここから
 
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-
-		//全キーの入力状態を保存する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
-
-		if (key[DIK_0])
+		if (key->PushKey(DIK_1))
 		{
-			OutputDebugStringA("Hit 0\n");
+			shapeFlg = !shapeFlg;
+		}
+
+		if (key->PushKey(DIK_2))
+		{
+			wireFlg = !wireFlg;
 		}
 
 		//毎フレーム処理ここまで
@@ -552,7 +548,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//青っぽい色
 		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
 
-		if (key[DIK_SPACE])
+		//押してる間
+		if (key->KeepPushKey(DIK_SPACE))
 		{
 			//赤っぽい色
 			clearColor[0] = { 0.75f };
@@ -561,10 +558,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
 		//4.描画処理ここから
-
-		//パイプラインステートとルートシグネチャの設定コマンド
-		commandList->SetPipelineState(pipelineState);
-		commandList->SetGraphicsRootSignature(rootSignature);
+		if (wireFlg)
+		{
+			//パイプラインステートとルートシグネチャの設定コマンド
+			commandList->SetPipelineState(pipelineState[0]);
+			commandList->SetGraphicsRootSignature(rootSignature[0]);
+		}
+		else
+		{
+			commandList->SetPipelineState(pipelineState[1]);
+			commandList->SetGraphicsRootSignature(rootSignature[1]);
+		}
 
 		//プリミティブ形状の設定コマンド
 		//三角形リスト
@@ -574,17 +578,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
 		//ビューポート設定コマンド
-		D3D12_VIEWPORT viewport{};
-
-		viewport.Width = window_width;
-		viewport.Height = window_height;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-
-		//ビューポート設定コマンドを、コマンドリストに積む
-		commandList->RSSetViewports(1, &viewport);
+		D3D12_VIEWPORT viewport[2][2]{};
+		float w = window_width / 2;
+		float h = window_height / 2;
 
 		D3D12_RECT scissorRec{};
 		scissorRec.left = 0;							 //切り抜き座標左
@@ -595,10 +591,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRec);
 
-		//描画コマンド
-		//全ての頂点を使って描画
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
-		
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				//幅
+				viewport[i][j].Width = w;
+				viewport[i][j].Height = h;
+				//描画する左上座標
+				viewport[i][j].TopLeftX = (w * i) - (w / 4);
+				viewport[i][j].TopLeftY = (h * j);
+				//おまじない
+				viewport[i][j].MinDepth = 0.0f;
+				viewport[i][j].MaxDepth = 1.0f;
+
+				//ビューポート設定コマンドを、コマンドリストに積む
+				commandList->RSSetViewports(1, &viewport[i][j]);
+
+				//描画コマンド
+				//全ての頂点を使って描画
+				if (shapeFlg == true)
+				{
+					commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+				}
+				else
+				{
+					commandList->DrawInstanced(_countof(vertices) / 2, 1, 0, 0);
+				}
+			}
+		}
+
 		//4.描画処理ここまで
 
 		//5.リソースバリア
@@ -644,6 +666,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
+
+	delete key;
 
 	return 0;
 }
