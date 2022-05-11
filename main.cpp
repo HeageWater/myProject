@@ -1,9 +1,9 @@
 #include <Windows.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
-#include <cassert>
 #include <vector>
 #include <string>
+#include "key.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 
@@ -12,12 +12,6 @@ using namespace DirectX;
 
 #include <d3dcompiler.h>
 #pragma comment(lib,"d3dcompiler.lib")
-
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
-
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -83,9 +77,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//windowAPI初期化処理ここまで
 
+	//クラス生成
+	Key* key = new Key(w, hwnd);
+
+
 	//directx初期化処理ここから
 
 	//OutputDebugStringA("Hello,DirectX!!\n");
+
 
 	MSG msg{};
 
@@ -248,28 +247,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT64 fenceVal = 0;
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
-
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
-
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard,
-		&keyboard, NULL);
-
-	//入力データ形式のセット
-	//標準形式
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
-		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
 
 	//DirectX初期化処理ここまで
 
@@ -509,17 +486,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//毎フレーム処理ここから
 
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-
-		//全キーの入力状態を保存する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
-
-		if (key[DIK_0])
-		{
-			OutputDebugStringA("Hit 0\n");
-		}
+		
 
 		//毎フレーム処理ここまで
 
@@ -553,7 +520,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//青っぽい色
 		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
 
-		if (key[DIK_SPACE])
+		if (key->PushKey(DIK_SPACE))
 		{
 			//赤っぽい色
 			clearColor[0] = { 0.75f };
@@ -656,6 +623,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
+
+	delete key;
 
 	return 0;
 }
