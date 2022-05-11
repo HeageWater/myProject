@@ -2,10 +2,12 @@
 
 Key::Key(WNDCLASSEX a, HWND hw)
 {
+
 	result = DirectInput8Create(
 		a.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
+
 
 	result = directInput->CreateDevice(GUID_SysKeyboard,
 		&keyboard, NULL);
@@ -23,30 +25,51 @@ Key::Key(WNDCLASSEX a, HWND hw)
 
 Key::~Key()
 {
-	delete keyboard;
-	delete directInput;
+
 }
 
 //更新
 void Key::Update()
 {
-	//キーボード情報の取得開始
-	keyboard->Acquire();
-
 	//全キーの入力状態を保存する
 	for (int i = 0; i < sizeof(oldkey); i++)
 	{
-		oldkey[i] = key[i];
+		oldkey[i] = keys[i];
 	}
 
-	keyboard->GetDeviceState(sizeof(key), key);
+	//キーボード情報の取得開始
+	keyboard->Acquire();
+
+	keyboard->GetDeviceState(sizeof(keys), keys);
 
 }
 
 //押した瞬間
-bool Key::PushKey(bool key)
+bool Key::PushKey(uint8_t key)
 {
-	if (key == true)
+	if (keys[key] != false &&
+		oldkey[key] == false)
+	{
+		return true;
+	}
+	return false;
+}
+
+//押してる間
+bool  Key::KeepPushKey(uint8_t key)
+{
+	if (keys[key] != false)
+	{
+		return true;
+	}
+	return false;
+}
+
+//離した瞬間
+bool Key::ReleaseKey(uint8_t key)
+{
+	if (keys[key] == false &&
+		oldkey[key] != false)
 	{
 		return true;
 	}

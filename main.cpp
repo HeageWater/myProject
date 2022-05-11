@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "key.h"
-#include <DirectXMath.h>
 using namespace DirectX;
 
 #pragma comment(lib,"d3d12.lib")
@@ -27,6 +26,10 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+	//宣言
+	bool shapeFlg = false;
+	bool wireFlg = false;
+
 	//初期化
 #ifdef _DEBUG
 	//デバッグレイヤーをオンに
@@ -470,6 +473,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ゲームループ1
 	while (true)
 	{
+		//key更新
+		key->Update();
+
 		//ウィンドウメッセージ処理
 
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -486,7 +492,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//毎フレーム処理ここから
 
-		
+		if (key->PushKey(DIK_2))
+		{
+			wireFlg = !wireFlg;
+		}
+
+		if (wireFlg)
+		{
+			//ポリゴン内塗りつぶし
+			gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		}
+		else
+		{
+			//ワイヤーフレーム
+			gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+		}
 
 		//毎フレーム処理ここまで
 
@@ -520,7 +540,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//青っぽい色
 		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
 
-		if (key->PushKey(DIK_SPACE))
+		//押してる間
+		if (key->KeepPushKey(DIK_SPACE))
 		{
 			//赤っぽい色
 			clearColor[0] = { 0.75f };
@@ -561,7 +582,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				//幅
 				viewport[i][j].Width = w;
-				viewport[i][j].Height =  h;
+				viewport[i][j].Height = h;
 				//描画する左上座標
 				viewport[i][j].TopLeftX = (w * i);
 				viewport[i][j].TopLeftY = (h * j);

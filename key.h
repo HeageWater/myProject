@@ -2,6 +2,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <cassert>
+#include <DirectXMath.h>
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -16,24 +17,26 @@ private:
 	//DirectInputの初期化
 	IDirectInput8* directInput = nullptr;
 
+public:
+
 	HRESULT result;
 
-	BYTE key[256] = {};
+	BYTE keys[256] = {};
 
 	//全キーの入力状態を保存する
 	BYTE oldkey[256] = {};
 
-public:
 	//インスタンス
 	Key();
 	Key(WNDCLASSEX a, HWND hw);
 	~Key();
+
 	//更新
 	void Update();
 	//押した時
-	bool PushKey(bool key);
+	bool PushKey(uint8_t key);
 	//押してる間
-	bool KeepPushKey(bool key);
+	bool KeepPushKey(uint8_t key);
 	//離した瞬間
-	bool ReleaseKey(bool key);
+	bool ReleaseKey(uint8_t key);
 };
