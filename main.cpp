@@ -1,9 +1,9 @@
 #include <Windows.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
-#include <cassert>
 #include <vector>
 #include <string>
+#include "key.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 
@@ -12,12 +12,6 @@ using namespace DirectX;
 
 #include <d3dcompiler.h>
 #pragma comment(lib,"d3dcompiler.lib")
-
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
-
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -82,6 +76,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ShowWindow(hwnd, SW_SHOW);
 
 	//windowAPI初期化処理ここまで
+
+	//宣言
+	Key* key = new Key(w, hwnd);
 
 	//directx初期化処理ここから
 
@@ -439,8 +436,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	gpipelineDesc.RasterizerState.DepthClipEnable = true;
 
 	//ブレンドステート
-	gpipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-		= D3D12_COLOR_WRITE_ENABLE_ALL;
+	//gpipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
+	//	= D3D12_COLOR_WRITE_ENABLE_ALL;
+	//レンダーターゲットのブレンド設定
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = gpipelineDesc.BlendState.RenderTarget[0];
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+
+	//ブレンドを有効
+	blenddesc.BlendEnable = true;
+	//加算
+	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	//ソースの値を10%使う
+	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	//デストの値を0%使う
+	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	//加算合成
+	////加算
+	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	////ソースの値を10%使う
+	//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+	////デストの値を0%使う
+	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+
+	//減算
+	blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	//ソースの値を10%使う
+	blenddesc.SrcBlend = D3D12_BLEND_ONE;
+	//デストの値を0%使う
+	blenddesc.DestBlend = D3D12_BLEND_ONE;
+
 	//RBGA全てのチャンネルを描画
 
 	//ポリゴン内塗りつぶし
@@ -549,14 +574,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//3.画面クリア
 
-		//青っぽい色
-		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
-
-		if (key[DIK_SPACE])
-		{
-			//赤っぽい色
-			clearColor[0] = { 0.75f };
-		}
+		//背景
+		FLOAT clearColor[] = { 0.0f,0.0f,0.5f,0.0f };
 
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
@@ -598,7 +617,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画コマンド
 		//全ての頂点を使って描画
 		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
-		
+
 		//4.描画処理ここまで
 
 		//5.リソースバリア
