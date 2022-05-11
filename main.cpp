@@ -591,10 +591,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			for (int j = 0; j < 2; j++)
 			{
+				//•
 				viewport[i][j].Width = w;
 				viewport[i][j].Height =  h;
+				//•`‰æ‚·‚é¶ãÀ•W
 				viewport[i][j].TopLeftX = (w * i);
 				viewport[i][j].TopLeftY = (h * j);
+				//‚¨‚Ü‚¶‚È‚¢
 				viewport[i][j].MinDepth = 0.0f;
 				viewport[i][j].MaxDepth = 1.0f;
 
