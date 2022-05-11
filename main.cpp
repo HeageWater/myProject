@@ -261,6 +261,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{-0.5f,-0.5f,0.0f},//左下
 		{-0.5f,+0.5f,0.0f},//左上
 		{+0.5f,-0.5f,0.0f},//右下
+		{+0.5f,-0.5f,0.0f},//右下
+		{-0.5f,+0.5f,0.0f},//左上
 		{+0.5f,+0.5f,0.0f},//右上
 	};
 
@@ -504,6 +506,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//毎フレーム処理ここから
 
+		if (key->PushKey(DIK_1))
+		{
+			shapeFlg = !shapeFlg;
+		}
+
 		if (key->PushKey(DIK_2))
 		{
 			wireFlg = !wireFlg;
@@ -592,7 +599,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				viewport[i][j].Width = w;
 				viewport[i][j].Height = h;
 				//描画する左上座標
-				viewport[i][j].TopLeftX = (w * i);
+				viewport[i][j].TopLeftX = (w * i) - (w / 4);
 				viewport[i][j].TopLeftY = (h * j);
 				//おまじない
 				viewport[i][j].MinDepth = 0.0f;
@@ -603,7 +610,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				//描画コマンド
 				//全ての頂点を使って描画
-				commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+				if (shapeFlg == true)
+				{
+					commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+				}
+				else
+				{
+					commandList->DrawInstanced(_countof(vertices) / 2, 1, 0, 0);
+				}
 			}
 		}
 
