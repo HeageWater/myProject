@@ -574,9 +574,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
 		//ビューポート設定コマンド
-		D3D12_VIEWPORT viewport[2][2]{};
-		float w = window_width / 2;
-		float h = window_height / 2;
+		D3D12_VIEWPORT viewport{};
+
+		viewport.Width = window_width;
+		viewport.Height = window_height;
+		viewport.TopLeftX = 0;
+		viewport.TopLeftY = 0;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+
+		//ビューポート設定コマンドを、コマンドリストに積む
+		commandList->RSSetViewports(1, &viewport);
 
 		D3D12_RECT scissorRec{};
 		scissorRec.left = 0;							 //切り抜き座標左
@@ -587,26 +595,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRec);
 
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 2; j++)
-			{
-				viewport[i][j].Width = w;
-				viewport[i][j].Height =  h;
-				viewport[i][j].TopLeftX = (w * i);
-				viewport[i][j].TopLeftY = (h * j);
-				viewport[i][j].MinDepth = 0.0f;
-				viewport[i][j].MaxDepth = 1.0f;
-
-				//ビューポート設定コマンドを、コマンドリストに積む
-				commandList->RSSetViewports(1, &viewport[i][j]);
-
-				//描画コマンド
-				//全ての頂点を使って描画
-				commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
-			}
-		}
-
+		//描画コマンド
+		//全ての頂点を使って描画
+		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		
 		//4.描画処理ここまで
 
 		//5.リソースバリア
