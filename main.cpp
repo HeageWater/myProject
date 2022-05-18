@@ -539,7 +539,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);
 	assert(SUCCEEDED(result));
 	//値を書き込むと自動的に転送される 
-	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//半透明の赤
+	constMapMaterial->color = XMFLOAT4(0, 1, 0, 0.5f);	//半透明の赤
 
 	//ルートパラメタの設定
 	D3D12_ROOT_PARAMETER rootParam = {};
@@ -576,6 +576,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//描画初期化処理ここまで
 
+	float a = 0;
+
 	//ゲームループ1
 	while (true)
 	{
@@ -606,6 +608,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			OutputDebugStringA("Hit 0\n");
 		}
+
+		//赤から緑へ
+		if (a < 1.0f)
+		{
+			a += 0.01f;
+		}
+		constMapMaterial->color = XMFLOAT4(1 - a, a, 0, 0.5f);	//半透明の赤から緑へ
 
 		//毎フレーム処理ここまで
 
