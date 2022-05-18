@@ -459,15 +459,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	////デストの値を0%使う
 	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-	//減算
-	blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	//ソースの値を10%使う
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	//デストの値を0%使う
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
+	////減算
+	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	////ソースの値を10%使う
+	//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+	////デストの値を0%使う
+	//blenddesc.DestBlend = D3D12_BLEND_ONE;
+
+	////色反転
+	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	////1.0f-デストカラーの値
+	//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+	////使わない
+	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+
+	//半透明合成
+	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	//ソースのα値
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	//1.0f-ソースのα値
+	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+
 
 	//RBGA全てのチャンネルを描画
-
 	//ポリゴン内塗りつぶし
 	gpipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 
