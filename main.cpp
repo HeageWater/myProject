@@ -284,6 +284,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{-0.5f,-0.5f,0.0f},//左下
 		{-0.5f,+0.5f,0.0f},//左上
 		{+0.5f,-0.5f,0.0f},//右下
+		{+0.5f,+0.5f,0.0f},//右上
+	};
+
+	uint16_t indices[] =
+	{
+		0,1,2,
+		1,2,3,
 	};
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
@@ -448,14 +455,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = gpipelineDesc.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-	//ブレンドを有効
-	blenddesc.BlendEnable = true;
-	//加算
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	//ソースの値を10%使う
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	//デストの値を0%使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+	//ブレンドを無効
+	blenddesc.BlendEnable = false;
+
+	////ブレンドを有効
+	//blenddesc.BlendEnable = true;
+	////加算
+	//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	////ソースの値を10%使う
+	//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	////デストの値を0%使う
+	//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	//加算合成
 	////加算
@@ -479,12 +489,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	////使わない
 	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-	//半透明合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	//ソースのα値
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	//1.0f-ソースのα値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	////半透明合成
+	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	////ソースのα値
+	//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	////1.0f-ソースのα値
+	//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
 
 	//RBGA全てのチャンネルを描画
@@ -574,6 +584,46 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = device->CreateGraphicsPipelineState(&gpipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
+	//インデックスデータ全体のサイズ
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * _countof(indices));
+
+	//リソース設定
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeIB;
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//インデックスバッファの生成
+	ID3D12Resource* indexBuff = nullptr;
+	result = device->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&indexBuff));
+
+	//インデックスバッファをマッピング
+	uint16_t* indexMap = nullptr;
+	result = indexBuff->Map(0,nullptr,(void**)&indexMap);
+	//全インデックスに対して
+	for (int i = 0; i < _countof(indices); i++)
+	{
+		//インデックスをコピー
+		indexMap[i] = indices[i];
+	}
+	//マッピング解除
+	indexBuff->Unmap(0,nullptr);
+
+	//インデックスバッファビューの作成
+	D3D12_INDEX_BUFFER_VIEW ibView{};
+	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeIB;
+
 	//描画初期化処理ここまで
 
 	//ゲームループ1
@@ -611,7 +661,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//グラフィックスコマンド
 
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		commandList->DrawInstanced(_countof(indices), 1, 0, 0);
 
 		//バックバッファの番号を取得(0番と1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
@@ -652,8 +702,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//定数バッファビュー(CBV)の設定コマンド
 		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 
+
+		//インデックスバッファビューの設定コマンド
+		commandList->IASetIndexBuffer(&ibView);
+
 		//描画コマンド
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
 		//プリミティブ形状の設定コマンド
 		//三角形リスト
@@ -667,7 +722,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		viewport.Width = window_width;
 		viewport.Height = window_height;
-		viewport.TopLeftX = 0;
+		viewport.TopLeftX = -200;
 		viewport.TopLeftY = 0;
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
@@ -676,9 +731,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->RSSetViewports(1, &viewport);
 
 		D3D12_RECT scissorRec{};
-		scissorRec.left = 0;							 //切り抜き座標左
+		scissorRec.left = 0;				 //切り抜き座標左
 		scissorRec.right = window_width;	 //切り抜き座標右
-		scissorRec.top = 0;							 //切り抜き座標上
+		scissorRec.top = 0;				 //切り抜き座標上
 		scissorRec.bottom = window_height;	 //切り抜き座標下
 
 		//シザー矩形設定コマンドを、コマンドリストに積む
@@ -686,7 +741,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//描画コマンド
 		//全ての頂点を使って描画
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
 		//4.描画処理ここまで
 
