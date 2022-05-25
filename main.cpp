@@ -3,10 +3,10 @@
 #include <dxgi1_6.h>
 #include <vector>
 #include <string>
-#include <DirectXTex.h>
 #include "key.h"
 //#include "Definition.h"
-#include <DirectXMath.h> 
+#include <DirectXMath.h>
+#include <DirectXTex.h>
 using namespace DirectX;
 
 #pragma comment(lib,"d3d12.lib")
@@ -674,21 +674,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeIB;
 
-	//画像読み込み
+
+	//横方向ピクセル数
+	const size_t textureWidth = 256;
+	//縦方向ピクセル数
+	const size_t textureHeight = 256;
+	//配列の要素数
+	const size_t imageDataCount = textureWidth * textureHeight;
+	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
+
+	//全ピクセルの色を初期化
+	for (size_t i = 0; i < imageDataCount; i++)
+	{
+		imageData[i].x = 0.5f;
+		imageData[i].y = 0.0f;
+		imageData[i].z = 0.0f;
+		imageData[i].w = 1.0f;
+	}
+
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
-
-	//WIGテクスチャのロード
+	//WICテクスチャのコード
 	result = LoadFromWICFile(
-		L"Resouce/cube.jpeg",
+		L"Resouces/cube.jpeg",
 		WIC_FLAGS_NONE,
 		&metadata,
 		scratchImg
 	);
 
 	ScratchImage mipChain{};
-
-	//ミップマップの作成
+	//ミップマップ生成
 	result = GenerateMipMaps(
 		scratchImg.GetImages(),
 		scratchImg.GetImageCount(),
@@ -702,26 +717,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		metadata = scratchImg.GetMetadata();
 	}
 
-	//読み込んだディフューズテクスチャをSRGBとして扱う
+	//読み込んだディヒューズテクスチャをSRGBとして扱う
 	metadata.format = MakeSRGB(metadata.format);
-
-	
-	//横方向ピクセル数
-	const size_t textureWidth = 256;
-	//縦方向ピクセル数
-	const size_t textureHeight = 256;
-	//配列の要素数
-	const size_t imageDataCount = textureWidth * textureHeight;
-	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
-
-	//全ピクセルの色を初期化
-	for (size_t i = 0; i < imageDataCount; i++)
-	{
-		imageData[i].x = 1.0f;	//R
-		imageData[i].y = 0.0f;	//G
-		imageData[i].z = 0.0f;	//B
-		imageData[i].w = 1.0f;	//A
-	}
 
 	//テクスチャヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
@@ -749,21 +746,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&texBuff));
 
-	//全ミップマップについて
-	for (size_t i = 0; i < metadata.mipLevels; i++)
-	{
-		//ミップマップレベルを指定してイメージを取得
-		const Image* img = scratchImg.GetImage(i, 0, 0);
-		//テクスチャバッファにデータ転送
-		result = texBuff->WriteToSubresource(
-			(UINT)i,
-			nullptr,
-			img->pixels,
-			(UINT)img->rowPitch,
-			(UINT)img->slicePitch
-		);
-		assert(SUCCEEDED(result));
-	}
+	//テクスチャバッファにデータ転送
+	result = texBuff->WriteToSubresource(
+		0,
+		nullptr,
+		imageData,
+		sizeof(XMFLOAT4) * textureWidth,
+		sizeof(XMFLOAT4) * imageDataCount
+	);
 
 	//SRVの最大個数
 	const size_t kMaxSRVCount = 2056;
@@ -806,6 +796,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	////定数バッファビュー生成
 	//device->CreateConstantBufferView(&cbvDesc,srvHandle);
+
+
 
 	//描画初期化処理ここまで
 
