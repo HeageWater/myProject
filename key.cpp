@@ -2,12 +2,10 @@
 
 Key::Key(WNDCLASSEX a, HWND hw)
 {
-
 	result = DirectInput8Create(
 		a.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
-
 
 	result = directInput->CreateDevice(GUID_SysKeyboard,
 		&keyboard, NULL);
@@ -41,7 +39,6 @@ void Key::Update()
 	keyboard->Acquire();
 
 	keyboard->GetDeviceState(sizeof(keys), keys);
-
 }
 
 //‰Ÿ‚µ‚½uŠÔ
