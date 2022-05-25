@@ -904,8 +904,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		viewport.Width = window_width;
 		viewport.Height = window_height;
-		viewport.TopLeftX = -300;
-		viewport.TopLeftY = 100;
+		viewport.TopLeftX = -200;
+		viewport.TopLeftY = 0;
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
 
