@@ -683,13 +683,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
 
 	bool countFlag = true;
-	int count = 0;
+	float count = 0;
 
 	//全ピクセルの色を初期化
 	for (size_t i = 0; i < imageDataCount; i++)
 	{
-		count++;
+		count = rand() % 10  / 10.0f;
 
+		imageData[i].x = count;
+
+		count = rand() % 10 / 10.0f;
+
+		imageData[i].y = count;
+
+		count = rand() % 10 / 10.0f;
+		
+		imageData[i].z = count;
+
+		imageData[i].w = 1.0f;
+
+		/*count++;
+		
 		if (count > 9)
 		{
 			count = 0;
@@ -708,8 +722,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			imageData[i].x = 0.0f;
 			imageData[i].y = 0.0f;
 			imageData[i].z = 0.0f;
-			imageData[i].w = 0.0f;
-		}
+			imageData[i].w = 1.0f;
+		}*/
 	}
 
 	//テクスチャヒープ設定
@@ -855,7 +869,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//3.画面クリア
 
 		//背景
-		FLOAT clearColor[] = { 0.0f,0.0f,0.5f,0.0f };
+		FLOAT clearColor[] = { 0.0f,0.1f,0.5f,1.0f };
 
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
