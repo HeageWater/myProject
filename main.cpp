@@ -688,7 +688,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//全ピクセルの色を初期化
 	for (size_t i = 0; i < imageDataCount; i++)
 	{
-		count = rand() % 10  / 10.0f;
+		/*count = rand() % 10  / 10.0f;
 
 		imageData[i].x = count;
 
@@ -700,9 +700,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 		imageData[i].z = count;
 
-		imageData[i].w = 1.0f;
+		imageData[i].w = 1.0f;*/
 
-		/*count++;
+		count++;
 		
 		if (count > 9)
 		{
@@ -722,8 +722,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			imageData[i].x = 0.0f;
 			imageData[i].y = 0.0f;
 			imageData[i].z = 0.0f;
-			imageData[i].w = 1.0f;
-		}*/
+			imageData[i].w = 0.0f;
+		}
 	}
 
 	//テクスチャヒープ設定
