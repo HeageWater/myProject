@@ -3,9 +3,10 @@
 #include <dxgi1_6.h>
 #include <vector>
 #include <string>
+#include <DirectXTex.h>
 #include "key.h"
 //#include "Definition.h"
-#include <DirectXMath.h>
+#include <DirectXMath.h> 
 using namespace DirectX;
 
 #pragma comment(lib,"d3d12.lib")
@@ -673,7 +674,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeIB;
 
+	//画像読み込み
+	TexMetadata metadata{};
+	ScratchImage scratchImg{};
 
+	//WIGテクスチャのロード
+	result = LoadFromWICFile(
+		L"Resouce/cube.jpeg",
+		WIC_FLAGS_NONE,
+		&metadata,
+		scratchImg
+	);
+
+	ScratchImage mipChain{};
+
+	//ミップマップの作成
+	result = GenerateMipMaps(
+		scratchImg.GetImages(),
+		scratchImg.GetImageCount(),
+		scratchImg.GetMetadata(),
+		TEX_FILTER_DEFAULT,
+		0,
+		mipChain);
+	if (SUCCEEDED(result))
+	{
+		scratchImg = std::move(mipChain);
+		metadata = scratchImg.GetMetadata();
+	}
+
+	//読み込んだディフューズテクスチャをSRGBとして扱う
+	metadata.format = MakeSRGB(metadata.format);
+
+	
 	//横方向ピクセル数
 	const size_t textureWidth = 256;
 	//縦方向ピクセル数
@@ -700,11 +732,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//リソース設定
 	D3D12_RESOURCE_DESC textureResouceDesc{};
 	textureResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	textureResouceDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	textureResouceDesc.Width = textureWidth;
-	textureResouceDesc.Height = textureWidth;
-	textureResouceDesc.DepthOrArraySize = 1;
-	textureResouceDesc.MipLevels = 1;
+	textureResouceDesc.Format = metadata.format;
+	textureResouceDesc.Width = metadata.width;
+	textureResouceDesc.Height = (UINT)metadata.height;
+	textureResouceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+	textureResouceDesc.MipLevels = (UINT16)metadata.mipLevels;
 	textureResouceDesc.SampleDesc.Count = 1;
 
 	//テクスチャバッファの生成
@@ -717,13 +749,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&texBuff));
 
-	result = texBuff->WriteToSubresource(
-		0,
-		nullptr,
-		imageData,
-		sizeof(XMFLOAT4) * textureWidth,
-		sizeof(XMFLOAT4) * imageDataCount
-	);
+	//全ミップマップについて
+	for (size_t i = 0; i < metadata.mipLevels; i++)
+	{
+		//ミップマップレベルを指定してイメージを取得
+		const Image* img = scratchImg.GetImage(i, 0, 0);
+		//テクスチャバッファにデータ転送
+		result = texBuff->WriteToSubresource(
+			(UINT)i,
+			nullptr,
+			img->pixels,
+			(UINT)img->rowPitch,
+			(UINT)img->slicePitch
+		);
+		assert(SUCCEEDED(result));
+	}
 
 	//SRVの最大個数
 	const size_t kMaxSRVCount = 2056;
@@ -744,10 +784,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//テクスチャバッファより下に書く
 	//シェーダーリソースビュー設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};			//設定構造体
-	srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	//RGBA float
+	srvDesc.Format = resDesc.Format;	//RGBA float
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
+	srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
@@ -766,8 +806,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	////定数バッファビュー生成
 	//device->CreateConstantBufferView(&cbvDesc,srvHandle);
-
-
 
 	//描画初期化処理ここまで
 
