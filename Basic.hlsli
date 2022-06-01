@@ -9,6 +9,12 @@ cbuffer ConstBufferDataMaterial : register(b0)
 	float4 color;
 };
 
+//3D変換行列
+cbuffer ConstBufferDataTransform : register(b1)
+{
+	matrix mat;
+};
+
 struct VSOutput
 {
 	//システム用頂点座標
