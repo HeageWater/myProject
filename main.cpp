@@ -258,10 +258,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
 
 		//x,	y,		z,		u,	v
-		{{0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
-		{{0.0f,0.0f,0.0f},{0.0f,0.0f}},//左上
+		{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
+		{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},//左上
 		{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
-		{{100.0f,0.0f,0.0f},{1.0f,0.0f}},//右上
+		{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
 	};
 
 	//インデックスデータ
@@ -407,7 +407,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			0
 		},
 		{
-			"TEXCooRD",
+			"TEXCOORD",
 			0,
 			DXGI_FORMAT_R32G32_FLOAT,
 			0,
@@ -702,6 +702,42 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&texBuff));
 
+	//関数化しろぉぉぉぉぉぉぉぉ
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+		//リソース設定	
+		D3D12_RESOURCE_DESC cbResouceDesc{};
+		cbResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		cbResouceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		cbResouceDesc.Height = 1;
+		cbResouceDesc.DepthOrArraySize = 1;
+		cbResouceDesc.MipLevels = 1;
+		cbResouceDesc.SampleDesc.Count = 1;
+		cbResouceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		//定数バッファ生成
+		result = device->CreateCommittedResource(
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&cbResouceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform));
+		assert(SUCCEEDED(result));
+
+		result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
+		assert(SUCCEEDED(result));
+
+		constMapTransform->mat = XMMatrixIdentity();
+
+		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window->window_width;
+		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window->window_height;
+		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
+		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
+	}
+
 	////テクスチャバッファにデータ転送
 	//result = texBuff->WriteToSubresource(
 	//	0,
@@ -767,42 +803,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	////定数バッファビュー生成
 	//device->CreateConstantBufferView(&cbvDesc,srvHandle);
-
-	//関数化しろぉぉぉぉぉぉぉぉ
-	{
-		//ヒープ設定
-		D3D12_HEAP_PROPERTIES cbHeapProp{};
-		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-		//リソース設定	
-		D3D12_RESOURCE_DESC cbResouceDesc{};
-		cbResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		cbResouceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
-		cbResouceDesc.Height = 1;
-		cbResouceDesc.DepthOrArraySize = 1;
-		cbResouceDesc.MipLevels = 1;
-		cbResouceDesc.SampleDesc.Count = 1;
-		cbResouceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-		//定数バッファ生成
-		result = device->CreateCommittedResource(
-			&cbHeapProp,
-			D3D12_HEAP_FLAG_NONE,
-			&cbResouceDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&constBuffTransform));
-		assert(SUCCEEDED(result));
-
-		result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
-		assert(SUCCEEDED(result));
-
-		constMapTransform->mat = XMMatrixIdentity();
-
-		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window->window_width;
-		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window->window_height;
-		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
-	}
 
 	//描画初期化処理ここまで
 
@@ -888,7 +888,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 		//定数バッファビュー(CBV)の設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffMaterial->GetGPUVirtualAddress());
+		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 
 		//描画コマンド
 		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
@@ -909,7 +909,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		viewport.Width = window->window_width;
 		viewport.Height = window->window_height;
-		viewport.TopLeftX = -200;
+		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
