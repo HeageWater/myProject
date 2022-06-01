@@ -297,13 +297,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//頂点データ
 	Vertex vertices[] =
 	{
-		//x,	y,		z,		u,	v
-		{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},//左下
-		{{-0.4f,+0.7f,0.0f},{0.0f,0.0f}},//左上
-		{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},//右下
-		{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
-	};
+		////x,	y,		z,		u,	v
+		//{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},//左下
+		//{{-0.4f,+0.7f,0.0f},{0.0f,0.0f}},//左上
+		//{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},//右下
+		//{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
 
+		//x,	y,		z,		u,	v
+		{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
+		{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},//左上
+		{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
+		{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
+	};
 	//インデックスデータ
 	unsigned short indices[] =
 	{
@@ -447,7 +452,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			0
 		},
 		{
-			"TEXCooRD",
+			"TEXCOORD",
 			0,
 			DXGI_FORMAT_R32G32_FLOAT,
 			0,
@@ -611,10 +616,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		constMapTransform->mat = XMMatrixIdentity();
 
-		/*constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window->window_width;
-		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window->window_height;
+		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;
+		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window_height;
 		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;*/
+		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
 	}
 
 	//デスクリプタレンジの設定
@@ -722,11 +727,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeIB;
-
-
-
-
-
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
@@ -955,7 +955,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		viewport.Width = window_width;
 		viewport.Height = window_height;
-		viewport.TopLeftX = -200;
+		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
