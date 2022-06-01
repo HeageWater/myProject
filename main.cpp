@@ -257,11 +257,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},//右下
 		//{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
 
+		////x,	y,		z,		u,	v
+		//{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
+		//{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},//左上
+		//{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
+		//{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
+
 		//x,	y,		z,		u,	v
-		{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
-		{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},//左上
-		{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
-		{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
+		{{-50.0f,-50.0f,50.0f},{0.0f,1.0f}},//左下
+		{{-50.0f, 50.0f,50.0f},{0.0f,0.0f}},//左上
+		{{ 50.0f,-50.0f,50.0f},{1.0f,1.0f}},//右下
+		{{ 50.0f, 50.0f,50.0f},{1.0f,0.0f}},//右上
 	};
 
 	//インデックスデータ
@@ -730,12 +736,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 		assert(SUCCEEDED(result));
 
-		constMapTransform->mat = XMMatrixIdentity();
+		////並行投影行列の計算
+		//constMapTransform->mat = XMMatrixIdentity();
 
-		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window->window_width;
-		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window->window_height;
-		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
+		//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window->window_width;
+		//constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window->window_height;
+		//constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
+		//constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
+
+		////↑のまとめ
+		//XMMATRIX newb = XMMatrixOrthographicOffCenterLH
+		//(0, window->window_width,
+		//	window->window_height,0,
+		//	0.0f, 1.0f);
+
+		/*constMapTransform->mat = XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),
+			(float)window->window_width / window->window_height,
+			0.1f, 1000.0f*/
+
+		XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),
+			(float)window->window_width / window->window_height,
+			0.1f, 1000.0f);
+
+		//ビュー変換行列の計算
+
+		constMapTransform->mat = matProjection;
 	}
 
 	////テクスチャバッファにデータ転送
@@ -893,7 +920,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画コマンド
 		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
 		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-		
+
 		//インデックスバッファビューの設定コマンド
 		commandList->IASetIndexBuffer(&ibView);
 
