@@ -1,9 +1,9 @@
-#include <Windows.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <vector>
 #include <string>
 #include "key.h"
+#include "WindowApi.h"
 //#include "Definition.h"
 #include <DirectXMath.h>
 #include <DirectXTex.h>
@@ -25,18 +25,6 @@ struct ConstBufferDataTransform
 	XMMATRIX mat;
 };
 
-LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-{
-	switch (msg)
-	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	return DefWindowProc(hwnd, msg, wparam, lparam);
-}
-
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//初期化
@@ -51,46 +39,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//windowAPI初期化処理ここから
 
-	//ウィンドウサイズ
-	const int window_width = 1280;
-	const int window_height = 720;
-
-	//ウィンドウクラスの設定
-	WNDCLASSEX w{};
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc;
-	w.lpszClassName = L"DirectXGame";
-	w.hInstance = GetModuleHandle(nullptr);
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);
-
-	//ウィンドウクラスをOSに登録する
-	RegisterClassEx(&w);
-
-	//ウィンドウサイズ{x,y,横幅,縦幅}
-	RECT wrc = { 0,0,window_width,window_height };
-
-	//自動でサイズを補正する
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-
-	HWND hwnd = CreateWindow(w.lpszClassName, //クラス名
-		L"DirectXGame",						  //タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,				  //標準的なウィンドウスタイル
-		CW_USEDEFAULT,						  //表示x座標(OSに任せる)
-		CW_USEDEFAULT,						  //表示y座標(OSに任せる)
-		wrc.right - wrc.left,				  //ウィンドウ横幅
-		wrc.bottom - wrc.top,				  //ウィンドウ縦幅
-		nullptr,							  //親ウィンドウハンドル
-		nullptr,							  //メニューハンドル
-		w.hInstance,						  //呼び出しアプリケーション
-		nullptr);							  //オプション
-
-	//ウィンドウを表示状態にする
-	ShowWindow(hwnd, SW_SHOW);
+	WindowApi* window = new WindowApi();
 
 	//windowAPI初期化処理ここまで
 
 	//宣言
-	Key* key = new Key(w, hwnd);
+	Key* key = new Key(window->w, window->hwnd);
 
 	ID3D12Resource* constBuffTransform = nullptr;
 	ConstBufferDataTransform* constMapTransform = nullptr;
@@ -212,7 +166,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//スワップチェーンの生成	
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue, hwnd, &swapChainDesc, nullptr, nullptr,
+		commandQueue, window->hwnd, &swapChainDesc, nullptr, nullptr,
 		(IDXGISwapChain1**)&swapChain);
 	assert(SUCCEEDED(result));
 
@@ -264,7 +218,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//DirectInputの初期化
 	IDirectInput8* directInput = nullptr;
 	result = DirectInput8Create(
-		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		window->w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
@@ -280,7 +234,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
-		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		window->hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 
 	//DirectX初期化処理ここまで
@@ -297,11 +251,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//頂点データ
 	Vertex vertices[] =
 	{
+		////x,	y,		z,		u,	v
+		//{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},//左下
+		//{{-0.4f,+0.7f,0.0f},{0.0f,0.0f}},//左上
+		//{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},//右下
+		//{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
+
 		//x,	y,		z,		u,	v
-		{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},//左下
-		{{-0.4f,+0.7f,0.0f},{0.0f,0.0f}},//左上
-		{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},//右下
-		{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
+		{{0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
+		{{0.0f,0.0f,0.0f},{0.0f,0.0f}},//左上
+		{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
+		{{100.0f,0.0f,0.0f},{1.0f,0.0f}},//右上
 	};
 
 	//インデックスデータ
@@ -578,6 +538,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);
 	assert(SUCCEEDED(result));
+
 	//値を書き込むと自動的に転送される 
 	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//半透明の赤
 
@@ -836,6 +797,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(result));
 
 		constMapTransform->mat = XMMatrixIdentity();
+
+		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window->window_width;
+		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window->window_height;
+		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
+		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
 	}
 
 	//描画初期化処理ここまで
@@ -941,8 +907,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//ビューポート設定コマンド
 		D3D12_VIEWPORT viewport{};
 
-		viewport.Width = window_width;
-		viewport.Height = window_height;
+		viewport.Width = window->window_width;
+		viewport.Height = window->window_height;
 		viewport.TopLeftX = -200;
 		viewport.TopLeftY = 0;
 		viewport.MinDepth = 0.0f;
@@ -953,9 +919,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		D3D12_RECT scissorRec{};
 		scissorRec.left = 0;				 //切り抜き座標左
-		scissorRec.right = window_width;	 //切り抜き座標右
+		scissorRec.right = window->window_width;	 //切り抜き座標右
 		scissorRec.top = 0;				 //切り抜き座標上
-		scissorRec.bottom = window_height;	 //切り抜き座標下
+		scissorRec.bottom = window->window_height;	 //切り抜き座標下
 
 		//シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRec);
@@ -1008,12 +974,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//windowAPI後始末
 
+	//ウィンドウクラスを登録解除
+	UnregisterClass(window->w.lpszClassName, window->w.hInstance);
+
 	//元データ解放
 	//delete[] imageData;
 	delete key;
-
-	//ウィンドウクラスを登録解除
-	UnregisterClass(w.lpszClassName, w.hInstance);
+	delete window;
 
 	return 0;
 }
