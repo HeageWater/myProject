@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Definition.h" />
+    <ClInclude Include="function.h" />
     <ClInclude Include="key.h" />
   </ItemGroup>
   <ItemGroup>
