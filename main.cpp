@@ -265,6 +265,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	struct Vertex
 	{
 		XMFLOAT3 pos;
+		XMFLOAT3 noemal;
 		XMFLOAT2 uv;
 	};
 
@@ -286,40 +287,40 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//x,	y,		z,		u,	 v
 
 		//前
-		{{ -5.0f, -5.0f, -5.0f},{0.0f,1.0f}},//左下
-		{{ -5.0f,  5.0f, -5.0f},{0.0f,0.0f}},//左上
-		{{  5.0f, -5.0f, -5.0f},{1.0f,1.0f}},//右下
-		{{  5.0f,  5.0f, -5.0f},{1.0f,0.0f}},//右上 
+		{{ -5.0f, -5.0f, -5.0f},{}, {0.0f,1.0f}},//左下
+		{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
+		{{  5.0f, -5.0f, -5.0f},{},{1.0f,1.0f}},//右下
+		{{  5.0f,  5.0f, -5.0f},{},{1.0f,0.0f}},//右上 
 
 		//後
-		{{ -5.0f, -5.0f,  5.0f},{0.0f,1.0f}},//左下
-		{{ -5.0f,  5.0f,  5.0f},{0.0f,0.0f}},//左上
-		{{  5.0f, -5.0f,  5.0f},{1.0f,1.0f}},//右下
-		{{  5.0f,  5.0f,  5.0f},{1.0f,0.0f}},//右上
+		{{ -5.0f, -5.0f,  5.0f},{},{0.0f,1.0f}},//左下
+		{{ -5.0f,  5.0f,  5.0f},{},{0.0f,0.0f}},//左上
+		{{  5.0f, -5.0f,  5.0f},{},{1.0f,1.0f}},//右下
+		{{  5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
 
 		//左
-		{{ -5.0f, -5.0f, -5.0f},{0.0f,1.0f}},//左下
-		{{ -5.0f, -5.0f,  5.0f},{0.0f,0.0f}},//左上
-		{{ -5.0f,  5.0f, -5.0f},{1.0f,1.0f}},//右下
-		{{ -5.0f,  5.0f,  5.0f},{1.0f,0.0f}},//右上
+		{{ -5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+		{{ -5.0f, -5.0f,  5.0f},{},{0.0f,0.0f}},//左上
+		{{ -5.0f,  5.0f, -5.0f},{},{1.0f,1.0f}},//右下
+		{{ -5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
 
 		//右
-		{{  5.0f, -5.0f, -5.0f},{0.0f,1.0f}},//左下
-		{{  5.0f, -5.0f,  5.0f},{0.0f,0.0f}},//左上
-		{{  5.0f,  5.0f, -5.0f},{1.0f,1.0f}},//右下
-		{{  5.0f,  5.0f,  5.0f},{1.0f,0.0f}},//右上
+		{{  5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+		{{  5.0f, -5.0f,  5.0f},{},{0.0f,0.0f}},//左上
+		{{  5.0f,  5.0f, -5.0f},{},{1.0f,1.0f}},//右下
+		{{  5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
 
 		//下
-		{{  5.0f, -5.0f, -5.0f},{0.0f,1.0f}},//左下
-		{{ -5.0f, -5.0f, -5.0f},{0.0f,0.0f}},//左上
-		{{  5.0f, -5.0f,  5.0f},{1.0f,1.0f}},//右下
-		{{ -5.0f, -5.0f,  5.0f},{1.0f,0.0f}},//右上
+		{{  5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+		{{ -5.0f, -5.0f, -5.0f},{},{0.0f,0.0f}},//左上
+		{{  5.0f, -5.0f,  5.0f},{},{1.0f,1.0f}},//右下
+		{{ -5.0f, -5.0f,  5.0f},{},{1.0f,0.0f}},//右上
 
 		//上
-		{{  5.0f,  5.0f, -5.0f},{0.0f,1.0f}},//左下
-		{{ -5.0f,  5.0f, -5.0f},{0.0f,0.0f}},//左上
-		{{  5.0f,  5.0f,  5.0f},{1.0f,1.0f}},//右下
-		{{ -5.0f,  5.0f,  5.0f},{1.0f,0.0f}},//右上
+		{{  5.0f,  5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+		{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
+		{{  5.0f,  5.0f,  5.0f},{},{1.0f,1.0f}},//右下
+		{{ -5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
 	};
 
 	//インデックスデータ
@@ -348,6 +349,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+
+	for (int i = 0; i < sizeof(indices) / sizeof(unsigned short) / 3; i++)
+	{
+		//三角形のインデックスを取り出して、一時的な変数に入れる
+		unsigned short index0 = indices[i * 3 + 0];
+		unsigned short index1 = indices[i * 3 + 1];
+		unsigned short index2 = indices[i * 3 + 2];
+
+		//三角形を構成する頂点座標をベクトルに代入
+		XMVECTOR p0 = XMLoadFloat3(&vertices[index0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices[index1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices[index2].pos);
+
+		//p0→p1ベクトル,p0→p2ベクトルを計算(ベクトルの減算)
+		XMVECTOR v1 = XMVectorSubtract(p1, p0);
+		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+
+		//外積は両方から垂直なベクトル
+		XMVECTOR normal = XMVector3Cross(v1, v2);
+
+		//正規化(長さを１に)
+		normal = XMVector3Normalize(normal);
+
+		//求めた法線を頂点データに代入
+		XMStoreFloat3(&vertices[index0].noemal, normal);
+		XMStoreFloat3(&vertices[index1].noemal, normal);
+		XMStoreFloat3(&vertices[index2].noemal, normal);
+	}
 
 	//頂点バッファの設定
 
@@ -480,6 +509,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
 			0
 		},
+
+		{
+			"NORMAL",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+
 		{
 			"TEXCOORD",
 			0,
