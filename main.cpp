@@ -37,6 +37,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 #endif
 
+	//ビュー変換行列
+	XMMATRIX matView;
+	XMFLOAT3 eye(0, 0, -100);		//視点座標
+	XMFLOAT3 target(0, 0, 0);		//注意点座標
+	XMFLOAT3 up(0, 1, 0);			//上方向ベクトル
+	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+	//射影変換行列
+	XMMATRIX matProjection;
+
+	//ワールド変換行列
+	XMMATRIX matworld;
+	matworld = XMMatrixIdentity();
+
+	//カメラの回転角
+	float angle = 0.0f;
+
 	//windowAPI初期化処理ここから
 
 	WindowApi* window = new WindowApi();
@@ -264,10 +281,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
 
 		//x,	y,		z,		u,	v
-		{{-50.0f,-50.0f,50.0f},{0.0f,1.0f}},//左下
-		{{-50.0f, 50.0f,50.0f},{0.0f,0.0f}},//左上
-		{{ 50.0f,-50.0f,50.0f},{1.0f,1.0f}},//右下
-		{{ 50.0f, 50.0f,50.0f},{1.0f,0.0f}},//右上
+		{{-50.0f,-50.0f, 0.0f},{0.0f,1.0f}},//左下
+		{{-50.0f, 50.0f, 0.0f},{0.0f,0.0f}},//左上
+		{{ 50.0f,-50.0f, 0.0f},{1.0f,1.0f}},//右下
+		{{ 50.0f, 50.0f, 0.0f},{1.0f,0.0f}},//右上
 	};
 
 	//インデックスデータ
@@ -755,14 +772,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			(float)window->window_width / window->window_height,
 			0.1f, 1000.0f*/
 
-		XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
+		//射影変換行列
+		matProjection = XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),
 			(float)window->window_width / window->window_height,
 			0.1f, 1000.0f);
 
 		//ビュー変換行列の計算
 
-		constMapTransform->mat = matProjection;
+
+		//constMapTransform->mat = matProjection;
+
+		constMapTransform->mat = matView * matProjection;
 	}
 
 	////テクスチャバッファにデータ転送
@@ -836,6 +857,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ゲームループ1
 	while (true)
 	{
+		//キー入力更新
+		key->Update();
+
 		//ウィンドウメッセージ処理
 
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -849,6 +873,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			break;
 		}
+
+		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
+		{
+			if (key->KeepPushKey(DIK_D))
+			{
+				angle += XMConvertToRadians(1.0f);
+			}
+			else if (key->KeepPushKey(DIK_A))
+			{
+				angle -= XMConvertToRadians(1.0f);
+			}
+
+			//angleラジアンだけY軸回りい回転。半径は-100
+			eye.x = -300 * sinf(angle);
+			eye.z = -300 * cosf(angle);
+			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		}
+
+		//定数バッファ転送
+		constMapTransform->mat = matView * matProjection;
 
 		//毎フレーム処理ここから
 
