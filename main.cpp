@@ -47,9 +47,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//射影変換行列
 	XMMATRIX matProjection;
 
-	//ワールド変換行列
-	XMMATRIX matworld;
-	matworld = XMMatrixIdentity();
+	//スケ-リング倍率
+	XMFLOAT3 scale = { 1.0f,2.0f,1.0f };
+	//回転角
+	XMFLOAT3 rotation = { 0.0f,0.0f,0.0f };
+	//座標
+	XMFLOAT3 position = { 0.0f,0.0f,0.0f };
 
 	//カメラの回転角
 	float angle = 0.0f;
@@ -772,7 +775,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			(float)window->window_width / window->window_height,
 			0.1f, 1000.0f*/
 
-		//射影変換行列
+			//射影変換行列
 		matProjection = XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),
 			(float)window->window_width / window->window_height,
@@ -874,6 +877,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
+		//横回転
 		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
 		{
 			if (key->KeepPushKey(DIK_D))
@@ -891,8 +895,59 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 		}
 
+		if (key->KeepPushKey(DIK_UP))
+		{
+			position.z += 1.0f;
+		}
+		if (key->KeepPushKey(DIK_DOWN))
+		{
+			position.z -= 1.0f;
+		}
+		if (key->KeepPushKey(DIK_RIGHT))
+		{
+			position.x += 1.0f;
+		}
+		if (key->KeepPushKey(DIK_LEFT))
+		{
+			position.x -= 1.0f;
+		}
+
+		
+		//スケ－リング行列
+		XMMATRIX matScale;
+		matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+		//回転行列
+		XMMATRIX matRot;
+		matRot = XMMatrixIdentity();
+		//Z軸に45度回転
+		//matRot *= XMMatrixRotationZ(XMConvertToRadians(45.0f));
+		matRot *= XMMatrixRotationZ(rotation.z);
+		//X軸に55度回転
+		//matRot *= XMMatrixRotationX(XMConvertToRadians(55.0f));
+		matRot *= XMMatrixRotationX(rotation.x);
+		//Y軸に0度回転
+		//matRot *= XMMatrixRotationY(XMConvertToRadians(0.0f));
+		matRot *= XMMatrixRotationY(rotation.y);
+
+		//平行移動行列
+		XMMATRIX matTrans;
+		//平行移動
+		matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+
+		//ワールド変換行列
+		XMMATRIX matworld;
+		//ワールド変換行列初期化
+		matworld = XMMatrixIdentity();
+		//ワールド行列にスケ-リングを反映
+		matworld = matScale;
+		//ワールド行列に回転を反映
+		matworld *= matRot;
+		//ワールド行列に平行移動を反映
+		matworld *= matTrans;
+
 		//定数バッファ転送
-		constMapTransform->mat = matView * matProjection;
+		constMapTransform->mat = matworld * matView * matProjection;
 
 		//毎フレーム処理ここから
 
