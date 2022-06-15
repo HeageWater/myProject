@@ -25,6 +25,23 @@ struct ConstBufferDataTransform
 	XMMATRIX mat;
 };
 
+struct Object3d
+{
+	//定数バッファ
+	ID3D12Resource* constBuffTransform;
+	//定数バッファマップ(行列用)
+	ConstBufferDataTransform* constMapTransform;
+	//アフィン変換情報
+	XMFLOAT3 scale = { 1,1,1 };
+	XMFLOAT3 rotation = { 0,0,0 };
+	XMFLOAT3 position = { 0,0,0 };
+	//ワールド変換行列
+	XMMATRIX matWorld;
+	//親オブジェクトへのポインタ	
+	Object3d* parent = nullptr;
+};
+
+
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//初期化
@@ -50,7 +67,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//スケ-リング倍率
 	XMFLOAT3 scale = { 1.0f,2.0f,1.0f };
 	//回転角
-	XMFLOAT3 rotation = { 10.0f,0.0f,0.0f };
+	XMFLOAT3 rotation = { 0.0f,XM_PI / 4.0f,0.0f };
 	//座標
 	XMFLOAT3 position = { 0.0f,0.0f,0.0f };
 
@@ -66,8 +83,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//宣言
 	Key* key = new Key(window->w, window->hwnd);
 
-	ID3D12Resource* constBuffTransform = nullptr;
-	ConstBufferDataTransform* constMapTransform = nullptr;
+	ID3D12Resource* constBuffTransform0 = nullptr;
+	ConstBufferDataTransform* constMapTransform0 = nullptr;
+
+	ID3D12Resource* constBuffTransform1 = nullptr;
+	ConstBufferDataTransform* constMapTransform1 = nullptr;
 
 	//directx初期化処理ここから
 
@@ -886,10 +906,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			&cbResouceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffTransform));
+			IID_PPV_ARGS(&constBuffTransform0));
 		assert(SUCCEEDED(result));
 
-		result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
+		result = constBuffTransform0->Map(0, nullptr, (void**)&constMapTransform0);
+		assert(SUCCEEDED(result));
+
+		//定数バッファ生成Part2
+		result = device->CreateCommittedResource(
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&cbResouceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform1));
+		assert(SUCCEEDED(result));
+
+		result = constBuffTransform1->Map(0, nullptr, (void**)&constMapTransform1);
 		assert(SUCCEEDED(result));
 
 		////並行投影行列の計算
@@ -1077,7 +1110,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		matworld *= matTrans;
 
 		//定数バッファ転送
-		constMapTransform->mat = matworld * matView * matProjection;
+		constMapTransform0->mat = matworld * matView * matProjection;
+
+
+		//ワールド変換行列
+		XMMATRIX matworld1;
+		matworld1 = XMMatrixIdentity();
+		//各種変形行列を計算
+		XMMATRIX matScale1 = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+		XMMATRIX matRot1 = XMMatrixRotationY(XM_PI / 4.0f);
+		XMMATRIX matTrans1 = XMMatrixTranslation(-20.0f, 0, 0);
+		//合成
+		matworld1 = matScale1 * matRot1 * matTrans1;
+		//転送
+		constMapTransform1->mat = matworld1 * matView * matProjection;
+
 
 		//毎フレーム処理ここから
 
@@ -1096,8 +1143,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//毎フレーム処理ここまで
 
 		//グラフィックスコマンド
-
-		commandList->DrawInstanced(_countof(indices), 1, 0, 0);
+		//commandList->DrawInstanced(_countof(indices), 1, 0, 0);
 
 		//バックバッファの番号を取得(0番と1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
@@ -1135,35 +1181,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//4.描画処理ここから
 
-		//パイプラインステートとルートシグネチャの設定コマンド
-		commandList->SetPipelineState(pipelineState);
-		commandList->SetGraphicsRootSignature(rootSignature);
-
-		//定数バッファビュー(CBV)の設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
-		//SRVヒープの設定コマンド
-		commandList->SetDescriptorHeaps(1, &srvHeap);
-		//SRVヒープの先頭ハンドルを取得(SRVを指している)
-		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
-		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
-		//定数バッファビュー(CBV)の設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-
-		//描画コマンド
-		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
-		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
-		//インデックスバッファビューの設定コマンド
-		commandList->IASetIndexBuffer(&ibView);
-
-		//プリミティブ形状の設定コマンド
-		//三角形リスト
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		//頂点バッファビューの設定コマンド
-		commandList->IASetVertexBuffers(0, 1, &vbView);
-
 		//ビューポート設定コマンド
 		D3D12_VIEWPORT viewport{};
 
@@ -1185,11 +1202,40 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRec);
+		 
+		//パイプラインステートとルートシグネチャの設定コマンド
+		commandList->SetPipelineState(pipelineState);
+		commandList->SetGraphicsRootSignature(rootSignature);
 
+		//インデックスバッファビューの設定コマンド
+		commandList->IASetIndexBuffer(&ibView);
+
+		//プリミティブ形状の設定コマンド
+		//三角形リスト
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		//頂点バッファビューの設定コマンド
+		commandList->IASetVertexBuffers(0, 1, &vbView);
+
+		//定数バッファビュー(CBV)の設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+		//SRVヒープの設定コマンド
+		commandList->SetDescriptorHeaps(1, &srvHeap);
+		//SRVヒープの先頭ハンドルを取得(SRVを指している)
+		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+		//定数バッファビュー(CBV)の設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
 		//描画コマンド
-		//全ての頂点を使って描画
-		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
 		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
+		//定数バッファビュー(CBV)の設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+		//描画コマンド
+		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
 
 		//4.描画処理ここまで
 
