@@ -814,6 +814,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//先頭以外なら
 		if (i > 0)
 		{
+			//親子構造
+			object3ds[i].parent = &object3ds[i - 1];
+
 			object3ds[i].scale = { 0.9f,0.9f,0.9 };
 			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
 			object3ds[i].position = { 0.0f,0.0f,-8.0f };
