@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ビュー変換行列
 	XMMATRIX matView;
-	XMFLOAT3 eye(0, 0, -100);		//視点座標
+	XMFLOAT3 eye(0, 0, -200);		//視点座標
 	XMFLOAT3 target(0, 0, 0);		//注意点座標
 	XMFLOAT3 up(0, 1, 0);			//上方向ベクトル
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -1041,40 +1041,70 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//横回転
-		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
-		{
-			if (key->KeepPushKey(DIK_D))
-			{
-				angle += XMConvertToRadians(1.0f);
-			}
-			else if (key->KeepPushKey(DIK_A))
-			{
-				angle -= XMConvertToRadians(1.0f);
-			}
+		//if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
+		//{
+		//	if (key->KeepPushKey(DIK_D))
+		//	{
+		//		angle += XMConvertToRadians(1.0f);
+		//	}
+		//	else if (key->KeepPushKey(DIK_A))
+		//	{
+		//		angle -= XMConvertToRadians(1.0f);
+		//	}
 
-			//angleラジアンだけY軸回りい回転。半径は-100
-			eye.x = -300 * sinf(angle);
-			eye.z = -300 * cosf(angle);
-			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		}
+		//	//angleラジアンだけY軸回り回転。半径は-100
+		//	eye.x = -200 * sinf(angle);
+		//	eye.z = -200 * cosf(angle);
+		//	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		//}
 
-		if (key->KeepPushKey(DIK_UP))
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+		//移動処理
+		if (key->KeepPushKey(DIK_W))
 		{
-			position.z += 1.0f;
+			position.y += 1.0f;
 		}
-		if (key->KeepPushKey(DIK_DOWN))
+		if (key->KeepPushKey(DIK_S))
 		{
-			position.z -= 1.0f;
+			position.y -= 1.0f;
 		}
-		if (key->KeepPushKey(DIK_RIGHT))
+		if (key->KeepPushKey(DIK_D))
 		{
 			position.x += 1.0f;
 		}
-		if (key->KeepPushKey(DIK_LEFT))
+		if (key->KeepPushKey(DIK_A))
 		{
 			position.x -= 1.0f;
 		}
+		if (key->KeepPushKey(DIK_E))
+		{
+			position.z += 1.0f;
+		}
+		if (key->KeepPushKey(DIK_Q))
+		{
+			position.z -= 1.0f;
+		}
 
+		//回転処理
+		if (key->KeepPushKey(DIK_R))
+		{
+			rotation.x += 0.02f;
+		}
+		if (key->KeepPushKey(DIK_T))
+		{
+			rotation.x -= 0.02f;
+		}
+
+		//拡縮処理
+		if (key->KeepPushKey(DIK_Z))
+		{
+			scale.x += 0.05f;
+		}
+		if (key->KeepPushKey(DIK_X))
+		{
+			scale.x -= 0.05f;
+		}
 
 		//スケ－リング行列
 		XMMATRIX matScale;
@@ -1084,13 +1114,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMMATRIX matRot;
 		matRot = XMMatrixIdentity();
 		//Z軸に45度回転
-		//matRot *= XMMatrixRotationZ(XMConvertToRadians(45.0f));
 		matRot *= XMMatrixRotationZ(rotation.z);
 		//X軸に55度回転
-		//matRot *= XMMatrixRotationX(XMConvertToRadians(55.0f));
 		matRot *= XMMatrixRotationX(rotation.x);
 		//Y軸に0度回転
-		//matRot *= XMMatrixRotationY(XMConvertToRadians(0.0f));
 		matRot *= XMMatrixRotationY(rotation.y);
 
 		//平行移動行列
@@ -1111,6 +1138,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//定数バッファ転送
 		constMapTransform0->mat = matworld * matView * matProjection;
+
 
 
 		//ワールド変換行列
@@ -1202,7 +1230,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRec);
-		 
+
 		//パイプラインステートとルートシグネチャの設定コマンド
 		commandList->SetPipelineState(pipelineState);
 		commandList->SetGraphicsRootSignature(rootSignature);
@@ -1231,10 +1259,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画コマンド
 		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
-		//定数バッファビュー(CBV)の設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
-		//描画コマンド
-		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		////定数バッファビュー(CBV)の設定コマンド
+		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+		////描画コマンド
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
 
 		//4.描画処理ここまで
