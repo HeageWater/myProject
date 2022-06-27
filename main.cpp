@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ビュー変換行列
 	XMMATRIX matView;
-	XMFLOAT3 eye(0, 0, -100);		//視点座標
+	XMFLOAT3 eye(0, 0, -300);		//視点座標
 	XMFLOAT3 target(0, 0, 0);		//注意点座標
 	XMFLOAT3 up(0, 1, 0);			//上方向ベクトル
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -52,7 +52,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//回転角
 	XMFLOAT3 rotation = { 0.0f,0.0f,0.0f };
 	//座標
-	XMFLOAT3 position = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 position = { 0.0f,0.0f,0.5f };
 
 	//カメラの回転角
 	float angle = 0.0f;
@@ -877,66 +877,79 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
-		if (key->KeepPushKey(DIK_UP) ||
-			key->KeepPushKey(DIK_RIGHT) ||
-			key->KeepPushKey(DIK_LEFT) ||
-			key->KeepPushKey(DIK_DOWN))
-		{
-			if (key->KeepPushKey(DIK_UP))
-			{
-				object3ds[0].position.y += 1.0f;
-			}
-			else if (key->KeepPushKey(DIK_DOWN))
-			{
-				object3ds[0].position.y -= 1.0f;
-			}
-
-			if (key->KeepPushKey(DIK_RIGHT))
-			{
-				object3ds[0].position.x += 1.0f;
-			}
-			else if (key->KeepPushKey(DIK_LEFT))
-			{
-				object3ds[0].position.x -= 1.0f;
-			}
-		}
-
 		//横回転
-		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
-		{
-			if (key->KeepPushKey(DIK_D))
-			{
-				angle += XMConvertToRadians(1.0f);
-			}
-			else if (key->KeepPushKey(DIK_A))
-			{
-				angle -= XMConvertToRadians(1.0f);
-			}
+		//if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
+		//{
+		//	if (key->KeepPushKey(DIK_D))
+		//	{
+		//		angle += XMConvertToRadians(1.0f);
+		//	}
+		//	else if (key->KeepPushKey(DIK_A))
+		//	{
+		//		angle -= XMConvertToRadians(1.0f);
+		//	}
 
-			//angleラジアンだけY軸回りい回転。半径は-100
-			eye.x = -100 * sinf(angle);
-			eye.z = -100 * cosf(angle);
-			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		}
+		//	//angleラジアンだけY軸回りい回転。半径は-100
+		//	eye.x = -100 * sinf(angle);
+		//	eye.z = -100 * cosf(angle);
+		//	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		//}
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 		if (key->KeepPushKey(DIK_UP))
 		{
-			position.z += 1.0f;
+			position.y += 5.0f;
 		}
 		if (key->KeepPushKey(DIK_DOWN))
 		{
-			position.z -= 1.0f;
+			position.y -= 5.0f;
 		}
+
 		if (key->KeepPushKey(DIK_RIGHT))
 		{
-			position.x += 1.0f;
+			position.x += 5.0f;
 		}
 		if (key->KeepPushKey(DIK_LEFT))
 		{
-			position.x -= 1.0f;
+			position.x -= 5.0f;
 		}
 
-		
+		if (key->KeepPushKey(DIK_Q))
+		{
+			position.z += 5.0f;
+		}
+		if (key->KeepPushKey(DIK_E))
+		{
+			position.z -= 5.0f;
+		}
+
+		if (key->KeepPushKey(DIK_W))
+		{
+			scale.y += 0.1f;
+		}
+		if (key->KeepPushKey(DIK_S))
+		{
+			scale.y -= 0.1f;
+		}
+
+		if (key->KeepPushKey(DIK_D))
+		{
+			scale.x += 0.1f;
+		}
+		if (key->KeepPushKey(DIK_A))
+		{
+			scale.x -= 0.1f;
+		}
+
+		if (key->KeepPushKey(DIK_R))
+		{
+			rotation.x += 0.2f;
+		}
+		if (key->KeepPushKey(DIK_T))
+		{
+			rotation.x -= 0.2f;
+		}
+
 		//スケ－リング行列
 		XMMATRIX matScale;
 		matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
@@ -1104,11 +1117,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		////描画コマンド
 		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
-		//全オブジェクトについて処理
-		for (int i = 0; i < _countof(object3ds); i++)
-		{
-			DrawObject3d(&object3ds[i],commandList,vbView,ibView,_countof(indices));
-		}
 		//描画コマンド
 		//全ての頂点を使って描画
 		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
