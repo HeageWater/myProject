@@ -877,6 +877,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
+		if (key->KeepPushKey(DIK_UP) ||
+			key->KeepPushKey(DIK_RIGHT) ||
+			key->KeepPushKey(DIK_LEFT) ||
+			key->KeepPushKey(DIK_DOWN))
+		{
+			if (key->KeepPushKey(DIK_UP))
+			{
+				object3ds[0].position.y += 1.0f;
+			}
+			else if (key->KeepPushKey(DIK_DOWN))
+			{
+				object3ds[0].position.y -= 1.0f;
+			}
+
+			if (key->KeepPushKey(DIK_RIGHT))
+			{
+				object3ds[0].position.x += 1.0f;
+			}
+			else if (key->KeepPushKey(DIK_LEFT))
+			{
+				object3ds[0].position.x -= 1.0f;
+			}
+		}
+
 		//横回転
 		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
 		{
@@ -890,8 +914,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 
 			//angleラジアンだけY軸回りい回転。半径は-100
-			eye.x = -300 * sinf(angle);
-			eye.z = -300 * cosf(angle);
+			eye.x = -100 * sinf(angle);
+			eye.z = -100 * cosf(angle);
 			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 		}
 
@@ -957,11 +981,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//全キーの入力状態を保存する
 		BYTE key[256] = {};
 		keyboard->GetDeviceState(sizeof(key), key);
-
-		if (key[DIK_0])
-		{
-			OutputDebugStringA("Hit 0\n");
-		}
 
 		//毎フレーム処理ここまで
 
@@ -1052,6 +1071,44 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRec);
 
+		//パイプラインステートとルートシグネチャの設定コマンド
+		commandList->SetPipelineState(pipelineState);
+		commandList->SetGraphicsRootSignature(rootSignature);
+
+		//インデックスバッファビューの設定コマンド
+		commandList->IASetIndexBuffer(&ibView);
+
+		//プリミティブ形状の設定コマンド
+		//三角形リスト
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		//頂点バッファビューの設定コマンド
+		commandList->IASetVertexBuffers(0, 1, &vbView);
+
+		//定数バッファビュー(CBV)の設定コマンド
+		//commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+		//SRVヒープの設定コマンド
+		//commandList->SetDescriptorHeaps(1, &srvHeap);
+		//SRVヒープの先頭ハンドルを取得(SRVを指している)
+		//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+		//commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+		////定数バッファビュー(CBV)の設定コマンド
+		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
+		////描画コマンド
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
+		////定数バッファビュー(CBV)の設定コマンド
+		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+		////描画コマンド
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
+		//全オブジェクトについて処理
+		for (int i = 0; i < _countof(object3ds); i++)
+		{
+			DrawObject3d(&object3ds[i],commandList,vbView,ibView,_countof(indices));
+		}
 		//描画コマンド
 		//全ての頂点を使って描画
 		//commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
