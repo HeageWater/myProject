@@ -1,123 +1,20 @@
-#include <DirectXMath.h>
-#include <DirectXTex.h>
-#include <d3d12.h>
-#include <dxgi1_6.h>
-#include <vector>
-#include <string>
-//#include "object.h"
+//#include <DirectXMath.h>
+//#include <DirectXTex.h>
+//#include <d3d12.h>
+//#include <dxgi1_6.h>
+//#include <vector>
+//#include <string>
+#include "object.h"
 #include "key.h"
 #include "WindowApi.h"
-//#include "Definition.h"
-using namespace DirectX;
-
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-
-#include <d3dcompiler.h>
-#pragma comment(lib,"d3dcompiler.lib")
-
-struct ConstBufferDataMaterial
-{
-	XMFLOAT4 color;
-};
-
-struct ConstBufferDataTransform
-{
-	XMMATRIX mat;
-};
-
-struct Object3d
-{
-	//定数バッファ
-	ID3D12Resource* constBuffTransform;
-	//定数バッファマップ(行列用)
-	ConstBufferDataTransform* constMapTransform;
-	//アフィン変換情報
-	XMFLOAT3 scale = { 1,1,1 };
-	XMFLOAT3 rotation = { 0,0,0 };
-	XMFLOAT3 position = { 0,0,0 };
-	//ワールド変換行列
-	XMMATRIX matWorld;
-	//親オブジェクトへのポインタ	
-	Object3d* parent = nullptr;
-};
-
-void InitializeObject3d(Object3d* object, ID3D12Device* device)
-{
-	HRESULT result;
-
-	//定数バッファのヒープ設定
-	D3D12_HEAP_PROPERTIES heapProp{};
-	//GPUへの転送用
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	//定数バッファのリソース設定
-	D3D12_RESOURCE_DESC resdesc{};
-	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resdesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
-	resdesc.Height = 1;
-	resdesc.DepthOrArraySize = 1;
-	resdesc.MipLevels = 1;
-	resdesc.SampleDesc.Count = 1;
-	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	//定数バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resdesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&object->constBuffTransform));
-	assert(SUCCEEDED(result));
-
-	//定数バッファのマッピング
-	result = object->constBuffTransform->Map(0, nullptr, (void**)&object->constMapTransform);
-	assert(SUCCEEDED(result));
-}
-
-void UpdateObject3d(Object3d* object, XMMATRIX& matView, XMMATRIX& matProjection)
-{
-	XMMATRIX matScale, matRot, matTrans;
-
-	//スケールなどの計算
-	matScale = XMMatrixScaling(object->scale.x, object->scale.y, object->scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(object->rotation.z);
-	matRot *= XMMatrixRotationX(object->rotation.x);
-	matRot *= XMMatrixRotationY(object->rotation.y);
-
-	matTrans = XMMatrixTranslation(object->position.x, object->position.y, object->position.z);
-
-	object->matWorld = XMMatrixIdentity();
-	object->matWorld *= matScale;
-	object->matWorld *= matRot;
-	object->matWorld *= matTrans;
-
-	if (object->parent != nullptr)
-	{
-		object->matWorld *= object->parent->matWorld;
-	}
-
-	//データ転送
-	object->constMapTransform->mat = object->matWorld * matView * matProjection;
-}
-
-void DrawObject3d(Object3d* object, ID3D12GraphicsCommandList* commandList, D3D12_VERTEX_BUFFER_VIEW& vbView,
-	D3D12_INDEX_BUFFER_VIEW& ibView, UINT numIndices)
-{
-	//頂点バッファの設定
-	commandList->IASetVertexBuffers(0, 1, &vbView);
-
-	//インデックスバッファの設定
-	commandList->IASetIndexBuffer(&ibView);
-
-	//定数バッファビューの設定コマンド
-	commandList->SetGraphicsRootConstantBufferView(2, object->constBuffTransform->GetGPUVirtualAddress());
-
-	//描画コマンド
-	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
-}
+////#include "Definition.h"
+//using namespace DirectX;
+//
+//#pragma comment(lib,"d3d12.lib")
+//#pragma comment(lib,"dxgi.lib")
+//
+//#include <d3dcompiler.h>
+//#pragma comment(lib,"d3dcompiler.lib")
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -134,7 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//3Dオブジェクトの数
 	const size_t kObjectCount = 1;
 	//3Dオブジェクトの配列
-	Object3d object3ds[kObjectCount];
+	//Object3d object3ds[kObjectCount];
 
 	//ビュー変換行列
 	XMMATRIX matView;
@@ -1103,24 +1000,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			0.1f, 1000.0f);
 	}
 
-	//オブジェクト初期化
-	for (int i = 0; i < _countof(object3ds); i++)
-	{
-		//初期化
-		InitializeObject3d(&object3ds[i], device);
-
-		//親子構造のサンプル
-		//先頭以外なら
-		if (i > 0)
-		{
-			//parent処理
-			object3ds[i].parent = &object3ds[i - 1];
-
-			object3ds[i].scale = { 0.9f,0.9f,0.9 };
-			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
-			object3ds[i].position = { 0.0f,0.0f,-8.0f };
-		}
-	}
+	//deviceに代入してから入れる
+	Object3ds* object3ds = new Object3ds(device);
 
 	//全ミップマップについて
 	for (size_t i = 0; i < metadata2.mipLevels; i++)
@@ -1243,10 +1124,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//更新処理
-		for (int i = 0; i < _countof(object3ds); i++)
-		{
-			UpdateObject3d(&object3ds[i], matView, matProjection);
-		}
+		object3ds->UpdateObject3d(matView, matProjection);
 
 		//キーボード情報の取得開始
 		keyboard->Acquire();
@@ -1348,10 +1226,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 		//描画コマンド
-		for (int i = 0; i < _countof(object3ds); i++)
-		{
-			DrawObject3d(&object3ds[i], commandList, vbView, ibView, _countof(indices));
-		}
+		object3ds->DrawObject3d(commandList, vbView, ibView, _countof(indices));
 
 		//4.描画処理ここまで
 
@@ -1403,6 +1278,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete[] imageData;
 	delete key;
 	delete window;
+	delete object3ds;
 
 	return 0;
 }
