@@ -788,23 +788,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	cbResouceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	ID3D12Resource* constBuffMaterial = nullptr;
-	////定数バッファの生成
-	//result = device->CreateCommittedResource(
-	//	&cbHeapProp,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResouceDesc,
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffMaterial));
-	//assert(SUCCEEDED(result));
+	//定数バッファの生成
+	result = device->CreateCommittedResource(
+		&cbHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&cbResouceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffMaterial));
+	assert(SUCCEEDED(result));
 
-	////定数バッファのマッピング
-	//ConstBufferDataMaterial* constMapMaterial = nullptr;
-	//result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);
-	//assert(SUCCEEDED(result));
+	//定数バッファのマッピング
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
+	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);
+	assert(SUCCEEDED(result));
 
 	//値を書き込むと自動的に転送される 
-	//constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//半透明の赤
+	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//半透明の赤
 
 	for (int i = 0; i < _countof(object3ds); i++)
 	{
@@ -1052,15 +1052,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			0.1f, 1000.0f);
 	}
 
-	////テクスチャバッファにデータ転送
-	//result = texBuff->WriteToSubresource(
-	//	0,
-	//	nullptr,
-	//	imageData,
-	//	sizeof(XMFLOAT4) * textureWidth,
-	//	sizeof(XMFLOAT4) * imageDataCount
-	//);
-
 	//全ミップマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
@@ -1103,27 +1094,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 
-	////CBV.SRV,UAVの1個分のサイズを取得
-	//UINT descriptorSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	////SRVヒープの先頭ハンドルを取得
-	//D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
-	////ハンドルを1つ進める(SRVの位置)
-	//srvHandle.ptr += descriptorSize * 1;
-
-	////CBV(コンスタントバッファビュー)の設定
-	//D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc{};
-
-	////cbvDescの値設定
-
-	////定数バッファビュー生成
-	//device->CreateConstantBufferView(&cbvDesc,srvHandle);
-
-
 	//描画初期化処理ここまで
 
 	//ゲームループ1
 	while (true)
 	{
+		//毎フレーム処理ここから
+		
 		//キー入力更新
 		key->Update();
 
@@ -1178,14 +1155,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			object3ds[0].position.x -= speed;
 		}
 
-
-
 		for (int i = 0; i < _countof(object3ds); i++)
 		{
 			UpdateObject3d(&object3ds[i], matView, matProjection);
 		}
-
-		//毎フレーム処理ここから
 
 		//キーボード情報の取得開始
 		keyboard->Acquire();
@@ -1193,11 +1166,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//全キーの入力状態を保存する
 		BYTE key[256] = {};
 		keyboard->GetDeviceState(sizeof(key), key);
-
-		if (key[DIK_0])
-		{
-			OutputDebugStringA("Hit 0\n");
-		}
 
 		//毎フレーム処理ここまで
 
