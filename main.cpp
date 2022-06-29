@@ -804,26 +804,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	assert(SUCCEEDED(result));
 
 	//値を書き込むと自動的に転送される 
-	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//半透明の赤
-
-	for (int i = 0; i < _countof(object3ds); i++)
-	{
-		//初期化
-		InitializeObject3d(&object3ds[i], device);
-
-		//親子構造のサンプル
-		//先頭以外なら
-		if (i > 0)
-		{
-			//parent処理
-
-			object3ds[i].scale = { 0.9f,0.9f,0.9 };
-			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
-			object3ds[i].position = { 0.0f,0.0f,-8.0f };
-		}
-
-	}
-
+	constMapMaterial->color = XMFLOAT4(1, 1, 1, 0.5f);	//普通の色
 
 	//デスクリプタレンジの設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange = {};
@@ -931,6 +912,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeIB;
 
+	//ここから
+
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 	//WICテクスチャのコード
@@ -987,44 +970,44 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//関数化しろぉぉぉぉぉぉぉぉ
 	{
-		//ヒープ設定
-		D3D12_HEAP_PROPERTIES cbHeapProp{};
-		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-		//リソース設定	
-		D3D12_RESOURCE_DESC cbResouceDesc{};
-		cbResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		cbResouceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
-		cbResouceDesc.Height = 1;
-		cbResouceDesc.DepthOrArraySize = 1;
-		cbResouceDesc.MipLevels = 1;
-		cbResouceDesc.SampleDesc.Count = 1;
-		cbResouceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		////ヒープ設定
+		//D3D12_HEAP_PROPERTIES cbHeapProp{};
+		//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+		////リソース設定	
+		//D3D12_RESOURCE_DESC cbResouceDesc{};
+		//cbResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		//cbResouceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		//cbResouceDesc.Height = 1;
+		//cbResouceDesc.DepthOrArraySize = 1;
+		//cbResouceDesc.MipLevels = 1;
+		//cbResouceDesc.SampleDesc.Count = 1;
+		//cbResouceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-		//定数バッファ生成
-		result = device->CreateCommittedResource(
-			&cbHeapProp,
-			D3D12_HEAP_FLAG_NONE,
-			&cbResouceDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&constBuffTransform0));
-		assert(SUCCEEDED(result));
+		////定数バッファ生成
+		//result = device->CreateCommittedResource(
+		//	&cbHeapProp,
+		//	D3D12_HEAP_FLAG_NONE,
+		//	&cbResouceDesc,
+		//	D3D12_RESOURCE_STATE_GENERIC_READ,
+		//	nullptr,
+		//	IID_PPV_ARGS(&constBuffTransform0));
+		//assert(SUCCEEDED(result));
 
-		result = constBuffTransform0->Map(0, nullptr, (void**)&constMapTransform0);
-		assert(SUCCEEDED(result));
+		//result = constBuffTransform0->Map(0, nullptr, (void**)&constMapTransform0);
+		//assert(SUCCEEDED(result));
 
-		//定数バッファ生成Part2
-		result = device->CreateCommittedResource(
-			&cbHeapProp,
-			D3D12_HEAP_FLAG_NONE,
-			&cbResouceDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&constBuffTransform1));
-		assert(SUCCEEDED(result));
+		////定数バッファ生成Part2
+		//result = device->CreateCommittedResource(
+		//	&cbHeapProp,
+		//	D3D12_HEAP_FLAG_NONE,
+		//	&cbResouceDesc,
+		//	D3D12_RESOURCE_STATE_GENERIC_READ,
+		//	nullptr,
+		//	IID_PPV_ARGS(&constBuffTransform1));
+		//assert(SUCCEEDED(result));
 
-		result = constBuffTransform1->Map(0, nullptr, (void**)&constMapTransform1);
-		assert(SUCCEEDED(result));
+		//result = constBuffTransform1->Map(0, nullptr, (void**)&constMapTransform1);
+		//assert(SUCCEEDED(result));
 
 		////並行投影行列の計算
 		//constMapTransform->mat = XMMatrixIdentity();
@@ -1050,6 +1033,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			XMConvertToRadians(45.0f),
 			(float)window->window_width / window->window_height,
 			0.1f, 1000.0f);
+	}
+
+	//オブジェクト初期化
+	for (int i = 0; i < _countof(object3ds); i++)
+	{
+		//初期化
+		InitializeObject3d(&object3ds[i], device);
+
+		//親子構造のサンプル
+		//先頭以外なら
+		if (i > 0)
+		{
+			//parent処理
+			object3ds[i].parent = &object3ds[i - 1];
+
+			object3ds[i].scale = { 0.9f,0.9f,0.9 };
+			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
+			object3ds[i].position = { 0.0f,0.0f,-8.0f };
+		}
 	}
 
 	//全ミップマップについて
@@ -1094,13 +1096,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 
+	//ここまで
+
 	//描画初期化処理ここまで
 
 	//ゲームループ1
 	while (true)
 	{
 		//毎フレーム処理ここから
-		
+
 		//キー入力更新
 		key->Update();
 
@@ -1119,25 +1123,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//横回転
-		if (key->Keep(DIK_D) || key->Keep(DIK_A))
-		{
-			if (key->Keep(DIK_D))
-			{
-				angle += XMConvertToRadians(1.0f);
-			}
-			else if (key->Keep(DIK_A))
-			{
-				angle -= XMConvertToRadians(1.0f);
-			}
 
-			//angleラジアンだけY軸回りい回転。半径は-100
-			eye.x = -100 * sinf(angle);
-			eye.z = -100 * cosf(angle);
-			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		}
+		//angle += XMConvertToRadians(1.0f);
 
+		////angleラジアンだけY軸回りい回転。半径は-100
+		//eye.y = -100 * sinf(angle);
+		//eye.z = -100 * cosf(angle);
+		//matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+
+		//移動速度
 		float speed = 0.4f;
 
+		//移動
 		if (key->Keep(DIK_UP))
 		{
 			object3ds[0].position.y += speed;
@@ -1155,6 +1153,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			object3ds[0].position.x -= speed;
 		}
 
+		//更新処理
 		for (int i = 0; i < _countof(object3ds); i++)
 		{
 			UpdateObject3d(&object3ds[i], matView, matProjection);
@@ -1168,9 +1167,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		keyboard->GetDeviceState(sizeof(key), key);
 
 		//毎フレーム処理ここまで
-
-		//グラフィックスコマンド
-		//commandList->DrawInstanced(_countof(indices), 1, 0, 0);
 
 		//バックバッファの番号を取得(0番と1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
@@ -1244,10 +1240,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//頂点バッファビューの設定コマンド
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
+		//定数バッファビュー(CBV)の設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+		//SRVヒープの設定コマンド
+		commandList->SetDescriptorHeaps(1, &srvHeap);
+		//SRVヒープの先頭ハンドルを取得(SRVを指している)
+		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
 		//描画コマンド
 		for (int i = 0; i < _countof(object3ds); i++)
 		{
-			DrawObject3d(&object3ds[i],commandList,vbView,ibView,_countof(indices));
+			DrawObject3d(&object3ds[i], commandList, vbView, ibView, _countof(indices));
 		}
 
 		//4.描画処理ここまで
