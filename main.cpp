@@ -1,12 +1,11 @@
+void a()
+{
 //#include <DirectXMath.h>
 //#include <DirectXTex.h>
 //#include <d3d12.h>
 //#include <dxgi1_6.h>
 //#include <vector>
 //#include <string>
-#include "object.h"
-#include "key.h"
-#include "WindowApi.h"
 ////#include "Definition.h"
 //using namespace DirectX;
 //
@@ -15,6 +14,11 @@
 //
 //#include <d3dcompiler.h>
 //#pragma comment(lib,"d3dcompiler.lib")
+}
+
+#include "object.h"
+#include "key.h"
+#include "WindowApi.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -271,22 +275,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//頂点データ
 	Vertex vertices[] =
 	{
-		////x,	y,		z,		u,	v
-		//{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},//左下
-		//{{-0.4f,+0.7f,0.0f},{0.0f,0.0f}},//左上
-		//{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},//右下
-		//{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},//右上
-
-		////x,	y,		z,		u,	v
-		//{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},//左下
-		//{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},//左上
-		//{{100.0f,100.0f,0.0f},{1.0f,1.0f}},//右下
-		//{{100.0f,  0.0f,0.0f},{1.0f,0.0f}},//右上
-
-		//x,	y,		z,		u,	 v
-
+		//	x,		y,		z,		u,	 v
 		//前
-		{{ -5.0f, -5.0f, -5.0f},{}, {0.0f,1.0f}},//左下
+		{{ -5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
 		{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
 		{{  5.0f, -5.0f, -5.0f},{},{1.0f,1.0f}},//右下
 		{{  5.0f,  5.0f, -5.0f},{},{1.0f,0.0f}},//右上 
@@ -346,7 +337,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
-	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
 
 	//法線計算
