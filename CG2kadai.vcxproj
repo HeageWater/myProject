@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="object.cpp" />
     <ClCompile Include="WindowApi.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="Definition.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="key.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="WindowApi.h" />
   </ItemGroup>
   <ItemGroup>

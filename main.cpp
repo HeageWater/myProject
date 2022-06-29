@@ -1,12 +1,13 @@
+#include <DirectXMath.h>
+#include <DirectXTex.h>
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <vector>
 #include <string>
+//#include "object.h"
 #include "key.h"
 #include "WindowApi.h"
 //#include "Definition.h"
-#include <DirectXMath.h>
-#include <DirectXTex.h>
 using namespace DirectX;
 
 #pragma comment(lib,"d3d12.lib")
@@ -163,18 +164,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//windowAPI初期化処理ここまで
 
-	//宣言
-	Key* key = new Key(window->w, window->hwnd);
-
-	ID3D12Resource* constBuffTransform0 = nullptr;
-	ConstBufferDataTransform* constMapTransform0 = nullptr;
-
-	ID3D12Resource* constBuffTransform1 = nullptr;
-	ConstBufferDataTransform* constMapTransform1 = nullptr;
-
 	//directx初期化処理ここから
-
-	//OutputDebugStringA("Hello,DirectX!!\n");
 
 	MSG msg{};
 
@@ -186,6 +176,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12GraphicsCommandList* commandList = nullptr;
 	ID3D12CommandQueue* commandQueue = nullptr;
 	ID3D12DescriptorHeap* rtvHeap = nullptr;
+
+	//宣言
+	Key* key = new Key(window->w, window->hwnd);
+
+	ID3D12Resource* constBuffTransform0 = nullptr;
+	ConstBufferDataTransform* constMapTransform0 = nullptr;
+
+	ID3D12Resource* constBuffTransform1 = nullptr;
+	ConstBufferDataTransform* constMapTransform1 = nullptr;
 
 	//DXGIファクトリーの作成
 	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
