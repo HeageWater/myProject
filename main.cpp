@@ -98,7 +98,7 @@ void UpdateObject3d(Object3d* object, XMMATRIX& matView, XMMATRIX& matProjection
 		object->matWorld *= object->parent->matWorld;
 	}
 
-	//データ転送s
+	//データ転送
 	object->constMapTransform->mat = object->matWorld * matView * matProjection;
 }
 
@@ -451,6 +451,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
 
+	//法線計算
 	for (int i = 0; i < sizeof(indices) / sizeof(unsigned short) / 3; i++)
 	{
 		//三角形のインデックスを取り出して、一時的な変数に入れる
@@ -814,6 +815,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//先頭以外なら
 		if (i > 0)
 		{
+			//parent処理
+
 			object3ds[i].scale = { 0.9f,0.9f,0.9 };
 			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
 			object3ds[i].position = { 0.0f,0.0f,-8.0f };
@@ -1139,89 +1142,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//横回転
-		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
+		if (key->Keep(DIK_D) || key->Keep(DIK_A))
 		{
-			if (key->KeepPushKey(DIK_D))
+			if (key->Keep(DIK_D))
 			{
 				angle += XMConvertToRadians(1.0f);
 			}
-			else if (key->KeepPushKey(DIK_A))
+			else if (key->Keep(DIK_A))
 			{
 				angle -= XMConvertToRadians(1.0f);
 			}
 
 			//angleラジアンだけY軸回りい回転。半径は-100
-			eye.x = -300 * sinf(angle);
-			eye.z = -300 * cosf(angle);
+			eye.x = -100 * sinf(angle);
+			eye.z = -100 * cosf(angle);
 			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 		}
 
-		/*if (key->KeepPushKey(DIK_UP))
+		float speed = 0.4f;
+
+		if (key->Keep(DIK_UP))
 		{
-			position.z += 1.0f;
+			object3ds[0].position.y += speed;
 		}
-		if (key->KeepPushKey(DIK_DOWN))
+		if (key->Keep(DIK_DOWN))
 		{
-			position.z -= 1.0f;
+			object3ds[0].position.y -= speed;
 		}
-		if (key->KeepPushKey(DIK_RIGHT))
+		if (key->Keep(DIK_RIGHT))
 		{
-			position.x += 1.0f;
+			object3ds[0].position.x += speed;
 		}
-		if (key->KeepPushKey(DIK_LEFT))
+		if (key->Keep(DIK_LEFT))
 		{
-			position.x -= 1.0f;
-		}*/
+			object3ds[0].position.x -= speed;
+		}
 
 
-		////スケ－リング行列
-		//XMMATRIX matScale;
-		//matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-
-		////回転行列
-		//XMMATRIX matRot;
-		//matRot = XMMatrixIdentity();
-		////Z軸に45度回転
-		////matRot *= XMMatrixRotationZ(XMConvertToRadians(45.0f));
-		//matRot *= XMMatrixRotationZ(rotation.z);
-		////X軸に55度回転
-		////matRot *= XMMatrixRotationX(XMConvertToRadians(55.0f));
-		//matRot *= XMMatrixRotationX(rotation.x);
-		////Y軸に0度回転
-		////matRot *= XMMatrixRotationY(XMConvertToRadians(0.0f));
-		//matRot *= XMMatrixRotationY(rotation.y);
-
-		////平行移動行列
-		//XMMATRIX matTrans;
-		////平行移動
-		//matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-		////ワールド変換行列
-		//XMMATRIX matworld;
-		////ワールド変換行列初期化
-		//matworld = XMMatrixIdentity();
-		////ワールド行列にスケ-リングを反映
-		//matworld = matScale;
-		////ワールド行列に回転を反映
-		//matworld *= matRot;
-		////ワールド行列に平行移動を反映
-		//matworld *= matTrans;
-
-		//定数バッファ転送
-		//constMapTransform0->mat = matworld * matView * matProjection;
-
-
-		////ワールド変換行列
-		//XMMATRIX matworld1;
-		//matworld1 = XMMatrixIdentity();
-		////各種変形行列を計算
-		//XMMATRIX matScale1 = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-		//XMMATRIX matRot1 = XMMatrixRotationY(XM_PI / 4.0f);
-		//XMMATRIX matTrans1 = XMMatrixTranslation(-20.0f, 0, 0);
-		////合成
-		//matworld1 = matScale1 * matRot1 * matTrans1;
-		////転送
-		//constMapTransform1->mat = matworld1 * matView * matProjection;
 
 		for (int i = 0; i < _countof(object3ds); i++)
 		{
@@ -1319,24 +1276,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//頂点バッファビューの設定コマンド
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
-		//定数バッファビュー(CBV)の設定コマンド
-		//commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
-		//SRVヒープの設定コマンド
-		//commandList->SetDescriptorHeaps(1, &srvHeap);
-		//SRVヒープの先頭ハンドルを取得(SRVを指している)
-		//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
-		//commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
-
-		////定数バッファビュー(CBV)の設定コマンド
-		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
-		////描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
-		////定数バッファビュー(CBV)の設定コマンド
-		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
-		////描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		//描画コマンド
 		for (int i = 0; i < _countof(object3ds); i++)
 		{
 			DrawObject3d(&object3ds[i],commandList,vbView,ibView,_countof(indices));

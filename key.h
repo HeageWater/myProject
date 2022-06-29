@@ -34,9 +34,9 @@ public:
 	//XV
 	void Update();
 	//‰Ÿ‚µ‚½
-	bool PushKey(uint8_t key);
+	bool Push(uint8_t key);
 	//‰Ÿ‚µ‚Ä‚éŠÔ
-	bool KeepPushKey(uint8_t key);
+	bool Keep(uint8_t key);
 	//—£‚µ‚½uŠÔ
-	bool ReleaseKey(uint8_t key);
+	bool Release(uint8_t key);
 };

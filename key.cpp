@@ -23,7 +23,6 @@ Key::Key(WNDCLASSEX a, HWND hw)
 
 Key::~Key()
 {
-
 }
 
 //XV
@@ -42,7 +41,7 @@ void Key::Update()
 }
 
 //‰Ÿ‚µ‚½uŠÔ
-bool Key::PushKey(uint8_t key)
+bool Key::Push(uint8_t key)
 {
 	if (keys[key] != false &&
 		oldkey[key] == false)
@@ -53,7 +52,7 @@ bool Key::PushKey(uint8_t key)
 }
 
 //‰Ÿ‚µ‚Ä‚éŠÔ
-bool  Key::KeepPushKey(uint8_t key)
+bool  Key::Keep(uint8_t key)
 {
 	if (keys[key] != false)
 	{
@@ -63,7 +62,7 @@ bool  Key::KeepPushKey(uint8_t key)
 }
 
 //—£‚µ‚½uŠÔ
-bool Key::ReleaseKey(uint8_t key)
+bool Key::Release(uint8_t key)
 {
 	if (keys[key] == false &&
 		oldkey[key] != false)
