@@ -19,6 +19,7 @@ void a()
 #include "object.h"
 #include "key.h"
 #include "WindowApi.h"
+#include "viewport.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -46,13 +47,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//射影変換行列
 	XMMATRIX matProjection;
-
-	////スケ-リング倍率
-	//XMFLOAT3 scale = { 1.0f,2.0f,1.0f };
-	////回転角
-	//XMFLOAT3 rotation = { 0.0f,XM_PI / 4.0f,0.0f };
-	////座標
-	//XMFLOAT3 position = { 0.0f,0.0f,0.0f };
 
 	//カメラの回転角
 	float angle = 0.0f;
@@ -86,6 +80,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
+
+	Port* port = new Port(window->window_width,window->window_height);
 
 	//DXGIファクトリーの作成
 	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
@@ -1161,27 +1157,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//4.描画処理ここから
 
-		//ビューポート設定コマンド
-		D3D12_VIEWPORT viewport{};
-
-		viewport.Width = window->window_width;
-		viewport.Height = window->window_height;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-
-		//ビューポート設定コマンドを、コマンドリストに積む
-		commandList->RSSetViewports(1, &viewport);
-
-		D3D12_RECT scissorRec{};
-		scissorRec.left = 0;				 //切り抜き座標左
-		scissorRec.right = window->window_width;	 //切り抜き座標右
-		scissorRec.top = 0;				 //切り抜き座標上
-		scissorRec.bottom = window->window_height;	 //切り抜き座標下
-
-		//シザー矩形設定コマンドを、コマンドリストに積む
-		commandList->RSSetScissorRects(1, &scissorRec);
+		////ビューポート設定コマンドを、コマンドリストに積む
+		port->DrawViewPort(commandList);
+		////シザー矩形設定コマンドを、コマンドリストに積む
+		port->DrawScissor(commandList);
 
 		//パイプラインステートとルートシグネチャの設定コマンド
 		commandList->SetPipelineState(pipelineState);
@@ -1269,6 +1248,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete key;
 	delete window;
 	delete object3ds;
+	delete port;
 
 	return 0;
 }

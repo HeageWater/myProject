@@ -23,7 +23,6 @@ struct ConstBufferDataTransform
 	XMMATRIX mat;
 };
 
-
 class Object3ds
 {
 public:
