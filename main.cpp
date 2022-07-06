@@ -35,8 +35,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//3Dオブジェクトの数
 	const size_t kObjectCount = 1;
-	//3Dオブジェクトの配列
-	//Object3d object3ds[kObjectCount];
 
 	//ビュー変換行列
 	XMMATRIX matView;
@@ -548,44 +546,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ブレンドを無効
 	blenddesc.BlendEnable = false;
 
-	////ブレンドを有効
-	//blenddesc.BlendEnable = true;
-	////加算
-	//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	////ソースの値を10%使う
-	//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	////デストの値を0%使う
-	//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+	{
+		////ブレンドを有効
+		//blenddesc.BlendEnable = true;
+		////加算
+		//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		////ソースの値を10%使う
+		//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+		////デストの値を0%使う
+		//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
-	//加算合成
-	////加算
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	////ソースの値を10%使う
-	//blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	////デストの値を0%使う
-	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+		//加算合成
+		////加算
+		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		////ソースの値を10%使う
+		//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		////デストの値を0%使う
+		//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-	////減算
-	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	////ソースの値を10%使う
-	//blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	////デストの値を0%使う
-	//blenddesc.DestBlend = D3D12_BLEND_ONE;
+		////減算
+		//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		////ソースの値を10%使う
+		//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		////デストの値を0%使う
+		//blenddesc.DestBlend = D3D12_BLEND_ONE;
 
-	////色反転
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	////1.0f-デストカラーの値
-	//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
-	////使わない
-	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+		////色反転
+		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		////1.0f-デストカラーの値
+		//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+		////使わない
+		//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-	////半透明合成
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	////ソースのα値
-	//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	////1.0f-ソースのα値
-	//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
+		////半透明合成
+		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		////ソースのα値
+		//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		////1.0f-ソースのα値
+		//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	}
 
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResouceDesc{};
@@ -919,7 +918,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		IID_PPV_ARGS(&texBuff2));
 
 
-	//関数化しろぉぉぉぉぉぉぉぉ
+	//射影変換
 	{
 		////ヒープ設定
 		//D3D12_HEAP_PROPERTIES cbHeapProp{};
@@ -1078,16 +1077,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			draw_flg = !draw_flg;
 		}
 
-		//横回転
-
-		//angle += XMConvertToRadians(1.0f);
-
-		////angleラジアンだけY軸回りい回転。半径は-100
-		//eye.y = -100 * sinf(angle);
-		//eye.z = -100 * cosf(angle);
-		//matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
-
 		//移動速度
 		float speed = 0.4f;
 
@@ -1244,7 +1233,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UnregisterClass(window->w.lpszClassName, window->w.hInstance);
 
 	//元データ解放
-	//delete[] imageData;
 	delete key;
 	delete window;
 	delete object3ds;
