@@ -43,6 +43,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 #endif
 
+	bool flg = false;
+	bool flg2 = true;
+
 	//windowAPI初期化処理ここから
 
 	//ウィンドウサイズ
@@ -251,28 +254,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT64 fenceVal = 0;
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
-
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
-
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard,
-		&keyboard, NULL);
-
-	//入力データ形式のセット
-	//標準形式
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
-		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
 
 	//DirectX初期化処理ここまで
 
@@ -542,7 +523,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);
 	assert(SUCCEEDED(result));
 	//値を書き込むと自動的に転送される 
-	constMapMaterial->color = XMFLOAT4(0, 0.5f, 0, 0);	//半透明の赤
+	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//半透明の赤
 
 	//ルートパラメタの設定
 	D3D12_ROOT_PARAMETER rootParam = {};
@@ -601,23 +582,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//毎フレーム処理ここから
 
 		//キーボード情報の取得開始
-		keyboard->Acquire();
-
 		//全キーの入力状態を保存する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
+		key->Update();
 
-		if (key[DIK_0])
+		if (key->PushKey(DIK_SPACE))
 		{
-			OutputDebugStringA("Hit 0\n");
+			flg = !flg;
 		}
 
-		//赤から緑へ
-		if (a < 1.0f)
+		if (flg)
 		{
-			a += 0.005f;
+			//赤から緑へ
+			if (flg2)
+			{
+				if (a < 1.0f)
+				{
+					a += 0.005f;
+				}
+				else
+				{
+					flg2 = !flg2;
+				}
+			}
+			else
+			{
+				if (a > -0.3f)
+				{
+					a -= 0.005f;
+				}
+				else
+				{
+					flg2 = !flg2;
+				}
+			}
+
+			if(a < 1.0f && a > 0.0f)
+			constMapMaterial->color = XMFLOAT4(1 - a, a, 0, 0.5f);
 		}
-		constMapMaterial->color = XMFLOAT4(1 - a, a, 0, 0.5f);	//半透明の赤から緑へ
 
 		//毎フレーム処理ここまで
 
