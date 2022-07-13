@@ -449,13 +449,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
 	//ブレンドを有効
-	blenddesc.BlendEnable = true;
-	//加算
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	//ソースの値を10%使う
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	//デストの値を0%使う
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+	//blenddesc.BlendEnable = true;
+	//ブレンドを無効
+	blenddesc.BlendEnable = false;
+	
+	////加算
+	//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	////ソースの値を10%使う
+	//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	////デストの値を0%使う
+	//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	//加算合成
 	////加算
@@ -479,12 +482,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	////使わない
 	//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-	//半透明合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	//ソースのα値
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	//1.0f-ソースのα値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	////半透明合成
+	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	////ソースのα値
+	//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	////1.0f-ソースのα値
+	//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
 
 	//RBGA全てのチャンネルを描画
@@ -539,7 +542,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);
 	assert(SUCCEEDED(result));
 	//値を書き込むと自動的に転送される 
-	constMapMaterial->color = XMFLOAT4(0, 1, 0, 0.5f);	//半透明の赤
+	constMapMaterial->color = XMFLOAT4(0, 0.5f, 0, 0);	//半透明の赤
 
 	//ルートパラメタの設定
 	D3D12_ROOT_PARAMETER rootParam = {};
@@ -612,7 +615,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//赤から緑へ
 		if (a < 1.0f)
 		{
-			a += 0.01f;
+			a += 0.005f;
 		}
 		constMapMaterial->color = XMFLOAT4(1 - a, a, 0, 0.5f);	//半透明の赤から緑へ
 
