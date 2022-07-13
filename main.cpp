@@ -81,9 +81,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Port* port = new Port(window->window_width,window->window_height);
 
+
 	//DXGIファクトリーの作成
 	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
 	assert(SUCCEEDED(result));
+
 
 	//アダプターの列挙用
 	std::vector<IDXGIAdapter4*> adapters;
@@ -141,6 +143,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 	}
 
+
 	//コマンドアロケータを生成
 	result = device->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
@@ -159,6 +162,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//コマンドキューを生成
 	result = device->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue));
 	assert(SUCCEEDED(result));
+
 
 	//スワップチェーンの設定
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
