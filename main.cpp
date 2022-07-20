@@ -87,10 +87,10 @@ SoundData SoundLoadWave(const char* filename)
 
 	file.read((char*)&format, sizeof(ChunkHeader));
 
-	if (strncmp(format.chunk.id, "fmt", 4) != 0)
+	/*if (strncmp(format.chunk.id, "fmt", 4) != 0)
 	{
 		assert(0);
-	}
+	}*/
 
 	assert(format.chunk.size <= sizeof(format.fmt));
 
@@ -1191,7 +1191,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	SoundData soundData1 = SoundLoadWave("Resources/BGM.wav");
+	SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
 
 	SoundPlayWave(xAudio2.Get(), soundData1);
 	//‚±‚±‚Ü‚Å
