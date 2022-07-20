@@ -141,12 +141,6 @@
   <ItemGroup>
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="object.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="viewport.cpp" />
-    <ClCompile Include="WindowApi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
@@ -165,12 +159,6 @@
   <ItemGroup>
     <ClInclude Include="Definition.h" />
     <ClInclude Include="key.h" />
-    <ClInclude Include="object.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="viewport.h" />
-    <ClInclude Include="WindowApi.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
