@@ -154,6 +154,26 @@ void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
 	result = pSouceVoice->Start();
 }
 
+//デバックテキスト
+//class DebugText
+//{
+//private:
+//	//最大文字数
+//	static const int maxCharCount = 256;
+//	//画像の横幅
+//	static const int fontWidth = 17;
+//	//画像の縦幅
+//	static const int fontHight = 18;
+//	//1行の文字数
+//	static const int fonstLineCount = 14;
+//
+//	Sprite sprites[maxCharCount];
+//
+//	int spriteIndex = 0;
+//};
+
+
+
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//初期化
