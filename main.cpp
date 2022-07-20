@@ -172,8 +172,6 @@ void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
 //	int spriteIndex = 0;
 //};
 
-
-
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//‰Šú‰»
