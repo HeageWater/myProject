@@ -423,6 +423,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	//頂点データ
+	XMFLOAT3 Tvertices[] =
+	{
+		{-0.5f,-0.5f,0.0f},//左下
+		{-0.5f,+0.5f,0.0f},//左上
+		{+0.5f,-0.5f,0.0f},//右下
+	};
+
+	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
+	UINT sizeTVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(Tvertices));
+
+	//頂点データ
 	Vertex vertices[] =
 	{
 		//	x,		y,		z,		u,	 v
@@ -958,7 +969,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ScratchImage scratchImg{};
 	//WICテクスチャのコード
 	result = LoadFromWICFile(
-		L"Resources/cube.jpg",
+		L"Resources/burokku.png",
 		WIC_FLAGS_NONE,
 		&metadata,
 		scratchImg
@@ -1029,7 +1040,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ScratchImage scratchImg2{};
 	//WICテクスチャのコード
 	result = LoadFromWICFile(
-		L"Resources/reimu.png",
+		L"Resources/texure.png",
 		WIC_FLAGS_NONE,
 		&metadata2,
 		scratchImg2
@@ -1245,7 +1256,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//移動速度
-		float speed = 0.4f;
+		const float speed = 0.4f;
+		const float Rspeed = 0.05f;
 
 		//移動
 		if (key->Keep(DIK_UP))
@@ -1263,6 +1275,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (key->Keep(DIK_LEFT))
 		{
 			object3ds[0].position.x -= speed;
+		}
+
+		//回転
+		if (key->Keep(DIK_E))
+		{
+			object3ds[0].rotation.y += Rspeed;
+		}
+		if (key->Keep(DIK_Q))
+		{
+			object3ds[0].rotation.y -= Rspeed;
 		}
 
 		//更新処理
@@ -1353,6 +1375,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画コマンド
 		object3ds->DrawObject3d(commandList, vbView, ibView, _countof(indices));
 
+		//三角形
+		commandList->DrawInstanced(_countof(indices), 1, 0, 0);
 		//4.描画処理ここまで
 
 		//5.リソースバリア
