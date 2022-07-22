@@ -1,19 +1,19 @@
 void a()
 {
-//#include <DirectXMath.h>
-//#include <DirectXTex.h>
-//#include <d3d12.h>
-//#include <dxgi1_6.h>
-//#include <vector>
-//#include <string>
-////#include "Definition.h"
-//using namespace DirectX;
-//
-//#pragma comment(lib,"d3d12.lib")
-//#pragma comment(lib,"dxgi.lib")
-//
-//#include <d3dcompiler.h>
-//#pragma comment(lib,"d3dcompiler.lib")
+	//#include <DirectXMath.h>
+	//#include <DirectXTex.h>
+	//#include <d3d12.h>
+	//#include <dxgi1_6.h>
+	//#include <vector>
+	//#include <string>
+	////#include "Definition.h"
+	//using namespace DirectX;
+	//
+	//#pragma comment(lib,"d3d12.lib")
+	//#pragma comment(lib,"dxgi.lib")
+	//
+	//#include <d3dcompiler.h>
+	//#pragma comment(lib,"d3dcompiler.lib")
 }
 
 #include "object.h"
@@ -73,7 +73,7 @@ SoundData SoundLoadWave(const char* filename)
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
 
-	if (strncmp(riff.chunk.id,"RIFF",4) != 0)
+	if (strncmp(riff.chunk.id, "RIFF", 4) != 0)
 	{
 		assert(0);
 	}
@@ -82,7 +82,7 @@ SoundData SoundLoadWave(const char* filename)
 	{
 		assert(0);
 	}
-	
+
 	FormatChunk format = {};
 
 	file.read((char*)&format, sizeof(ChunkHeader));
@@ -137,14 +137,14 @@ void SoundunLoad(SoundData* soundData)
 }
 
 //サウンド再生
-void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
+void SoundPlayWave(IXAudio2* xaudio2, const SoundData& soundData)
 {
 	HRESULT result;
 
 	IXAudio2SourceVoice* pSouceVoice = nullptr;
 	result = xaudio2->CreateSourceVoice(&pSouceVoice, &soundData.wfex);
 	assert(SUCCEEDED(result));
-	
+
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData.pBuffer;
 	buf.AudioBytes = soundData.bufferSize;
@@ -231,7 +231,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
 
-	Port* port = new Port(window->window_width,window->window_height);
+	Port* port = new Port(window->window_width, window->window_height);
 
 
 	//DXGIファクトリーの作成
@@ -425,9 +425,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//頂点データ
 	XMFLOAT3 Tvertices[] =
 	{
-		{-0.5f,-0.5f,0.0f},//左下
-		{-0.5f,+0.5f,0.0f},//左上
-		{+0.5f,-0.5f,0.0f},//右下
+		{ -5.0f, -5.0f, -0.0f},//左下
+		{ -5.0f,  5.0f, -0.0f},//左上
+		{  5.0f, -5.0f, -0.0f},//右下
 	};
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
@@ -472,6 +472,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
 		{{  5.0f,  5.0f,  5.0f},{},{1.0f,1.0f}},//右下
 		{{ -5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
+	};
+
+	unsigned short indicesT[] =
+	{
+		//前
+		0,1,2,
+		2,1,3,
 	};
 
 	//インデックスデータ
@@ -553,7 +560,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//ヒープ設定
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
-
 		//リソース設定
 		&resDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -566,6 +572,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 
+	//頂点バッファの生成
+	ID3D12Resource* vertBuffT = nullptr;
+	result = device->CreateCommittedResource(
+		//ヒープ設定
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		//リソース設定
+		&resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&vertBuffT));
+	assert(SUCCEEDED(result));
+
+	//gpu状のバッファに対応した仮想メモリ(メインメモリ上)を取得(三角形)
+	XMFLOAT3* vertMapT = nullptr;
+	result = vertBuffT->Map(0, nullptr, (void**)&vertMapT);
+
+	assert(SUCCEEDED(result));
+
 	//全頂点に対して
 	for (int i = 0; i < _countof(vertices); i++)
 	{
@@ -573,21 +598,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		vertMap[i] = vertices[i];
 	}
 
+	//全頂点に対して三角形
+	for (int i = 0; i < _countof(Tvertices); i++)
+	{
+		//座標コピー
+		vertMapT[i] = Tvertices[i];
+	}
+	
 	//つながりを削除
 	vertBuff->Unmap(0, nullptr);
+	vertBuffT->Unmap(0, nullptr);
 
 	//頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	D3D12_VERTEX_BUFFER_VIEW vbViewT{};
 
 	//GPU仮想アドレス
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbViewT.BufferLocation = vertBuffT->GetGPUVirtualAddress();
 
 	//頂点バッファのサイズ
 	vbView.SizeInBytes = sizeVB;
+	vbViewT.SizeInBytes = sizeTVB;
 
 	//頂点1つ分のデータサイズ
 	//vbView.StrideInBytes = sizeof(XMFLOAT3);
 	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbViewT.StrideInBytes = sizeof(Tvertices[0]);
 
 	//頂点シェーダオブジェクト
 	ID3DBlob* vsBlob = nullptr;
@@ -962,6 +999,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeIB;
 
+
+	//インデックスデータ全体のサイズ
+	UINT sizeIBT = static_cast<UINT>(sizeof(uint16_t) * _countof(indicesT));
+
+	//インデックスバッファの生成
+	ID3D12Resource* indexBuffT = nullptr;
+	result = device->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&indexBuffT));
+
+	//インデックスバッファをマッピング
+	uint16_t* indexMapT = nullptr;
+	result = indexBuffT->Map(0, nullptr, (void**)&indexMapT);
+	//全インデックスに対して
+	for (int i = 0; i < _countof(indicesT); i++)
+	{
+		//インデックスをコピー
+		indexMapT[i] = indicesT[i];
+	}
+	//マッピング解除
+	indexBuffT->Unmap(0, nullptr);
+
+	D3D12_INDEX_BUFFER_VIEW ibViewT{};
+	ibViewT.BufferLocation = indexBuffT->GetGPUVirtualAddress();
+	ibViewT.Format = DXGI_FORMAT_R16_UINT;
+	ibViewT.SizeInBytes = sizeIBT;
+		  
 	//ここから
 
 	//1つ目
@@ -1222,7 +1290,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
 
-	SoundPlayWave(xAudio2.Get(), soundData1);
+	bool flg = false;
 	//ここまで
 
 	//描画初期化処理ここまで
@@ -1253,6 +1321,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (key->Push(DIK_SPACE))
 		{
 			draw_flg = !draw_flg;
+		}
+
+		if (key->Push(DIK_V))
+		{
+			flg = !flg;
+			if (flg)
+			{
+				result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+
+				result = xAudio2->CreateMasteringVoice(&masterVoice);
+
+				SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
+
+				SoundPlayWave(xAudio2.Get(), soundData1);
+			}
+			else
+			{
+				xAudio2.Reset();
+				SoundunLoad(&soundData1);
+			}
 		}
 
 		//移動速度
@@ -1286,6 +1374,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			object3ds[0].rotation.y -= Rspeed;
 		}
+
+		if (key->Keep(DIK_Z))
+		{
+			eye.x += 1;
+		}
+		if (key->Keep(DIK_X))
+		{
+			eye.x -= 1;
+		}
+
+		if (key->Keep(DIK_R))
+		{
+			target.x = 0;
+			target.y = 0;
+			target.z = 0;
+
+			eye.x = 0;
+			eye.y = 0;
+			eye.z = -100;
+
+			up.x = 0;
+			up.y = 1;
+			up.z = 0;
+
+			object3ds[0].Reset();
+		}
+
+		//かめら
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
@@ -1344,6 +1461,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->SetPipelineState(pipelineState);
 		commandList->SetGraphicsRootSignature(rootSignature);
 
+
+		//頂点バッファの設定
+		commandList->IASetVertexBuffers(0, 1, &vbViewT);
+
+		//インデックスバッファの設定
+		commandList->IASetIndexBuffer(&ibViewT);
+
+		//定数バッファビューの設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, constBuffMaterial->GetGPUVirtualAddress());
+
+		//描画コマンド
+		//三角形
+		commandList->DrawInstanced(_countof(Tvertices), 1, 0, 0);
+
+
 		//インデックスバッファビューの設定コマンド
 		commandList->IASetIndexBuffer(&ibView);
 
@@ -1375,8 +1507,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画コマンド
 		object3ds->DrawObject3d(commandList, vbView, ibView, _countof(indices));
 
-		//三角形
-		commandList->DrawInstanced(_countof(indices), 1, 0, 0);
 		//4.描画処理ここまで
 
 		//5.リソースバリア

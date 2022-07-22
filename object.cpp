@@ -77,3 +77,11 @@ void Object3ds::DrawObject3d(
 	//描画コマンド
 	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
 }
+
+//リセット
+void Object3ds::Reset()
+{
+	scale = { 1,1,1 };
+	rotation = { 0,0,0 };
+	position = { 0,0,0 };
+}

@@ -44,4 +44,5 @@ public:
 		D3D12_VERTEX_BUFFER_VIEW& vbView,
 		D3D12_INDEX_BUFFER_VIEW& ibView,
 		UINT numIndices);
+	void Reset();
 };
