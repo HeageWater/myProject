@@ -43,6 +43,7 @@ public:
 		ID3D12GraphicsCommandList* commandList,
 		D3D12_VERTEX_BUFFER_VIEW& vbView,
 		D3D12_INDEX_BUFFER_VIEW& ibView,
-		UINT numIndices);
+		UINT numIndices,
+		bool a);
 	void Reset();
 };

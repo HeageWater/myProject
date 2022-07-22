@@ -172,6 +172,7 @@ void SoundPlayWave(IXAudio2* xaudio2, const SoundData& soundData)
 //	int spriteIndex = 0;
 //};
 
+
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//初期化
@@ -425,9 +426,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//頂点データ
 	XMFLOAT3 Tvertices[] =
 	{
-		{ -5.0f, -5.0f, -0.0f},//左下
-		{ -5.0f,  5.0f, -0.0f},//左上
-		{  5.0f, -5.0f, -0.0f},//右下
+		{ -25.0f, -5.0f, -0.0f},//左下
+		{ -25.0f,  5.0f, -0.0f},//左上
+		{ -15.0f, -5.0f, -0.0f},//右下
 	};
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
@@ -478,7 +479,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		//前
 		0,1,2,
-		2,1,3,
 	};
 
 	//インデックスデータ
@@ -604,7 +604,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//座標コピー
 		vertMapT[i] = Tvertices[i];
 	}
-	
+
 	//つながりを削除
 	vertBuff->Unmap(0, nullptr);
 	vertBuffT->Unmap(0, nullptr);
@@ -760,20 +760,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		////デストの値を0%使う
 		//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
-		//加算合成
-		////加算
-		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-		////ソースの値を10%使う
-		//blenddesc.SrcBlend = D3D12_BLEND_ONE;
-		////デストの値を0%使う
-		//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+		//////加算合成
+		//////加算
+		////blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		//////ソースの値を10%使う
+		////blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		//////デストの値を0%使う
+		////blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-		////減算
-		//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-		////ソースの値を10%使う
-		//blenddesc.SrcBlend = D3D12_BLEND_ONE;
-		////デストの値を0%使う
-		//blenddesc.DestBlend = D3D12_BLEND_ONE;
+		//////減算
+		////blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		//////ソースの値を10%使う
+		////blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		//////デストの値を0%使う
+		////blenddesc.DestBlend = D3D12_BLEND_ONE;
 
 		////色反転
 		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -1029,7 +1029,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibViewT.BufferLocation = indexBuffT->GetGPUVirtualAddress();
 	ibViewT.Format = DXGI_FORMAT_R16_UINT;
 	ibViewT.SizeInBytes = sizeIBT;
-		  
+
 	//ここから
 
 	//1つ目
@@ -1293,6 +1293,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool flg = false;
 	//ここまで
 
+	float a = 0;
+	bool flg1 = false;
+	bool flg2 = true;
 	//描画初期化処理ここまで
 
 	//ゲームループ1
@@ -1368,20 +1371,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//回転
 		if (key->Keep(DIK_E))
 		{
-			object3ds[0].rotation.y += Rspeed;
+			object3ds[0].rotation.z += Rspeed;
 		}
 		if (key->Keep(DIK_Q))
 		{
-			object3ds[0].rotation.y -= Rspeed;
+			object3ds[0].rotation.z -= Rspeed;
 		}
 
-		if (key->Keep(DIK_Z))
+		if (key->Keep(DIK_W))
 		{
-			eye.x += 1;
+			target.y -= 1;
 		}
-		if (key->Keep(DIK_X))
+		if (key->Keep(DIK_S))
 		{
-			eye.x -= 1;
+			target.y += 1;
+		}
+
+		if (key->Keep(DIK_D))
+		{
+			target.x -= 1;
+		}
+		if (key->Keep(DIK_A))
+		{
+			target.x += 1;
 		}
 
 		if (key->Keep(DIK_R))
@@ -1400,6 +1412,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			object3ds[0].Reset();
 		}
+
+		//色
+			//赤から緑へ
+		if (flg2)
+		{
+			if (a < 1.0f)
+			{
+				a += 0.01f;
+			}
+			else
+			{
+				flg2 = !flg2;
+			}
+		}
+		else
+		{
+			if (a > -0.3f)
+			{
+				a -= 0.01f;
+			}
+			else
+			{
+				flg2 = !flg2;
+			}
+		}
+
+		if (a < 1.0f && a > 0.0f)
+			constMapMaterial->color = XMFLOAT4(1 - a, a, 0, 0.5f);
+
 
 		//かめら
 		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -1462,18 +1503,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->SetGraphicsRootSignature(rootSignature);
 
 
-		//頂点バッファの設定
-		commandList->IASetVertexBuffers(0, 1, &vbViewT);
+		////頂点バッファの設定
+		//commandList->IASetVertexBuffers(0, 1, &vbViewT);
 
-		//インデックスバッファの設定
-		commandList->IASetIndexBuffer(&ibViewT);
+		////インデックスバッファの設定
+		//commandList->IASetIndexBuffer(&ibViewT);
 
-		//定数バッファビューの設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffMaterial->GetGPUVirtualAddress());
+		////定数バッファビューの設定コマンド
+		//commandList->SetGraphicsRootConstantBufferView(2, constBuffMaterial->GetGPUVirtualAddress());
 
 		//描画コマンド
 		//三角形
-		commandList->DrawInstanced(_countof(Tvertices), 1, 0, 0);
+		//commandList->DrawInstanced(_countof(Tvertices), 1, 0, 0);
 
 
 		//インデックスバッファビューの設定コマンド
@@ -1505,7 +1546,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 		//描画コマンド
-		object3ds->DrawObject3d(commandList, vbView, ibView, _countof(indices));
+		object3ds->DrawObject3d(commandList, vbView, ibView, _countof(indices), true);
+
+		if (draw_flg)
+		{
+			srvGpuHandle.ptr -= incrementSize;
+		}
+
+		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+		object3ds->DrawObject3d(commandList, vbViewT, ibViewT, _countof(indicesT), false);
 
 		//4.描画処理ここまで
 

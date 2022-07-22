@@ -63,22 +63,37 @@ void Object3ds::DrawObject3d(
 	ID3D12GraphicsCommandList* commandList,
 	D3D12_VERTEX_BUFFER_VIEW& vbView,
 	D3D12_INDEX_BUFFER_VIEW& ibView, 
-	UINT numIndices)
+	UINT numIndices,
+	bool a)
 {
-	//頂点バッファの設定
-	commandList->IASetVertexBuffers(0, 1, &vbView);
+	if (a)
+	{
+		//頂点バッファの設定
+		commandList->IASetVertexBuffers(0, 1, &vbView);
 
-	//インデックスバッファの設定
-	commandList->IASetIndexBuffer(&ibView);
+		//インデックスバッファの設定
+		commandList->IASetIndexBuffer(&ibView);
 
-	//定数バッファビューの設定コマンド
-	commandList->SetGraphicsRootConstantBufferView(2, this->constBuffTransform->GetGPUVirtualAddress());
+		//定数バッファビューの設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, this->constBuffTransform->GetGPUVirtualAddress());
 
-	//描画コマンド
-//	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
+		//描画コマンド
+		commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
+	}
+	else
+	{
+		//頂点バッファの設定
+		commandList->IASetVertexBuffers(0, 1, &vbView);
 
-	//三角形
-	commandList->DrawInstanced(numIndices, 1, 0, 0);
+		//インデックスバッファの設定
+		commandList->IASetIndexBuffer(&ibView);
+
+		//定数バッファビューの設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, this->constBuffTransform->GetGPUVirtualAddress());
+
+		//三角形
+		commandList->DrawInstanced(numIndices, 1, 0, 0);
+	}
 }
 
 //リセット
