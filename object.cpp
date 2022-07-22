@@ -75,7 +75,10 @@ void Object3ds::DrawObject3d(
 	commandList->SetGraphicsRootConstantBufferView(2, this->constBuffTransform->GetGPUVirtualAddress());
 
 	//描画コマンド
-	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
+//	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
+
+	//三角形
+	commandList->DrawInstanced(numIndices, 1, 0, 0);
 }
 
 //リセット
