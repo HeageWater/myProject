@@ -1142,13 +1142,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//‰¡‰ñ“]
-		if (key->KeepPushKey(DIK_D) || key->KeepPushKey(DIK_A))
+		if (key->Push(DIK_D) || key->Push(DIK_A))
 		{
-			if (key->KeepPushKey(DIK_D))
+			if (key->Push(DIK_D))
 			{
 				angle += XMConvertToRadians(1.0f);
 			}
-			else if (key->KeepPushKey(DIK_A))
+			else if (key->Push(DIK_A))
 			{
 				angle -= XMConvertToRadians(1.0f);
 			}
