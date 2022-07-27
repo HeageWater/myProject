@@ -155,34 +155,34 @@ void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
 }
 
 //デバックテキスト
-//class DebugText
-//{
-//private:
-//	//最大文字数
-//	static const int maxCharCount = 256;
-//	//画像の横幅
-//	static const int fontWidth = 17;
-//	//画像の縦幅
-//	static const int fontHight = 18;
-//	//1行の文字数
-//	static const int fonstLineCount = 14;
-//
-//	Sprite sprites[maxCharCount];
-//
-//	int spriteIndex = 0;
-//};
+class DebugText
+{
+private:
+	//最大文字数
+	static const int maxCharCount = 256;
+	//画像の横幅
+	static const int fontWidth = 17;
+	//画像の縦幅
+	static const int fontHight = 18;
+	//1行の文字数
+	static const int fonstLineCount = 14;
+
+	//Sprite sprites[maxCharCount];
+
+	int spriteIndex = 0;
+};
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	//初期化
-#ifdef _DEBUG
-	//デバッグレイヤーをオンに
-	ID3D12Debug* debugController;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-	{
-		debugController->EnableDebugLayer();
-	}
-#endif
+//#ifdef _DEBUG
+//	//デバッグレイヤーをオンに
+//	ComPtr<ID3D12Debug1> debugController;
+//	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+//	{
+//		debugController->EnableDebugLayer();
+//		debugController->SetEnableGPUBasedValidation(TRUE);
+//	}
+//#endif
 
 	//3Dオブジェクトの数
 	const size_t kObjectCount = 1;
@@ -233,11 +233,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Port* port = new Port(window->window_width,window->window_height);
 
+	//初期化
 
 	//DXGIファクトリーの作成
 	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
 	assert(SUCCEEDED(result));
-
 
 	//アダプターの列挙用
 	std::vector<IDXGIAdapter4*> adapters;
@@ -387,6 +387,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT64 fenceVal = 0;
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+
+#ifdef _DEBUG
+	ComPtr<ID3D12InfoQueue> infoQueue;
+	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	{
+		//ヤバイとき止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+		//エラー時に止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+		infoQueue->Release();
+
+		//抑制するエラー
+		D3D12_MESSAGE_ID denyIds[] = {
+		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
+
+		//抑制する表示レベル
+		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+		D3D12_INFO_QUEUE_FILTER filter{};
+		filter.DenyList.NumIDs = _countof(denyIds);
+		filter.DenyList.pIDList = denyIds;
+		filter.DenyList.NumSeverities = _countof(severities);
+		filter.DenyList.pSeverityList = severities;
+
+		//指定したエラーの表示を抑制する
+		infoQueue->PushStorageFilter(&filter);
+	}
+#endif
+
 
 	//DirectInputの初期化
 	IDirectInput8* directInput = nullptr;
@@ -1202,16 +1230,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	device->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
 	//サウンド設定
-	ComPtr<IXAudio2> xAudio2;
-	IXAudio2MasteringVoice* masterVoice;
+	//ComPtr<IXAudio2> xAudio2;
+	//IXAudio2MasteringVoice* masterVoice;
 
-	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+	//result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 
-	result = xAudio2->CreateMasteringVoice(&masterVoice);
+	//result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
+	//SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
 
-	SoundPlayWave(xAudio2.Get(), soundData1);
+	//SoundPlayWave(xAudio2.Get(), soundData1);
 	//ここまで
 
 	//描画初期化処理ここまで
@@ -1405,8 +1433,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete object3ds;
 	delete port;
 
-	xAudio2.Reset();
-	SoundunLoad(&soundData1);
+	//xAudio2.Reset();
+	//SoundunLoad(&soundData1);
 
 	return 0;
 }
