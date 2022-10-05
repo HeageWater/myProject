@@ -27,10 +27,10 @@ public:
 	BYTE oldkey[256] = {};
 
 	//インスタンス
-	Key();
 	Key(WNDCLASSEX a, HWND hw);
 	~Key();
-
+	//初期化
+	void Initialize(WNDCLASSEX a, HWND hw);
 	//更新
 	void Update();
 	//押した時

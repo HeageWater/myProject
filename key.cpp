@@ -25,6 +25,27 @@ Key::~Key()
 {
 }
 
+//初期化
+void Key::Initialize(WNDCLASSEX a, HWND hw) {
+	result = DirectInput8Create(
+		a.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		(void**)&directInput, nullptr);
+	assert(SUCCEEDED(result));
+
+	result = directInput->CreateDevice(GUID_SysKeyboard,
+		&keyboard, NULL);
+
+	//入力データ形式のセット
+	//標準形式
+	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+	assert(SUCCEEDED(result));
+
+	//排他制御レベルのセット
+	result = keyboard->SetCooperativeLevel(
+		hw, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	assert(SUCCEEDED(result));
+}
+
 //更新
 void Key::Update()
 {

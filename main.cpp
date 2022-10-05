@@ -203,6 +203,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool draw_flg = false;
 
 	//windowAPI初期化処理ここから
+	//std::unique_ptr<WindowApi> window;
+	//window->Initialize();
 
 	WindowApi* window = new WindowApi();
 	//ComPtr<WindowApi> api;
@@ -223,6 +225,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12DescriptorHeap* rtvHeap = nullptr;
 
 	//宣言
+	//std::unique_ptr<Key> key;
+	//key->Initialize(window->w, window->hwnd);
 	Key* key = new Key(window->w, window->hwnd);
 
 	ID3D12Resource* constBuffTransform0 = nullptr;
@@ -1230,16 +1234,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	device->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
 	//サウンド設定
-	//ComPtr<IXAudio2> xAudio2;
-	//IXAudio2MasteringVoice* masterVoice;
+	ComPtr<IXAudio2> xAudio2;
+	IXAudio2MasteringVoice* masterVoice;
 
-	//result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 
-	//result = xAudio2->CreateMasteringVoice(&masterVoice);
+	result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	//SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
+	SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
 
-	//SoundPlayWave(xAudio2.Get(), soundData1);
+	SoundPlayWave(xAudio2.Get(), soundData1);
 	//ここまで
 
 	//描画初期化処理ここまで
@@ -1428,8 +1432,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UnregisterClass(window->w.lpszClassName, window->w.hInstance);
 
 	//元データ解放
-	delete key;
-	delete window;
+	//delete key;
+	//delete window;
 	delete object3ds;
 	delete port;
 

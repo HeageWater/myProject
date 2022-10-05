@@ -7,14 +7,16 @@ public:
 	//インスタンス
 	WindowApi();
 
+	void Initialize();
+
 	WNDCLASSEX w{};
 
 	//ウィンドウサイズ
-	const int window_width = 1280;
-	const int window_height = 720;
-
+	static const int window_width = 1280;
+	static const int window_height = 720;
+	 
 	//ウィンドウサイズ{x,y,横幅,縦幅}
 	RECT wrc = { 0,0,window_width,window_height };
 
-	HWND hwnd;
+	HWND hwnd = nullptr;
 };
