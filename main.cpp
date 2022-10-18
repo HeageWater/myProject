@@ -20,6 +20,7 @@ void a()
 #include "key.h"
 #include "WindowApi.h"
 #include "viewport.h"
+#include "Sound.h"
 
 #include <wrl.h>
 
@@ -31,128 +32,128 @@ using namespace Microsoft::WRL;
 
 #include <fstream>
 
-struct ChunkHeader
-{
-	char id[4];
-	int32_t size;
-};
-
-struct RiffHeader
-{
-	ChunkHeader chunk;
-	char type[4];
-};
-
-struct FormatChunk
-{
-	ChunkHeader chunk;
-	WAVEFORMATEX fmt;
-};
-
-struct SoundData
-{
-	//波形フォーマット
-	WAVEFORMATEX wfex;
-	//バッファの先頭アドレス
-	BYTE* pBuffer;
-	//バッファのサイズ
-	unsigned int  bufferSize;
-};
-
-//サウンド読み込み
-SoundData SoundLoadWave(const char* filename)
-{
-	HRESULT result;
-
-	//ファイルオープン
-	std::ifstream file;
-	file.open(filename, std::ios_base::binary);
-	assert(file.is_open());
-
-	//データ読み込み(wav)
-	RiffHeader riff;
-	file.read((char*)&riff, sizeof(riff));
-
-	if (strncmp(riff.chunk.id,"RIFF",4) != 0)
-	{
-		assert(0);
-	}
-
-	if (strncmp(riff.type, "WAVE", 4) != 0)
-	{
-		assert(0);
-	}
-	
-	FormatChunk format = {};
-
-	file.read((char*)&format, sizeof(ChunkHeader));
-
-	/*if (strncmp(format.chunk.id, "fmt", 4) != 0)
-	{
-		assert(0);
-	}*/
-
-	assert(format.chunk.size <= sizeof(format.fmt));
-
-	file.read((char*)&format.fmt, format.chunk.size);
-
-	ChunkHeader data;
-
-	file.read((char*)&data, sizeof(data));
-
-	if (strncmp(data.id, "JUNK", 4) == 0)
-	{
-		file.seekg(data.size, std::ios_base::cur);
-		file.read((char*)&data, sizeof(data));
-	}
-
-	if (strncmp(data.id, "data", 4) != 0)
-	{
-		assert(0);
-	}
-
-	char* pBuffer = new char[data.size];
-	file.read(pBuffer, data.size);
-
-	//ファイルクローズ
-	file.close();
-
-	//データをreturn
-	SoundData soundData = {};
-
-	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	soundData.bufferSize = data.size;
-
-	return soundData;
-}
-
-//サウンド削除
-void SoundunLoad(SoundData* soundData)
-{
-	delete[] soundData->pBuffer;
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
-}
-
-//サウンド再生
-void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
-{
-	HRESULT result;
-
-	IXAudio2SourceVoice* pSouceVoice = nullptr;
-	result = xaudio2->CreateSourceVoice(&pSouceVoice, &soundData.wfex);
-	assert(SUCCEEDED(result));
-	
-	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData.pBuffer;
-	buf.AudioBytes = soundData.bufferSize;
-	buf.Flags = XAUDIO2_END_OF_STREAM;
-
-	result = pSouceVoice->SubmitSourceBuffer(&buf);
-	result = pSouceVoice->Start();
-}
+//struct ChunkHeader
+//{
+//	char id[4];
+//	int32_t size;
+//};
+//
+//struct RiffHeader
+//{
+//	ChunkHeader chunk;
+//	char type[4];
+//};
+//
+//struct FormatChunk
+//{
+//	ChunkHeader chunk;
+//	WAVEFORMATEX fmt;
+//};
+//
+//struct SoundData
+//{
+//	//波形フォーマット
+//	WAVEFORMATEX wfex;
+//	//バッファの先頭アドレス
+//	BYTE* pBuffer;
+//	//バッファのサイズ
+//	unsigned int  bufferSize;
+//};
+//
+////サウンド読み込み
+//SoundData SoundLoadWave(const char* filename)
+//{
+//	HRESULT result;
+//
+//	//ファイルオープン
+//	std::ifstream file;
+//	file.open(filename, std::ios_base::binary);
+//	assert(file.is_open());
+//
+//	//データ読み込み(wav)
+//	RiffHeader riff;
+//	file.read((char*)&riff, sizeof(riff));
+//
+//	if (strncmp(riff.chunk.id,"RIFF",4) != 0)
+//	{
+//		assert(0);
+//	}
+//
+//	if (strncmp(riff.type, "WAVE", 4) != 0)
+//	{
+//		assert(0);
+//	}
+//	
+//	FormatChunk format = {};
+//
+//	file.read((char*)&format, sizeof(ChunkHeader));
+//
+//	/*if (strncmp(format.chunk.id, "fmt", 4) != 0)
+//	{
+//		assert(0);
+//	}*/
+//
+//	assert(format.chunk.size <= sizeof(format.fmt));
+//
+//	file.read((char*)&format.fmt, format.chunk.size);
+//
+//	ChunkHeader data;
+//
+//	file.read((char*)&data, sizeof(data));
+//
+//	if (strncmp(data.id, "JUNK", 4) == 0)
+//	{
+//		file.seekg(data.size, std::ios_base::cur);
+//		file.read((char*)&data, sizeof(data));
+//	}
+//
+//	if (strncmp(data.id, "data", 4) != 0)
+//	{
+//		assert(0);
+//	}
+//
+//	char* pBuffer = new char[data.size];
+//	file.read(pBuffer, data.size);
+//
+//	//ファイルクローズ
+//	file.close();
+//
+//	//データをreturn
+//	SoundData soundData = {};
+//
+//	soundData.wfex = format.fmt;
+//	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
+//	soundData.bufferSize = data.size;
+//
+//	return soundData;
+//}
+//
+////サウンド削除
+//void SoundunLoad(SoundData* soundData)
+//{
+//	delete[] soundData->pBuffer;
+//	soundData->pBuffer = 0;
+//	soundData->bufferSize = 0;
+//	soundData->wfex = {};
+//}
+//
+////サウンド再生
+//void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
+//{
+//	HRESULT result;
+//
+//	IXAudio2SourceVoice* pSouceVoice = nullptr;
+//	result = xaudio2->CreateSourceVoice(&pSouceVoice, &soundData.wfex);
+//	assert(SUCCEEDED(result));
+//	
+//	XAUDIO2_BUFFER buf{};
+//	buf.pAudioData = soundData.pBuffer;
+//	buf.AudioBytes = soundData.bufferSize;
+//	buf.Flags = XAUDIO2_END_OF_STREAM;
+//
+//	result = pSouceVoice->SubmitSourceBuffer(&buf);
+//	result = pSouceVoice->Start();
+//}
 
 //デバックテキスト
 class DebugText
@@ -213,7 +214,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//directx初期化処理ここから
 
-	MSG msg{};
+	
 
 	HRESULT result;
 	ID3D12Device* device = nullptr;
@@ -226,7 +227,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//宣言
 	//std::unique_ptr<Key> key;
-	//key->Initialize(window->w, window->hwnd);
 	Key* key = new Key(window->w, window->hwnd);
 
 	ID3D12Resource* constBuffTransform0 = nullptr;
@@ -235,7 +235,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
 
-	Port* port = new Port(window->window_width,window->window_height);
+	Port* port = new Port(window_width,window_height);
 
 	//初期化
 
@@ -418,29 +418,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		infoQueue->PushStorageFilter(&filter);
 	}
 #endif
-
-
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		window->w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
-
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard,
-		&keyboard, NULL);
-
-	//入力データ形式のセット
-	//標準形式
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
-		window->hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
 
 	//DirectX初期化処理ここまで
 
@@ -777,8 +754,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResouceDesc{};
 	depthResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResouceDesc.Width = window->window_width;
-	depthResouceDesc.Height = window->window_height;
+	depthResouceDesc.Width = window_width;
+	depthResouceDesc.Height = window_height;
 	depthResouceDesc.DepthOrArraySize = 1;
 	depthResouceDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	depthResouceDesc.SampleDesc.Count = 1;
@@ -1169,7 +1146,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//射影変換行列
 		matProjection = XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),
-			(float)window->window_width / window->window_height,
+			(float)window_width / window_height,
 			0.1f, 1000.0f);
 	}
 
@@ -1233,17 +1210,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
-	//サウンド設定
-	ComPtr<IXAudio2> xAudio2;
-	IXAudio2MasteringVoice* masterVoice;
+	////サウンド設定
+	//ComPtr<IXAudio2> xAudio2;
+	//IXAudio2MasteringVoice* masterVoice;
 
-	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+	//result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 
-	result = xAudio2->CreateMasteringVoice(&masterVoice);
+	//result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
+	//SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
 
-	SoundPlayWave(xAudio2.Get(), soundData1);
+	//SoundPlayWave(xAudio2.Get(), soundData1);
+	
 	//ここまで
 
 	//描画初期化処理ここまで
@@ -1257,15 +1235,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		key->Update();
 
 		//ウィンドウメッセージ処理
-
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
+		window->MsgMessege();
 
 		//xボタンで終了メッセージが来たらゲームループを抜ける
-		if (msg.message == WM_QUIT)
+		if (window->breakLoop())
 		{
 			break;
 		}
@@ -1299,13 +1272,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
-
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-
-		//全キーの入力状態を保存する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
 
 		//毎フレーム処理ここまで
 
@@ -1427,16 +1393,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	//windowAPI後始末
-
-	//ウィンドウクラスを登録解除
-	UnregisterClass(window->w.lpszClassName, window->w.hInstance);
+	delete window;
 
 	//元データ解放
 	//delete key;
-	//delete window;
 	delete object3ds;
 	delete port;
-
 	//xAudio2.Reset();
 	//SoundunLoad(&soundData1);
 

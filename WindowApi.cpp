@@ -27,7 +27,7 @@ WindowApi::WindowApi()
 	//自動でサイズを補正する
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
-	 hwnd = CreateWindow(w.lpszClassName, //クラス名
+	hwnd = CreateWindow(w.lpszClassName, //クラス名
 		L"DirectXGame",						  //タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,				  //標準的なウィンドウスタイル
 		CW_USEDEFAULT,						  //表示x座標(OSに任せる)
@@ -43,33 +43,26 @@ WindowApi::WindowApi()
 	ShowWindow(hwnd, SW_SHOW);
 }
 
-void WindowApi::Initialize() {
+WindowApi::~WindowApi() {
+	//ウィンドウクラスを登録解除
+	UnregisterClass(w.lpszClassName, w.hInstance);
+}
 
-	//ウィンドウクラスの設定
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc;
-	w.lpszClassName = L"DirectXGame";
-	w.hInstance = GetModuleHandle(nullptr);
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);
+//ループ抜ける
+bool WindowApi::breakLoop() {
+	//xボタンで終了メッセージが来たらゲームループを抜ける
+	if (msg.message == WM_QUIT)
+	{
+		return true;
+	}
+	return false;
+}
 
-	//ウィンドウクラスをOSに登録する
-	RegisterClassEx(&w);
-
-	//自動でサイズを補正する
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-
-	hwnd = CreateWindow(w.lpszClassName, //クラス名
-		L"DirectXGame",						  //タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,				  //標準的なウィンドウスタイル
-		CW_USEDEFAULT,						  //表示x座標(OSに任せる)
-		CW_USEDEFAULT,						  //表示y座標(OSに任せる)
-		wrc.right - wrc.left,				  //ウィンドウ横幅
-		wrc.bottom - wrc.top,				  //ウィンドウ縦幅
-		nullptr,							  //親ウィンドウハンドル
-		nullptr,							  //メニューハンドル
-		w.hInstance,						  //呼び出しアプリケーション
-		nullptr);							  //オプション
-
-	//ウィンドウを表示状態にする
-	ShowWindow(hwnd, SW_SHOW);
+//ウィンドウメッセージ処理
+void WindowApi::MsgMessege() {
+	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 }
