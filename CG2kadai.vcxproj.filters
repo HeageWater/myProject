@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\Re">
+      <UniqueIdentifier>{af8328ba-0c7f-47cd-ac7f-f16943821f39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Re">
+      <UniqueIdentifier>{1d4d485b-bfeb-4316-8847-1ce693f89451}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,15 +30,6 @@
     <ClCompile Include="WindowApi.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="viewport.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Vector3.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -42,10 +39,82 @@
     <ClCompile Include="Sound.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Re\ConstBuff.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\DirectX.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\GPipeline.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Input.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Matrix.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Model.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\MyDebugCamera.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\MyMath.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Object2D.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Object3D.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\ObjFile.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Player.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\ScissorRect.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Shader.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Square.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\TextureData.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Vector2D.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Vector3D.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Vector4D.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\VertBuff.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\ViewPort.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Re\Window.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl" />
     <FxCompile Include="BasicVS.hlsl" />
+    <FxCompile Include="PShader.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="VShader.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="key.h">
@@ -57,18 +126,6 @@
     <ClInclude Include="function.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="WindowApi.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="viewport.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Vector3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -77,6 +134,75 @@
     </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowApi.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Window.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\ViewPort.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\VertBuff.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Vector4D.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Vector3D.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Vector2D.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\TextureData.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Square.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Shader.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\ScissorRect.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Player.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\ObjFile.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Object3D.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Object2D.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\MyMath.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\MyDebugCamera.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Model.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Matrix.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Input.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\GPipeline.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\DirectX.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\ConstBuff.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

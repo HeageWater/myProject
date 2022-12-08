@@ -143,12 +143,31 @@
   <ItemGroup>
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="object.cpp" />
+    <ClCompile Include="Re\ConstBuff.cpp" />
+    <ClCompile Include="Re\DirectX.cpp" />
+    <ClCompile Include="Re\GPipeline.cpp" />
+    <ClCompile Include="Re\Input.cpp" />
+    <ClCompile Include="Re\Matrix.cpp" />
+    <ClCompile Include="Re\Model.cpp" />
+    <ClCompile Include="Re\MyDebugCamera.cpp" />
+    <ClCompile Include="Re\MyMath.cpp" />
+    <ClCompile Include="Re\Object2D.cpp" />
+    <ClCompile Include="Re\Object3D.cpp" />
+    <ClCompile Include="Re\ObjFile.cpp" />
+    <ClCompile Include="Re\Player.cpp" />
+    <ClCompile Include="Re\ScissorRect.cpp" />
+    <ClCompile Include="Re\Shader.cpp" />
+    <ClCompile Include="Re\Square.cpp" />
+    <ClCompile Include="Re\TextureData.cpp" />
+    <ClCompile Include="Re\Vector2D.cpp" />
+    <ClCompile Include="Re\Vector3D.cpp" />
+    <ClCompile Include="Re\Vector4D.cpp" />
+    <ClCompile Include="Re\VertBuff.cpp" />
+    <ClCompile Include="Re\ViewPort.cpp" />
+    <ClCompile Include="Re\Window.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="viewport.cpp" />
     <ClCompile Include="WindowApi.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,17 +183,42 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="PShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="VShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Definition.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="key.h" />
-    <ClInclude Include="object.h" />
+    <ClInclude Include="Re\ConstBuff.h" />
+    <ClInclude Include="Re\DirectX.h" />
+    <ClInclude Include="Re\GPipeline.h" />
+    <ClInclude Include="Re\Input.h" />
+    <ClInclude Include="Re\Matrix.h" />
+    <ClInclude Include="Re\Model.h" />
+    <ClInclude Include="Re\MyDebugCamera.h" />
+    <ClInclude Include="Re\MyMath.h" />
+    <ClInclude Include="Re\Object2D.h" />
+    <ClInclude Include="Re\Object3D.h" />
+    <ClInclude Include="Re\ObjFile.h" />
+    <ClInclude Include="Re\Player.h" />
+    <ClInclude Include="Re\ScissorRect.h" />
+    <ClInclude Include="Re\Shader.h" />
+    <ClInclude Include="Re\Square.h" />
+    <ClInclude Include="Re\TextureData.h" />
+    <ClInclude Include="Re\Vector2D.h" />
+    <ClInclude Include="Re\Vector3D.h" />
+    <ClInclude Include="Re\Vector4D.h" />
+    <ClInclude Include="Re\VertBuff.h" />
+    <ClInclude Include="Re\ViewPort.h" />
+    <ClInclude Include="Re\Window.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="viewport.h" />
     <ClInclude Include="WindowApi.h" />
   </ItemGroup>
   <ItemGroup>
