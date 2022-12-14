@@ -203,11 +203,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool draw_flg = false;
 
 	//windowAPI初期化処理ここから
-	//std::unique_ptr<WindowApi> window;
-	//window->Initialize();
 
 	WindowApi* window = new WindowApi();
-	//ComPtr<WindowApi> api;
 
 	//windowAPI初期化処理ここまで
 
@@ -225,9 +222,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12DescriptorHeap* rtvHeap = nullptr;
 
 	//宣言
-	//std::unique_ptr<Key> key;
-	//key->Initialize(window->w, window->hwnd);
-	Key* key = new Key(window->w, window->hwnd);
+	Key* key = new Key(window->GetHInstance(), window->GetHwnd());
+	key->Initialize(window);
 
 	ID3D12Resource* constBuffTransform0 = nullptr;
 	ConstBufferDataTransform* constMapTransform0 = nullptr;
@@ -343,7 +339,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//スワップチェーンの生成	
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue, window->hwnd, &swapChainDesc, nullptr, nullptr,
+		commandQueue, window->GetHwnd() , &swapChainDesc, nullptr, nullptr,
 		(IDXGISwapChain1**)&swapChain);
 	assert(SUCCEEDED(result));
 
@@ -418,29 +414,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		infoQueue->PushStorageFilter(&filter);
 	}
 #endif
-
-
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		window->w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
-
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard,
-		&keyboard, NULL);
-
-	//入力データ形式のセット
-	//標準形式
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
-		window->hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
 
 	//DirectX初期化処理ここまで
 
@@ -777,8 +750,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResouceDesc{};
 	depthResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResouceDesc.Width = window->window_width;
-	depthResouceDesc.Height = window->window_height;
+	depthResouceDesc.Width = WindowApi::window_width;
+	depthResouceDesc.Height = WindowApi::window_height;
 	depthResouceDesc.DepthOrArraySize = 1;
 	depthResouceDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	depthResouceDesc.SampleDesc.Count = 1;
@@ -1256,16 +1229,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//キー入力更新
 		key->Update();
 
-		//ウィンドウメッセージ処理
-
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		//xボタンで終了メッセージが来たらゲームループを抜ける
-		if (msg.message == WM_QUIT)
+		//windowsのメッセージ処理
+		if (window->ProcessMessege())
 		{
 			break;
 		}
@@ -1300,13 +1265,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
 
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-
-		//全キーの入力状態を保存する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
-
+		
 		//毎フレーム処理ここまで
 
 		//バックバッファの番号を取得(0番と1番)
@@ -1429,11 +1388,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//windowAPI後始末
 
 	//ウィンドウクラスを登録解除
-	UnregisterClass(window->w.lpszClassName, window->w.hInstance);
+	window->Finalize();
 
 	//元データ解放
-	//delete key;
-	//delete window;
+	delete key;
+	delete window;
 	delete object3ds;
 	delete port;
 

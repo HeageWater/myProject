@@ -7,15 +7,18 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
+#include "WindowApi.h"
+
 class Key
 {
 private:
-
 	//キーボードデバイスの生成
 	IDirectInputDevice8* keyboard = nullptr;
 
 	//DirectInputの初期化
 	IDirectInput8* directInput = nullptr;
+
+	WindowApi* winapi = nullptr;
 
 public:
 
@@ -27,10 +30,10 @@ public:
 	BYTE oldkey[256] = {};
 
 	//インスタンス
-	Key(WNDCLASSEX a, HWND hw);
+	Key(HINSTANCE a, HWND hw);
 	~Key();
 	//初期化
-	void Initialize(WNDCLASSEX a, HWND hw);
+	void Initialize(WindowApi* winapi);
 	//更新
 	void Update();
 	//押した時

@@ -1,9 +1,9 @@
 #include "key.h"
 
-Key::Key(WNDCLASSEX a, HWND hw)
+Key::Key(HINSTANCE a, HWND hw)
 {
 	result = DirectInput8Create(
-		a.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		a, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
@@ -26,9 +26,12 @@ Key::~Key()
 }
 
 //初期化
-void Key::Initialize(WNDCLASSEX a, HWND hw) {
+void Key::Initialize(WindowApi* winapi) {
+
+	this->winapi = winapi;
+
 	result = DirectInput8Create(
-		a.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		winapi->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
@@ -42,7 +45,7 @@ void Key::Initialize(WNDCLASSEX a, HWND hw) {
 
 	//排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
-		hw, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		winapi->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 }
 
