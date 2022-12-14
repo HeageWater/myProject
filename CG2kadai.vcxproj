@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Definition.h" />
+    <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="object.h" />

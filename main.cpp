@@ -2,16 +2,9 @@ void a()
 {
 //#include <DirectXMath.h>
 //#include <DirectXTex.h>
-//#include <d3d12.h>
-//#include <dxgi1_6.h>
-//#include <vector>
 //#include <string>
 ////#include "Definition.h"
 //using namespace DirectX;
-//
-//#pragma comment(lib,"d3d12.lib")
-//#pragma comment(lib,"dxgi.lib")
-//
 //#include <d3dcompiler.h>
 //#pragma comment(lib,"d3dcompiler.lib")
 }
@@ -20,10 +13,7 @@ void a()
 #include "key.h"
 #include "WindowApi.h"
 #include "viewport.h"
-
-#include <wrl.h>
-
-using namespace Microsoft::WRL;
+#include "DirectXCommon.h"
 
 #include <xaudio2.h>
 
@@ -233,6 +223,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Port* port = new Port(window->window_width,window->window_height);
 
+	DirectXCommon* dxCommon = nullptr;
+
+	dxCommon = new DirectXCommon();
+	dxCommon->Initialize();
 	//初期化
 
 	//DXGIファクトリーの作成
@@ -1395,6 +1389,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete window;
 	delete object3ds;
 	delete port;
+	delete dxCommon;
 
 	//xAudio2.Reset();
 	//SoundunLoad(&soundData1);
