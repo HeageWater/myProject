@@ -68,7 +68,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen.MatUpdate(matView.mat, orthoProjection);
 
-		box.mat.rotAngle.x +=  0.1f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
+		//‚±‚±‚Ü‚Å
+
+		box.mat.trans.x += 1.0f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
+		//box.mat.rotAngle.x +=  0.1f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
 
 		box2.mat.rotAngle.x += 0.1f * (input->GetKey(DIK_W) - input->GetKey(DIK_S));
 
@@ -79,6 +82,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		dx->PrevDrawScreen();
 
 		// •`‰æƒRƒ}ƒ“ƒh
+
 		box.Draw(texA);
 		box2.Draw(white);
 
