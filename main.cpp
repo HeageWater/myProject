@@ -17,8 +17,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<Window> win(new Window());
 
 	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
-	int white = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	//int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
+	int texA = dx->LoadTextureGraph(L"Resources/maru/maru.png");
+	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 0.0f, 900.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
@@ -41,13 +41,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//Initialize
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
-	Object3D obj(dx.get(), pipeline.get(), shader);
-	Model box(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
+	Model box(dx.get(), shader, "Resources\\maru\\maru.obj", pipeline.get());
+	Model box2(dx.get(), shader, "Resources\\rasu\\rasu.obj", pipeline.get());
 
-	obj.mat.trans = { 0,0,0 };
-	obj.mat.scale = { 10,10,10 };
-	obj.mat.rotAngle = { 0,0,0 };
-	obj.MatUpdate(debugcamera.mat, matProjection);
+	box.mat.trans = { -50,0,-700 };
+	box.mat.scale = { 30,30,30 };
+	box.mat.rotAngle = { 0,0,0 };
+	box.MatUpdate(debugcamera.mat, matProjection);
+
+	box2.mat.trans = { 50,0,-700 };
+	box2.mat.scale = { 30,30,30 };
+	box2.mat.rotAngle = { 0,0,0 };
+	box2.MatUpdate(debugcamera.mat, matProjection);
 
 	//	ゲームループ
 	while (true)
@@ -63,20 +68,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen.MatUpdate(matView.mat, orthoProjection);
 
-		obj.mat.trans = debugcamera.target;
+		box.mat.rotAngle.x +=  0.1f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
 
-		obj.mat.scale.x += input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
-		obj.mat.scale.y += input->GetKey(DIK_UP) - input->GetKey(DIK_DOWN);
+		box2.mat.rotAngle.x += 0.1f * (input->GetKey(DIK_W) - input->GetKey(DIK_S));
 
-		obj.mat.rotAngle.y += 0.01;
-
-		obj.MatUpdate(debugcamera.mat, matProjection);
+		box.MatUpdate(debugcamera.mat, matProjection);
+		box2.MatUpdate(debugcamera.mat, matProjection);
 
 		//Draw
 		dx->PrevDrawScreen();
 
 		// 描画コマンド
-		obj.Draw(white);
+		box.Draw(texA);
+		box2.Draw(white);
 
 		dx->PostDrawScreen();
 
