@@ -9,7 +9,7 @@ MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyDebugCamera::Update(Input& input)
 {
-	prevCursor = cursor;
+	/*prevCursor = cursor;
 	input.CursorPos(cursor);
 	moveCursor = cursor - prevCursor;
 	float cursorDisPrev = moveCursor.length();
@@ -62,7 +62,7 @@ void MyDebugCamera::Update(Input& input)
 	up.y = cosf(angle.y);
 	eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
 	eye.y = target.y + disEyeTarget * sinf(angle.y);
-	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
+	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);*/
 	MatUpdate();
 }
 

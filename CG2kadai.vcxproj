@@ -143,7 +143,9 @@
   <ItemGroup>
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Re\ConstBuff.cpp" />
+    <ClCompile Include="Re\Controller.cpp" />
     <ClCompile Include="Re\DirectX.cpp" />
     <ClCompile Include="Re\GPipeline.cpp" />
     <ClCompile Include="Re\Input.cpp" />
@@ -166,6 +168,7 @@
     <ClCompile Include="Re\ViewPort.cpp" />
     <ClCompile Include="Re\Window.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WindowApi.cpp" />
@@ -196,7 +199,9 @@
     <ClInclude Include="Definition.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="key.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Re\ConstBuff.h" />
+    <ClInclude Include="Re\Controller.h" />
     <ClInclude Include="Re\DirectX.h" />
     <ClInclude Include="Re\GPipeline.h" />
     <ClInclude Include="Re\Input.h" />
@@ -219,6 +224,7 @@
     <ClInclude Include="Re\ViewPort.h" />
     <ClInclude Include="Re\Window.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="WindowApi.h" />

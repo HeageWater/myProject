@@ -105,6 +105,15 @@
     <ClCompile Include="Re\Window.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
+    <ClCompile Include="Re\Controller.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl" />
@@ -203,6 +212,15 @@
     </ClInclude>
     <ClInclude Include="Re\ConstBuff.h">
       <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Re\Controller.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
