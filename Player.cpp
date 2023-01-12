@@ -16,6 +16,8 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	attackModel.Initialize(dx_, shader, "Resources\\rasu\\rasu.obj", pipeline_);
 	controller = Controller::GetInstance();
 
+	attackModel.mat.scale = {5,5,5};
+
 	jumpFlag = false;
 	jumpPower = 0;
 	GravityPower = 0;
@@ -47,7 +49,7 @@ void Player::Update(Matrix matView, Matrix matProjection)
 	move.normalize();
 
 	if (move.x > 0.8f || move.x < -0.8f) {
-		player.mat.trans.x += 0.1f * move.x;
+		player.mat.trans.x -= 0.1f * move.x;
 	}
 	else {
 		move.x = 0;
@@ -58,18 +60,18 @@ void Player::Update(Matrix matView, Matrix matProjection)
 	float Teihen = 2.0f;
 	float Top = 9.0f;
 
-	player.mat.trans.x = max(player.mat.trans.x, -Top + 2.0f + player.mat.scale.x);
-	player.mat.trans.x = min(player.mat.trans.x, Top - player.mat.scale.x);
+	//player.mat.trans.x = max(player.mat.trans.x, -Top + 2.0f + player.mat.scale.x);
+	//player.mat.trans.x = min(player.mat.trans.x, Top - player.mat.scale.x);
 
-	player.mat.trans.y = max(player.mat.trans.y, Teihen);
-	player.mat.trans.y = min(player.mat.trans.y, Top);
+	//player.mat.trans.y = max(player.mat.trans.y, Teihen);
+	//player.mat.trans.y = min(player.mat.trans.y, Top);
 
 	attackRange = controller->GetRightStickVec();
 	attackRange.normalize();
 
 	//if (controller->StickInDeadZone(attackRange, Vector2D(0.9f, 0.9f))) {
-	attackModel.mat.trans.x = (5 * attackRange.x) + player.mat.trans.x;
-	attackModel.mat.trans.y = (5 * attackRange.y) + player.mat.trans.y;
+	attackModel.mat.trans.x = (15 * attackRange.x) + player.mat.trans.x;
+	attackModel.mat.trans.y = (15 * attackRange.y) + player.mat.trans.y;
 	/*}
 	else {
 		attackModel.mat.trans.x = 0;

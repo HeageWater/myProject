@@ -15,23 +15,31 @@ Stage::~Stage()
 
 void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	for (int i = 0; i < 20; i++)
+	int Left = 40;
+	int Up = 43;
+
+	//ƒXƒe[ƒW‚ÌáŠQ•¨‚Ì”
+	for (int i = 0; i < 10; i++)
 	{
-		//‰¼‰«‚Ì’†g‚ðì‚é
-		Model* newmodel = new Model();
+		for (int j = 0; j < 30; j++)
+		{
+			if (map[i][j] != Blank) {
+				//‰¼‰«‚Ì’†g‚ðì‚é
+				Model* newmodel = new Model();
+				
+				float size = 10;
 
-		newmodel->Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+				newmodel->Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 
-		newmodel->mat.scale = { 1,1,1 };
+				newmodel->mat.trans = { -(size * j) + Left,-(size * i) + Up, 0 };
 
-		newmodel->mat.trans.x = stage[i].y * stageSize - 10;
-		newmodel->mat.trans.y = stage[i].x * stageSize;
-		newmodel->mat.trans.z = 0;
+				newmodel->mat.scale = { 5,5,5, };
 
-		//Ši”[
-		model.push_back(newmodel);
+				//Ši”[
+				model.push_back(newmodel);
+			}
+		}
 	}
-
 
 	box3.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 }

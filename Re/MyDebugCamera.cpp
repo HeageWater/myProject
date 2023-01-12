@@ -56,13 +56,13 @@ void MyDebugCamera::Update(Input& input)
 	billboard.m[2][0] = frontVec.x;
 	billboard.m[2][1] = frontVec.y;
 	billboard.m[2][2] = frontVec.z;
-#pragma endregion
+#pragma endregion*/
 
 
-	up.y = cosf(angle.y);
-	eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
-	eye.y = target.y + disEyeTarget * sinf(angle.y);
-	eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);*/
+	//up.y = cosf(angle.y);
+	//eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
+	//eye.y = target.y + disEyeTarget * sinf(angle.y);
+	//eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
 	MatUpdate();
 }
 
