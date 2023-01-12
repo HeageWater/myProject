@@ -16,7 +16,8 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Timer.h"
-#include "RE//AudioManager.h"
+//#include "RE//AudioManager.h"
+//#include "Sound.h"
 
 enum Scene {
 	Title,
@@ -35,14 +36,14 @@ int GetRandomA(int min, int max)
 
 float Sheiku(int count) {
 	float sheiku;
-	int rand = GetRandomA(1, 5);
+	int rand = GetRandomA(1, 3);
 	if (count % 2 == 0)
 		rand = -rand;
 	sheiku = rand;
 	return sheiku;
 }
 
-bool BoxCollision(Vector2D player, Vector2D stage, float ab, float bc)
+bool c(Vector2D player, Vector2D stage, float ab, float bc)
 {
 	if (player.x - (ab) <= stage.x + (bc) &&
 		player.x + (ab) >= stage.x - (bc) &&
@@ -95,14 +96,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	numG[9] = dx->LoadTextureGraph(L"Resources/number/num9.png");
 
 	int bgPng = dx->LoadTextureGraph(L"Resources/title.png");
+	int plPng = dx->LoadTextureGraph(L"Resources/pless.png");
+	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
 
-	UINT BGM = 0;
+	//AudioManager* audioManager = nullptr;
+	//audioManager = audioManager->GetInstance();
 
-		//MBGM.mp3
+	//uint32_t BGM = audioManager->LoadAudio("Resources/sound/BGM.wav");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(),win->window_width,win->window_height));
+	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), win->window_width, win->window_height));
 
 	std::unique_ptr<Input> input(new Input(win.get()));
 
@@ -125,8 +129,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	title.obj.scale = { 640,320,0.2f };
 
 	Square pressText(dx.get(), uiPipeline.get(), bilShader);
-	pressText.obj.trans.y = -240;
-	pressText.obj.scale = { 160,90,0.2f };
+	pressText.obj.trans.y = -200;
+	pressText.obj.scale = { 120,120,0.2f };
+
 
 	Square scoreText(dx.get(), multipathPipeline.get(), bilShader);
 	scoreText.obj.trans.x = -360;
@@ -141,7 +146,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	bGround.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
 
 	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
-	bGround.MatUpdate(Matrix(), spriteProjection);
+	bGround.MatUpdate(Matrix(), spriteProjection, 0);
+	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 
 	Timer timer(dx.get(), uiPipeline.get(), &bilShader, numG);
 
@@ -180,19 +186,24 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	player.player.mat.scale = { 5,5,5 };
 	player.player.mat.rotAngle = { 0,0,0 };
 
-	Enemy enemy;
+	/*Enemy enemy;
 	enemy.Initialize(dx.get(), shader, pipeline.get());
 
 	enemy.enemy.mat.trans = { 5,0,0 };
 	enemy.enemy.mat.scale = { 5,5,5 };
-	enemy.enemy.mat.rotAngle = { 0,0,0 };
-
-	float scrroll = 0;
+	enemy.enemy.mat.rotAngle = { 0,0,0 };*/
 
 	int scene = Title;
 
 	int sheikuCount = 0;
 	bool sheikuFlag = false;
+
+	//audioManager->PlayWave(BGM,true);
+
+	std::vector<Enemy*> enemy;
+	int a = 0;
+	float r = 0;
+	int time = 0;
 
 	//	ゲームループ
 	while (true)
@@ -206,7 +217,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		debugcamera.Update(*input);
 
-		screen.MatUpdate(matView.mat, orthoProjection);
+		screen.MatUpdate(matView.mat, orthoProjection, 0);
 
 		//ここまで
 
@@ -226,9 +237,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				scene = Play;
 			}
 
+			r = sin(3.1415f * 2 / 240 * time);
+			bGround.obj.trans = { 0,r * 150,0 };
+
+			bGround.MatUpdate(Matrix(), spriteProjection, 0);
+
 			break;
 
 		case Play:
+
+			time++;
 
 			//ステージとプレイヤーの当たり判定
 		//if()
@@ -242,8 +260,29 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				player.player.mat.trans.y = min(player.player.mat.trans.y, stage.model[i]->mat.trans.y);
 			}
 		}*/
-			debugcamera.eye.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
-			debugcamera.target.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
+		//debugcamera.eye.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
+		//debugcamera.target.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
+
+			a = GetRandomA(1, 8);
+
+			if (enemy.size() < 3) {
+				if (a > 6) {
+					//仮沖の中身を作る
+					Enemy* newenemy = new Enemy();
+
+					float size = 10;
+
+					newenemy->Initialize(dx.get(), shader, pipeline.get());
+
+					newenemy->enemy.mat.trans = { 0,enemy.size() * size,0 };
+
+					newenemy->enemy.mat.scale = { 3,3,3 };
+
+					//格納
+					enemy.push_back(newenemy);
+				}
+			}
+
 
 			if (sheikuFlag == true) {
 				debugcamera.Move(Sheiku(sheikuCount));
@@ -259,16 +298,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			//debugcamera.MatUpdate();
 
-			box.mat.trans.x += 1.0f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
+			//box.mat.trans.x += 1.0f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
 			//box.mat.rotAngle.x +=  0.1f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
 
-			box2.mat.rotAngle.x += 0.1f * (input->GetKey(DIK_W) - input->GetKey(DIK_S));
+			//box2.mat.rotAngle.x += 0.1f * (input->GetKey(DIK_W) - input->GetKey(DIK_S));
 
-			box.MatUpdate(debugcamera.mat, matProjection);
-			box2.MatUpdate(debugcamera.mat, matProjection);
+			//box.MatUpdate(debugcamera.mat, matProjection);
+			//box2.MatUpdate(debugcamera.mat, matProjection);
 
 			player.Update(debugcamera.mat, matProjection);
-			enemy.Update(debugcamera.mat, matProjection);
+
+			for (int i = 0; i < enemy.size(); i++)
+			{
+				enemy[i]->Update(debugcamera.mat, matProjection);
+			}
+
 			stage.Update(debugcamera.mat, matProjection);
 
 			if (input->GetTrigger(DIK_SPACE)) {
@@ -325,34 +369,54 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		{
 
 		case Title:
-			box2.Draw(white);
+			//box2.Draw(white);
 
 			bGround.Draw(bgPng);
+
+			pressText.Draw(plPng);
 			break;
 
 		case Play:
-			stage.Draw(white);
+			stage.Draw(brPng);
 
-			if (CircleCollsionEnemy(Vector2D(player.attackModel.mat.trans.x, player.attackModel.mat.trans.y),
-				Vector2D(box.mat.trans.x, box.mat.trans.y),
-				player.attackModel.mat.scale.x,
-				box.mat.scale.x)) {
-				enemy.trans = player.attackModel.mat.trans - enemy.enemy.mat.trans;
-				enemy.trans.normalize();
-				enemy.hitF = true;
+			for (int i = 0; i < enemy.size(); i++)
+			{
+				/*if(BoxCollision(Vector2D(player.attackModel.mat.trans.x, player.attackModel.mat.trans.y),
+					Vector2D(enemy[i]->enemy.mat.trans.x, player.attackModel.mat.trans.y), ,
+					))*/
 
-				if (sheikuFlag == false) {
-					sheikuFlag = true;
-					sheikuCount = 10;
+				if (CircleCollsionEnemy(Vector2D(player.attackModel.mat.trans.x, player.attackModel.mat.trans.y),
+					Vector2D(enemy[i]->enemy.mat.trans.x, enemy[i]->enemy.mat.trans.y),
+					player.attackModel.mat.scale.x,
+					enemy[i]->enemy.mat.scale.x)) {
+
+					if (enemy[i]->hitF != true) {
+						enemy[i]->trans = player.attackModel.mat.trans - enemy[i]->enemy.mat.trans;
+						enemy[i]->trans.normalize();
+						enemy[i]->hitF = true;
+
+						if (sheikuFlag == false) {
+							sheikuFlag = true;
+							sheikuCount = 10;
+						}
+					}
 				}
-			}
-			else {
-
-				box.Draw(texA);
 			}
 
 			player.Draw(texP);
-			enemy.Draw(texP, debugcamera.mat, matProjection);
+
+			for (int i = 0; i < enemy.size(); i++)
+			{
+				enemy[i]->Draw(white, debugcamera.mat, matProjection);
+			}
+
+			for (int i = 0; i < enemy.size(); i++)
+			{
+				if (enemy[i]->enemy.mat.trans.x > 50 || enemy[i]->enemy.mat.trans.y > 50) {
+					enemy.erase(enemy.begin());
+				}
+			}
+
 			break;
 
 		case Over:

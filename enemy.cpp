@@ -32,9 +32,16 @@ void Enemy::Draw(int tex, Matrix matView, Matrix matProjection)
 
 void Enemy::Update(Matrix matView, Matrix matProjection)
 {
+	//if () {
+		enemy.mat.trans.y -= 0.2f;
+	//}
+
 	if (hitF) {
-		enemy.mat.trans += trans * spd;
-		spd += 0.01;
+		enemy.mat.trans -= trans * spd;
+
+		enemy.mat.rotAngle.y += 1;
+
+		spd += 0.1;
 	}
 
 	enemy.MatUpdate(matView, matProjection);

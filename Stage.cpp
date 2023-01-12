@@ -15,13 +15,13 @@ Stage::~Stage()
 
 void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	int Left = 40;
-	int Up = 43;
+	int Left = 58;
+	int Up = 55;
 
 	//ステージの障害物の数
 	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < 30; j++)
+		for (int j = 0; j < 13; j++)
 		{
 			if (map[i][j] != Blank) {
 				//仮沖の中身を作る
@@ -33,7 +33,7 @@ void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 				newmodel->mat.trans = { -(size * j) + Left,-(size * i) + Up, 0 };
 
-				newmodel->mat.scale = { 5,5,5, };
+				newmodel->mat.scale = { 5,5,5};
 
 				//格納
 				model.push_back(newmodel);

@@ -42,7 +42,7 @@ void Number::SetSquareSize()
 void Number::Update(Matrix matView, Matrix matProjection)
 {
 	for (size_t i = 0; i < square.size(); i++) {
-		square[i].MatUpdate(matView, matProjection);
+		square[i].MatUpdate(matView, matProjection,0);
 	}
 }
 

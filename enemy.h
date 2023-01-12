@@ -23,5 +23,5 @@ public:
 	Vector3D trans;
 	Vector3D rot;
 	bool hitF = 0;
-	float spd = 0.2f;
+	float spd = 1.0f;
 };
