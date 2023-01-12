@@ -23,6 +23,7 @@ public:
 
 	void Jump();
 	void Attack();
+	void CH();
 
 	Model player;
 	Model attackModel;

@@ -57,7 +57,7 @@ void Player::Update(Matrix matView, Matrix matProjection)
 
 	Jump();
 
-	float Teihen = -25.0f;
+	float Teihen = -32.0f;
 	float Top = 5.0f;
 
 	player.mat.trans.x = max(player.mat.trans.x,-52);
@@ -105,5 +105,9 @@ void Player::Jump()
 }
 
 void Player::Attack()
+{
+}
+
+void Player::CH()
 {
 }

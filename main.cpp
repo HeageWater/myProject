@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Timer.h"
+#include "Particle.h"
 //#include "RE//AudioManager.h"
 //#include "Sound.h"
 
@@ -116,7 +117,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
 
-	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), win->window_width, win->window_height));
 
@@ -144,6 +145,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	pressText.obj.trans.y = -200;
 	pressText.obj.scale = { 120,120,0.2f };
 
+	Square playText(dx.get(), uiPipeline.get(), bilShader);
+	playText.obj.trans.z = 0;
+	playText.obj.scale = { 720,420,0.3f };
+
+	Square LifeText(dx.get(), uiPipeline.get(), bilShader);
+	LifeText.obj.trans.x = -500;
+	LifeText.obj.trans.y = 280;
+	LifeText.obj.scale = { 40,40,0.2f };
+
+	Square LifeTextQ[3];
+	LifeTextQ[0].Initialize(dx.get(), uiPipeline.get(), bilShader);;
+	LifeTextQ[1].Initialize(dx.get(), uiPipeline.get(), bilShader);;
+	LifeTextQ[2].Initialize(dx.get(), uiPipeline.get(), bilShader);;
 
 	Square scoreText(dx.get(), multipathPipeline.get(), bilShader);
 	scoreText.obj.trans.x = -360;
@@ -160,6 +174,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 	bGround.MatUpdate(Matrix(), spriteProjection, 0);
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
+	LifeText.MatUpdate(Matrix(), spriteProjection, 0);
+	playText.MatUpdate(Matrix(), spriteProjection, 0);
+
+	for (int i = 0; i < 3; i++)
+	{
+		LifeTextQ[i].obj.trans.x = -500;
+		LifeTextQ[i].obj.trans.y = 200 - (i * 50);
+		LifeTextQ[i].obj.scale = { 20,20,0.2f };
+		LifeTextQ[i].MatUpdate(Matrix(), spriteProjection, 0);
+	}
 
 	Timer timer(dx.get(), uiPipeline.get(), &bilShader, numG);
 
@@ -219,6 +243,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int life = 3;
 	int clear = 0;
 
+	std::vector<Particle*> particle;
+
+
+
 	//	ÉQÅ[ÉÄÉãÅ[Év
 	while (true)
 	{
@@ -265,6 +293,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				timer.Init();
 				timer.Reset();
+
+				//player.CH();
 			}
 
 			time++;
@@ -329,7 +359,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (sheikuCount < 0) {
 					sheikuFlag = false;
-					debugcamera.eye = { -0.8f, 30.0f, 100.0f };
+					debugcamera.eye = Vector3D(0.0f, 30.0f, 150.0f);
 				}
 			}
 
@@ -346,7 +376,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			//box2.MatUpdate(debugcamera.mat, matProjection);
 
 			if (controller->ButtonTriggerPush(A)) {
-				if (player.jumpFlag == false && player.player.mat.trans.y <= -23.0f) {
+				if (player.jumpFlag == false && player.player.mat.trans.y <= -30.0f) {
 					player.jumpFlag = true;
 					player.GravityPower = 0;
 					player.jumpPower = 1.5f;
@@ -433,6 +463,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 
 		case Play:
+			//playText.Draw(bgPng);
+
 			stage.Draw(brPng);
 
 			for (int i = 0; i < enemy.size(); i++)
@@ -469,15 +501,26 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				int aida = 50;
 				if (enemy[i]->enemy.mat.trans.x > aida * 2 || enemy[i]->enemy.mat.trans.y > aida ||
 					enemy[i]->enemy.mat.trans.x < -(aida * 2) || enemy[i]->enemy.mat.trans.y < -aida - 20) {
-					enemy.erase(enemy.begin());
-
+			
 					if (enemy[i]->hitF == false) {
 						life--;
 					}
+
+					enemy.erase(enemy.begin() + i);
 				}
 			}
 
 			//timer.Draw();
+
+			LifeText.Draw(lifePng);
+
+			for (int i = 0; i < life; i++)
+			{
+				LifeTextQ[i].Draw(LPng);
+			}
+
+			//lifePng
+				//LPng
 			break;
 
 		case Over:

@@ -16,7 +16,7 @@ Stage::~Stage()
 void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
 	int Left = 58;
-	int Up = 55;
+	int Up = 48;
 
 	//ステージの障害物の数
 	for (int i = 0; i < 10; i++)

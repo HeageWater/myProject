@@ -25,4 +25,22 @@ public:
 	bool hitF = 0;
 	float spd = 0.2f;
 
+
+private:
+	Model model;
+	Vector2D pos;
+	Vector2D angle;
+	float radias = 1;
+	float countDown;
+	int count;
+	bool isDied = false;
+public:
+	/*Particle(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, Vector2D pos);
+	~Particle();
+
+	void SetModelPos();
+	void Draw(int handle);
+	void Update(Matrix matView, Matrix matProjection);
+
+	bool GetIsDied() { return isDied; };*/
 };
