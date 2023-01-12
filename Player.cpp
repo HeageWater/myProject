@@ -37,13 +37,13 @@ void Player::Update(Matrix matView, Matrix matProjection)
 
 	GravityPower += 0.01f;
 
-	if (controller->ButtonTriggerPush(A)) {
+	/*if (controller->ButtonTriggerPush(A)) {
 		if (jumpFlag == false) {
 			jumpFlag = true;
 			GravityPower = 0;
 			jumpPower = 2.0f;
 		}
-	}
+	}*/
 
 	Vector2D move = controller->GetLeftStickVec();
 	move.normalize();
@@ -60,14 +60,21 @@ void Player::Update(Matrix matView, Matrix matProjection)
 	float Teihen = -25.0f;
 	float Top = 5.0f;
 
-	player.mat.trans.x = max(player.mat.trans.x, -Top + player.mat.scale.x);
-	player.mat.trans.x = min(player.mat.trans.x, Top - player.mat.scale.x);
+	player.mat.trans.x = max(player.mat.trans.x,-52);
+	player.mat.trans.x = min(player.mat.trans.x, 48);
 
 	player.mat.trans.y = max(player.mat.trans.y, Teihen);
 	//player.mat.trans.y = min(player.mat.trans.y, Top);
 
 	attackRange = controller->GetRightStickVec();
 	attackRange.normalize();
+
+	float ad = 0.75f;
+
+	if (attackRange.x < ad && attackRange.x > -ad &&
+		attackRange.y < ad && attackRange.y > -ad) {
+		attackRange.x = 1000;
+	}
 
 	//if (controller->StickInDeadZone(attackRange, Vector2D(0.9f, 0.9f))) {
 	attackModel.mat.trans.x = -(15 * attackRange.x) + player.mat.trans.x;

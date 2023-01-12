@@ -35,7 +35,7 @@ void MyDebugCamera::Update(Input& input)
 	frontVec.normalize();
 	rightVec = Vector3D(0, 1, 0).cross(frontVec);
 	downVec = rightVec.cross(frontVec);
-	
+
 	if (rotAngle.x >= MyMath::PIx2) rotAngle.x -= MyMath::PIx2;
 	if (rotAngle.x < 0) rotAngle.x += MyMath::PIx2;
 	if (rotAngle.y >= MyMath::PIx2) rotAngle.y -= MyMath::PIx2;
@@ -58,11 +58,11 @@ void MyDebugCamera::Update(Input& input)
 	billboard.m[2][2] = frontVec.z;
 #pragma endregion*/
 
-
-	//up.y = cosf(angle.y);
-	//eye.x = target.x - disEyeTarget * cosf(angle.y) * sinf(angle.x);
-	//eye.y = target.y + disEyeTarget * sinf(angle.y);
-	//eye.z = target.z - disEyeTarget * cosf(angle.y) * cosf(angle.x);
+//Vector3D(0.0f, 30.0f, 100.0f)
+//up.y = cosf(angle.y);
+	/*eye.x = 0.0;
+	eye.y = 30.0f;
+	eye.z = 100.0f;*/
 	MatUpdate();
 }
 

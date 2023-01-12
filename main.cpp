@@ -59,6 +59,9 @@ bool c(Vector2D player, Vector2D stage, float ab, float bc)
 
 bool CircleCollsionEnemy(Vector2D enemy1, Vector2D enemy2, float ab, float bc) {
 
+	ab += 1.0f;
+	bc += 1.0f;
+
 	int a = (enemy1.x - enemy2.x) * (enemy1.x - enemy2.x);
 	int b = (enemy1.y - enemy2.y) * (enemy1.y - enemy2.y);
 
@@ -99,10 +102,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int plPng = dx->LoadTextureGraph(L"Resources/pless.png");
 	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
 
+	int lifePng = dx->LoadTextureGraph(L"Resources/life.png");
+	int clearPng = dx->LoadTextureGraph(L"Resources/gameclear.png");
+	int overPng = dx->LoadTextureGraph(L"Resources/gameover.png");
+	int LPng = dx->LoadTextureGraph(L"Resources/L.png");
+	int FiledPng = dx->LoadTextureGraph(L"Resources/Filed.png");
+
 	//AudioManager* audioManager = nullptr;
 	//audioManager = audioManager->GetInstance();
 
 	//uint32_t BGM = audioManager->LoadAudio("Resources/sound/BGM.wav");
+
+	Controller* controller = nullptr;
+	controller = Controller::GetInstance();
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
@@ -143,7 +155,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Square bGround(dx.get(), multipathPipeline.get(), spriteShader);
 	bGround.obj.trans.z = 0.1f;
-	bGround.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+	bGround.obj.scale = { Window::window_width - (Window::window_width / 3),Window::window_height - (Window::window_height / 3),0.2f };
 
 	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 	bGround.MatUpdate(Matrix(), spriteProjection, 0);
@@ -204,6 +216,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int a = 0;
 	float r = 0;
 	int time = 0;
+	int life = 3;
+	int clear = 0;
 
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
@@ -214,6 +228,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//Update
 		input->Update();
+
+		controller->Update();
 
 		debugcamera.Update(*input);
 
@@ -233,11 +249,26 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		case Title:
 
-			if (input->GetTrigger(DIK_SPACE)) {
+			//‰Šú‰»
+			if (input->GetTrigger(DIK_SPACE) || controller->ButtonTriggerPush(A)) {
 				scene = Play;
+				life = 3;
+				time = -20;
+
+				player.player.mat.trans = { 5,0,0 };
+				player.player.mat.scale = { 5,5,5 };
+				player.player.mat.rotAngle = { 0,0,0 };
+
+				enemy.clear();
+
+				clear = 0;
+
+				timer.Init();
+				timer.Reset();
 			}
 
-			r = sin(3.1415f * 2 / 240 * time);
+			time++;
+			r = sin(3.1415f * 2 / 360 * time) / 5;
 			bGround.obj.trans = { 0,r * 150,0 };
 
 			bGround.MatUpdate(Matrix(), spriteProjection, 0);
@@ -265,24 +296,32 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			a = GetRandomA(1, 8);
 
-			if (enemy.size() < 3) {
-				if (a > 6) {
-					//‰¼‰«‚Ì’†g‚ðì‚é
-					Enemy* newenemy = new Enemy();
+			if (time > 20) {
+				if (enemy.size() < 3) {
+					if (a > 6) {
+						a = GetRandomA(1, 3);
+						for (int i = 0; i < a; i++)
+						{
+							int b = GetRandomA(1, 8);
 
-					float size = 10;
+							//‰¼‰«‚Ì’†g‚ðì‚é
+							Enemy* newenemy = new Enemy();
 
-					newenemy->Initialize(dx.get(), shader, pipeline.get());
+							float size = 10;
 
-					newenemy->enemy.mat.trans = { 0,enemy.size() * size,0 };
+							newenemy->Initialize(dx.get(), shader, pipeline.get());
 
-					newenemy->enemy.mat.scale = { 3,3,3 };
+							newenemy->enemy.mat.trans = { (b - 4) * size,49,0 };
 
-					//Ši”[
-					enemy.push_back(newenemy);
+							newenemy->enemy.mat.scale = { 3,3,3 };
+
+							//Ši”[
+							enemy.push_back(newenemy);
+						}
+					}
 				}
+				time = 0;
 			}
-
 
 			if (sheikuFlag == true) {
 				debugcamera.Move(Sheiku(sheikuCount));
@@ -290,7 +329,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (sheikuCount < 0) {
 					sheikuFlag = false;
-					debugcamera.eye = { 0.0f, 30.0f, 100.0f };
+					debugcamera.eye = { -0.8f, 30.0f, 100.0f };
 				}
 			}
 
@@ -306,6 +345,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			//box.MatUpdate(debugcamera.mat, matProjection);
 			//box2.MatUpdate(debugcamera.mat, matProjection);
 
+			if (controller->ButtonTriggerPush(A)) {
+				if (player.jumpFlag == false && player.player.mat.trans.y <= -23.0f) {
+					player.jumpFlag = true;
+					player.GravityPower = 0;
+					player.jumpPower = 1.5f;
+				}
+			}
+
 			player.Update(debugcamera.mat, matProjection);
 
 			for (int i = 0; i < enemy.size(); i++)
@@ -315,25 +362,34 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			stage.Update(debugcamera.mat, matProjection);
 
-			if (input->GetTrigger(DIK_SPACE)) {
+			//if (input->GetTrigger(DIK_SPACE) || controller->ButtonTriggerPush(A)) {
+			if (clear > 20) {
 				scene = Clear;
 			}
 
-			if (input->GetTrigger(DIK_0)) {
+			//if (input->GetTrigger(DIK_0) || controller->ButtonTriggerPush(A)) {
+			if (life < 1) {
 				scene = Over;
 			}
 
+			timer.Update(matView.mat, orthoProjection);
 			break;
 
 		case Over:
-			if (input->GetTrigger(DIK_SPACE)) {
+			if (input->GetTrigger(DIK_SPACE) || controller->ButtonTriggerPush(A)) {
 				scene = Title;
+				timer.Init();
 			}
 			break;
 
 		case Clear:
-			if (input->GetTrigger(DIK_SPACE)) {
+
+			time++;
+			timer.ClearUpdate(matView.mat, orthoProjection);
+
+			if (input->GetTrigger(DIK_SPACE) || controller->ButtonTriggerPush(A)) {
 				scene = Title;
+				timer.Init();
 			}
 			break;
 
@@ -381,10 +437,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			for (int i = 0; i < enemy.size(); i++)
 			{
-				/*if(BoxCollision(Vector2D(player.attackModel.mat.trans.x, player.attackModel.mat.trans.y),
-					Vector2D(enemy[i]->enemy.mat.trans.x, player.attackModel.mat.trans.y), ,
-					))*/
-
 				if (CircleCollsionEnemy(Vector2D(player.attackModel.mat.trans.x, player.attackModel.mat.trans.y),
 					Vector2D(enemy[i]->enemy.mat.trans.x, enemy[i]->enemy.mat.trans.y),
 					player.attackModel.mat.scale.x,
@@ -394,6 +446,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 						enemy[i]->trans = player.attackModel.mat.trans - enemy[i]->enemy.mat.trans;
 						enemy[i]->trans.normalize();
 						enemy[i]->hitF = true;
+
+						clear++;
 
 						if (sheikuFlag == false) {
 							sheikuFlag = true;
@@ -412,17 +466,28 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			for (int i = 0; i < enemy.size(); i++)
 			{
-				if (enemy[i]->enemy.mat.trans.x > 50 || enemy[i]->enemy.mat.trans.y > 50) {
+				int aida = 50;
+				if (enemy[i]->enemy.mat.trans.x > aida * 2 || enemy[i]->enemy.mat.trans.y > aida ||
+					enemy[i]->enemy.mat.trans.x < -(aida * 2) || enemy[i]->enemy.mat.trans.y < -aida - 20) {
 					enemy.erase(enemy.begin());
+
+					if (enemy[i]->hitF == false) {
+						life--;
+					}
 				}
 			}
 
+			//timer.Draw();
 			break;
 
 		case Over:
+			screen.Draw(overPng);
+			pressText.Draw(plPng);
 			break;
 
 		case Clear:
+			screen.Draw(clearPng);
+			pressText.Draw(plPng);
 			break;
 
 		default:

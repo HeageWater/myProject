@@ -12,7 +12,7 @@ Enemy::~Enemy()
 
 void Enemy::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	enemy.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+	enemy.Initialize(dx_, shader, "Resources\\ene\\ene.obj", pipeline_);
 }
 
 void Enemy::Draw(int tex, Matrix matView, Matrix matProjection)
