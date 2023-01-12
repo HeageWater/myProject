@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Timer.h"
+#include "RE//AudioManager.h"
 
 enum Scene {
 	Title,
@@ -93,7 +94,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	numG[8] = dx->LoadTextureGraph(L"Resources/number/num8.png");
 	numG[9] = dx->LoadTextureGraph(L"Resources/number/num9.png");
 
+	int bgPng = dx->LoadTextureGraph(L"Resources/title.png");
+
+	UINT BGM = 0;
+
+		//MBGM.mp3
+
 	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+
+	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(),win->window_width,win->window_height));
 
 	std::unique_ptr<Input> input(new Input(win.get()));
 
@@ -101,17 +110,44 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Shader bilShader(L"VShader.hlsl", L"PShader.hlsl");
 	Shader spriteShader(L"SpriteVS.hlsl", L"SpritePS.hlsl");
 
+	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
+
 	//ï`âÊèâä˙âª
 	std::unique_ptr<GPipeline> multipathPipeline(new GPipeline(dx->GetDev(), bilShader));
+
 	Square screen(dx.get(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 0.1f;
 	screen.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
 
-	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader, GPipeline::ALPHA_BLEND));
-	Timer timer(dx.get(), uiPipeline.get(), &bilShader, numG);
+	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader));
 
 	Square title(dx.get(), uiPipeline.get(), spriteShader);
 	title.obj.scale = { 640,320,0.2f };
+
+	Square pressText(dx.get(), uiPipeline.get(), bilShader);
+	pressText.obj.trans.y = -240;
+	pressText.obj.scale = { 160,90,0.2f };
+
+	Square scoreText(dx.get(), multipathPipeline.get(), bilShader);
+	scoreText.obj.trans.x = -360;
+	scoreText.obj.scale = { 160,90,0.2f };
+
+	Square backGround(dx.get(), multipathPipeline.get(), spriteShader);
+	backGround.obj.trans.z = 0.1f;
+	backGround.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+
+	Square bGround(dx.get(), multipathPipeline.get(), spriteShader);
+	bGround.obj.trans.z = 0.1f;
+	bGround.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+
+	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
+	bGround.MatUpdate(Matrix(), spriteProjection);
+
+	Timer timer(dx.get(), uiPipeline.get(), &bilShader, numG);
+
+	Square goal(dx.get(), multipathPipeline.get(), spriteShader);
+	goal.obj.trans.x = Window::window_width;
+	goal.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
 
 	//ï`âÊópçsóÒ
 	MyMath::MatView matView;
@@ -120,7 +156,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
 	//Initialize
-	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
+	//std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 	Model box(dx.get(), shader, "Resources\\maru\\maru.obj", pipeline.get());
 	Model box2(dx.get(), shader, "Resources\\rasu\\rasu.obj", pipeline.get());
 
@@ -206,6 +242,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				player.player.mat.trans.y = min(player.player.mat.trans.y, stage.model[i]->mat.trans.y);
 			}
 		}*/
+			debugcamera.eye.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
+			debugcamera.target.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
 
 			if (sheikuFlag == true) {
 				debugcamera.Move(Sheiku(sheikuCount));
@@ -213,11 +251,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (sheikuCount < 0) {
 					sheikuFlag = false;
-					debugcamera.eye = { 0,0,0 };
+					debugcamera.eye = { 0.0f, 30.0f, 100.0f };
 				}
 			}
 
-			debugcamera.eye.z += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
+			//debugcamera.eye.z += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
 
 			//debugcamera.MatUpdate();
 
@@ -233,12 +271,26 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			enemy.Update(debugcamera.mat, matProjection);
 			stage.Update(debugcamera.mat, matProjection);
 
+			if (input->GetTrigger(DIK_SPACE)) {
+				scene = Clear;
+			}
+
+			if (input->GetTrigger(DIK_0)) {
+				scene = Over;
+			}
+
 			break;
 
 		case Over:
+			if (input->GetTrigger(DIK_SPACE)) {
+				scene = Title;
+			}
 			break;
 
 		case Clear:
+			if (input->GetTrigger(DIK_SPACE)) {
+				scene = Title;
+			}
 			break;
 
 		default:
@@ -274,6 +326,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		case Title:
 			box2.Draw(white);
+
+			bGround.Draw(bgPng);
 			break;
 
 		case Play:

@@ -51,6 +51,7 @@ public:
 public:
 	void Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMord = GPipeline::NONE_BLEND);
 	Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMord = GPipeline::NONE_BLEND);
+	Square();
 	void MatUpdate(Matrix matView, Matrix matProjection, Matrix billboard = Matrix());
 	void Draw(int handle);
 private:

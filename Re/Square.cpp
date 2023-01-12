@@ -138,6 +138,10 @@ Square::Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMor
 	Initialize(dx_, pipeline_, shader, blendMord);
 }
 
+Square::Square()
+{
+}
+
 void Square::MatUpdate(Matrix matView, Matrix matProjection, Matrix billboard)
 {
 	obj.Update(billboard);
