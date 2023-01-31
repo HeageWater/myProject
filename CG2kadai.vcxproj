@@ -141,13 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Number.cpp" />
-    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Re\AudioManager.cpp" />
     <ClCompile Include="Re\ConstBuff.cpp" />
     <ClCompile Include="Re\Controller.cpp" />
     <ClCompile Include="Re\DirectX.cpp" />
@@ -160,7 +155,6 @@
     <ClCompile Include="Re\Object2D.cpp" />
     <ClCompile Include="Re\Object3D.cpp" />
     <ClCompile Include="Re\ObjFile.cpp" />
-    <ClCompile Include="Re\Player.cpp" />
     <ClCompile Include="Re\ScissorRect.cpp" />
     <ClCompile Include="Re\Shader.cpp" />
     <ClCompile Include="Re\Square.cpp" />
@@ -172,11 +166,6 @@
     <ClCompile Include="Re\ViewPort.cpp" />
     <ClCompile Include="Re\Window.cpp" />
     <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="WindowApi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
@@ -209,14 +198,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Definition.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="function.h" />
-    <ClInclude Include="key.h" />
-    <ClInclude Include="Number.h" />
-    <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Re\AudioManager.h" />
     <ClInclude Include="Re\ConstBuff.h" />
     <ClInclude Include="Re\Controller.h" />
     <ClInclude Include="Re\DirectX.h" />
@@ -229,7 +211,6 @@
     <ClInclude Include="Re\Object2D.h" />
     <ClInclude Include="Re\Object3D.h" />
     <ClInclude Include="Re\ObjFile.h" />
-    <ClInclude Include="Re\Player.h" />
     <ClInclude Include="Re\ScissorRect.h" />
     <ClInclude Include="Re\Shader.h" />
     <ClInclude Include="Re\Square.h" />
@@ -241,11 +222,6 @@
     <ClInclude Include="Re\ViewPort.h" />
     <ClInclude Include="Re\Window.h" />
     <ClInclude Include="Sound.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="WindowApi.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022.vcxproj">

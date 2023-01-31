@@ -9,60 +9,16 @@ MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyDebugCamera::Update(Input& input)
 {
-	/*prevCursor = cursor;
-	input.CursorPos(cursor);
-	moveCursor = cursor - prevCursor;
-	float cursorDisPrev = moveCursor.length();
-	moveCursor.normalize();
+	eye.x += input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT);
+	eye.y += input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN);
+	eye.z += input.GetKey(DIK_O) - input.GetKey(DIK_P);
 
-	if (input.Click(Input::LeftClick) && input.GetKey(DIK_LSHIFT)) {
-		moveCursor /= 1000;
-		moveCursor *= cursorDisPrev;
-		if (up.y < 0) {
-			moveCursor.x = -moveCursor.x;
-		}
-		cursorSpd += moveCursor;
+	if (input.Click(Input::LeftClick))
+	{
+		eye.x += (input.CursorPos().x - (float)640) / 100;
+		eye.y += (input.CursorPos().y - (float)320) / 100;
 	}
-	disEyeTarget += -input.Wheel() * (disEyeTarget * 0.001f);
-	if (disEyeTarget < 10) {
-		disEyeTarget = 10;
-	}
-	target += rightVec * (input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT));
-	target += downVec * (input.GetKey(DIK_DOWN) - input.GetKey(DIK_UP));
-	target += -frontVec * (input.GetKey(DIK_Z) - input.GetKey(DIK_X));
 
-	frontVec = target - eye;
-	frontVec.normalize();
-	rightVec = Vector3D(0, 1, 0).cross(frontVec);
-	downVec = rightVec.cross(frontVec);
-
-	if (rotAngle.x >= MyMath::PIx2) rotAngle.x -= MyMath::PIx2;
-	if (rotAngle.x < 0) rotAngle.x += MyMath::PIx2;
-	if (rotAngle.y >= MyMath::PIx2) rotAngle.y -= MyMath::PIx2;
-	if (rotAngle.y < 0) rotAngle.y += MyMath::PIx2;
-
-	Vector2D angle = rotAngle;
-	angle += cursorSpd;
-
-	rightVec.normalize();
-	downVec.normalize();
-#pragma region ビルボード
-	billboard.m[0][0] = rightVec.x;
-	billboard.m[0][1] = rightVec.y;
-	billboard.m[0][2] = rightVec.z;
-	billboard.m[1][0] = -downVec.x;
-	billboard.m[1][1] = -downVec.y;
-	billboard.m[1][2] = -downVec.z;
-	billboard.m[2][0] = frontVec.x;
-	billboard.m[2][1] = frontVec.y;
-	billboard.m[2][2] = frontVec.z;
-#pragma endregion*/
-
-//Vector3D(0.0f, 30.0f, 100.0f)
-//up.y = cosf(angle.y);
-	/*eye.x = 0.0;
-	eye.y = 30.0f;
-	eye.z = 100.0f;*/
 	MatUpdate();
 }
 

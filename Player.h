@@ -9,8 +9,6 @@
 #include "Re//Controller.h"
 #include <memory>
 #include "Re//Model.h"
-#include "Re//Controller.h"
-
 
 class Player {
 
@@ -20,18 +18,7 @@ public:
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Draw(int tex);
 	void Update(Matrix matView, Matrix matProjection);
-
-	void Jump();
-	void Attack();
-	void CH();
+	void Reset();
 
 	Model player;
-	Model attackModel;
-	Controller* controller = nullptr;
-
-	bool jumpFlag;
-	float jumpPower;
-	float GravityPower;
-
-	Vector2D attackRange;
 };

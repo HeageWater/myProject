@@ -21,24 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="key.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowApi.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Re\ConstBuff.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
@@ -70,9 +52,6 @@
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
     <ClCompile Include="Re\ObjFile.cpp">
-      <Filter>ソース ファイル\Re</Filter>
-    </ClCompile>
-    <ClCompile Include="Re\Player.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
     <ClCompile Include="Re\ScissorRect.cpp">
@@ -108,31 +87,17 @@
     <ClCompile Include="Re\Controller.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Re\AudioManager.cpp">
+    <ClCompile Include="Sound.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Number.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="BasicPS.hlsl" />
-    <FxCompile Include="BasicVS.hlsl" />
     <FxCompile Include="PShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
@@ -145,29 +110,14 @@
     <FxCompile Include="SpriteVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="BasicPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="key.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Definition.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="function.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowApi.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Re\Window.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
@@ -196,9 +146,6 @@
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
     <ClInclude Include="Re\ScissorRect.h">
-      <Filter>ヘッダー ファイル\Re</Filter>
-    </ClInclude>
-    <ClInclude Include="Re\Player.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
     <ClInclude Include="Re\ObjFile.h">
@@ -237,26 +184,11 @@
     <ClInclude Include="Re\Controller.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Re\AudioManager.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Number.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Sound.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
