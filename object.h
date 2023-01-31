@@ -5,6 +5,7 @@
 #include <dxgi1_6.h>
 #include <vector>
 #include <string>
+#include "ObjFile.h"
 using namespace DirectX;
 
 #pragma comment(lib,"d3d12.lib")

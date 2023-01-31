@@ -141,15 +141,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="ObjFile.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="VertBuff.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="viewport.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\kaoru\Desktop\GE2</AdditionalIncludeDirectories>
@@ -172,16 +175,19 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="Definition.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="ObjFile.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
+    <ClInclude Include="VertBuff.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="viewport.h" />
     <ClInclude Include="WindowApi.h" />

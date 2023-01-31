@@ -4,12 +4,12 @@
 #include "DirectXCommon.h"
 #include "SpriteCommon.h"
 #include "Sprite.h"
-
-#include <xaudio2.h>
+#include "Controller.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Sound.h"
+#include "ObjFile.h"
 #include <fstream>
-
-#pragma comment(lib,"xaudio2.lib")
-
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -41,14 +41,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	bool draw_flg = false;
 
-	//windowAPI初期化処理ここから
-
-	//WindowApi* window = new WindowApi();
-
-	//windowAPI初期化処理ここまで
-
-	//directx初期化処理ここから
-
 	MSG msg{};
 
 	HRESULT result;
@@ -67,6 +59,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
+
+	Controller* controller = nullptr;
+	controller = Controller::GetInstance();
+
+	//Sound* sound = new Sound();
+
+	Sound sound2;
+
+	//int bgm = sound->SoundLoadWave("Resource/BGM.wav");
+	int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
 
 	/*SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
@@ -853,17 +855,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	dxCommon->GetDevice()->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
 	//サウンド設定
-	/*ComPtr<IXAudio2> xAudio2;
-	IXAudio2MasteringVoice* masterVoice;
-
-	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-
-	result = xAudio2->CreateMasteringVoice(&masterVoice);
-
-	SoundData soundData1 = SoundLoadWave("Resources/loop1.wav");
-
-	SoundPlayWave(xAudio2.Get(), soundData1);*/
-	//ここまで
+	sound2.SoundPlayWave(bgm);
+	//sound->SoundPlayLoopWave(bgm);
 
 	//描画初期化処理ここまで
 
@@ -874,6 +867,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//キー入力更新
 		key->Update();
+		controller->Update();
 
 		//windowsのメッセージ処理
 		if (dxCommon->GetWindow()->ProcessMessege())
@@ -890,27 +884,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//移動速度
 		float speed = 0.4f;
 
+		Vector2 vec = { 0,0 };
+		vec = controller->GetLeftStickVec();
+
+		float DeadSpace = 0.3f;
+
 		//移動
-		if (key->Keep(DIK_UP))
+		if (key->Keep(DIK_UP) || vec.y < -DeadSpace)
 		{
 			object3ds[0].position.y += speed;
 		}
-		if (key->Keep(DIK_DOWN))
+		if (key->Keep(DIK_DOWN) || vec.y > DeadSpace)
 		{
 			object3ds[0].position.y -= speed;
 		}
-		if (key->Keep(DIK_RIGHT))
+		if (key->Keep(DIK_RIGHT) || vec.x > DeadSpace)
 		{
 			object3ds[0].position.x += speed;
 		}
-		if (key->Keep(DIK_LEFT))
+		if (key->Keep(DIK_LEFT) || vec.x < -DeadSpace)
 		{
 			object3ds[0].position.x -= speed;
 		}
 
+		if (key->Keep(DIK_ESCAPE))
+		{
+			break;
+		}
+
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
-
 
 		//毎フレーム処理ここまで
 
