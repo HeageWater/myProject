@@ -7,9 +7,10 @@
 #pragma comment(lib,"dxgi.lib")
 
 using namespace Microsoft::WRL;
+//std::vector<Microsoft::WRL::ComPtr<ID3D12Resource*>> backBuffers;
 std::vector<ID3D12Resource*> backBuffers;
 
-void DirectXCommon::Initialize(WindowApi* window)
+void DirectXCommon::Initialize()
 {
 	assert(window);
 
@@ -38,16 +39,14 @@ void DirectXCommon::Initialize(WindowApi* window)
 
 void DirectXCommon::InitializeDevice()
 {
-	HRESULT result;
+	//ComPtr<IDXGIFactory7> dxgiFactory;
 
-	ComPtr<IDXGIFactory7> dxgiFactory;
-
-	//デバッグレイヤー
-	ComPtr<ID3D12Debug1> debugController;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
-		debugController->EnableDebugLayer();
-		debugController->SetEnableGPUBasedValidation(TRUE);
-	}
+	////デバッグレイヤー
+	//ComPtr<ID3D12Debug1> debugController;
+	//if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
+	//	debugController->EnableDebugLayer();
+	//	debugController->SetEnableGPUBasedValidation(TRUE);
+	//}
 
 	//DXGIファクトリーの作成
 	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
@@ -134,9 +133,11 @@ void DirectXCommon::InitializeComand()
 
 void DirectXCommon::InitializeSwapchain()
 {
+	ComPtr<IDXGISwapChain1>swapChain1;
+
 	//スワップチェーンの設定
-	swapChainDesc.Width = 1280;
-	swapChainDesc.Height = 720;
+	swapChainDesc.Width = window->window_width;
+	swapChainDesc.Height = window->window_height;
 
 	//色情報
 	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -156,8 +157,9 @@ void DirectXCommon::InitializeSwapchain()
 
 	//スワップチェーンの生成	
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue, window->GetHwnd(), &swapChainDesc, nullptr, nullptr,
-		(IDXGISwapChain1**)&swapChain);
+		commandQueue.Get(), window->GetHwnd(), &swapChainDesc, nullptr, nullptr,
+		swapChain1.GetAddressOf());
+	swapChain1.As(&swapChain);
 	assert(SUCCEEDED(result));
 }
 
@@ -286,9 +288,9 @@ void DirectXCommon::PreDraw()
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	////ビューポート設定コマンドを、コマンドリストに積む
-	port->DrawViewPort(commandList);
+	port->DrawViewPort(commandList.Get());
 	////シザー矩形設定コマンドを、コマンドリストに積む
-	port->DrawScissor(commandList);
+	port->DrawScissor(commandList.Get());
 }
 
 void DirectXCommon::PostDraw()
@@ -307,7 +309,7 @@ void DirectXCommon::PostDraw()
 	assert(SUCCEEDED(result));
 
 	//コマンドリストの実行
-	ID3D12CommandList* commandLists[] = { commandList };
+	ID3D12CommandList* commandLists[] = { commandList.Get()};
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
 	//コマンドの実行完了を待つ

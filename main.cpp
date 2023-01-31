@@ -1,177 +1,27 @@
-void a()
-{
-//#include <DirectXMath.h>
-//#include <DirectXTex.h>
-//#include <string>
-////#include "Definition.h"
-//using namespace DirectX;
-//#include <d3dcompiler.h>
-//#pragma comment(lib,"d3dcompiler.lib")
-}
-
 #include "object.h"
 #include "key.h"
 #include "WindowApi.h"
 #include "DirectXCommon.h"
+#include "SpriteCommon.h"
+#include "Sprite.h"
 
 #include <xaudio2.h>
+#include <fstream>
 
 #pragma comment(lib,"xaudio2.lib")
 
-#include <fstream>
-
-struct ChunkHeader
-{
-	char id[4];
-	int32_t size;
-};
-
-struct RiffHeader
-{
-	ChunkHeader chunk;
-	char type[4];
-};
-
-struct FormatChunk
-{
-	ChunkHeader chunk;
-	WAVEFORMATEX fmt;
-};
-
-struct SoundData
-{
-	//波形フォーマット
-	WAVEFORMATEX wfex;
-	//バッファの先頭アドレス
-	BYTE* pBuffer;
-	//バッファのサイズ
-	unsigned int  bufferSize;
-};
-
-//サウンド読み込み
-SoundData SoundLoadWave(const char* filename)
-{
-	HRESULT result;
-
-	//ファイルオープン
-	std::ifstream file;
-	file.open(filename, std::ios_base::binary);
-	assert(file.is_open());
-
-	//データ読み込み(wav)
-	RiffHeader riff;
-	file.read((char*)&riff, sizeof(riff));
-
-	if (strncmp(riff.chunk.id,"RIFF",4) != 0)
-	{
-		assert(0);
-	}
-
-	if (strncmp(riff.type, "WAVE", 4) != 0)
-	{
-		assert(0);
-	}
-	
-	FormatChunk format = {};
-
-	file.read((char*)&format, sizeof(ChunkHeader));
-
-	/*if (strncmp(format.chunk.id, "fmt", 4) != 0)
-	{
-		assert(0);
-	}*/
-
-	assert(format.chunk.size <= sizeof(format.fmt));
-
-	file.read((char*)&format.fmt, format.chunk.size);
-
-	ChunkHeader data;
-
-	file.read((char*)&data, sizeof(data));
-
-	if (strncmp(data.id, "JUNK", 4) == 0)
-	{
-		file.seekg(data.size, std::ios_base::cur);
-		file.read((char*)&data, sizeof(data));
-	}
-
-	if (strncmp(data.id, "data", 4) != 0)
-	{
-		assert(0);
-	}
-
-	char* pBuffer = new char[data.size];
-	file.read(pBuffer, data.size);
-
-	//ファイルクローズ
-	file.close();
-
-	//データをreturn
-	SoundData soundData = {};
-
-	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	soundData.bufferSize = data.size;
-
-	return soundData;
-}
-
-//サウンド削除
-void SoundunLoad(SoundData* soundData)
-{
-	delete[] soundData->pBuffer;
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
-}
-
-//サウンド再生
-void SoundPlayWave(IXAudio2* xaudio2, const SoundData &soundData)
-{
-	HRESULT result;
-
-	IXAudio2SourceVoice* pSouceVoice = nullptr;
-	result = xaudio2->CreateSourceVoice(&pSouceVoice, &soundData.wfex);
-	assert(SUCCEEDED(result));
-	
-	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData.pBuffer;
-	buf.AudioBytes = soundData.bufferSize;
-	buf.Flags = XAUDIO2_END_OF_STREAM;
-
-	result = pSouceVoice->SubmitSourceBuffer(&buf);
-	result = pSouceVoice->Start();
-}
-
-//デバックテキスト
-class DebugText
-{
-private:
-	//最大文字数
-	static const int maxCharCount = 256;
-	//画像の横幅
-	static const int fontWidth = 17;
-	//画像の縦幅
-	static const int fontHight = 18;
-	//1行の文字数
-	static const int fonstLineCount = 14;
-
-	//Sprite sprites[maxCharCount];
-
-	int spriteIndex = 0;
-};
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-//#ifdef _DEBUG
-//	//デバッグレイヤーをオンに
-//	ComPtr<ID3D12Debug1> debugController;
-//	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-//	{
-//		debugController->EnableDebugLayer();
-//		debugController->SetEnableGPUBasedValidation(TRUE);
-//	}
-//#endif
+#ifdef _DEBUG
+	//デバッグレイヤーをオンに
+	ComPtr<ID3D12Debug1> debugController;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	{
+		debugController->EnableDebugLayer();
+		debugController->SetEnableGPUBasedValidation(TRUE);
+	}
+#endif
 
 	//3Dオブジェクトの数
 	const size_t kObjectCount = 1;
@@ -193,7 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//windowAPI初期化処理ここから
 
-	WindowApi* window = new WindowApi();
+	//WindowApi* window = new WindowApi();
 
 	//windowAPI初期化処理ここまで
 
@@ -202,17 +52,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	MSG msg{};
 
 	HRESULT result;
-	ID3D12Device* device = nullptr;
-	IDXGIFactory7* dxgiFactory = nullptr;
-	IDXGISwapChain4* swapChain = nullptr;
-	ID3D12CommandAllocator* cmdAllocator = nullptr;
-	ID3D12GraphicsCommandList* commandList = nullptr;
-	ID3D12CommandQueue* commandQueue = nullptr;
-	ID3D12DescriptorHeap* rtvHeap = nullptr;
 
 	//宣言
-	Key* key = new Key(window->GetHInstance(), window->GetHwnd());
-	key->Initialize(window);
+	DirectXCommon* dxCommon = nullptr;
+
+	dxCommon = new DirectXCommon();
+	dxCommon->Initialize();
+
+	Key* key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
+	key->Initialize(dxCommon->GetWindow());
 
 	ID3D12Resource* constBuffTransform0 = nullptr;
 	ConstBufferDataTransform* constMapTransform0 = nullptr;
@@ -220,12 +68,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
 
-	//Port* port = new Port(window->window_width,window->window_height);
+	SpriteCommon* spriteCommon = nullptr;
+	spriteCommon = new SpriteCommon;
+	spriteCommon->Inilialize(dxCommon);
 
-	DirectXCommon* dxCommon = nullptr;
-
-	dxCommon = new DirectXCommon();
-	dxCommon->Initialize(window);
+	Sprite* sprite = new Sprite();
+	sprite->Inilialize(spriteCommon);
 	//初期化
 
 #ifdef _DEBUG
@@ -252,7 +100,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//指定したエラーの表示を抑制する
 		infoQueue->PushStorageFilter(&filter);
-	}
+}
 #endif
 
 	//DirectX初期化処理ここまで
@@ -383,7 +231,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//頂点バッファの生成
 	ID3D12Resource* vertBuff = nullptr;
-	result = device->CreateCommittedResource(
+	result = dxCommon->GetDevice()->CreateCommittedResource(
 		//ヒープ設定
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -631,7 +479,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	ID3D12Resource* constBuffMaterial = nullptr;
 	//定数バッファの生成
-	result = device->CreateCommittedResource(
+	result = dxCommon->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&cbResouceDesc,
@@ -702,7 +550,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
 
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
+	result = dxCommon->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
 		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 	rootSigBlob->Release();
@@ -711,7 +559,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//パイプランステートの生成
 	ID3D12PipelineState* pipelineState = nullptr;
-	result = device->CreateGraphicsPipelineState(&gpipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = dxCommon->GetDevice()->CreateGraphicsPipelineState(&gpipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
 	//インデックスデータ全体のサイズ
@@ -728,7 +576,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//インデックスバッファの生成
 	ID3D12Resource* indexBuff = nullptr;
-	result = device->CreateCommittedResource(
+	result = dxCommon->GetDevice()->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,
@@ -803,7 +651,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//テクスチャバッファの生成
 	ID3D12Resource* texBuff = nullptr;
-	result = device->CreateCommittedResource(
+	result = dxCommon->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResouceDesc,
@@ -868,7 +716,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//テクスチャバッファの生成
 	ID3D12Resource* texBuff2 = nullptr;
-	result = device->CreateCommittedResource(
+	result = dxCommon->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResouceDesc2,
@@ -940,12 +788,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//射影変換行列
 		matProjection = XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),
-			(float)window->window_width / window->window_height,
+			(float)dxCommon->GetWindow()->window_width / dxCommon->GetWindow()->window_height,
 			0.1f, 1000.0f);
 	}
 
 	//deviceに代入してから入れる
-	Object3ds* object3ds = new Object3ds(device);
+	Object3ds* object3ds = new Object3ds(dxCommon->GetDevice());
 
 	//全ミップマップについて
 	for (size_t i = 0; i < metadata2.mipLevels; i++)
@@ -973,7 +821,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//設定を元にSRV用のデスクリプタヒープを生成
 	ID3D12DescriptorHeap* srvHeap = nullptr;
-	result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	result = dxCommon->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 
 	//SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -987,11 +835,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
+	dxCommon->GetDevice()->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 
 
 	//ハンドルのサイズ調整
-	UINT incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT incrementSize = dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvHandle.ptr += incrementSize;
 
 	//シェーダーリソースビュー設定
@@ -1002,7 +850,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	srvDesc2.Texture2D.MipLevels = textureResouceDesc2.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	device->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
+	dxCommon->GetDevice()->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
 	//サウンド設定
 	/*ComPtr<IXAudio2> xAudio2;
@@ -1028,7 +876,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		key->Update();
 
 		//windowsのメッセージ処理
-		if (window->ProcessMessege())
+		if (dxCommon->GetWindow()->ProcessMessege())
 		{
 			break;
 		}
@@ -1063,36 +911,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
 
-		
+
 		//毎フレーム処理ここまで
 
 		dxCommon->PreDraw();
 
 		//2.描画先の変更
-		
+
 		//3.画面クリア
 
 		//4.描画処理ここから
 
 		//パイプラインステートとルートシグネチャの設定コマンド
-		commandList->SetPipelineState(pipelineState);
-		commandList->SetGraphicsRootSignature(rootSignature);
+		dxCommon->GetCommandList()->SetPipelineState(pipelineState);
+		dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature);
 
 		//インデックスバッファビューの設定コマンド
-		commandList->IASetIndexBuffer(&ibView);
+		dxCommon->GetCommandList()->IASetIndexBuffer(&ibView);
 
 		//プリミティブ形状の設定コマンド
 		//三角形リスト
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//頂点バッファビューの設定コマンド
-		commandList->IASetVertexBuffers(0, 1, &vbView);
+		dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 
 		//定数バッファビュー(CBV)の設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+		dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 
 		//SRVヒープの設定コマンド
-		commandList->SetDescriptorHeaps(1, &srvHeap);
+		dxCommon->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
 
 		//SRVヒープの先頭ハンドルを取得(SRVを指している)
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
@@ -1104,10 +952,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
-		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 		//描画コマンド
-		object3ds->DrawObject3d(commandList, vbView, ibView, _countof(indices));
+		object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
 		//4.描画処理ここまで
 
@@ -1120,13 +968,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//windowAPI後始末
 
 	//ウィンドウクラスを登録解除
-	window->Finalize();
+	dxCommon->GetWindow()->Finalize();
 
 	//元データ解放
 	delete key;
-	delete window;
+	//delete window;
 	delete object3ds;
 	delete dxCommon;
+	delete sprite;
+	delete spriteCommon;
 
 	//xAudio2.Reset();
 	//SoundunLoad(&soundData1);

@@ -10,7 +10,7 @@
 class DirectXCommon {
 public:
 
-	void Initialize(WindowApi* window);
+	void Initialize();
 	void InitializeDevice();
 	void InitializeComand();
 	void InitializeSwapchain();
@@ -22,22 +22,27 @@ public:
 	void PostDraw();
 
 	Port* port = new Port();
+
+	ID3D12Device* GetDevice() const { return device.Get(); };
+	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); };
+	WindowApi* GetWindow() const { return window; };
 private:
 	WindowApi* window = new WindowApi();
 
 	Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory = nullptr;
-	//std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers;
+	//std::vector<Microsoft::WRL::ComPtr<ID3D12Resource*>> backBuffers;
 	//std::vector<ID3D12Resource*> backBuffers;
+	//std::vector<ComPtr<ID3D12Resource>>backBuffers;
 
 	HRESULT result;
 
-	IDXGISwapChain4* swapChain = nullptr;
+	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 	ID3D12CommandAllocator* cmdAllocator = nullptr;
-	ID3D12GraphicsCommandList* commandList = nullptr;
-	ID3D12CommandQueue* commandQueue = nullptr;
+	Microsoft::WRL::ComPtr < ID3D12GraphicsCommandList> commandList = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue;
 
 	ID3D12DescriptorHeap* rtvHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
