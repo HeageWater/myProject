@@ -68,12 +68,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
 
-	SpriteCommon* spriteCommon = nullptr;
+	/*SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Inilialize(dxCommon);
 
 	Sprite* sprite = new Sprite();
-	sprite->Inilialize(spriteCommon);
+	sprite->Inilialize(spriteCommon);*/
 	//èâä˙âª
 
 #ifdef _DEBUG
@@ -975,8 +975,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete window;
 	delete object3ds;
 	delete dxCommon;
-	delete sprite;
-	delete spriteCommon;
+	//delete sprite;
+	//delete spriteCommon;
 
 	//xAudio2.Reset();
 	//SoundunLoad(&soundData1);

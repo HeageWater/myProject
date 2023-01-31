@@ -41,7 +41,7 @@ private:
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 	ID3D12CommandAllocator* cmdAllocator = nullptr;
-	Microsoft::WRL::ComPtr < ID3D12GraphicsCommandList> commandList = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue;
 
 	ID3D12DescriptorHeap* rtvHeap = nullptr;
