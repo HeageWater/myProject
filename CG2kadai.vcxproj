@@ -149,7 +149,10 @@
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="viewport.cpp" />
+    <ClCompile Include="viewport.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\kaoru\Desktop\GE2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\kaoru\Desktop\GE2</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="WindowApi.cpp" />
   </ItemGroup>
   <ItemGroup>
