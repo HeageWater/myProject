@@ -47,4 +47,24 @@ private:
 
 	ID3D12Fence* fence = nullptr;
 	UINT64 fenceVal = 0;
+
+
+
+	/*HRESULT result;
+
+	Microsoft::WRL::ComPtr<IDXGISwapChain4*> swapChain = nullptr;
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
+
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator*> cmdAllocator = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList*> commandList = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue*> commandQueue = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap*> rtvHeap = nullptr;
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
+
+	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap*> dsvHeap = nullptr;
+	D3D12_RESOURCE_BARRIER barrierDesc{};
+
+	Microsoft::WRL::ComPtr <ID3D12Fence> fence = nullptr;
+	UINT64 fenceVal = 0;*/
 };
