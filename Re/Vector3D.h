@@ -16,6 +16,7 @@ public:
 	Vector3D cross(const Vector3D& v) const;
 
 	Vector3D operator+() const;
+	Vector3D& ope(const float& v);
 
 	Vector3D operator-() const;
 

@@ -14,6 +14,7 @@
 #include "Re//Model.h"
 #include "Player.h"
 #include "Sound.h"
+#include "Collision.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -31,7 +32,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
 
-	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), win->window_width, win->window_height));
@@ -76,12 +77,53 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	player.Initialize(dx.get(), shader, pipeline.get());
 
 	player.player.mat.trans = { 5,0,0 };
-	player.player.mat.scale = { 5,5,5 };
+	player.player.mat.scale = { 15,15,15 };
 	player.player.mat.rotAngle = { 0,0,0 };
 
-	sound.SoundPlayLoopWave(bgm);
+	Model kyu;
+	kyu.Initialize(dx.get(), shader, "Resources\\kyu\\kyu.obj", pipeline.get());
+
+	kyu.mat.trans = { 15,0,0 };
+	kyu.mat.scale = { 1,1,1 };
+	kyu.mat.rotAngle = { 0,0,0 };
+
+	Model tri;
+	tri.Initialize(dx.get(), shader, "Resources\\tiriangle\\tiriangle.obj", pipeline.get());
+
+	tri.mat.trans = { 0,0,0 };
+	tri.mat.scale = { 1.0,1.0,1.0 };
+	tri.mat.rotAngle = { 0,0,1.55f };
+
+	//sound.SoundPlayLoopWave(bgm);
 
 	bool drawFlag = false;
+
+	Sphere sphere;
+
+	sphere.center = Vector3D(0, 2, 1);
+	sphere.radius = 1.0;
+
+	Plane plane;
+
+	plane.normal = Vector3D(0, 1, 0);
+	plane.distance = 0.0f;
+
+	Triangle triangle;
+
+	triangle.p0 = { 0.0f, 0.0f,0.0f };
+	triangle.p1 = { -5.0f, 0.0f,+5.0f };
+	triangle.p2 = { +5.0f, 0.0f ,-5.0f };
+	triangle.normal = { 0.0f,1.0f,0.0f };
+
+	int NowFlag = 1;
+
+	bool hit = false;
+	bool hit2 = false;
+
+	int count = 0;
+
+	float spd = -0.02f;
+
 	//	ゲームループ
 	while (true)
 	{
@@ -99,54 +141,143 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//ここまで
 
-		if (input->GetTrigger(DIK_SPACE))
-		{
-			drawFlag = !drawFlag;
-		}
-
 		if (input->GetTrigger(DIK_ESCAPE))
 		{
 			break;
 		}
 
-
-		if (input->GetTrigger(DIK_R) && drawFlag)
+		if (input->GetKey(DIK_1))
 		{
-			player.Reset();
-			debugcamera.Init(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+			NowFlag = 1;
+			count = 0;
+			spd = -0.02f;
+
+			sphere.center = Vector3D(0, 2, 1);
+			sphere.radius = 1.0;
+
+			player.player.mat.trans = { 5,0,0 };
+			player.player.mat.scale = { 15,15,15 };
+			player.player.mat.rotAngle = { 0,0,0 };
+
+			kyu.mat.trans = { 15,0,0 };
+			kyu.mat.scale = { 1,1,1 };
+			kyu.mat.rotAngle = { 0,0,0 };
 		}
 
-		player.player.mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
-		player.player.mat.trans.y += input->GetKey(DIK_W) - input->GetKey(DIK_S);
-
-		Vector2D move = controller->GetLeftStickVec();
-
-		if (move.x > 0.5f || move.x < -0.5f)
+		if (input->GetKey(DIK_2))
 		{
-			player.player.mat.trans.x -= controller->GetLeftStickVec().x;
+			NowFlag = 2;
+			count = 0;
+			spd = -0.02f;
+
+			sphere.center = Vector3D(0, 3, 1);
+			sphere.radius = 1.0;
+
+			kyu.mat.trans = { 15,5,0 };
+			kyu.mat.scale = { 1,1,1 };
+			kyu.mat.rotAngle = { 0,0,0 };
+
+			tri.mat.trans = { 0,0,0 };
+			tri.mat.scale = { 1.0,1.0,1.0 };
+			tri.mat.rotAngle = { 0,0,1.55f };
+
+			triangle.p0 = { 0.0f, 0.0f,0.0f };
+			triangle.p1 = { -5.0f, 0.0f,+5.0f };
+			triangle.p2 = { +5.0f, 0.0f ,-5.0f };
+			triangle.normal = { 0.0f,1.0f,0.0f };
 		}
 
-		if (move.y > 0.5f || move.y < -0.5f)
+		if (NowFlag == 1)
 		{
-			player.player.mat.trans.y -= controller->GetLeftStickVec().y;
+			kyu.mat.trans = sphere.center;
+			player.player.mat.trans = plane.normal;
+
+			player.player.mat.trans.y -= 1.0f;
+
+			player.player.mat.scale = { 10,0,10 };
+			kyu.mat.scale = { sphere.radius,sphere.radius,sphere.radius };
+
+			count++;
+
+			if (count > 200)
+			{
+				spd = -spd;
+				count = 0;
+			}
+
+			sphere.center.y += spd;
+
+			player.Update(debugcamera.mat, matProjection);
+			kyu.MatUpdate(debugcamera.mat, matProjection);
+
+			hit = Collision::CheckSphereToPlane(sphere, plane);
+		}
+
+		if (NowFlag == 2)
+		{
+			kyu.mat.trans = sphere.center;
+
+			kyu.mat.scale = { sphere.radius -0.25f,sphere.radius - 0.25f,sphere.radius - 0.25f };
+
+			tri.mat.trans = triangle.p0;
+
+			tri.mat.scale = { 2.0f,2.0f,2.0f };
+
+			count++;
+
+			if (count > 200)
+			{
+				spd = -spd;
+				count = 0;
+			}
+
+			sphere.center.y += spd;
+
+			tri.MatUpdate(debugcamera.mat, matProjection);
+			kyu.MatUpdate(debugcamera.mat, matProjection);
+
+			hit2 = Collision::CheckSphereToTriangle(sphere, triangle);
 		}
 
 		//Draw
 		dx->PrevDrawScreen();
 
-		// 描画コマンド
-		player.Draw(texP);
-
-		if (drawFlag)
+		if (NowFlag == 1)
 		{
-			LifeText.Draw(brPng);
 			player.Update(debugcamera.mat, matProjection);
+			kyu.MatUpdate(debugcamera.mat, matProjection);
+
+			if (hit)
+			{
+				player.Draw(texP);
+				kyu.Draw(texP);
+			}
+			else
+			{
+				player.Draw(brPng);
+				kyu.Draw(brPng);
+			}
 		}
-		else
+
+		if (NowFlag == 2)
 		{
-			LifeText.Draw(white);
-			player.Update(playcamera.mat, matProjection);
+			tri.MatUpdate(debugcamera.mat, matProjection);
+			kyu.MatUpdate(debugcamera.mat, matProjection);
+
+			if (hit2)
+			{
+				kyu.Draw(brPng);
+				tri.Draw(brPng);
+			}
+			else
+			{
+				kyu.Draw(texP);
+				tri.Draw(texP);
+			}
 		}
+
+
+		//// 描画コマンド
 
 		dx->PostDrawScreen();
 
