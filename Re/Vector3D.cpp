@@ -107,3 +107,17 @@ Vector3D CreatePolygonNormal(Vector3D a, Vector3D b, Vector3D c)
 
 	return normal;
 }
+
+//üŒ`•âŠ®
+const Vector3D Vector3D::lerp(const Vector3D& start, const Vector3D& end, const float time) {
+
+	float y = time;
+	Vector3D p;
+
+	p.x = start.x * (1.0f - y) + end.x * y;
+	p.y = start.y * (1.0f - y) + end.y * y;
+	p.z = start.z * (1.0f - y) + end.z * y;
+
+	return  p;
+
+}

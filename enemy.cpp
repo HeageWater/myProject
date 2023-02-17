@@ -32,11 +32,37 @@ void Enemy::Draw(int tex, Matrix matView, Matrix matProjection)
 
 void Enemy::Update(Matrix matView, Matrix matProjection)
 {
-	//if () {
-		enemy.mat.trans.y -= 0.2f;
-	//}
 
-	if (hitF) {
+	if (!hitF && lerpF)
+	{
+		nowCount += 0.01f;
+		elapsedCount = nowCount - startCount;
+		float elapsedTime = static_cast<float>(elapsedCount);
+
+		timeRate = min(elapsedTime / maxTime, 1.0f);
+
+		a = a.lerp(p0, p1, timeRate);
+		b = b.lerp(p2, p3, timeRate);
+
+		position = position.lerp(a, b, timeRate);
+
+		enemy.mat.trans = position;
+
+		if (enemy.mat.trans.x >= p3.x ||
+			enemy.mat.trans.y >= p3.y)
+		{
+			deathF = true;
+		}
+	}
+
+	if (!lerpF) 
+	{
+		enemy.mat.trans.y -= 0.2f;
+	}
+	
+	//êÅÇ¡îÚÇŒÇ≥ÇÍÇÈ
+	if (hitF)
+	{
 		enemy.mat.trans -= trans * spd;
 
 		enemy.mat.rotAngle.y += 1;

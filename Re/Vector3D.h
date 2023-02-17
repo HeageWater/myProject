@@ -15,6 +15,9 @@ public:
 	float dot(const Vector3D& v) const;
 	Vector3D cross(const Vector3D& v) const;
 
+	//üŒ`•âŠ®
+	const Vector3D lerp(const Vector3D& start, const Vector3D& end, const float time);
+
 	Vector3D operator+() const;
 
 	Vector3D operator-() const;

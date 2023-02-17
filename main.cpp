@@ -201,6 +201,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 	Model box(dx.get(), shader, "Resources\\maru\\maru.obj", pipeline.get());
 	Model box2(dx.get(), shader, "Resources\\rasu\\rasu.obj", pipeline.get());
+	Model box3(dx.get(), shader, "Resources\\rasu\\rasu.obj", pipeline.get());
+	Model box4(dx.get(), shader, "Resources\\rasu\\rasu.obj", pipeline.get());
+	Model box5(dx.get(), shader, "Resources\\rasu\\rasu.obj", pipeline.get());
 
 	box.mat.trans = { 0,5,0 };
 	box.mat.scale = { 1,1,1 };
@@ -309,27 +312,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			time++;
 
-			//ステージとプレイヤーの当たり判定
-		//if()
-		/*for (int i = 0; i < stage.model.size(); i++)
-		{
-			if (false) {
-				player.player.mat.trans.x = max(player.player.mat.trans.x, stage.model[i]->mat.trans.x);
-				player.player.mat.trans.x = min(player.player.mat.trans.x, stage.model[i]->mat.trans.x);
-
-				player.player.mat.trans.y = max(player.player.mat.trans.y, stage.model[i]->mat.trans.y);
-				player.player.mat.trans.y = min(player.player.mat.trans.y, stage.model[i]->mat.trans.y);
-			}
-		}*/
-		//debugcamera.eye.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
-		//debugcamera.target.x += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
-
 			a = GetRandomA(1, 8);
 
-			if (time > 20) {
-				if (enemy.size() < 3) {
-					if (a > 6) {
+			if (time > 20)
+			{
+				if (enemy.size() < 3)
+				{
+					if (a > 6)
+					{
 						a = GetRandomA(1, 3);
+
 						for (int i = 0; i < a; i++)
 						{
 							int b = GetRandomA(1, 8);
@@ -353,30 +345,22 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				time = 0;
 			}
 
-			if (sheikuFlag == true) {
+			if (sheikuFlag == true)
+			{
 				debugcamera.Move(Sheiku(sheikuCount));
 				sheikuCount--;
 
-				if (sheikuCount < 0) {
+				if (sheikuCount < 0)
+				{
 					sheikuFlag = false;
 					debugcamera.eye = Vector3D(0.0f, 30.0f, 150.0f);
 				}
 			}
 
-			//debugcamera.eye.z += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
-
-			//debugcamera.MatUpdate();
-
-			//box.mat.trans.x += 1.0f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
-			//box.mat.rotAngle.x +=  0.1f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
-
-			//box2.mat.rotAngle.x += 0.1f * (input->GetKey(DIK_W) - input->GetKey(DIK_S));
-
-			//box.MatUpdate(debugcamera.mat, matProjection);
-			//box2.MatUpdate(debugcamera.mat, matProjection);
-
-			if (controller->ButtonTriggerPush(A)) {
-				if (player.jumpFlag == false && player.player.mat.trans.y <= -30.0f) {
+			if (controller->ButtonTriggerPush(A))
+			{
+				if (player.jumpFlag == false && player.player.mat.trans.y <= -30.0f)
+				{
 					player.jumpFlag = true;
 					player.GravityPower = 0;
 					player.jumpPower = 1.5f;
@@ -392,12 +376,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 			stage.Update(debugcamera.mat, matProjection);
 
-			//if (input->GetTrigger(DIK_SPACE) || controller->ButtonTriggerPush(A)) {
 			if (clear > 20) {
 				scene = Clear;
 			}
 
-			//if (input->GetTrigger(DIK_0) || controller->ButtonTriggerPush(A)) {
 			if (life < 1) {
 				scene = Over;
 			}
@@ -427,25 +409,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
-
-
-		////box.mat.trans += move;
-
-		//debugcamera.eye.z += 1.0f * (input->GetKey(DIK_I) - input->GetKey(DIK_O));
-
-		////debugcamera.MatUpdate();
-
-		//box.mat.trans.x += 1.0f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
-		////box.mat.rotAngle.x +=  0.1f * (input->GetKey(DIK_D) - input->GetKey(DIK_A));
-
-		//box2.mat.rotAngle.x += 0.1f * (input->GetKey(DIK_W) - input->GetKey(DIK_S));
-
-		//box.MatUpdate(debugcamera.mat, matProjection);
-		//box2.MatUpdate(debugcamera.mat, matProjection);
-
-		//player.Update(debugcamera.mat, matProjection);
-		//enemy.Update(debugcamera.mat, matProjection);
-
 		//Draw
 		dx->PrevDrawScreen();
 
@@ -455,7 +418,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		{
 
 		case Title:
-			//box2.Draw(white);
 
 			bGround.Draw(bgPng);
 
@@ -463,31 +425,80 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 
 		case Play:
-			//playText.Draw(bgPng);
-
-			stage.Draw(brPng);
 
 			for (int i = 0; i < enemy.size(); i++)
 			{
 				if (CircleCollsionEnemy(Vector2D(player.attackModel.mat.trans.x, player.attackModel.mat.trans.y),
 					Vector2D(enemy[i]->enemy.mat.trans.x, enemy[i]->enemy.mat.trans.y),
 					player.attackModel.mat.scale.x,
-					enemy[i]->enemy.mat.scale.x)) {
+					enemy[i]->enemy.mat.scale.x))
+				{
+					if (enemy[i]->hitF != true)
+					{
+						if (enemy[i]->lerpF != true)
+						{
+							enemy[i]->trans = player.attackModel.mat.trans - enemy[i]->enemy.mat.trans;
+							enemy[i]->trans.normalize();
+							enemy[i]->hitF = true;
 
-					if (enemy[i]->hitF != true) {
-						enemy[i]->trans = player.attackModel.mat.trans - enemy[i]->enemy.mat.trans;
-						enemy[i]->trans.normalize();
-						enemy[i]->hitF = true;
+							clear++;
 
-						clear++;
-
-						if (sheikuFlag == false) {
-							sheikuFlag = true;
-							sheikuCount = 10;
+							if (sheikuFlag == false)
+							{
+								sheikuFlag = true;
+								sheikuCount = 10;
+							}
 						}
 					}
 				}
 			}
+
+			for (int i = 0; i < enemy.size(); i++)
+			{
+				int aida = 50;
+
+				if (enemy[i]->enemy.mat.trans.x > aida * 2 || enemy[i]->enemy.mat.trans.y > aida ||
+					enemy[i]->enemy.mat.trans.x < -(aida * 2) || enemy[i]->enemy.mat.trans.y < -aida - 20)
+				{
+					if (enemy[i]->hitF == false)
+					{
+						enemy[i]->lerpF = true;
+						enemy[i]->startCount = 0;
+
+						enemy[i]->p0 = enemy[i]->enemy.mat.trans;
+
+						enemy[i]->p1 = enemy[i]->p3 - enemy[i]->enemy.mat.trans;
+						enemy[i]->p1.x /= 2;
+						enemy[i]->p1.y = -(enemy[i]->p1.y / 2);
+
+						enemy[i]->p2 = enemy[i]->p3 - enemy[i]->enemy.mat.trans;
+						enemy[i]->p2.x /= 2;
+						enemy[i]->p2.y = -(enemy[i]->p2.y / 2);
+					}
+					else
+					{
+						enemy.erase(enemy.begin() + i);
+						continue;
+					}
+				}
+
+				if (enemy[i]->deathF)
+				{
+					if (sheikuFlag == false)
+					{
+						sheikuFlag = true;
+						sheikuCount = 10;
+					}
+
+					life--;
+					enemy.erase(enemy.begin() + i);
+					continue;
+				}
+			}
+
+			//timer.Draw();
+
+			stage.Draw(brPng);
 
 			player.Draw(texP);
 
@@ -495,22 +506,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			{
 				enemy[i]->Draw(white, debugcamera.mat, matProjection);
 			}
-
-			for (int i = 0; i < enemy.size(); i++)
-			{
-				int aida = 50;
-				if (enemy[i]->enemy.mat.trans.x > aida * 2 || enemy[i]->enemy.mat.trans.y > aida ||
-					enemy[i]->enemy.mat.trans.x < -(aida * 2) || enemy[i]->enemy.mat.trans.y < -aida - 20) {
-			
-					if (enemy[i]->hitF == false) {
-						life--;
-					}
-
-					enemy.erase(enemy.begin() + i);
-				}
-			}
-
-			//timer.Draw();
 
 			LifeText.Draw(lifePng);
 
