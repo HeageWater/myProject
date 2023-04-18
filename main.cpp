@@ -855,7 +855,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	dxCommon->GetDevice()->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
 	//ƒTƒEƒ“ƒhİ’è
-	sound2.SoundPlayWave(bgm);
+	//sound2.SoundPlayWave(bgm);
 	//sound->SoundPlayLoopWave(bgm);
 
 	//•`‰æ‰Šú‰»ˆ—‚±‚±‚Ü‚Å
