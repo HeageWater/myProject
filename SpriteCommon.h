@@ -11,12 +11,12 @@ using namespace DirectX;
 class SpriteCommon 
 {
 public:
-	/*SpriteCommon();
+	SpriteCommon();
 	~SpriteCommon();
 	void Inilialize(DirectXCommon* dxCommon);
 	void Draw();
 	DirectXCommon dxCommon;
 
 	HRESULT result;
-	Microsoft::WRL::ComPtr<D3D12_VERTEX_BUFFER_VIEW> vbView{};*/
+	Microsoft::WRL::ComPtr<D3D12_VERTEX_BUFFER_VIEW> vbView{};
 };

@@ -54,28 +54,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Key* key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
 	key->Initialize(dxCommon->GetWindow());
 
-	ID3D12Resource* constBuffTransform0 = nullptr;
+	/*ID3D12Resource* constBuffTransform0 = nullptr;
 	ConstBufferDataTransform* constMapTransform0 = nullptr;
 
 	ID3D12Resource* constBuffTransform1 = nullptr;
-	ConstBufferDataTransform* constMapTransform1 = nullptr;
+	ConstBufferDataTransform* constMapTransform1 = nullptr;*/
 
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
 
 	//Sound* sound = new Sound();
 
-	Sound sound2;
+	//Sound sound2;
 
 	//int bgm = sound->SoundLoadWave("Resource/BGM.wav");
-	int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
+	//int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
 
-	/*SpriteCommon* spriteCommon = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Inilialize(dxCommon);
 
 	Sprite* sprite = new Sprite();
-	sprite->Inilialize(spriteCommon);*/
+	sprite->Inilialize(spriteCommon);
 	//èâä˙âª
 
 #ifdef _DEBUG
@@ -978,8 +978,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete window;
 	delete object3ds;
 	delete dxCommon;
-	//delete sprite;
-	//delete spriteCommon;
+	delete sprite;
+	delete spriteCommon;
 
 	//xAudio2.Reset();
 	//SoundunLoad(&soundData1);

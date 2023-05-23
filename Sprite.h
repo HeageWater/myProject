@@ -4,9 +4,9 @@
 class Sprite
 {
 public:
-	//Sprite();
-	//~Sprite();
-	//void Inilialize(SpriteCommon* spriteCommon);
+	Sprite();
+	~Sprite();
+	void Inilialize(SpriteCommon* spriteCommon);
 
-	//SpriteCommon* spriteCommon = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 };
