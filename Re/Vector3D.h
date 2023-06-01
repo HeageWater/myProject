@@ -25,6 +25,8 @@ public:
 
 	Vector3D& operator/=(float s);
 	Vector3D& operator*=(float s);
+
+	void SetVector3(Vector3D vec) { x = vec.x; y = vec.y; z = vec.z; };
 };
 
 const Vector3D operator-(const Vector3D& v1, const Vector3D& v2);

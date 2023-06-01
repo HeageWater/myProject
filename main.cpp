@@ -11,10 +11,15 @@
 #include "Re//Controller.h"
 #include <memory>
 #include <random>
+#include <cassert>
+#include <sstream>
+#include <iomanip>
+#include <map>
 #include "Re//Model.h"
 #include "Player.h"
 #include "Sound.h"
 #include "Collision.h"
+#include "JsonFileOpen.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -72,57 +77,50 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
-	//Initialize
-	Player player;
-	player.Initialize(dx.get(), shader, pipeline.get());
+	//ここから
+	LevelData* levelData = nullptr;
 
-	player.player.mat.trans = { 5,0,0 };
-	player.player.mat.scale = { 15,15,15 };
-	player.player.mat.rotAngle = { 0,0,0 };
+	//親子ありファイル
+	levelData = JsonFileOpen::FileOpen("untitled");
 
-	Model kyu;
-	kyu.Initialize(dx.get(), shader, "Resources\\kyu\\kyu.obj", pipeline.get());
+	//複数個ファイル
+	//levelData = JsonFileOpen::FileOpen("Test");
 
-	kyu.mat.trans = { 15,0,0 };
-	kyu.mat.scale = { 1,1,1 };
-	kyu.mat.rotAngle = { 0,0,0 };
+	std::map<std::string, Model*> models;
+	std::vector<Model*> objects;
 
-	Model tri;
-	tri.Initialize(dx.get(), shader, "Resources\\tiriangle\\tiriangle.obj", pipeline.get());
+	//レベルデータからオブジェクトに生成、配置
+	for (auto& objectdata : levelData->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models)::iterator it = models.find(objectdata.fileName);
 
-	tri.mat.trans = { 0,0,0 };
-	tri.mat.scale = { 1.0,1.0,1.0 };
-	tri.mat.rotAngle = { 0,0,1.55f };
+		//終わりか
+		if (it != models.end())
+		{
+			model = it->second;
+		}
 
-	//sound.SoundPlayLoopWave(bgm);
+		//モデルを指定して3Dオブジェクトを生成
+		Model* newModel = new Model();
+		newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
 
-	bool drawFlag = false;
+		//trans
+		newModel->mat.trans = objectdata.translation;
 
-	Sphere sphere;
+		//rotation
+		newModel->mat.rotAngle = objectdata.rotation;
 
-	sphere.center = Vector3D(0, 2, 1);
-	sphere.radius = 1.0;
+		//scale;
+		newModel->mat.scale = objectdata.scaling;
 
-	Plane plane;
+		//Update
+		newModel->MatUpdate(debugcamera.mat, matProjection);
 
-	plane.normal = Vector3D(0, 1, 0);
-	plane.distance = 0.0f;
-
-	Triangle triangle;
-
-	triangle.p0 = { 0.0f, 0.0f,0.0f };
-	triangle.p1 = { -5.0f, 0.0f,+5.0f };
-	triangle.p2 = { +5.0f, 0.0f ,-5.0f };
-	triangle.normal = { 0.0f,1.0f,0.0f };
-
-	int NowFlag = 1;
-
-	bool hit = false;
-	bool hit2 = false;
-
-	int count = 0;
-
-	float spd = -0.02f;
+		//格納
+		objects.push_back(newModel);
+	}
 
 	//	ゲームループ
 	while (true)
@@ -146,136 +144,27 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
-		if (input->GetKey(DIK_1))
+		//読み込んだモデルのUpdate
+		for (auto& object : objects)
 		{
-			NowFlag = 1;
-			count = 0;
-			spd = -0.02f;
+			object->mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
+			object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
+			object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
 
-			sphere.center = Vector3D(0, 2, 1);
-			sphere.radius = 1.0;
+			object->MatUpdate(debugcamera.mat, matProjection);
 
-			player.player.mat.trans = { 5,0,0 };
-			player.player.mat.scale = { 15,15,15 };
-			player.player.mat.rotAngle = { 0,0,0 };
-
-			kyu.mat.trans = { 15,0,0 };
-			kyu.mat.scale = { 1,1,1 };
-			kyu.mat.rotAngle = { 0,0,0 };
-		}
-
-		if (input->GetKey(DIK_2))
-		{
-			NowFlag = 2;
-			count = 0;
-			spd = -0.02f;
-
-			sphere.center = Vector3D(0, 3, 1);
-			sphere.radius = 1.0;
-
-			kyu.mat.trans = { 15,5,0 };
-			kyu.mat.scale = { 1,1,1 };
-			kyu.mat.rotAngle = { 0,0,0 };
-
-			tri.mat.trans = { 0,0,0 };
-			tri.mat.scale = { 1.0,1.0,1.0 };
-			tri.mat.rotAngle = { 0,0,1.55f };
-
-			triangle.p0 = { 0.0f, 0.0f,0.0f };
-			triangle.p1 = { -5.0f, 0.0f,+5.0f };
-			triangle.p2 = { +5.0f, 0.0f ,-5.0f };
-			triangle.normal = { 0.0f,1.0f,0.0f };
-		}
-
-		if (NowFlag == 1)
-		{
-			kyu.mat.trans = sphere.center;
-			player.player.mat.trans = plane.normal;
-
-			player.player.mat.trans.y -= 1.0f;
-
-			player.player.mat.scale = { 10,0,10 };
-			kyu.mat.scale = { sphere.radius,sphere.radius,sphere.radius };
-
-			count++;
-
-			if (count > 200)
-			{
-				spd = -spd;
-				count = 0;
-			}
-
-			sphere.center.y += spd;
-
-			player.Update(debugcamera.mat, matProjection);
-			kyu.MatUpdate(debugcamera.mat, matProjection);
-
-			hit = Collision::CheckSphereToPlane(sphere, plane);
-		}
-
-		if (NowFlag == 2)
-		{
-			kyu.mat.trans = sphere.center;
-
-			kyu.mat.scale = { sphere.radius -0.25f,sphere.radius - 0.25f,sphere.radius - 0.25f };
-
-			tri.mat.trans = triangle.p0;
-
-			tri.mat.scale = { 2.0f,2.0f,2.0f };
-
-			count++;
-
-			if (count > 200)
-			{
-				spd = -spd;
-				count = 0;
-			}
-
-			sphere.center.y += spd;
-
-			tri.MatUpdate(debugcamera.mat, matProjection);
-			kyu.MatUpdate(debugcamera.mat, matProjection);
-
-			hit2 = Collision::CheckSphereToTriangle(sphere, triangle);
+			break;
 		}
 
 		//Draw
 		dx->PrevDrawScreen();
 
-		if (NowFlag == 1)
-		{
-			player.Update(debugcamera.mat, matProjection);
-			kyu.MatUpdate(debugcamera.mat, matProjection);
+		//読み込んだモデルのDraw(White)
+		for (auto& object : objects) {
+			object->Draw(white);
 
-			if (hit)
-			{
-				player.Draw(texP);
-				kyu.Draw(texP);
-			}
-			else
-			{
-				player.Draw(brPng);
-				kyu.Draw(brPng);
-			}
+			object->mat.trans;
 		}
-
-		if (NowFlag == 2)
-		{
-			tri.MatUpdate(debugcamera.mat, matProjection);
-			kyu.MatUpdate(debugcamera.mat, matProjection);
-
-			if (hit2)
-			{
-				kyu.Draw(brPng);
-				tri.Draw(brPng);
-			}
-			else
-			{
-				kyu.Draw(texP);
-				tri.Draw(texP);
-			}
-		}
-
 
 		//// 描画コマンド
 
@@ -288,5 +177,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		dx->PostDraw();
 	}
+
+	for (auto& object : objects) {
+		delete object;
+	}
+
 	return 0;
 }
