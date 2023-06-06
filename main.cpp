@@ -59,6 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader));
 
+	//
 	Square playText(dx.get(), uiPipeline.get(), bilShader);
 	playText.obj.trans.z = 0;
 	playText.obj.scale = { 720,420,0.3f };
