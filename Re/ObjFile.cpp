@@ -6,49 +6,51 @@ bool ObjFile::ReadFile()
 	if (file == NULL) {
 		return false;
 	}
-	while (true)
-	{
-		char lineHeader[128] = { 0 };
+	
+	//while (true)
+	//{
+	//	char lineHeader[256] = { 0 };
 
-		// 行の最初の文字列を読み込みます。
-		int res = fscanf_s(file, "%s", lineHeader, _countof(lineHeader));
+	//	// 行の最初の文字列を読み込みます。
+	//	int64_t res = fscanf_s(file, "%s", &lineHeader, _countof(lineHeader));
 
-		if (res == EOF)	break;
+	//	if (res == EOF)	break;
 
-		if (strcmp(lineHeader, "v") == NULL) {
-			Vector3D vertex;
-			fscanf_s(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z);
-			temp_vertices.push_back(vertex);
-		}
-		else if (strcmp(lineHeader, "vt") == NULL) {
-			Vector2D uv;
-			fscanf_s(file, "%f %fn", &uv.x, &uv.y);
-			temp_uvs.push_back(uv);
-		}
-		else if (strcmp(lineHeader, "vn") == NULL) {
-			Vector3D normal;
-			fscanf_s(file, "%f %f %fn", &normal.x, &normal.y, &normal.z);
-			temp_normals.push_back(normal);
-		}
-		else if (strcmp(lineHeader, "f") == NULL) {
-			std::string vertex1, vertex2, vertex3;
-			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-			int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
-			if (matches != 9) {
-				return false;
-			}
-			vertexIndices.push_back(vertexIndex[0]);
-			vertexIndices.push_back(vertexIndex[1]);
-			vertexIndices.push_back(vertexIndex[2]);
-			uvIndices.push_back(uvIndex[0]);
-			uvIndices.push_back(uvIndex[1]);
-			uvIndices.push_back(uvIndex[2]);
-			normalIndices.push_back(normalIndex[0]);
-			normalIndices.push_back(normalIndex[1]);
-			normalIndices.push_back(normalIndex[2]);
-		}
-	}
-	return true;
+	//	if (strcmp(lineHeader, "v") == 0) {
+	//		Vector3D vertex;
+	//		fscanf_s(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z);
+	//		temp_vertices.push_back(vertex);
+	//	}
+	//	else if (strcmp(lineHeader, "vt") == 0) {
+	//		Vector2D uv;
+	//		fscanf_s(file, "%f %fn", &uv.x, &uv.y);
+	//		temp_uvs.push_back(uv);
+	//	}
+	//	else if (strcmp(lineHeader, "vn") == 0) {
+	//		Vector3D normal;
+	//		fscanf_s(file, "%f %f %fn", &normal.x, &normal.y, &normal.z);
+	//		temp_normals.push_back(normal);
+	//	}
+	//	else if (strcmp(lineHeader, "f") == 0) {
+	//		std::string vertex1, vertex2, vertex3;
+	//		unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+	//		int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+	//		if (matches != 9) {
+	//			return false;
+	//		}
+	//		vertexIndices.push_back(vertexIndex[0]);
+	//		vertexIndices.push_back(vertexIndex[1]);
+	//		vertexIndices.push_back(vertexIndex[2]);
+	//		uvIndices.push_back(uvIndex[0]);
+	//		uvIndices.push_back(uvIndex[1]);
+	//		uvIndices.push_back(uvIndex[2]);
+	//		normalIndices.push_back(normalIndex[0]);
+	//		normalIndices.push_back(normalIndex[1]);
+	//		normalIndices.push_back(normalIndex[2]);
+	//	}
+	//}
+	//return true;
+	return false;
 }
 
 ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
