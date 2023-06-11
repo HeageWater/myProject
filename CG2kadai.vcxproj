@@ -151,7 +151,10 @@
     <ClCompile Include="Re\Controller.cpp" />
     <ClCompile Include="Re\DirectX.cpp" />
     <ClCompile Include="Re\GPipeline.cpp" />
-    <ClCompile Include="Re\Input.cpp" />
+    <ClCompile Include="Re\Input.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
+    </ClCompile>
     <ClCompile Include="Re\Matrix.cpp" />
     <ClCompile Include="Re\Model.cpp" />
     <ClCompile Include="Re\MyDebugCamera.cpp" />
