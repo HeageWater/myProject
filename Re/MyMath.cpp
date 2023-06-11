@@ -81,7 +81,7 @@ Matrix MyMath::PerspectiveFovLH(const int winwidth, const int winheight, float f
 	//assert(!XMScalarNearEqual(AspectRatio, 0.0f, 0.00001f));
 	//assert(!XMScalarNearEqual(FarZ, NearZ, 0.00001f));
 
-	float aspect = (float)winwidth / winheight;
+	float aspect = (float)winwidth / (float)winheight;
 
 	//float tan = (float)sin(fovY/2.0f) / cos(fovY/2.0f) * aspect;
 	float height = 1.0f / tanf(fovY / 2.0f);

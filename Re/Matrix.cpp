@@ -37,8 +37,8 @@ Matrix& Matrix::operator*=(const Matrix& m2)
 
 bool InverseMatrix(const Matrix& mat, Matrix& invMat)
 {
-    float sweep[4][8];
-    int k;
+    float sweep[4][8] = { 0 };
+    int k = 0;
 
     for (int y = 0; y < 4; y++) {
         for (int x = 0; x < 4; x++) {
@@ -79,7 +79,7 @@ bool InverseMatrix(const Matrix& mat, Matrix& invMat)
         /* 操作（１）：k行目とmax_i行目を入れ替える */
         if (k != max_i) {
             for (int x = 0; x < 8; x++) {
-                double tmp = sweep[max_i][x];
+                float tmp = sweep[max_i][x];
                 sweep[max_i][x] = sweep[k][x];
                 sweep[k][x] = tmp;
             }

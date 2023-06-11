@@ -92,7 +92,7 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT vertSize, UINT 
 		result = indexBuff->Map(0, nullptr, (void**)&indexMap);
 		assert(SUCCEEDED(result));
 		// 全頂点に対して
-		for (int i = 0; i < indicesSize; i++) {
+		for (int i = 0; i < (signed)indicesSize; i++) {
 			indexMap[i] = indices[i]; // 座標をコピー
 		}
 		// 繋がりを解除

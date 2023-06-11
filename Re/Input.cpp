@@ -105,8 +105,8 @@ POINT Input::CursorPos()
 
 void Input::CursorPos(Vector2D& pos)
 {
-	pos.x = cursor.x;
-	pos.y = cursor.y;
+	pos.x = (float)cursor.x;
+	pos.y = (float)cursor.y;
 }
 
 LONG Input::Wheel()

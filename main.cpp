@@ -28,11 +28,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
 	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
-	int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
+	//int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
+	//int brPng = dx->LoadTextureGraph(L"Resources/br.png");
 
 	MyXAudio sound;
-	int bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
+	//int bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
 
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
@@ -148,10 +148,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//“Ç‚Ýž‚ñ‚¾ƒ‚ƒfƒ‹‚ÌUpdate
 		for (auto& object : objects)
 		{
-			object->mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
-			object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
-			object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
-
+			object->mat.trans.x -= (float)(input->GetKey(DIK_D) - input->GetKey(DIK_A));
+			object->mat.trans.y -= (float)(input->GetKey(DIK_S) - input->GetKey(DIK_W));
+			object->mat.trans.z -= (float)(input->GetKey(DIK_E) - input->GetKey(DIK_Q));
+																					  
 			object->MatUpdate(debugcamera.mat, matProjection);
 
 			break;

@@ -73,7 +73,7 @@ void Texture::LoadTexture(const wchar_t* textureName)
 
 TextureDeta::TextureDeta(ID3D12Device* dev, D3D12_RESOURCE_DESC resDesc, Texture* texture)
 {
-	HRESULT result;
+	//HRESULT result;
 
 	//	ÉqÅ[Évê›íË
 	D3D12_HEAP_PROPERTIES textureHeapProp{};

@@ -11,10 +11,10 @@
 class Input
 {
 public:
-	static enum MouseButton {
+	enum MouseButton {
 		LeftClick = 0,
-		RightClick,
-		WheelClick,
+		RightClick = 1,
+		WheelClick = 2,
 	};
 private:
 	Window* win = nullptr;

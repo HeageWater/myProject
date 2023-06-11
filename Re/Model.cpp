@@ -3,9 +3,9 @@
 
 void Model::Initialize(Shader shader, const char* filename)
 {
-	HRESULT result;
+	HRESULT newresult;
 
-	D3D12_HEAP_PROPERTIES heapProp{};
+	D3D12_HEAP_PROPERTIES newheapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//	ヒープ設定
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
@@ -20,21 +20,21 @@ void Model::Initialize(Shader shader, const char* filename)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
+	newresult = dx->GetDev()->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&transform));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(newresult));
 
 	//	定数バッファのマッピング
-	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
-	assert(SUCCEEDED(result));
+	newresult = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	assert(SUCCEEDED(newresult));
 
 	ObjFile objfile(filename, vertices);
-	vertexSize = vertices.size();
+	vertexSize = (UINT)vertices.size();
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 
@@ -87,10 +87,10 @@ void Model::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
+	HRESULT newresult = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(newresult));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (int i = 0; i < (signed)vertexSize; i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除

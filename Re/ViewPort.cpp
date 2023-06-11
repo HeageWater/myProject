@@ -4,7 +4,7 @@ ViewPort::ViewPort()
 {
 }
 
-void ViewPort::Init(const int width, const int height, const int topLftX, const int topLftY, const float MinDepth, const float MaxDepth)
+void ViewPort::Init(const float width, const float height, const float topLftX, const float topLftY, const float MinDepth, const float MaxDepth)
 {
 	viewport.Width = width;
 	viewport.Height = height;

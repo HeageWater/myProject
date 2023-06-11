@@ -8,27 +8,29 @@ bool ObjFile::ReadFile()
 	}
 	while (true)
 	{
-		char lineHeader[128];
+		char lineHeader[128] = { 0 };
+
 		// çsÇÃç≈èâÇÃï∂éöóÒÇì«Ç›çûÇ›Ç‹Ç∑ÅB
 		int res = fscanf_s(file, "%s", lineHeader, _countof(lineHeader));
+
 		if (res == EOF)	break;
 
-		if (strcmp(lineHeader, "v") == 0) {
+		if (strcmp(lineHeader, "v") == NULL) {
 			Vector3D vertex;
 			fscanf_s(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z);
 			temp_vertices.push_back(vertex);
 		}
-		else if (strcmp(lineHeader, "vt") == 0) {
+		else if (strcmp(lineHeader, "vt") == NULL) {
 			Vector2D uv;
 			fscanf_s(file, "%f %fn", &uv.x, &uv.y);
 			temp_uvs.push_back(uv);
 		}
-		else if (strcmp(lineHeader, "vn") == 0) {
+		else if (strcmp(lineHeader, "vn") == NULL) {
 			Vector3D normal;
 			fscanf_s(file, "%f %f %fn", &normal.x, &normal.y, &normal.z);
 			temp_normals.push_back(normal);
 		}
-		else if (strcmp(lineHeader, "f") == 0) {
+		else if (strcmp(lineHeader, "f") == NULL) {
 			std::string vertex1, vertex2, vertex3;
 			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
 			int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
@@ -52,7 +54,7 @@ bool ObjFile::ReadFile()
 ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 {
 	fopen_s(&file, filename, "r");
-	
+
 	if (ReadFile()) {
 		out_vertices.resize(vertexIndices.size());
 		for (size_t i = 0; i < vertexIndices.size(); i++)

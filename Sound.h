@@ -86,13 +86,13 @@ private:
 	std::vector<SoundData> soundData;
 	std::vector<IXAudio2SourceVoice*> soundPtr;
 	int handle;
-	void SoundUnload(SoundData* soundData);
+	void SoundUnload(SoundData* newSoundData);
 public:
 	ComPtr<IXAudio2> xAudio2;
 	MyXAudio();
 	~MyXAudio();
 	int SoundLoadWave(const char* filename);
-	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
+	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& newSoundData);
 	void SoundPlayWave(int handle, bool stop = false);
 	void SoundPlayLoopWave(int handle);
 	void StopAllLoopSound();

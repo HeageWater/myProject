@@ -78,13 +78,13 @@ private:
 	
 	void SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource = nullptr);
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* newColor = nullptr);
 public:
 	MyDirectX(Window* win_);
 	void Initialize(Window* win_);
-	void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	void PrevDrawScreen(FLOAT* newColor = nullptr);
 	void PostDrawScreen();
-	void PrevDraw(FLOAT* clearColor = nullptr);
+	void PrevDraw(FLOAT* newColor = nullptr);
 	void PostDraw();
 
 	int LoadTextureGraph(const wchar_t* textureName);

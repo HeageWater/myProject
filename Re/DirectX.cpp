@@ -349,7 +349,7 @@ void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_
 	cmdList->ResourceBarrier(1, &desc);
 }
 
-void MyDirectX::PrevDraw(FLOAT* clearColor)
+void MyDirectX::PrevDraw(FLOAT* newColor)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -366,10 +366,10 @@ void MyDirectX::PrevDraw(FLOAT* clearColor)
 #pragma endregion Change
 
 	CmdListDrawAble(barrierDesc, backBuffers[bbIndex].Get(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor);
+		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, newColor);
 }
 
-void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor)
+void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* newColor)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -381,11 +381,11 @@ void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pR
 #pragma endregion Change
 	// 3.画面クリア
 #pragma region ScreenClear
-	if (clearColor == nullptr) {
+	if (newColor == nullptr) {
 		ScreenClear(rtvHandle);
 	}
 	else {
-		ScreenClear(clearColor, rtvHandle);
+		ScreenClear(newColor, rtvHandle);
 	}
 	cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 #pragma endregion
@@ -431,7 +431,7 @@ void MyDirectX::PostDraw()
 #pragma endregion ChangeScreen
 }
 
-void MyDirectX::PrevDrawScreen(FLOAT* clearColor)
+void MyDirectX::PrevDrawScreen(FLOAT* newColor)
 {
 	rtvHandle = screenRTVHeap->GetCPUDescriptorHandleForHeapStart();
 	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -458,18 +458,18 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result = LoadFromWICFile(
+	HRESULT newresult = LoadFromWICFile(
 		textureName,
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
 	//	ミニマップ生成
 	ScratchImage mipChain{};
-	result = GenerateMipMaps(
+	newresult = GenerateMipMaps(
 		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
 		TEX_FILTER_DEFAULT, 0, mipChain);
 
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(newresult)) {
 		scratchImg = std::move(mipChain);
 		metadata = scratchImg.GetMetadata();
 	}
@@ -493,7 +493,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 
 	int buffIndex = textureNum - 1;
 	//	テクスチャバッファ生成
-	result = device->CreateCommittedResource(
+	newresult = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&tectureResourceDesc,
@@ -505,14 +505,14 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	{
 		const Image* img = scratchImg.GetImage(i, 0, 0);
 
-		result = texBuff[buffIndex]->WriteToSubresource(
+		newresult = texBuff[buffIndex]->WriteToSubresource(
 			(UINT)i,
 			nullptr,
 			img->pixels,
 			(UINT)img->rowPitch,
 			(UINT)img->slicePitch
 		);
-		assert(SUCCEEDED(result));
+		assert(SUCCEEDED(newresult));
 	}
 
 #pragma region SetSRV
@@ -539,13 +539,13 @@ D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
 	return srvGpuHandle;
 }
 
-void MyDirectX::ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
+void MyDirectX::ScreenClear(FLOAT* newColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
 {
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	cmdList->ClearRenderTargetView(rtvHandle, newColor, 0, nullptr);
 }
 void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
 {
-	FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f };
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	FLOAT newColor[] = { 0.1f,0.25f, 0.5f,0.0f };
+	cmdList->ClearRenderTargetView(rtvHandle, newColor, 0, nullptr);
 }
 

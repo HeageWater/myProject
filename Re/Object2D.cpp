@@ -6,10 +6,10 @@ void Object2D::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	VertexObj* vertMap = nullptr;
-	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
+	HRESULT newresult = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(newresult));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (int i = 0; i < (signed)vertexSize; i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除
@@ -60,10 +60,10 @@ void Object2D::SetMatTransform()
 
 Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 {
-	HRESULT result;
+	HRESULT newresult;
 
 #pragma region  ConstBuffer
-	D3D12_HEAP_PROPERTIES heapProp{};
+	D3D12_HEAP_PROPERTIES newheapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//	ヒープ設定
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
@@ -78,18 +78,18 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dev->CreateCommittedResource(
+	newresult = dev->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&transform));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(newresult));
 
 	//	定数バッファのマッピング
-	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
-	assert(SUCCEEDED(result));
+	newresult = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	assert(SUCCEEDED(newresult));
 #pragma endregion
 
 	vertexSize = vertexNum;
@@ -105,12 +105,12 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 	{
 		size_t n = i * 3;
 		indices[n + 2] = vertexSize;
-		indices[n] = i;
+		indices[n] = (UINT)i;
 		if (i == vertexNum - 1) {
 			indices[n + 1] = 0;
 		}
 		else {
-			indices[n + 1] = i + 1;
+			indices[n + 1] = (UINT)(i + 1);
 		}
 	}
 
@@ -121,8 +121,8 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 
 	for (size_t i = 0; i < vertexNum; i++)
 	{
-		vertices[i].pos.x = rad * sin(radian * i);
-		vertices[i].pos.y = rad * cos(radian * i);
+		vertices[i].pos.x = (float)(rad * sin(radian * i));
+		vertices[i].pos.y = (float)(rad * cos(radian * i));
 		vertices[i].pos.z = 0;
 	}
 	vertices[vertexNum].pos.x = 0;

@@ -1,93 +1,93 @@
 #include "GPipeline.h"
 #include <vector>
 
-GPipeline::GPipeline(D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, ID3D12Device* dev, Shader shader)
-{
-	D3D12_DESCRIPTOR_RANGE range = {};
-	range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	range.BaseShaderRegister = 0;
-	range.NumDescriptors = 1;
-
-	D3D12_ROOT_PARAMETER rp[2] = {};
-	rp[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rp[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rp[0].DescriptorTable.pDescriptorRanges = &range;
-	rp[0].DescriptorTable.NumDescriptorRanges = 1;
-
-	SetRootParam(rp[1], D3D12_ROOT_PARAMETER_TYPE_CBV, 2, 0);
-
-	D3D12_ROOT_SIGNATURE_DESC rsDesc = {};
-	rsDesc.NumParameters = _countof(rp);
-	rsDesc.NumStaticSamplers = 1;
-
-#pragma region sampler
-	//	テクスチャーサンプラーの設定
-	D3D12_STATIC_SAMPLER_DESC sampler{};
-	sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	sampler.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
-	sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-	sampler.MaxLOD = D3D12_FLOAT32_MAX;
-	sampler.MinLOD = 0.0f;
-	sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-#pragma endregion
-
-	rsDesc.pStaticSamplers = &sampler;
-	rsDesc.pParameters = rp;
-	rsDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-
-	ComPtr<ID3DBlob> rsBlob;
-	ComPtr<ID3DBlob> errBlob;
-
-	HRESULT result = D3D12SerializeRootSignature(
-		&rsDesc,
-		D3D_ROOT_SIGNATURE_VERSION_1,
-		rsBlob.ReleaseAndGetAddressOf(),
-		errBlob.ReleaseAndGetAddressOf());
-
-	result = dev->CreateRootSignature(
-		0,
-		rsBlob.Get()->GetBufferPointer(),
-		rsBlob.Get()->GetBufferSize(),
-		IID_PPV_ARGS(rootSignature.ReleaseAndGetAddressOf()));
-
-	SetShader(shader);
-	pipelineDesc.DepthStencilState.DepthEnable = false;
-	pipelineDesc.DepthStencilState.StencilEnable = false;
-
-	D3D12_INPUT_ELEMENT_DESC layout[2] = {
-		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
-		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
-	};
-
-	pipelineDesc.InputLayout.NumElements = _countof(layout);
-	pipelineDesc.InputLayout.pInputElementDescs = layout;
-#pragma region  Blending
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	Blend(blenddesc);
-#pragma endregion
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	pipelineDesc.NumRenderTargets = 1;
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-#pragma region Rasterizer
-	// 設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; // 背面カリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
-#pragma endregion
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	pipelineDesc.SampleDesc.Count = 1;
-	pipelineDesc.SampleDesc.Quality = 0;
-	pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
-
-
-	pipelineDesc.pRootSignature = rootSignature.Get();
-	result = dev->CreateGraphicsPipelineState(&pipelineDesc,
-		IID_PPV_ARGS(state.ReleaseAndGetAddressOf()));
-}
+//GPipeline::GPipeline(ID3D12Device* dev, Shader shader)
+//{
+//	D3D12_DESCRIPTOR_RANGE range = {};
+//	range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+//	range.BaseShaderRegister = 0;
+//	range.NumDescriptors = 1;
+//
+//	D3D12_ROOT_PARAMETER rp[2] = {};
+//	rp[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+//	rp[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+//	rp[0].DescriptorTable.pDescriptorRanges = &range;
+//	rp[0].DescriptorTable.NumDescriptorRanges = 1;
+//
+//	SetRootParam(rp[1], D3D12_ROOT_PARAMETER_TYPE_CBV, 2, 0);
+//
+//	D3D12_ROOT_SIGNATURE_DESC rsDesc = {};
+//	rsDesc.NumParameters = _countof(rp);
+//	rsDesc.NumStaticSamplers = 1;
+//
+//#pragma region sampler
+//	//	テクスチャーサンプラーの設定
+//	D3D12_STATIC_SAMPLER_DESC sampler{};
+//	sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+//	sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+//	sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+//	sampler.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+//	sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+//	sampler.MaxLOD = D3D12_FLOAT32_MAX;
+//	sampler.MinLOD = 0.0f;
+//	sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+//	sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+//#pragma endregion
+//
+//	rsDesc.pStaticSamplers = &sampler;
+//	rsDesc.pParameters = rp;
+//	rsDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+//
+//	ComPtr<ID3DBlob> rsBlob;
+//	ComPtr<ID3DBlob> errBlob;
+//
+//	HRESULT result = D3D12SerializeRootSignature(
+//		&rsDesc,
+//		D3D_ROOT_SIGNATURE_VERSION_1,
+//		rsBlob.ReleaseAndGetAddressOf(),
+//		errBlob.ReleaseAndGetAddressOf());
+//
+//	result = dev->CreateRootSignature(
+//		0,
+//		rsBlob.Get()->GetBufferPointer(),
+//		rsBlob.Get()->GetBufferSize(),
+//		IID_PPV_ARGS(rootSignature.ReleaseAndGetAddressOf()));
+//
+//	SetShader(shader);
+//	pipelineDesc.DepthStencilState.DepthEnable = false;
+//	pipelineDesc.DepthStencilState.StencilEnable = false;
+//
+//	D3D12_INPUT_ELEMENT_DESC layout[2] = {
+//		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
+//		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
+//	};
+//
+//	pipelineDesc.InputLayout.NumElements = _countof(layout);
+//	pipelineDesc.InputLayout.pInputElementDescs = layout;
+//#pragma region  Blending
+//	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+//	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+//	Blend(blenddesc);
+//#pragma endregion
+//	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+//	pipelineDesc.NumRenderTargets = 1;
+//	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+//#pragma region Rasterizer
+//	// 設定
+//	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; // 背面カリング
+//	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
+//	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+//#pragma endregion
+//	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+//	pipelineDesc.SampleDesc.Count = 1;
+//	pipelineDesc.SampleDesc.Quality = 0;
+//	pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+//
+//
+//	pipelineDesc.pRootSignature = rootSignature.Get();
+//	result = dev->CreateGraphicsPipelineState(&pipelineDesc,
+//		IID_PPV_ARGS(state.ReleaseAndGetAddressOf()));
+//}
 
 GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize,
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord)
@@ -251,7 +251,7 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = rootParams.size();						//	ルートパラメータ数
+	rootSignatureDesc.NumParameters = (UINT)rootParams.size();						//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
@@ -302,7 +302,7 @@ void GPipeline::SetScreenRootSignature(ID3D12Device* dev)
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = rootParams.size();						//	ルートパラメータ数
+	rootSignatureDesc.NumParameters = (UINT)rootParams.size();						//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
