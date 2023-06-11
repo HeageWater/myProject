@@ -10,6 +10,9 @@
 #include "Sound.h"
 #include "ObjFile.h"
 #include <fstream>
+#include <wrl.h>
+
+using namespace Microsoft::WRL;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -46,11 +49,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	HRESULT result;
 
 	//宣言
+	//ComPtr<DirectXCommon> dxCommon = nullptr;
 	DirectXCommon* dxCommon = nullptr;
 
 	dxCommon = new DirectXCommon();
 	dxCommon->Initialize();
 
+	//ComPtr<Key> key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
 	Key* key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
 	key->Initialize(dxCommon->GetWindow());
 
@@ -60,6 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Resource* constBuffTransform1 = nullptr;
 	ConstBufferDataTransform* constMapTransform1 = nullptr;*/
 
+	//ComPtr<Controller> controller = nullptr;
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
 
@@ -70,17 +76,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//int bgm = sound->SoundLoadWave("Resource/BGM.wav");
 	//int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
 
-	SpriteCommon* spriteCommon = nullptr;
+	/*SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Inilialize(dxCommon);
 
 	Sprite* sprite = new Sprite();
-	sprite->Inilialize(spriteCommon);
+	sprite->Inilialize(spriteCommon);*/
 	//初期化
 
 #ifdef _DEBUG
 	ComPtr<ID3D12InfoQueue> infoQueue;
-	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	if (SUCCEEDED(dxCommon->GetDevice()->QueryInterface(IID_PPV_ARGS(&infoQueue))))
 	{
 		//ヤバイとき止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
@@ -795,6 +801,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	//deviceに代入してから入れる
+	//ComPtr<Object3ds> object3ds = new Object3ds(dxCommon->GetDevice());
 	Object3ds* object3ds = new Object3ds(dxCommon->GetDevice());
 
 	//全ミップマップについて
@@ -892,19 +899,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//移動
 		if (key->Keep(DIK_UP) || vec.y < -DeadSpace)
 		{
-			object3ds[0].position.y += speed;
+			object3ds->position.y += speed;
 		}
 		if (key->Keep(DIK_DOWN) || vec.y > DeadSpace)
 		{
-			object3ds[0].position.y -= speed;
+			object3ds->position.y -= speed;
 		}
 		if (key->Keep(DIK_RIGHT) || vec.x > DeadSpace)
 		{
-			object3ds[0].position.x += speed;
+			object3ds->position.x += speed;
 		}
 		if (key->Keep(DIK_LEFT) || vec.x < -DeadSpace)
 		{
-			object3ds[0].position.x -= speed;
+			object3ds->position.x -= speed;
 		}
 
 		if (key->Keep(DIK_ESCAPE))
@@ -969,20 +976,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	//windowAPI後始末
-
-	//ウィンドウクラスを登録解除
-	dxCommon->GetWindow()->Finalize();
-
+	// 
 	//元データ解放
 	delete key;
 	//delete window;
 	delete object3ds;
 	delete dxCommon;
-	delete sprite;
-	delete spriteCommon;
 
-	//xAudio2.Reset();
-	//SoundunLoad(&soundData1);
+	//ウィンドウクラスを登録解除
+	dxCommon->GetWindow()->Finalize();
 
 	return 0;
 }
