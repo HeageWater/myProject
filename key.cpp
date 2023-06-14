@@ -53,7 +53,7 @@ void Key::Initialize(WindowApi* winapi) {
 void Key::Update()
 {
 	//‘SƒL[‚Ì“ü—Íó‘Ô‚ğ•Û‘¶‚·‚é
-	for (int i = 0; i < sizeof(oldkey); i++)
+	for (int32_t i = 0; i < sizeof(oldkey); i++)
 	{
 		oldkey[i] = keys[i];
 	}

@@ -981,7 +981,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete key;
 	//delete window;
 	delete object3ds;
-	delete dxCommon;
+	//delete dxCommon;
 
 	//ウィンドウクラスを登録解除
 	dxCommon->GetWindow()->Finalize();
