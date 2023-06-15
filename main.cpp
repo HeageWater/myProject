@@ -82,7 +82,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	LevelData* levelData = nullptr;
 
 	//親子ありファイル
-	levelData = JsonFileOpen::FileOpen("untitled");
+	//levelData = JsonFileOpen::FileOpen("untitled");
+	levelData = JsonFileOpen::FileOpen("TestStage");
 
 	//複数個ファイル
 	///levelData = JsonFileOpen::FileOpen("Test");
@@ -91,37 +92,37 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::vector<Model*> objects;
 
 	//レベルデータからオブジェクトに生成、配置
-	//for (auto& objectdata : levelData->objects)
-	//{
-	//	//ファイル名から登録済みモデルを検索
-	//	Model* model = nullptr;
-	//	decltype(models)::iterator it = models.find(objectdata.fileName);
+	for (auto& objectdata : levelData->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models)::iterator it = models.find(objectdata.fileName);
 
-	//	//終わりか
-	//	if (it != models.end())
-	//	{
-	//		model = it->second;
-	//	}
+		//終わりか
+		if (it != models.end())
+		{
+			model = it->second;
+		}
 
-	//	//モデルを指定して3Dオブジェクトを生成
-	//	Model* newModel = new Model();
-	//	newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
+		//モデルを指定して3Dオブジェクトを生成
+		Model* newModel = new Model();
+		newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
 
-	//	//trans
-	//	newModel->mat.trans = objectdata.translation;
+		//trans
+		newModel->mat.trans = objectdata.translation;
 
-	//	//rotation
-	//	newModel->mat.rotAngle = objectdata.rotation;
+		//rotation
+		newModel->mat.rotAngle = objectdata.rotation;
 
-	//	//scale;
-	//	newModel->mat.scale = objectdata.scaling;
+		//scale;
+		newModel->mat.scale = objectdata.scaling;
 
-	//	//Update
-	//	newModel->MatUpdate(debugcamera.mat, matProjection);
+		//Update
+		newModel->MatUpdate(debugcamera.mat, matProjection);
 
-	//	//格納
-	//	objects.push_back(newModel);
-	//}
+		//格納
+		objects.push_back(newModel);
+	}
 
 	//	ゲームループ
 	while (true)
