@@ -21,7 +21,8 @@ public:
 	void PreDraw();
 	void PostDraw();
 
-	Port* port = new Port();
+	Microsoft::WRL::ComPtr<Port> port = new Port();
+	//Port* port = new Port();
 
 	ID3D12Device* GetDevice() const { return device.Get(); };
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); };

@@ -50,9 +50,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//êÈåæ
 	//ComPtr<DirectXCommon> dxCommon = nullptr;
-	DirectXCommon* dxCommon = nullptr;
-
-	dxCommon = new DirectXCommon();
+	DirectXCommon* dxCommon = new DirectXCommon();
 	dxCommon->Initialize();
 
 	//ComPtr<Key> key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
