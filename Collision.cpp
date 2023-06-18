@@ -4,11 +4,11 @@ using namespace DirectX;
 
 bool Collision::CheckSphereToPlane(const Sphere& sphere, const Plane& plane, Vector3D* inter)
 {
-	float distV = sphere.center.dot(plane.normal);
+	float distV = sphere.center_.dot(plane.normal_);
 
-	float dist = distV - plane.distance;
+	float dist = distV - plane.distance_;
 
-	if (fabsf(dist) > sphere.radius)
+	if (fabsf(dist) > sphere.radius_)
 	{
 		return false;
 	}
@@ -17,9 +17,9 @@ bool Collision::CheckSphereToPlane(const Sphere& sphere, const Plane& plane, Vec
 
 	if (inter)
 	{
-		intA.x = -dist * plane.normal.x + sphere.center.x;
-		intA.y = -dist * plane.normal.y + sphere.center.y;
-		intA.z = -dist * plane.normal.z + sphere.center.z;
+		intA.x_ = -dist * plane.normal_.x_ + sphere.center_.x_;
+		intA.y_ = -dist * plane.normal_.y_ + sphere.center_.y_;
+		intA.z_ = -dist * plane.normal_.z_ + sphere.center_.z_;
 	}
 
 	return true;
@@ -28,9 +28,9 @@ bool Collision::CheckSphereToPlane(const Sphere& sphere, const Plane& plane, Vec
 void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& triangle, Vector3D* closest)
 {
 	// pointがp0の外側の頂点領域の中にあるかどうかチェック
-	Vector3D p0_p1 = triangle.p1 - triangle.p0;
-	Vector3D p0_p2 = triangle.p2 - triangle.p0;
-	Vector3D p0_pt = point - triangle.p0;
+	Vector3D p0_p1 = triangle.p1_ - triangle.p0_;
+	Vector3D p0_p2 = triangle.p2_ - triangle.p0_;
+	Vector3D p0_pt = point - triangle.p0_;
 
 	Triangle returnP = triangle;
 
@@ -40,12 +40,12 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	if (d1 <= 0.0f && d2 <= 0.0f)
 	{
 		// p0が最近傍
-		*closest = triangle.p0;
+		*closest = triangle.p0_;
 		return;
 	}
 
 	// pointがp1の外側の頂点領域の中にあるかどうかチェック
-	Vector3D p1_pt = point - triangle.p1;
+	Vector3D p1_pt = point - triangle.p1_;
 
 	float d3 = p0_p1.dot(p1_pt);
 	float d4 = p0_p1.dot(p1_pt);
@@ -53,7 +53,7 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	if (d3 >= 0.0f && d4 <= d3)
 	{
 		// p1が最近傍
-		*closest = triangle.p1;
+		*closest = triangle.p1_;
 		return;
 	}
 
@@ -63,22 +63,22 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	{
 		float v = d1 / (d1 - d3);
 
-		returnP.p0.x += v * p0_p1.x;
-		returnP.p0.y += v * p0_p1.y;
-		returnP.p0.z += v * p0_p1.z;
-		*closest = returnP.p0;
+		returnP.p0_.x_ += v * p0_p1.x_;
+		returnP.p0_.y_ += v * p0_p1.y_;
+		returnP.p0_.z_ += v * p0_p1.z_;
+		*closest = returnP.p0_;
 		return;
 	}
 
 	// pointがp2の外側の頂点領域の中にあるかどうかチェック
-	Vector3D p2_pt = point - triangle.p2;
+	Vector3D p2_pt = point - triangle.p2_;
 
 	float d5 = p0_p1.dot(p2_pt);
 	float d6 = p0_p2.dot(p2_pt);
 
 	if (d6 >= 0.0f && d5 <= d6)
 	{
-		*closest = triangle.p2;
+		*closest = triangle.p2_;
 		return;
 	}
 
@@ -87,10 +87,10 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
 	{
 		float w = d2 / (d2 - d6);
-		returnP.p0.x += w * p0_p2.x;
-		returnP.p0.y += w * p0_p2.y;
-		returnP.p0.z += w * p0_p2.z;
-		*closest = returnP.p0;
+		returnP.p0_.x_ += w * p0_p2.x_;
+		returnP.p0_.y_ += w * p0_p2.y_;
+		returnP.p0_.z_ += w * p0_p2.z_;
+		*closest = returnP.p0_;
 		return;
 	}
 
@@ -100,11 +100,11 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	{
 		float w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
 
-		returnP.p1.x += w * (triangle.p2.x - triangle.p1.x);
-		returnP.p1.y += w * (triangle.p2.y - triangle.p1.y);
-		returnP.p1.z += w * (triangle.p2.z - triangle.p1.z);
+		returnP.p1_.x_ += w * (triangle.p2_.x_ - triangle.p1_.x_);
+		returnP.p1_.y_ += w * (triangle.p2_.y_ - triangle.p1_.y_);
+		returnP.p1_.z_ += w * (triangle.p2_.z_ - triangle.p1_.z_);
 
-		*closest = triangle.p1;
+		*closest = triangle.p1_;
 		return;
 	}
 
@@ -112,22 +112,22 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	float v = vb * denom;
 	float w = vc * denom;
 
-	returnP.p0.x = returnP.p0.x + p0_p1.x * v + w * p0_p2.x;
-	returnP.p0.y = returnP.p0.y + p0_p1.y * v + w * p0_p2.y;
-	returnP.p0.z = returnP.p0.z + p0_p1.z * v + w * p0_p2.z;
+	returnP.p0_.x_ = returnP.p0_.x_ + p0_p1.x_ * v + w * p0_p2.x_;
+	returnP.p0_.y_ = returnP.p0_.y_ + p0_p1.y_ * v + w * p0_p2.y_;
+	returnP.p0_.z_ = returnP.p0_.z_ + p0_p1.z_ * v + w * p0_p2.z_;
 
-	*closest = returnP.p0;
+	*closest = returnP.p0_;
 }
 
 bool Collision::CheckSphereToTriangle(const Sphere& sphere, const Triangle& triangle, Vector3D* inter)
 {
 	Vector3D p;
-	ClosestPtPoint2Triangle(sphere.center, triangle, &p);
+	ClosestPtPoint2Triangle(sphere.center_, triangle, &p);
 
-	Vector3D v = p - sphere.center;
+	Vector3D v = p - sphere.center_;
 	float a = v.dot(v);
 
-	if (a > sphere.radius * sphere.radius)
+	if (a > sphere.radius_ * sphere.radius_)
 	{
 		return false;
 	}

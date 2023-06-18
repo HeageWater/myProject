@@ -8,17 +8,17 @@
 namespace MyMath {
 	struct float4
 	{
-		float x;
-		float y;
-		float z;
-		float w;
+		float x_;
+		float y_;
+		float z_;
+		float w_;
 
 		float4();
 		float4(float x, float y, float z, float w);
 	};
 
-const float PI = 3.14159265358979f;
-const float PIx2 = 6.2831853071f;
+const float PI_ = 3.14159265358979f;
+const float PIx2_ = 6.2831853071f;
 
 //	視点座標、注視点座標、上方向ベクトル
 Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
@@ -32,10 +32,10 @@ bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad)
 
 class MatView{
 public:
-	Matrix mat;
-	Vector3D eye;		//	視点座標
-	Vector3D target;	//	注視点座標
-	Vector3D up;		//	上方向ベクトル
+	Matrix mat_;
+	Vector3D eye_;		//	視点座標
+	Vector3D target_;	//	注視点座標
+	Vector3D up_;		//	上方向ベクトル
 public:
 	MatView();
 	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
@@ -44,16 +44,16 @@ public:
 
 class ObjMatrix {
 public:
-	Matrix matWorld;
+	Matrix matWorld_;
 
-	Matrix matScale;
-	Vector3D scale;
+	Matrix matScale_;
+	Vector3D scale_;
 
-	Matrix matRot;
-	Vector3D rotAngle;
+	Matrix matRot_;
+	Vector3D rotAngle_;
 
-	Matrix matTrans;
-	Vector3D trans;
+	Matrix matTrans_;
+	Vector3D trans_;
 
 private:
 	void SetMatScaling();

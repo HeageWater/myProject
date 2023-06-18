@@ -2,13 +2,13 @@
 #include <fstream>
 #include <cassert>
 
-const std::string JsonFileOpen::kDefaultBaseDirectory = "Resources/levels/";
-const std::string JsonFileOpen::kExtension = ".json";
+const std::string JsonFileOpen::SkDefaultBaseDirectory = "Resources/levels/";
+const std::string JsonFileOpen::SkExtension = ".json";
 
 LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 {
 	//パスを連結する
-	const std::string fullpath = kDefaultBaseDirectory + fileName + kExtension;
+	const std::string fullpath = SkDefaultBaseDirectory + fileName + SkExtension;
 
 	//ファイルストリーム
 	std::ifstream file;
@@ -132,21 +132,21 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	Vector3D vec;
 
 	// 平行移動
-	vec.x = (float)transform["translation"][0];
-	vec.y = -(float)transform["translation"][1];
-	vec.z = (float)transform["translation"][2];
+	vec.x_ = (float)transform["translation"][0];
+	vec.y_ = -(float)transform["translation"][1];
+	vec.z_ = (float)transform["translation"][2];
 	objectData.translation.SetVector3(vec);
 
 	// 回転角
-	vec.x = (float)transform["rotation"][0];
-	vec.y = (float)transform["rotation"][1];
-	vec.z = -(float)transform["rotation"][2];
+	vec.x_ = (float)transform["rotation"][0];
+	vec.y_ = (float)transform["rotation"][1];
+	vec.z_ = -(float)transform["rotation"][2];
 	objectData.rotation.SetVector3(vec);
 
 	// スケーリング
-	vec.x = (float)transform["scaling"][0];
-	vec.y = (float)transform["scaling"][1];
-	vec.z = (float)transform["scaling"][2];
+	vec.x_ = (float)transform["scaling"][0];
+	vec.y_ = (float)transform["scaling"][1];
+	vec.z_ = (float)transform["scaling"][2];
 	objectData.scaling.SetVector3(vec);
 }
 

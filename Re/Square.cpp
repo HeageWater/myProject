@@ -144,7 +144,7 @@ Square::Square()
 
 void Square::MatUpdate(Matrix matView, Matrix matProjection, float a, Matrix billboard)
 {
-	obj.trans.x -= a;
+	obj.trans.x_ -= a;
 
 	obj.Update(billboard);
 

@@ -13,10 +13,10 @@ void ViewPort::Init(const float width, const float height, const float topLftX, 
 	viewport.MinDepth = MinDepth;
 	viewport.MaxDepth = MaxDepth;
 
-	mat.m[0][0] = viewport.Width / 2;
-	mat.m[1][1] = -viewport.Height / 2;
-	mat.m[3][0] = viewport.Width / 2;
-	mat.m[3][1] = viewport.Height / 2;
+	mat.m_[0][0] = viewport.Width / 2;
+	mat.m_[1][1] = -viewport.Height / 2;
+	mat.m_[3][0] = viewport.Width / 2;
+	mat.m_[3][1] = viewport.Height / 2;
 }
 
 void ViewPort::Update(ID3D12GraphicsCommandList* cmdList)

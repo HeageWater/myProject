@@ -17,17 +17,17 @@ Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vecto
 
 	Matrix matView;
 
-	matView.m[0][0] = baseX.x;
-	matView.m[1][0] = baseX.y;
-	matView.m[2][0] = baseX.z;
+	matView.m[0][0] = baseX.x_;
+	matView.m[1][0] = baseX.y_;
+	matView.m[2][0] = baseX.z_;
 
-	matView.m[0][1] = baseY.x;
-	matView.m[1][1] = baseY.y;
-	matView.m[2][1] = baseY.z;
+	matView.m[0][1] = baseY.x_;
+	matView.m[1][1] = baseY.y_;
+	matView.m[2][1] = baseY.z_;
 
-	matView.m[0][2] = baseZ.x;
-	matView.m[1][2] = baseZ.y;
-	matView.m[2][2] = baseZ.z;
+	matView.m[0][2] = baseZ.x_;
+	matView.m[1][2] = baseZ.y_;
+	matView.m[2][2] = baseZ.z_;
 
 	matView.m[3][0] = -baseX.dot(eye);
 	matView.m[3][1] = -baseY.dot(eye);
@@ -38,14 +38,14 @@ Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vecto
 
 float MyMath::ConvertToRad(float angle)
 {
-	return angle / 180.0f * PI;
+	return angle / 180.0f * PI_;
 }
 
 bool MyMath::CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad)
 {
-	Vector3D start_to_center = Vector3D(pos.x - startL.x, pos.y - startL.y, pos.z - startL.z);
-	Vector3D end_to_center = Vector3D(pos.x - endL.x, pos.y - endL.y, pos.z - endL.z);
-	Vector3D start_to_end = Vector3D(endL.x - startL.x, endL.y - startL.y, endL.z - startL.z);
+	Vector3D start_to_center = Vector3D(pos.x_ - startL.x_, pos.y_ - startL.y_, pos.z_ - startL.z_);
+	Vector3D end_to_center = Vector3D(pos.x_ - endL.x_, pos.y_ - endL.y_, pos.z_ - endL.z_);
+	Vector3D start_to_end = Vector3D(endL.x_ - startL.x_, endL.y_ - startL.y_, endL.z_ - startL.z_);
 	// 単位ベクトル化する
 	start_to_end.normalize();
 	Vector3D dis = start_to_end.cross(start_to_center);
@@ -122,90 +122,90 @@ MyMath::MatView::MatView()
 
 void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 {
-	eye = _eye;
-	target = _target;
-	up = _up;
+	eye_ = _eye;
+	target_ = _target;
+	up_ = _up;
 
 	MatUpdate();
 }
 
 void MyMath::MatView::MatUpdate()
 {
-	mat = LookAtLH(eye, target, up);
+	mat_ = LookAtLH(eye_, target_, up_);
 }
 
 MyMath::float4::float4() :
-	x(0.0f), y(0.0f), z(0.0f), w(0.0f)
+	x_(0.0f), y_(0.0f), z_(0.0f), w_(0.0f)
 {
 }
 
 MyMath::float4::float4(float x, float y, float z, float w) :
-	x(x), y(y), z(z), w(w)
+	x_(x), y_(y), z_(z), w_(w)
 {
 }
 
 void MyMath::ObjMatrix::SetMatScaling()
 {
-	matScale.Identity();
-	matScale.m[0][0] = scale.x;
-	matScale.m[1][1] = scale.y;
-	matScale.m[2][2] = scale.z;
+	matScale_.Identity();
+	matScale_.m[0][0] = scale_.x_;
+	matScale_.m[1][1] = scale_.y_;
+	matScale_.m[2][2] = scale_.z_;
 }
 
 void MyMath::ObjMatrix::SetMatRotation()
 {
-	matRot.Identity();
+	matRot_.Identity();
 	Matrix matRotX;
-	matRotX.m[1][1] = cos(rotAngle.x);
-	matRotX.m[1][2] = sin(rotAngle.x);
-	matRotX.m[2][1] = -sin(rotAngle.x);
-	matRotX.m[2][2] = cos(rotAngle.x);
+	matRotX.m[1][1] = cos(rotAngle_.x_);
+	matRotX.m[1][2] = sin(rotAngle_.x_);
+	matRotX.m[2][1] = -sin(rotAngle_.x_);
+	matRotX.m[2][2] = cos(rotAngle_.x_);
 	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotAngle.y);
-	matRotY.m[2][0] = sin(rotAngle.y);
-	matRotY.m[0][2] = -sin(rotAngle.y);
-	matRotY.m[2][2] = cos(rotAngle.y);
+	matRotY.m[0][0] = cos(rotAngle_.y_);
+	matRotY.m[2][0] = sin(rotAngle_.y_);
+	matRotY.m[0][2] = -sin(rotAngle_.y_);
+	matRotY.m[2][2] = cos(rotAngle_.y_);
 	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotAngle.z);
-	matRotZ.m[0][1] = sin(rotAngle.z);
-	matRotZ.m[1][0] = -sin(rotAngle.z);
-	matRotZ.m[1][1] = cos(rotAngle.z);
+	matRotZ.m[0][0] = cos(rotAngle_.z_);
+	matRotZ.m[0][1] = sin(rotAngle_.z_);
+	matRotZ.m[1][0] = -sin(rotAngle_.z_);
+	matRotZ.m[1][1] = cos(rotAngle_.z_);
 
-	matRot = matRotZ;
-	matRot *= matRotX;
-	matRot *= matRotY;
+	matRot_ = matRotZ;
+	matRot_ *= matRotX;
+	matRot_ *= matRotY;
 }
 
 void MyMath::ObjMatrix::SetMatTransform()
 {
-	matTrans.Identity();
-	matTrans.m[3][0] = trans.x;
-	matTrans.m[3][1] = trans.y;
-	matTrans.m[3][2] = trans.z;
+	matTrans_.Identity();
+	matTrans_.m[3][0] = trans_.x_;
+	matTrans_.m[3][1] = trans_.y_;
+	matTrans_.m[3][2] = trans_.z_;
 }
 
 void MyMath::ObjMatrix::Initialize()
 {
-	scale = Vector3D(1.0f, 1.0f, 1.0f);
-	rotAngle = Vector3D(0.0f, 0.0f, 0.0f);
-	trans = Vector3D(0.0f, 0.0f, 0.0f);
+	scale_ = Vector3D(1.0f, 1.0f, 1.0f);
+	rotAngle_ = Vector3D(0.0f, 0.0f, 0.0f);
+	trans_ = Vector3D(0.0f, 0.0f, 0.0f);
 }
 
 void MyMath::ObjMatrix::Update(Matrix billboard)
 {
-	matWorld.Identity();
+	matWorld_.Identity();
 
-	matWorld *= billboard;
+	matWorld_ *= billboard;
 
 	//	スケーリング
 	SetMatScaling();
-	matWorld *= matScale;
+	matWorld_ *= matScale_;
 
 	//	回転
 	SetMatRotation();
-	matWorld *= matRot;
+	matWorld_ *= matRot_;
 
 	//	平行移動
 	SetMatTransform();
-	matWorld *= matTrans;
+	matWorld_ *= matTrans_;
 }

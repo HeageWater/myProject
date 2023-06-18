@@ -98,13 +98,13 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 void GPipeline::Update(ID3D12GraphicsCommandList* cmdList, D3D_PRIMITIVE_TOPOLOGY primitive)
 {
 	// パイプラインステートとルートシグネチャの設定コマンド
-	cmdList->SetPipelineState(state.Get());
+	cmdList->SetPipelineState(state_.Get());
 	cmdList->IASetPrimitiveTopology(primitive);
 }
 
 void GPipeline::Setting(ID3D12GraphicsCommandList* cmdList)
 {
-	cmdList->SetGraphicsRootSignature(rootSignature.Get());
+	cmdList->SetGraphicsRootSignature(rootSignature_.Get());
 }
 
 void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
@@ -114,46 +114,46 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	SetShader(shader);
 
 	// サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
+	pipelineDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 
 #pragma region Rasterizer
 	// 設定
-	pipelineDesc.RasterizerState.CullMode = cullmord; // 背面カリング
-	pipelineDesc.RasterizerState.FillMode = fillmord; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+	pipelineDesc_.RasterizerState.CullMode = cullmord; // 背面カリング
+	pipelineDesc_.RasterizerState.FillMode = fillmord; // ポリゴン内塗りつぶし
+	pipelineDesc_.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 #pragma endregion
 
 #pragma region  Blending
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	Blend(blenddesc);
 #pragma endregion
 
 	// 頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = inputLayoutSize;
+	pipelineDesc_.InputLayout.pInputElementDescs = inputLayout;
+	pipelineDesc_.InputLayout.NumElements = inputLayoutSize;
 
 	// 図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = topologyType;
+	pipelineDesc_.PrimitiveTopologyType = topologyType;
 
 	// その他の設定
-	pipelineDesc.NumRenderTargets = 1;							  // 描画対象は1つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
-	pipelineDesc.SampleDesc.Count = 1;							  // 1ピクセルにつき1回サンプリング
+	pipelineDesc_.NumRenderTargets = 1;							  // 描画対象は1つ
+	pipelineDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
+	pipelineDesc_.SampleDesc.Count = 1;							  // 1ピクセルにつき1回サンプリング
 
 	//	デプスステンシルステート設定
-	pipelineDesc.DepthStencilState.DepthEnable = true;								//	深度テストを行う
-	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;		//	書き込み許可
-	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;			//	小さければ合格
-	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;									//	深度フォーマット
+	pipelineDesc_.DepthStencilState.DepthEnable = true;								//	深度テストを行う
+	pipelineDesc_.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;		//	書き込み許可
+	pipelineDesc_.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;			//	小さければ合格
+	pipelineDesc_.DSVFormat = DXGI_FORMAT_D32_FLOAT;									//	深度フォーマット
 
 	SetRootSignature(dev, 3);
 
 	// パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
+	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	result = dev->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&state));
+	result = dev->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&state_));
 	assert(SUCCEEDED(result));
 }
 
@@ -161,14 +161,14 @@ void GPipeline::Blend(D3D12_RENDER_TARGET_BLEND_DESC& blenddesc, const size_t mo
 {
 	//	共通設定
 	if (mord != NONE_BLEND) {
-		pipelineDesc.BlendState.AlphaToCoverageEnable = true;
+		pipelineDesc_.BlendState.AlphaToCoverageEnable = true;
 		blenddesc.BlendEnable = true;
 		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 	}
 	else {
-		pipelineDesc.BlendState.AlphaToCoverageEnable = false;
+		pipelineDesc_.BlendState.AlphaToCoverageEnable = false;
 	}
 
 	switch (mord)
@@ -262,7 +262,7 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 		errorBlob.ReleaseAndGetAddressOf());
 	assert(SUCCEEDED(result));
 	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(rootSignature.ReleaseAndGetAddressOf()));
+		IID_PPV_ARGS(rootSignature_.ReleaseAndGetAddressOf()));
 	assert(SUCCEEDED(result));
 #pragma endregion
 }
@@ -313,10 +313,10 @@ void GPipeline::SetScreenRootSignature(ID3D12Device* dev)
 		errorBlob.ReleaseAndGetAddressOf());
 	assert(SUCCEEDED(result));
 	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(rootSignature.ReleaseAndGetAddressOf()));
+		IID_PPV_ARGS(rootSignature_.ReleaseAndGetAddressOf()));
 	assert(SUCCEEDED(result));
 	// パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
+	pipelineDesc_.pRootSignature = rootSignature_.Get();
 #pragma endregion
 }
 
@@ -337,39 +337,39 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_
 
 void GPipeline::SetBlend(ID3D12Device* dev, size_t mord)
 {
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	Blend(blenddesc, mord);
-	HRESULT result = dev->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&state));
+	HRESULT result = dev->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&state_));
 	assert(SUCCEEDED(result));
 }
 
 void GPipeline::SetShader(Shader shader)
 {
 #pragma region VertexShader
-	pipelineDesc.VS.pShaderBytecode = shader.VSBlob()->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = shader.VSBlob()->GetBufferSize();
+	pipelineDesc_.VS.pShaderBytecode = shader.VSBlob()->GetBufferPointer();
+	pipelineDesc_.VS.BytecodeLength = shader.VSBlob()->GetBufferSize();
 #pragma endregion
 #pragma region HShader
 	if (shader.HSBlob() != nullptr) {
-		pipelineDesc.HS.pShaderBytecode = shader.HSBlob()->GetBufferPointer();
-		pipelineDesc.HS.BytecodeLength = shader.HSBlob()->GetBufferSize();
+		pipelineDesc_.HS.pShaderBytecode = shader.HSBlob()->GetBufferPointer();
+		pipelineDesc_.HS.BytecodeLength = shader.HSBlob()->GetBufferSize();
 	}
 #pragma endregion
 #pragma region DShader
 	if (shader.DSBlob() != nullptr) {
-		pipelineDesc.DS.pShaderBytecode = shader.DSBlob()->GetBufferPointer();
-		pipelineDesc.DS.BytecodeLength = shader.DSBlob()->GetBufferSize();
+		pipelineDesc_.DS.pShaderBytecode = shader.DSBlob()->GetBufferPointer();
+		pipelineDesc_.DS.BytecodeLength = shader.DSBlob()->GetBufferSize();
 	}
 #pragma endregion
 #pragma region GShader
 	if (shader.GSBlob() != nullptr) {
-		pipelineDesc.GS.pShaderBytecode = shader.GSBlob()->GetBufferPointer();
-		pipelineDesc.GS.BytecodeLength = shader.GSBlob()->GetBufferSize();
+		pipelineDesc_.GS.pShaderBytecode = shader.GSBlob()->GetBufferPointer();
+		pipelineDesc_.GS.BytecodeLength = shader.GSBlob()->GetBufferSize();
 	}
 #pragma endregion
 #pragma region PixcelShader
-	pipelineDesc.PS.pShaderBytecode = shader.PSBlob()->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = shader.PSBlob()->GetBufferSize();
+	pipelineDesc_.PS.pShaderBytecode = shader.PSBlob()->GetBufferPointer();
+	pipelineDesc_.PS.BytecodeLength = shader.PSBlob()->GetBufferSize();
 #pragma endregion
 }

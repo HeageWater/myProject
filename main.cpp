@@ -24,164 +24,164 @@
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
-	std::unique_ptr<Window> win(new Window());
+	std::unique_ptr<Window> win_(new Window());
 
-	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
-	size_t white = dx->LoadTextureGraph(L"Resources/white1x1.png");
+	std::unique_ptr<MyDirectX> dx_(new MyDirectX(win_.get()));
+	size_t white_ = dx_->LoadTextureGraph(L"Resources/white1x1.png");
 
-	MyXAudio sound;
-	//size_t bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
+	MyXAudio sound_;
+	//size_t bgm = sound_.SoundLoadWave("Resources/sound/bgm.wav");
 
-	Controller* controller = nullptr;
-	controller = Controller::GetInstance();
+	Controller* controller_ = nullptr;
+	controller_ = Controller::GetInstance();
 
-	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
-	MyDebugCamera playcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	MyDebugCamera debugcamera_(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	MyDebugCamera playcamera_(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), win->window_width, win->window_height));
+	std::unique_ptr<ConstBuff> cBuff_(new ConstBuff(dx_->GetDev(), win_->window_width, win_->window_height));
 
-	std::unique_ptr<Input> input(new Input(win.get()));
+	std::unique_ptr<Input> input_(new Input(win_.get()));
 	//Resources/shader/
-	Shader shader(L"BasicVS.hlsl", L"BasicPS.hlsl");
-	Shader bilShader(L"VShader.hlsl", L"PShader.hlsl");
-	Shader spriteShader(L"SpriteVS.hlsl", L"SpritePS.hlsl");
+	Shader shader_(L"BasicVS.hlsl", L"BasicPS.hlsl");
+	Shader bilShader_(L"VShader.hlsl", L"PShader.hlsl");
+	Shader spriteShader_(L"SpriteVS.hlsl", L"SpritePS.hlsl");
 
-	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
+	std::unique_ptr<GPipeline> pipeline_(new GPipeline(dx_->GetDev(), shader_));
 
 	//描画初期化
-	std::unique_ptr<GPipeline> multipathPipeline(new GPipeline(dx->GetDev(), bilShader));
+	std::unique_ptr<GPipeline> multipathPipeline_(new GPipeline(dx_->GetDev(), bilShader_));
 
-	Square screen(dx.get(), multipathPipeline.get(), bilShader);
-	screen.obj.trans.z = 0.1f;
-	screen.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+	Square screen_(dx_.get(), multipathPipeline_.get(), bilShader_);
+	screen_.obj.trans_.z_ = 0.1f;
+	screen_.obj.scale_ = { Window::window_width / 2,Window::window_height / 2,0.2f };
 
-	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader));
+	std::unique_ptr<GPipeline> uiPipeline_(new GPipeline(dx_->GetDev(), bilShader_));
 
 	//スフィア
-	Square playText(dx.get(), uiPipeline.get(), bilShader);
-	playText.obj.trans.z = 0;
-	playText.obj.scale = { 720,420,0.3f };
+	Square playText_(dx_.get(), uiPipeline_.get(), bilShader_);
+	playText_.obj.trans_.z_ = 0;
+	playText_.obj.scale_ = { 720,420,0.3f };
 
-	Square LifeText(dx.get(), uiPipeline.get(), bilShader);
-	LifeText.obj.trans.x = -500;
-	LifeText.obj.trans.y = 280;
-	LifeText.obj.scale = { 40,40,0.0f };
+	Square LifeText_(dx_.get(), uiPipeline_.get(), bilShader_);
+	LifeText_.obj.trans_.x_ = -500;
+	LifeText_.obj.trans_.y_ = 280;
+	LifeText_.obj.scale_ = { 40,40,0.0f };
 
-	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
-	LifeText.MatUpdate(Matrix(), spriteProjection, 0);
+	Matrix spriteProjection_ = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
+	LifeText_.MatUpdate(Matrix(), spriteProjection_, 0);
 
 	//描画用行列
-	MyMath::MatView matView;
-	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
-	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
-	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
+	MyMath::MatView matView_;
+	matView_.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	Matrix matProjection_ = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
+	Matrix orthoProjection_ = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
 	//ここから
-	LevelData* levelData = nullptr;
+	LevelData* levelData_ = nullptr;
 
 	//親子ありファイル
-	levelData = JsonFileOpen::FileOpen("test2");
+	levelData_ = JsonFileOpen::FileOpen("test2");
 	//levelData = JsonFileOpen::FileOpen("TestStage");
 
 	//複数個ファイル
 	///levelData = JsonFileOpen::FileOpen("Test");
 
-	std::map<std::string, Model*> models;
-	std::vector<Model*> objects;
+	std::map<std::string, Model*> models_;
+	std::vector<Model*> objects_;
 
 	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData->objects)
+	for (auto& objectdata : levelData_->objects)
 	{
 		//ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models)::iterator it = models.find(objectdata.fileName);
+		Model* model_ = nullptr;
+		decltype(models_)::iterator it = models_.find(objectdata.fileName);
 
 		//終わりか
-		if (it != models.end())
+		if (it != models_.end())
 		{
-			model = it->second;
+			model_ = it->second;
 		}
 
 		//モデルを指定して3Dオブジェクトを生成
-		Model* newModel = new Model();
-		newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
+		Model* newModel_ = new Model();
+		newModel_->Initialize(dx_.get(), shader_, "Resources\\Model\\box.obj", pipeline_.get());
 
 		//trans
-		newModel->mat.trans = objectdata.translation;
+		newModel_->mat_.trans_ = objectdata.translation;
 
 		//rotation
-		newModel->mat.rotAngle = objectdata.rotation;
+		newModel_->mat_.rotAngle_ = objectdata.rotation;
 
 		//scale;
-		newModel->mat.scale = objectdata.scaling;
+		newModel_->mat_.scale_ = objectdata.scaling;
 
 		//Update
-		newModel->MatUpdate(debugcamera.mat, matProjection);
+		newModel_->MatUpdate(debugcamera_.mat, matProjection_);
 
 		//格納
-		objects.push_back(newModel);
+		objects_.push_back(newModel_);
 	}
 
 	//	ゲームループ
 	while (true)
 	{
 		//WinMsg
-		win->MsgUpdate();
-		if (win->EndLoop()) { break; }
+		win_->MsgUpdate();
+		if (win_->EndLoop()) { break; }
 
 		//Update
-		input->Update();
-		controller->Update();
+		input_->Update();
+		controller_->Update();
 
-		debugcamera.Update(*input);
+		debugcamera_.Update(*input_);
 
-		screen.MatUpdate(matView.mat, orthoProjection, 0);
+		screen_.MatUpdate(matView_.mat_, orthoProjection_, 0);
 
 		//ここまで
 
-		if (input->GetTrigger(DIK_ESCAPE))
+		if (input_->GetTrigger(DIK_ESCAPE))
 		{
 			break;
 		}
 
-		if (input->GetTrigger(DIK_R))
+		if (input_->GetTrigger(DIK_R))
 		{
 			
 		}
 
 		//読み込んだモデルのUpdate
-		for (auto& object : objects)
+		for (auto& object : objects_)
 		{
-			object->mat.trans.x -= (float)(input->GetKey(DIK_D) - input->GetKey(DIK_A));
-			object->mat.trans.y -= (float)(input->GetKey(DIK_S) - input->GetKey(DIK_W));
-			object->mat.trans.z -= (float)(input->GetKey(DIK_E) - input->GetKey(DIK_Q));
+			object->mat_.trans_.x_ -= (float)(input_->GetKey(DIK_D) - input_->GetKey(DIK_A));
+			object->mat_.trans_.y_ -= (float)(input_->GetKey(DIK_S) - input_->GetKey(DIK_W));
+			object->mat_.trans_.z_ -= (float)(input_->GetKey(DIK_E) - input_->GetKey(DIK_Q));
 																					  
-			object->MatUpdate(debugcamera.mat, matProjection);
+			object->MatUpdate(debugcamera_.mat, matProjection_);
 		}
 
 		//Draw
-		dx->PrevDrawScreen();
+		dx_->PrevDrawScreen();
 
 		//読み込んだモデルのDraw(White)
-		for (auto& object : objects) {
-			object->Draw(white);
+		for (auto& object : objects_) {
+			object->Draw(white_);
 
-			object->mat.trans;
+			object->mat_.trans_;
 		}
 
 		//// 描画コマンド
 
-		dx->PostDrawScreen();
+		dx_->PostDrawScreen();
 
 		//UIDraw
-		dx->PrevDraw();
+		dx_->PrevDraw();
 
-		screen.Draw(0);
+		screen_.Draw(0);
 
-		dx->PostDraw();
+		dx_->PostDraw();
 	}
 
-	for (auto& object : objects)
+	for (auto& object : objects_)
 	{
 		delete object;
 	}

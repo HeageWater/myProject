@@ -10,22 +10,22 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
-	HRESULT result;
-	D3D12_HEAP_PROPERTIES heapProp{};
-	D3D12_RESOURCE_DESC resourceDesc{};
+	HRESULT result_;
+	D3D12_HEAP_PROPERTIES heapProp_{};
+	D3D12_RESOURCE_DESC resourceDesc_{};
 
 
 	struct ConstBufferDataMaterial {
-		Vector4D color;	//	RGBA
+		Vector4D color_;	//	RGBA
 	};
 	struct ConstBufferTimeMaterial {
-		float time;
+		float time_;
 	};
-	ComPtr<ID3D12Resource> material;
-	ConstBufferDataMaterial* mapMaterial = nullptr;
-	ComPtr<ID3D12Resource> timeMaterial;
-	ConstBufferTimeMaterial* timeMapMaterial = nullptr;
-	float timer = 100000;
+	ComPtr<ID3D12Resource> material_;
+	ConstBufferDataMaterial* mapMaterial_ = nullptr;
+	ComPtr<ID3D12Resource> timeMaterial_;
+	ConstBufferTimeMaterial* timeMapMaterial_ = nullptr;
+	float timer_ = 100000;
 public:
 	ConstBuff(ID3D12Device* dev, const size_t winwidth, const size_t winheight);
 	~ConstBuff();

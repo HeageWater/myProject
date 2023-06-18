@@ -2,7 +2,7 @@
 class Matrix
 {
 public:
-	float m[4][4];
+	float m_[4][4];
 public:
 	Matrix();
 	void Identity();

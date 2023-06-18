@@ -22,9 +22,9 @@ public:
 	};
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-	ComPtr<ID3D12RootSignature> rootSignature;
-	ComPtr<ID3D12PipelineState> state;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
+	ComPtr<ID3D12RootSignature> rootSignature_;
+	ComPtr<ID3D12PipelineState> state_;
 
 private:
 	void SetShader(Shader shader);

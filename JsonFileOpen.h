@@ -31,10 +31,10 @@ class JsonFileOpen
 {
 public:
 	// デフォルトの読み込みディレクトリ
-	static const std::string kDefaultBaseDirectory;
+	static const std::string SkDefaultBaseDirectory;
 
 	// ファイル拡張子
-	static const std::string kExtension;
+	static const std::string SkExtension;
 public:
 	//jsonファイルOpen
 	static LevelData* FileOpen(const std::string& fileName);

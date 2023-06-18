@@ -21,29 +21,29 @@ void Object2D::SetVertices()
 void Object2D::SetMatScaling()
 {
 	matScale.Identity();
-	matScale.m[0][0] = scale.x;
-	matScale.m[1][1] = scale.y;
-	matScale.m[2][2] = scale.z;
+	matScale.m[0][0] = scale.x_;
+	matScale.m[1][1] = scale.y_;
+	matScale.m[2][2] = scale.z_;
 }
 
 void Object2D::SetMatRotation()
 {
 	matRot.Identity();
 	Matrix matRotX;
-	matRotX.m[1][1] = cos(rotAngle.x);
-	matRotX.m[1][2] = sin(rotAngle.x);
-	matRotX.m[2][1] = -sin(rotAngle.x);
-	matRotX.m[2][2] = cos(rotAngle.x);
+	matRotX.m[1][1] = cos(rotAngle.x_);
+	matRotX.m[1][2] = sin(rotAngle.x_);
+	matRotX.m[2][1] = -sin(rotAngle.x_);
+	matRotX.m[2][2] = cos(rotAngle.x_);
 	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotAngle.y);
-	matRotY.m[2][0] = sin(rotAngle.y);
-	matRotY.m[0][2] = -sin(rotAngle.y);
-	matRotY.m[2][2] = cos(rotAngle.y);
+	matRotY.m[0][0] = cos(rotAngle.y_);
+	matRotY.m[2][0] = sin(rotAngle.y_);
+	matRotY.m[0][2] = -sin(rotAngle.y_);
+	matRotY.m[2][2] = cos(rotAngle.y_);
 	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotAngle.z);
-	matRotZ.m[0][1] = sin(rotAngle.z);
-	matRotZ.m[1][0] = -sin(rotAngle.z);
-	matRotZ.m[1][1] = cos(rotAngle.z);
+	matRotZ.m[0][0] = cos(rotAngle.z_);
+	matRotZ.m[0][1] = sin(rotAngle.z_);
+	matRotZ.m[1][0] = -sin(rotAngle.z_);
+	matRotZ.m[1][1] = cos(rotAngle.z_);
 
 	matRot = matRotZ;
 	matRot *= matRotX;
@@ -53,9 +53,9 @@ void Object2D::SetMatRotation()
 void Object2D::SetMatTransform()
 {
 	matTrans.Identity();
-	matTrans.m[3][0] = trans.x;
-	matTrans.m[3][1] = trans.y;
-	matTrans.m[3][2] = trans.z;
+	matTrans.m[3][0] = trans.x_;
+	matTrans.m[3][1] = trans.y_;
+	matTrans.m[3][2] = trans.z_;
 }
 
 Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
@@ -121,37 +121,37 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 
 	for (size_t i = 0; i < vertexNum; i++)
 	{
-		vertices[i].pos.x = (float)(rad * sin(radian * i));
-		vertices[i].pos.y = (float)(rad * cos(radian * i));
-		vertices[i].pos.z = 0;
+		vertices[i].pos.x_ = (float)(rad * sin(radian * i));
+		vertices[i].pos.y_ = (float)(rad * cos(radian * i));
+		vertices[i].pos.z_ = 0;
 	}
-	vertices[vertexNum].pos.x = 0;
-	vertices[vertexNum].pos.y = 0;
-	vertices[vertexNum].pos.z = 0;
+	vertices[vertexNum].pos.x_ = 0;
+	vertices[vertexNum].pos.y_ = 0;
+	vertices[vertexNum].pos.z_ = 0;
 
 	for (size_t i = 0; i < vertexNum; i++)
 	{
 		if (i % 3 == 0) {
-			vertices[i].color.x = 1.0f;
-			vertices[i].color.y = 0.0f;
-			vertices[i].color.z = 0.0f;
+			vertices[i].color.x_ = 1.0f;
+			vertices[i].color.y_ = 0.0f;
+			vertices[i].color.z_ = 0.0f;
 		}
 		else if (i % 3 == 1) {
-			vertices[i].color.x = 0.0f;
-			vertices[i].color.y = 1.0f;
-			vertices[i].color.z = 0.0f;
+			vertices[i].color.x_ = 0.0f;
+			vertices[i].color.y_ = 1.0f;
+			vertices[i].color.z_ = 0.0f;
 		}
 		else {
-			vertices[i].color.x = 0.0f;
-			vertices[i].color.y = 0.0f;
-			vertices[i].color.z = 1.0f;
+			vertices[i].color.x_ = 0.0f;
+			vertices[i].color.y_ = 0.0f;
+			vertices[i].color.z_ = 1.0f;
 		}
-		vertices[i].color.w = 1.0f;
+		vertices[i].color.w_ = 1.0f;
 	}
-	vertices[vertexNum].color.x = 1.0f;
-	vertices[vertexNum].color.y = 1.0f;
-	vertices[vertexNum].color.z = 1.0f;
-	vertices[vertexNum].color.w = 1.0f;
+	vertices[vertexNum].color.x_ = 1.0f;
+	vertices[vertexNum].color.y_ = 1.0f;
+	vertices[vertexNum].color.z_ = 1.0f;
+	vertices[vertexNum].color.w_ = 1.0f;
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);

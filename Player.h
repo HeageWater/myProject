@@ -20,5 +20,5 @@ public:
 	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
 
-	Model player;
+	Model player_;
 };

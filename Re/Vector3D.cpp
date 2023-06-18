@@ -3,18 +3,18 @@
 #include <cmath>
 
 Vector3D::Vector3D()
-	:x(0), y(0), z(0)
+	:x_(0), y_(0), z_(0)
 {
 }
 
 Vector3D::Vector3D(float x, float y, float z)
-	: x(x), y(y), z(z)
+	: x_(x), y_(y), z_(z)
 {
 }
 
 float Vector3D::length() const
 {
-	return sqrt(x * x + y * y + z * z);
+	return sqrt(x_ * x_ + y_ * y_ + z_ * z_);
 }
 
 Vector3D& Vector3D::normalize()
@@ -29,12 +29,12 @@ Vector3D& Vector3D::normalize()
 
 float Vector3D::dot(const Vector3D& v) const
 {
-	return x * v.x + y * v.y + z * v.z;
+	return x_ * v.x_ + y_ * v.y_ + z_ * v.z_;
 }
 
 Vector3D Vector3D::cross(const Vector3D& v) const
 {
-	return Vector3D(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
+	return Vector3D(y_ * v.z_ - z_ * v.y_, z_ * v.x_ - x_ * v.z_, x_ * v.y_ - y_ * v.x_);
 }
 
 Vector3D Vector3D::operator+() const
@@ -44,46 +44,46 @@ Vector3D Vector3D::operator+() const
 
 Vector3D Vector3D::operator-() const
 {
-	return Vector3D(-x, -y, -z);
+	return Vector3D(-x_, -y_, -z_);
 }
 
 Vector3D& Vector3D::operator+=(const Vector3D& v)
 {
-	x += v.x;
-	y += v.y;
-	z += v.z;
+	x_ += v.x_;
+	y_ += v.y_;
+	z_ += v.z_;
 	return *this;
 }
 
 Vector3D& Vector3D::operator-=(const Vector3D& v)
 {
-	x -= v.x;
-	y -= v.y;
-	z -= v.z;
+	x_ -= v.x_;
+	y_ -= v.y_;
+	z_ -= v.z_;
 	return *this;
 }
 
 Vector3D& Vector3D::operator/=(float s)
 {
-	x /= s;
-	y /= s;
-	z /= s;
+	x_ /= s;
+	y_ /= s;
+	z_ /= s;
 	return *this;
 }
 
 Vector3D& Vector3D::operator*=(float s)
 {
-	x *= s;
-	y *= s;
-	z *= s;
+	x_ *= s;
+	y_ *= s;
+	z_ *= s;
 	return *this;
 }
 
 Vector3D& Vector3D::ope(const float& v)
 {
-	x -= v;
-	y -= v;
-	z -= v;
+	x_ -= v;
+	y_ -= v;
+	z_ -= v;
 	return *this;
 }
 

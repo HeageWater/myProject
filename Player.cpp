@@ -12,21 +12,21 @@ Player::~Player()
 
 void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	player.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+	player_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 }
 
 void Player::Draw(size_t tex)
 {
-	player.Draw(tex);
+	player_.Draw(tex);
 }
 
 void Player::Update(Matrix matView, Matrix matProjection)
 {
-	player.MatUpdate(matView, matProjection);
+	player_.MatUpdate(matView, matProjection);
 }
 
 void Player::Reset()
 {
-	player.mat.trans.x = 0;
-	player.mat.trans.y = 0;
+	player_.mat.trans.x_ = 0;
+	player_.mat.trans.y_ = 0;
 }

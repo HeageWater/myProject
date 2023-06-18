@@ -120,7 +120,7 @@ void Object3D::MatUpdate(Matrix matView, Matrix matProjection)
 {
 	mat.Update();
 
-	constMapTransform->mat = mat.matWorld;
+	constMapTransform->mat = mat.matWorld_;
 	constMapTransform->mat *= matView;
 	constMapTransform->mat *= matProjection;
 }

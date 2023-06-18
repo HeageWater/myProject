@@ -14,8 +14,8 @@ void Matrix::Identity()
 	{
 		for (size_t y = 0; y < 4; y++)
 		{
-			if (x == y) m[y][x] = 1.0f;
-			else		m[y][x] = 0.0f;
+			if (x == y) m_[y][x] = 1.0f;
+			else		m_[y][x] = 0.0f;
 		}
 	}
 }
@@ -28,7 +28,7 @@ Matrix& Matrix::operator*=(const Matrix& m2)
 	{
 		for (size_t x = 0; x < 4; x++)
 		{
-			m[y][x] = prev.m[y][0] * m2.m[0][x] + prev.m[y][1] * m2.m[1][x] + prev.m[y][2] * m2.m[2][x] + prev.m[y][3] * m2.m[3][x];
+			m_[y][x] = prev.m_[y][0] * m2.m_[0][x] + prev.m_[y][1] * m2.m_[1][x] + prev.m_[y][2] * m2.m_[2][x] + prev.m_[y][3] * m2.m_[3][x];
 		}
 	}
 
@@ -43,7 +43,7 @@ bool InverseMatrix(const Matrix& mat, Matrix& invMat)
     for (size_t y = 0; y < 4; y++) {
         for (size_t x = 0; x < 4; x++) {
             // sweepの左側に逆行列を求める行列をセット
-            sweep[y][x] = mat.m[y][x];
+            sweep[y][x] = mat.m_[y][x];
 
             // sweepの右側に単位行列をセット
             if (y == x) {
@@ -115,7 +115,7 @@ bool InverseMatrix(const Matrix& mat, Matrix& invMat)
     /* sweepの右半分がmatの逆行列 */
     for (size_t y = 0; y < 4; y++) {
         for (size_t x = 0; x < 4; x++) {
-            invMat.m[y][x] = sweep[y][4 + x];
+            invMat.m_[y][x] = sweep[y][4 + x];
         }
     }
 

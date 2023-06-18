@@ -5,12 +5,12 @@ bool Controller::StickInDeadZone(Vector2D thumb, const Vector2D deadRate)
 	bool x = false;
 	bool y = false;
 
-	if ((thumb.x < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.x && thumb.x > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.x)) {
-		thumb.x = 0.0f;
+	if ((thumb.x_ < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.x_ && thumb.x_ > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.x_)) {
+		thumb.x_ = 0.0f;
 		x = true;
 	}
-	if ((thumb.y < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.y && thumb.y > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.y)) {
-		thumb.y = 0.0f;
+	if ((thumb.y_ < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.y_ && thumb.y_ > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * deadRate.y_)) {
+		thumb.y_ = 0.0f;
 		y = true;
 	}
 
@@ -132,16 +132,16 @@ bool Controller::StickTriggerPush(ControllerStick stick, const float& deadRange,
 	bool result = false;
 
 	if (stick % 4 == L_UP) {
-		result = !(deadRange < (oldVec.y / STICK_INPUT_MAX)) && deadRange < (vec.y / STICK_INPUT_MAX);
+		result = !(deadRange < (oldVec.y_ / STICK_INPUT_MAX)) && deadRange < (vec.y_ / STICK_INPUT_MAX);
 	}
 	else if (stick % 4 == L_DOWN) {
-		result = !(oldVec.y / STICK_INPUT_MAX < -deadRange) && vec.y / STICK_INPUT_MAX < -deadRange;
+		result = !(oldVec.y_ / STICK_INPUT_MAX < -deadRange) && vec.y_ / STICK_INPUT_MAX < -deadRange;
 	}
 	else if (stick % 4 == L_RIGHT) {
-		result = !(deadRange < (oldVec.x / STICK_INPUT_MAX)) && deadRange < (vec.x / STICK_INPUT_MAX);
+		result = !(deadRange < (oldVec.x_ / STICK_INPUT_MAX)) && deadRange < (vec.x_ / STICK_INPUT_MAX);
 	}
 	else if (stick % 4 == L_LEFT) {
-		result = !(oldVec.x / STICK_INPUT_MAX < -deadRange) && vec.x / STICK_INPUT_MAX < -deadRange;
+		result = !(oldVec.x_ / STICK_INPUT_MAX < -deadRange) && vec.x_ / STICK_INPUT_MAX < -deadRange;
 	}
 	else {
 		assert(0);
@@ -165,16 +165,16 @@ bool Controller::StickKeepPush(ControllerStick stick, const float& deadRange, Ve
 	if (StickInDeadZone(vec, deadRate))return false;
 
 	if (stick % 4 == L_UP) {
-		return deadRange < (vec.y / STICK_INPUT_MAX);
+		return deadRange < (vec.y_ / STICK_INPUT_MAX);
 	}
 	else if (stick % 4 == L_DOWN) {
-		return  vec.y / STICK_INPUT_MAX < -deadRange;
+		return  vec.y_ / STICK_INPUT_MAX < -deadRange;
 	}
 	else if (stick % 4 == L_RIGHT) {
-		return deadRange < (vec.x / STICK_INPUT_MAX);
+		return deadRange < (vec.x_ / STICK_INPUT_MAX);
 	}
 	else if (stick % 4 == L_LEFT) {
-		return  vec.x / STICK_INPUT_MAX < -deadRange;
+		return  vec.x_ / STICK_INPUT_MAX < -deadRange;
 	}
 
 	assert(0);
@@ -207,16 +207,16 @@ bool Controller::StickTriggerRelease(ControllerStick stick, const float& deadRan
 	bool result = false;
 
 	if (stick % 4 == L_UP) {
-		result = deadRange < (oldVec.y / STICK_INPUT_MAX) && !(deadRange < (vec.y / STICK_INPUT_MAX));
+		result = deadRange < (oldVec.y_ / STICK_INPUT_MAX) && !(deadRange < (vec.y_ / STICK_INPUT_MAX));
 	}
 	else if (stick % 4 == L_DOWN) {
-		result = oldVec.y / STICK_INPUT_MAX < -deadRange && !(vec.y / STICK_INPUT_MAX < -deadRange);
+		result = oldVec.y_ / STICK_INPUT_MAX < -deadRange && !(vec.y_ / STICK_INPUT_MAX < -deadRange);
 	}
 	else if (stick % 4 == L_RIGHT) {
-		result = deadRange < (oldVec.x / STICK_INPUT_MAX) && !(deadRange < (vec.x / STICK_INPUT_MAX));
+		result = deadRange < (oldVec.x_ / STICK_INPUT_MAX) && !(deadRange < (vec.x_ / STICK_INPUT_MAX));
 	}
 	else if (stick % 4 == L_LEFT) {
-		result = oldVec.x / STICK_INPUT_MAX < -deadRange && !(vec.x / STICK_INPUT_MAX < -deadRange);
+		result = oldVec.x_ / STICK_INPUT_MAX < -deadRange && !(vec.x_ / STICK_INPUT_MAX < -deadRange);
 	}
 	else {
 		assert(0);
@@ -244,8 +244,8 @@ Vector2D Controller::GetLeftStickVec(Vector2D deadRate)
 {
 	Vector2D result(static_cast<float>(controllerState.Gamepad.sThumbLX), static_cast<float>(-controllerState.Gamepad.sThumbLY));
 	StickInDeadZone(result, deadRate);
-	result.x /= STICK_INPUT_MAX;
-	result.y /= STICK_INPUT_MAX;
+	result.x_ /= STICK_INPUT_MAX;
+	result.y_ /= STICK_INPUT_MAX;
 
 	return result;
 }
@@ -254,8 +254,8 @@ Vector2D Controller::GetRightStickVec(Vector2D deadRate)
 {
 	Vector2D result(static_cast<float>(controllerState.Gamepad.sThumbRX), static_cast<float>(-controllerState.Gamepad.sThumbRY));
 	StickInDeadZone(result, deadRate);
-	result.x /= STICK_INPUT_MAX;
-	result.y /= STICK_INPUT_MAX;
+	result.x_ /= STICK_INPUT_MAX;
+	result.y_ /= STICK_INPUT_MAX;
 
 	return result;
 }

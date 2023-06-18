@@ -9,9 +9,9 @@ MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyDebugCamera::Update(Input& input)
 {
-	eye.x += (float)(input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT));
-	eye.y += (float)(input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN));
-	eye.z += (float)(input.GetKey(DIK_O) - input.GetKey(DIK_P));/*
+	eye.x_ += (float)(input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT));
+	eye.y_ += (float)(input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN));
+	eye.z_ += (float)(input.GetKey(DIK_O) - input.GetKey(DIK_P));/*
 
 	if (input.Click(Input::LeftClick))
 	{
@@ -38,8 +38,8 @@ void MyDebugCamera::MatUpdate()
 
 void MyDebugCamera::Move(float camerapos)
 {
-	eye.x = camerapos;
-	target.x = camerapos;
+	eye.x_ = camerapos;
+	target.x_ = camerapos;
 
 	MatUpdate();
 }

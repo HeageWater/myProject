@@ -2,9 +2,9 @@
 class Vector3D
 {
 public:
-	float x;
-	float y;
-	float z;
+	float x_;
+	float y_;
+	float z_;
 public:
 	Vector3D();
 	Vector3D(float x, float y, float z);
@@ -26,7 +26,7 @@ public:
 	Vector3D& operator/=(float s);
 	Vector3D& operator*=(float s);
 
-	void SetVector3(Vector3D vec) { x = vec.x; y = vec.y; z = vec.z; };
+	void SetVector3(Vector3D vec) { x_ = vec.x_; y_ = vec.y_; z_ = vec.z_; };
 };
 
 const Vector3D operator-(const Vector3D& v1, const Vector3D& v2);

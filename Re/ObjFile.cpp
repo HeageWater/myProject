@@ -18,17 +18,17 @@ bool ObjFile::ReadFile()
 
 		if (strcmp(lineHeader, "v") == 0) {
 			Vector3D vertex;
-			fscanf_s(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z);
+			fscanf_s(file, "%f %f %fn", &vertex.x_, &vertex.y_, &vertex.z_);
 			temp_vertices.push_back(vertex);
 		}
 		else if (strcmp(lineHeader, "vt") == 0) {
 			Vector2D uv;
-			fscanf_s(file, "%f %fn", &uv.x, &uv.y);
+			fscanf_s(file, "%f %fn", &uv.x_, &uv.y_);
 			temp_uvs.push_back(uv);
 		}
 		else if (strcmp(lineHeader, "vn") == 0) {
 			Vector3D normal;
-			fscanf_s(file, "%f %f %fn", &normal.x, &normal.y, &normal.z);
+			fscanf_s(file, "%f %f %fn", &normal.x_, &normal.y_, &normal.z_);
 			temp_normals.push_back(normal);
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
@@ -65,7 +65,7 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 			out_vertices[i].pos = temp_vertices[vertexIndex - 1];
 			size_t uvIndex = uvIndices[i];
 			out_vertices[i].uv = temp_uvs[uvIndex - 1];
-			out_vertices[i].uv.y = 1.0f - out_vertices[i].uv.y;
+			out_vertices[i].uv.y_ = 1.0f - out_vertices[i].uv.y_;
 			size_t normalIndex = normalIndices[i];
 			out_vertices[i].normal = temp_normals[normalIndex - 1];
 		}

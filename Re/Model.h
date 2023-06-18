@@ -9,22 +9,22 @@ class Model :public VertBuff
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	
-	MyDirectX* dx = nullptr;
-	GPipeline* pipeline = nullptr;
+	MyDirectX* dx_ = nullptr;
+	GPipeline* pipeline_ = nullptr;
 	struct ConstBufferDataTransform {
-		Matrix mat;
+		Matrix mat_;
 	};
-	ComPtr<ID3D12Resource> transform;
-	ConstBufferDataTransform* constMapTransform = nullptr;
-	D3D12_HEAP_PROPERTIES cbHeapProp{};
-	D3D12_RESOURCE_DESC cbResourceDesc{};
+	ComPtr<ID3D12Resource> transform_;
+	ConstBufferDataTransform* constMapTransform_ = nullptr;
+	D3D12_HEAP_PROPERTIES cbHeapProp_{};
+	D3D12_RESOURCE_DESC cbResourceDesc_{};
 
-	UINT vertexSize;
-	std::vector<Vertex> vertices;
-	//UINT indexSize;
-	//std::vector<unsigned short> indices;
+	UINT vertexSize_;
+	std::vector<Vertex> vertices_;
+	//UINT indexSize_;
+	//std::vector<unsigned short> indices_;
 public:
-	MyMath::ObjMatrix mat;
+	MyMath::ObjMatrix mat_;
 
 	void Initialize(Shader shader, const char* filename);
 	void Initialize(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);

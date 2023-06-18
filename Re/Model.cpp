@@ -8,45 +8,45 @@ void Model::Initialize(Shader shader, const char* filename)
 	D3D12_HEAP_PROPERTIES newheapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//	ヒープ設定
-	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
+	cbHeapProp_.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
 
 	//	リソース設定
-	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xFF) & ~0xFF;
-	cbResourceDesc.Height = 1;
-	cbResourceDesc.DepthOrArraySize = 1;
-	cbResourceDesc.MipLevels = 1;
-	cbResourceDesc.SampleDesc.Count = 1;
-	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	cbResourceDesc_.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbResourceDesc_.Width = (sizeof(ConstBufferDataTransform) + 0xFF) & ~0xFF;
+	cbResourceDesc_.Height = 1;
+	cbResourceDesc_.DepthOrArraySize = 1;
+	cbResourceDesc_.MipLevels = 1;
+	cbResourceDesc_.SampleDesc.Count = 1;
+	cbResourceDesc_.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	newresult = dx->GetDev()->CreateCommittedResource(
-		&cbHeapProp,	//	ヒープ設定
+	newresult = dx_->GetDev()->CreateCommittedResource(
+		&cbHeapProp_,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,	//	リソース設定
+		&cbResourceDesc_,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&transform));
+		IID_PPV_ARGS(&transform_));
 	assert(SUCCEEDED(newresult));
 
 	//	定数バッファのマッピング
-	newresult = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	newresult = transform_->Map(0, nullptr, (void**)&constMapTransform_);	//	マッピング
 	assert(SUCCEEDED(newresult));
 
-	ObjFile objfile(filename, vertices);
-	vertexSize = (UINT)vertices.size();
+	ObjFile objfile(filename, vertices_);
+	vertexSize_ = (UINT)vertices_.size();
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertexSize_);
 
-	VBInitialize(dx->GetDev(), sizeVB, vertexSize);
+	VBInitialize(dx_->GetDev(), sizeVB, vertexSize_);
 
-	mat.Initialize();
+	mat_.Initialize();
 }
 
 void Model::Initialize(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_)
 {
-	dx = dx_;
-	pipeline = pipeline_;
+	dx_ = dx_;
+	pipeline_ = pipeline_;
 	Initialize(shader, filename);
 }
 
@@ -56,30 +56,30 @@ Model::Model()
 
 Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_)
 {
-	dx = dx_;
-	pipeline = pipeline_;
+	dx_ = dx_;
+	pipeline_ = pipeline_;
 	Initialize(shader,filename);
 }
 
 void Model::MatUpdate(Matrix matView, Matrix matProjection)
 {
-	mat.Update();
+	mat_.Update();
 
-	constMapTransform->mat = mat.matWorld;
-	constMapTransform->mat *= matView;
-	constMapTransform->mat *= matProjection;
+	constMapTransform_->mat_ = mat_.matWorld_;
+	constMapTransform_->mat_ *= matView;
+	constMapTransform_->mat_ *= matProjection;
 }
 
 void Model::Draw(size_t handle)
 {
-	pipeline->Setting(dx->GetCmdList());
-	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(dx->GetCmdList());
+	pipeline_->Setting(dx_->GetCmdList());
+	pipeline_->Update(dx_->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	VertBuffUpdate(dx_->GetCmdList());
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
-	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	dx_->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx_->GetTextureHandle(handle));
+	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform_->GetGPUVirtualAddress());
 
-	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
+	dx_->GetCmdList()->DrawInstanced(vertexSize_, 1, 0, 0);
 }
 
 void Model::SetVertices()
@@ -90,11 +90,11 @@ void Model::SetVertices()
 	HRESULT newresult = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(newresult));
 	// 全頂点に対して
-	for (size_t i = 0; i < (signed)vertexSize; i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
+	for (size_t i = 0; i < (signed)vertexSize_; i++) {
+		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
 	// 繋がりを解除
 	vertBuff->Unmap(0, nullptr);
 	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView.StrideInBytes = sizeof(vertices_[0]);
 }
