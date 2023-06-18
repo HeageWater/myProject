@@ -33,8 +33,8 @@ bool ObjFile::ReadFile()
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
 			std::string vertex1, vertex2, vertex3;
-			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-			int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+			size_t vertexIndex[3], uvIndex[3], normalIndex[3];
+			size_t matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 			if (matches != 9) {
 				return false;
 			}
@@ -61,12 +61,12 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 		out_vertices.resize(vertexIndices.size());
 		for (size_t i = 0; i < vertexIndices.size(); i++)
 		{
-			unsigned int vertexIndex = vertexIndices[i];
+			size_t vertexIndex = vertexIndices[i];
 			out_vertices[i].pos = temp_vertices[vertexIndex - 1];
-			unsigned int uvIndex = uvIndices[i];
+			size_t uvIndex = uvIndices[i];
 			out_vertices[i].uv = temp_uvs[uvIndex - 1];
 			out_vertices[i].uv.y = 1.0f - out_vertices[i].uv.y;
-			unsigned int normalIndex = normalIndices[i];
+			size_t normalIndex = normalIndices[i];
 			out_vertices[i].normal = temp_normals[normalIndex - 1];
 		}
 	}

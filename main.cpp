@@ -27,12 +27,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<Window> win(new Window());
 
 	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
-	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
-	//int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	//int brPng = dx->LoadTextureGraph(L"Resources/br.png");
+	size_t white = dx->LoadTextureGraph(L"Resources/white1x1.png");
 
 	MyXAudio sound;
-	//int bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
+	//size_t bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
 
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
@@ -82,8 +80,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	LevelData* levelData = nullptr;
 
 	//親子ありファイル
-	//levelData = JsonFileOpen::FileOpen("untitled");
-	levelData = JsonFileOpen::FileOpen("TestStage");
+	levelData = JsonFileOpen::FileOpen("test2");
+	//levelData = JsonFileOpen::FileOpen("TestStage");
 
 	//複数個ファイル
 	///levelData = JsonFileOpen::FileOpen("Test");
@@ -146,6 +144,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
+		if (input->GetTrigger(DIK_R))
+		{
+			
+		}
+
 		//読み込んだモデルのUpdate
 		for (auto& object : objects)
 		{
@@ -154,8 +157,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			object->mat.trans.z -= (float)(input->GetKey(DIK_E) - input->GetKey(DIK_Q));
 																					  
 			object->MatUpdate(debugcamera.mat, matProjection);
-
-			break;
 		}
 
 		//Draw

@@ -12,9 +12,9 @@ private:
 	std::vector<Vector3D> temp_vertices;
 	std::vector<Vector2D> temp_uvs;
 	std::vector<Vector3D> temp_normals;
-	int vertexSize;
-	int uvSize;
-	int normalSize;
+	size_t vertexSize;
+	size_t uvSize;
+	size_t normalSize;
 	bool ReadFile();
 public:
 	ObjFile(const char* filename, std::vector<Vertex>& out_vertices);

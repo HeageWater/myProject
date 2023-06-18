@@ -27,7 +27,7 @@ public:
 	ConstBufferTimeMaterial* timeMapMaterial = nullptr;
 	float timer = 100000;
 public:
-	ConstBuff(ID3D12Device* dev, const int winwidth, const int winheight);
+	ConstBuff(ID3D12Device* dev, const size_t winwidth, const size_t winheight);
 	~ConstBuff();
 	void ChangeColor(const Vector4D& color);
 	void TimeUpdate();

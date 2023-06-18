@@ -230,7 +230,7 @@ bool Controller::StickKeepRelease(ControllerStick stick, const float& deadRange,
 	return !StickKeepPush(stick, deadRange, deadRate);
 }
 
-void Controller::ShakeController(const float& power, const int& span)
+void Controller::ShakeController(const float& power, const size_t& span)
 {
 	if (!(0 < power && power <= 1.0f)) {
 		assert(0);

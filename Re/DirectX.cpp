@@ -451,7 +451,7 @@ void MyDirectX::PostDrawScreen()
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
+size_t MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 {
 	textureNum++;
 
@@ -532,7 +532,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	return textureNum;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
+D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(size_t handle)
 {
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
 	srvGpuHandle.ptr += incrementSize * handle;

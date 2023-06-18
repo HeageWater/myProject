@@ -126,7 +126,7 @@ MyXAudio::~MyXAudio()
 	}
 }
 
-int MyXAudio::SoundLoadWave(const char* filename)
+size_t MyXAudio::SoundLoadWave(const char* filename)
 {
 	std::ifstream file;
 	file.open(filename, std::ios_base::binary);
@@ -164,7 +164,7 @@ int MyXAudio::SoundLoadWave(const char* filename)
 
 	_soundData.wfex = format.fmt;
 	_soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	_soundData.bufferSize = (unsigned int)data.size;
+	_soundData.bufferSize = (size_t)data.size;
 
 	soundData.push_back(_soundData);
 
@@ -197,7 +197,7 @@ void MyXAudio::SoundPlayWave(IXAudio2* xAudio2, const SoundData& newSoundData)
 	result = pSourceVoice->Start();
 }
 
-void MyXAudio::SoundPlayWave(int newhandle, bool stop)
+void MyXAudio::SoundPlayWave(size_t newhandle, bool stop)
 {
 	HRESULT result;
 
@@ -217,7 +217,7 @@ void MyXAudio::SoundPlayWave(int newhandle, bool stop)
 	result = pSourceVoice->Start();
 }
 
-void MyXAudio::SoundPlayLoopWave(int newhandle)
+void MyXAudio::SoundPlayLoopWave(size_t newhandle)
 {
 	HRESULT result;
 
@@ -239,7 +239,7 @@ void MyXAudio::SoundPlayLoopWave(int newhandle)
 
 void MyXAudio::StopAllLoopSound()
 {
-	for (int i = 0; i < (signed)soundPtr.size(); i++)
+	for (size_t i = 0; i < (signed)soundPtr.size(); i++)
 	{
 		soundPtr[i]->Stop();
 	}

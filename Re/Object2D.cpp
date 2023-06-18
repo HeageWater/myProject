@@ -9,7 +9,7 @@ void Object2D::SetVertices()
 	HRESULT newresult = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(newresult));
 	// 全頂点に対して
-	for (int i = 0; i < (signed)vertexSize; i++) {
+	for (size_t i = 0; i < (signed)vertexSize; i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除

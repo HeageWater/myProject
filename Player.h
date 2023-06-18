@@ -16,7 +16,7 @@ public:
 	Player();
 	~Player();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
-	void Draw(int tex);
+	void Draw(size_t tex);
 	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
 

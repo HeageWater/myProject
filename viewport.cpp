@@ -19,7 +19,7 @@ Port::Port()
 }
 
 //‰Šú‰»(‘ã“ü)
-Port::Port(int Width, int Height)
+Port::Port(size_t Width, size_t Height)
 {
 	//ƒrƒ…[İ’è
 	viewport.Width = Width;
@@ -37,7 +37,7 @@ Port::Port(int Width, int Height)
 }
 
 //•`‰æ”ÍˆÍ‚Ì•ÏX
-void Port::ChengePort(int Width, int Height)
+void Port::ChengePort(size_t Width, size_t Height)
 {
 	viewport.Width = Width;
 	viewport.Height = Height;

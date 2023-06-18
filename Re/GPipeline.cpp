@@ -157,7 +157,7 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	assert(SUCCEEDED(result));
 }
 
-void GPipeline::Blend(D3D12_RENDER_TARGET_BLEND_DESC& blenddesc, const int mord)
+void GPipeline::Blend(D3D12_RENDER_TARGET_BLEND_DESC& blenddesc, const size_t mord)
 {
 	//	ã§í ê›íË
 	if (mord != NONE_BLEND) {
@@ -335,7 +335,7 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_
 	Init(dev, shader, inputLayout, _countof(inputLayout), topologyType, fillmord, cullmord);
 }
 
-void GPipeline::SetBlend(ID3D12Device* dev, int mord)
+void GPipeline::SetBlend(ID3D12Device* dev, size_t mord)
 {
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;

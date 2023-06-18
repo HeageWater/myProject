@@ -19,8 +19,8 @@ public:
 	Port();
 
 	//‰Šú‰»(‘ã“ü)
-	Port(int Width,int Height);
+	Port(size_t Width, size_t Height);
 
 	//•`‰æ”ÍˆÍ‚Ì•ÏX
-	void ChengePort(int Width, int Height);
+	void ChengePort(size_t Width, size_t Height);
 };

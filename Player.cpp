@@ -15,7 +15,7 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	player.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 }
 
-void Player::Draw(int tex)
+void Player::Draw(size_t tex)
 {
 	player.Draw(tex);
 }

@@ -19,6 +19,12 @@
     <Filter Include="ヘッダー ファイル\Re">
       <UniqueIdentifier>{1d4d485b-bfeb-4316-8847-1ce693f89451}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor">
+      <UniqueIdentifier>{61bf5a86-0aed-4195-bbc8-f2d563af1d60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Actor">
+      <UniqueIdentifier>{4c0b8c48-a3dd-434c-a957-22a15c8564a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Re\ConstBuff.cpp">
@@ -93,14 +99,14 @@
     <ClCompile Include="Sound.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Re</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="JsonFileOpen.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,9 +196,6 @@
     <ClInclude Include="Re\Controller.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\Re</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
@@ -201,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="JsonFileOpen.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

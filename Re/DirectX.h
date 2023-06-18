@@ -62,7 +62,7 @@ private:
 	// シザー矩形
 	ScissorRect scissorRect;
 
-	int textureNum;
+	size_t textureNum;
 	std::vector<ComPtr<ID3D12Resource>> texBuff;
 	UINT incrementSize;
 
@@ -87,10 +87,10 @@ public:
 	void PrevDraw(FLOAT* newColor = nullptr);
 	void PostDraw();
 
-	int LoadTextureGraph(const wchar_t* textureName);
+	size_t LoadTextureGraph(const wchar_t* textureName);
 
 	//	Getter
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(size_t handle);
 	ID3D12Device* GetDev() { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 	Matrix GetViewportMat() { return viewPort.Mat(); }
