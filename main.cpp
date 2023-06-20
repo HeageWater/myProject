@@ -21,6 +21,8 @@
 #include "Collision.h"
 #include "JsonFileOpen.h"
 
+#include "GameScene.h"
+
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 #pragma region Initialize
@@ -86,6 +88,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//複数個ファイル
 	///levelData = JsonFileOpen::FileOpen("Test");
 
+	//player
+	std::unique_ptr<Player> player;
+
 	std::map<std::string, Model*> models_;
 	std::vector<Model*> objects_;
 
@@ -142,11 +147,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		if (input_->GetTrigger(DIK_ESCAPE))
 		{
 			break;
-		}
-
-		if (input_->GetTrigger(DIK_R))
-		{
-			
 		}
 
 		//読み込んだモデルのUpdate
