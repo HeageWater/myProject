@@ -27,6 +27,6 @@ void Player::Update(Matrix matView, Matrix matProjection)
 
 void Player::Reset()
 {
-	player_.mat.trans.x_ = 0;
-	player_.mat.trans.y_ = 0;
+	player_.mat_.trans_.x_ = 0;
+	player_.mat_.trans_.y_ = 0;
 }

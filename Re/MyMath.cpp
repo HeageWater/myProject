@@ -17,21 +17,21 @@ Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vecto
 
 	Matrix matView;
 
-	matView.m[0][0] = baseX.x_;
-	matView.m[1][0] = baseX.y_;
-	matView.m[2][0] = baseX.z_;
+	matView.m_[0][0] = baseX.x_;
+	matView.m_[1][0] = baseX.y_;
+	matView.m_[2][0] = baseX.z_;
 
-	matView.m[0][1] = baseY.x_;
-	matView.m[1][1] = baseY.y_;
-	matView.m[2][1] = baseY.z_;
+	matView.m_[0][1] = baseY.x_;
+	matView.m_[1][1] = baseY.y_;
+	matView.m_[2][1] = baseY.z_;
 
-	matView.m[0][2] = baseZ.x_;
-	matView.m[1][2] = baseZ.y_;
-	matView.m[2][2] = baseZ.z_;
+	matView.m_[0][2] = baseZ.x_;
+	matView.m_[1][2] = baseZ.y_;
+	matView.m_[2][2] = baseZ.z_;
 
-	matView.m[3][0] = -baseX.dot(eye);
-	matView.m[3][1] = -baseY.dot(eye);
-	matView.m[3][2] = -baseZ.dot(eye);
+	matView.m_[3][0] = -baseX.dot(eye);
+	matView.m_[3][1] = -baseY.dot(eye);
+	matView.m_[3][2] = -baseZ.dot(eye);
 
 	return matView;
 }
@@ -88,12 +88,12 @@ Matrix MyMath::PerspectiveFovLH(const size_t winwidth, const size_t winheight, f
 
 	Matrix matProjection;
 	matProjection.Identity();
-	matProjection.m[0][0] = height;
-	matProjection.m[1][1] = height * aspect;
-	matProjection.m[2][2] = (float)(farZ + nearZ) / (farZ - nearZ);
-	matProjection.m[2][3] = 1.0f;
-	matProjection.m[3][2] = -2.0f * farZ * nearZ / (float)(farZ - nearZ);
-	matProjection.m[3][3] = 0.0f;
+	matProjection.m_[0][0] = height;
+	matProjection.m_[1][1] = height * aspect;
+	matProjection.m_[2][2] = (float)(farZ + nearZ) / (farZ - nearZ);
+	matProjection.m_[2][3] = 1.0f;
+	matProjection.m_[3][2] = -2.0f * farZ * nearZ / (float)(farZ - nearZ);
+	matProjection.m_[3][3] = 0.0f;
 
 	return matProjection;
 }
@@ -102,10 +102,10 @@ Matrix MyMath::OrthoLH(const size_t winwidth, const size_t winheight, float near
 {
 	Matrix matProjection;
 	matProjection.Identity();
-	matProjection.m[0][0] = 2 / (float)winwidth;
-	matProjection.m[1][1] = 2 / (float)winheight;
-	matProjection.m[2][2] = 1 / (float)(farZ - nearZ);
-	matProjection.m[3][2] = nearZ / (float)(nearZ - farZ);
+	matProjection.m_[0][0] = 2 / (float)winwidth;
+	matProjection.m_[1][1] = 2 / (float)winheight;
+	matProjection.m_[2][2] = 1 / (float)(farZ - nearZ);
+	matProjection.m_[3][2] = nearZ / (float)(nearZ - farZ);
 
 	return matProjection;
 }
@@ -147,29 +147,29 @@ MyMath::float4::float4(float x, float y, float z, float w) :
 void MyMath::ObjMatrix::SetMatScaling()
 {
 	matScale_.Identity();
-	matScale_.m[0][0] = scale_.x_;
-	matScale_.m[1][1] = scale_.y_;
-	matScale_.m[2][2] = scale_.z_;
+	matScale_.m_[0][0] = scale_.x_;
+	matScale_.m_[1][1] = scale_.y_;
+	matScale_.m_[2][2] = scale_.z_;
 }
 
 void MyMath::ObjMatrix::SetMatRotation()
 {
 	matRot_.Identity();
 	Matrix matRotX;
-	matRotX.m[1][1] = cos(rotAngle_.x_);
-	matRotX.m[1][2] = sin(rotAngle_.x_);
-	matRotX.m[2][1] = -sin(rotAngle_.x_);
-	matRotX.m[2][2] = cos(rotAngle_.x_);
+	matRotX.m_[1][1] = cos(rotAngle_.x_);
+	matRotX.m_[1][2] = sin(rotAngle_.x_);
+	matRotX.m_[2][1] = -sin(rotAngle_.x_);
+	matRotX.m_[2][2] = cos(rotAngle_.x_);
 	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotAngle_.y_);
-	matRotY.m[2][0] = sin(rotAngle_.y_);
-	matRotY.m[0][2] = -sin(rotAngle_.y_);
-	matRotY.m[2][2] = cos(rotAngle_.y_);
+	matRotY.m_[0][0] = cos(rotAngle_.y_);
+	matRotY.m_[2][0] = sin(rotAngle_.y_);
+	matRotY.m_[0][2] = -sin(rotAngle_.y_);
+	matRotY.m_[2][2] = cos(rotAngle_.y_);
 	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotAngle_.z_);
-	matRotZ.m[0][1] = sin(rotAngle_.z_);
-	matRotZ.m[1][0] = -sin(rotAngle_.z_);
-	matRotZ.m[1][1] = cos(rotAngle_.z_);
+	matRotZ.m_[0][0] = cos(rotAngle_.z_);
+	matRotZ.m_[0][1] = sin(rotAngle_.z_);
+	matRotZ.m_[1][0] = -sin(rotAngle_.z_);
+	matRotZ.m_[1][1] = cos(rotAngle_.z_);
 
 	matRot_ = matRotZ;
 	matRot_ *= matRotX;
@@ -179,9 +179,9 @@ void MyMath::ObjMatrix::SetMatRotation()
 void MyMath::ObjMatrix::SetMatTransform()
 {
 	matTrans_.Identity();
-	matTrans_.m[3][0] = trans_.x_;
-	matTrans_.m[3][1] = trans_.y_;
-	matTrans_.m[3][2] = trans_.z_;
+	matTrans_.m_[3][0] = trans_.x_;
+	matTrans_.m_[3][1] = trans_.y_;
+	matTrans_.m_[3][2] = trans_.z_;
 }
 
 void MyMath::ObjMatrix::Initialize()

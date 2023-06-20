@@ -62,10 +62,10 @@ Vector4D& Vector4D::operator/=(float s)
 Vector4D& Vector4D::operator*=(const Matrix& m)
 {
 	Vector4D ans;
-	ans.x_ = x_ * m.m[0][0] + y_ * m.m[1][0] + z_ * m.m[2][0] + w_ * m.m[3][0];
-	ans.y_ = x_ * m.m[0][1] + y_ * m.m[1][1] + z_ * m.m[2][1] + w_ * m.m[3][1];
-	ans.z_ = x_ * m.m[0][2] + y_ * m.m[1][2] + z_ * m.m[2][2] + w_ * m.m[3][2];
-	ans.w_ = x_ * m.m[0][3] + y_ * m.m[1][3] + z_ * m.m[2][3] + w_ * m.m[3][3];
+	ans.x_ = x_ * m.m_[0][0] + y_ * m.m_[1][0] + z_ * m.m_[2][0] + w_ * m.m_[3][0];
+	ans.y_ = x_ * m.m_[0][1] + y_ * m.m_[1][1] + z_ * m.m_[2][1] + w_ * m.m_[3][1];
+	ans.z_ = x_ * m.m_[0][2] + y_ * m.m_[1][2] + z_ * m.m_[2][2] + w_ * m.m_[3][2];
+	ans.w_ = x_ * m.m_[0][3] + y_ * m.m_[1][3] + z_ * m.m_[2][3] + w_ * m.m_[3][3];
 	*this = ans;
 	return *this;
 }

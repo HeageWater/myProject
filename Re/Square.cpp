@@ -144,11 +144,11 @@ Square::Square()
 
 void Square::MatUpdate(Matrix matView, Matrix matProjection, float a, Matrix billboard)
 {
-	obj.trans.x_ -= a;
+	obj.trans_.x_ -= a;
 
 	obj.Update(billboard);
 
-	constMapTransform->mat = obj.matWorld;
+	constMapTransform->mat = obj.matWorld_;
 	constMapTransform->mat *= matView;
 	constMapTransform->mat *= matProjection;
 }

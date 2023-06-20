@@ -21,29 +21,29 @@ void Object2D::SetVertices()
 void Object2D::SetMatScaling()
 {
 	matScale.Identity();
-	matScale.m[0][0] = scale.x_;
-	matScale.m[1][1] = scale.y_;
-	matScale.m[2][2] = scale.z_;
+	matScale.m_[0][0] = scale.x_;
+	matScale.m_[1][1] = scale.y_;
+	matScale.m_[2][2] = scale.z_;
 }
 
 void Object2D::SetMatRotation()
 {
 	matRot.Identity();
 	Matrix matRotX;
-	matRotX.m[1][1] = cos(rotAngle.x_);
-	matRotX.m[1][2] = sin(rotAngle.x_);
-	matRotX.m[2][1] = -sin(rotAngle.x_);
-	matRotX.m[2][2] = cos(rotAngle.x_);
+	matRotX.m_[1][1] = cos(rotAngle.x_);
+	matRotX.m_[1][2] = sin(rotAngle.x_);
+	matRotX.m_[2][1] = -sin(rotAngle.x_);
+	matRotX.m_[2][2] = cos(rotAngle.x_);
 	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotAngle.y_);
-	matRotY.m[2][0] = sin(rotAngle.y_);
-	matRotY.m[0][2] = -sin(rotAngle.y_);
-	matRotY.m[2][2] = cos(rotAngle.y_);
+	matRotY.m_[0][0] = cos(rotAngle.y_);
+	matRotY.m_[2][0] = sin(rotAngle.y_);
+	matRotY.m_[0][2] = -sin(rotAngle.y_);
+	matRotY.m_[2][2] = cos(rotAngle.y_);
 	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotAngle.z_);
-	matRotZ.m[0][1] = sin(rotAngle.z_);
-	matRotZ.m[1][0] = -sin(rotAngle.z_);
-	matRotZ.m[1][1] = cos(rotAngle.z_);
+	matRotZ.m_[0][0] = cos(rotAngle.z_);
+	matRotZ.m_[0][1] = sin(rotAngle.z_);
+	matRotZ.m_[1][0] = -sin(rotAngle.z_);
+	matRotZ.m_[1][1] = cos(rotAngle.z_);
 
 	matRot = matRotZ;
 	matRot *= matRotX;
@@ -53,9 +53,9 @@ void Object2D::SetMatRotation()
 void Object2D::SetMatTransform()
 {
 	matTrans.Identity();
-	matTrans.m[3][0] = trans.x_;
-	matTrans.m[3][1] = trans.y_;
-	matTrans.m[3][2] = trans.z_;
+	matTrans.m_[3][0] = trans.x_;
+	matTrans.m_[3][1] = trans.y_;
+	matTrans.m_[3][2] = trans.z_;
 }
 
 Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
@@ -117,7 +117,7 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 	// 頂点データサイズ
 	vertices.resize(vertexSize);
 
-	float radian = MyMath::PI * 2 / (float)vertexNum;
+	float radian = MyMath::PI_ * 2 / (float)vertexNum;
 
 	for (size_t i = 0; i < vertexNum; i++)
 	{
