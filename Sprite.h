@@ -8,5 +8,5 @@ public:
 	~Sprite();
 	void Inilialize(SpriteCommon* spriteCommon);
 
-	//SpriteCommon* spriteCommon = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 };

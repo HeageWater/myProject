@@ -15,8 +15,8 @@ public:
 	~SpriteCommon();
 	void Inilialize(DirectXCommon* dxCommon);
 	void Draw();
-	//DirectXCommon dxCommon;
+	DirectXCommon dxCommon;
 
-	//HRESULT result;
-	//Microsoft::WRL::ComPtr<D3D12_VERTEX_BUFFER_VIEW> vbView{};
+	HRESULT result;
+	Microsoft::WRL::ComPtr<D3D12_VERTEX_BUFFER_VIEW> vbView{};
 };
