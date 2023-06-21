@@ -34,11 +34,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	size_t playerPng_ = dx_->LoadTextureGraph(L"Resources/cube.jpeg");
 	size_t stagePng_ = dx_->LoadTextureGraph(L"Resources/br.png");
 
-	MyXAudio sound_;
+	//MyXAudio sound_;
 	//size_t bgm = sound_.SoundLoadWave("Resources/sound/bgm.wav");
 
-	Controller* controller_ = nullptr;
-	controller_ = Controller::GetInstance();
+	//Controller* controller_ = nullptr;
+	//controller_ = Controller::GetInstance();
 
 	MyDebugCamera debugcamera_(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera_(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -97,7 +97,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//Update
 		input_->Update();
-		controller_->Update();
+		//controller_->Update();
 
 		debugcamera_.Update(*input_);
 
