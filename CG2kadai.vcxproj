@@ -115,6 +115,7 @@
     <ClCompile Include="Re\ViewPort.cpp" />
     <ClCompile Include="Re\Window.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
@@ -170,6 +171,7 @@
     <ClInclude Include="Re\ViewPort.h" />
     <ClInclude Include="Re\Window.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022.vcxproj">

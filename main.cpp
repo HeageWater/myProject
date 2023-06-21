@@ -79,55 +79,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection_ = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
-	//ここから
-	LevelData* levelData_ = nullptr;
-
-	//親子ありファイル
-	levelData_ = JsonFileOpen::FileOpen("test2");
-	//levelData = JsonFileOpen::FileOpen("TestStage");
-
-	//複数個ファイル
-	///levelData = JsonFileOpen::FileOpen("Test");
-
 	//player
 	std::unique_ptr<Player> player_;
 	player_->Initialize(dx_.get(), shader_, pipeline_.get());
-
-	std::map<std::string, Model*> models_;
-	std::vector<Model*> objects_;
-
-	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData_->objects)
-	{
-		//ファイル名から登録済みモデルを検索
-		Model* model_ = nullptr;
-		decltype(models_)::iterator it = models_.find(objectdata.fileName);
-
-		//終わりか
-		if (it != models_.end())
-		{
-			model_ = it->second;
-		}
-
-		//モデルを指定して3Dオブジェクトを生成
-		Model* newModel_ = new Model();
-		newModel_->Initialize(dx_.get(), shader_, "Resources\\Model\\box.obj", pipeline_.get());
-
-		//trans
-		newModel_->mat_.trans_ = objectdata.translation;
-
-		//rotation
-		newModel_->mat_.rotAngle_ = objectdata.rotation;
-
-		//scale;
-		newModel_->mat_.scale_ = objectdata.scaling;
-
-		//Update
-		newModel_->MatUpdate(debugcamera_.mat, matProjection_);
-
-		//格納
-		objects_.push_back(newModel_);
-	}
 
 	//	ゲームループ
 	while (true)
@@ -152,25 +106,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
-		//読み込んだモデルのUpdate
-		for (auto& object : objects_)
-		{
-			object->mat_.trans_.x_ -= (float)(input_->GetKey(DIK_D) - input_->GetKey(DIK_A));
-			object->mat_.trans_.y_ -= (float)(input_->GetKey(DIK_S) - input_->GetKey(DIK_W));
-			object->mat_.trans_.z_ -= (float)(input_->GetKey(DIK_E) - input_->GetKey(DIK_Q));
-
-			object->MatUpdate(debugcamera_.mat, matProjection_);
-		}
-
 		//Draw
 		dx_->PrevDrawScreen();
-
-		//読み込んだモデルのDraw(White)
-		for (auto& object : objects_) {
-			object->Draw(white_);
-
-			object->mat_.trans_;
-		}
 
 		//// 描画コマンド
 
@@ -184,11 +121,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		player_->Draw(playerPng_);
 
 		dx_->PostDraw();
-	}
-
-	for (auto& object : objects_)
-	{
-		delete object;
 	}
 
 	return 0;
