@@ -9,4 +9,7 @@ public:
 	void Inilialize(SpriteCommon* spriteCommon);
 
 	SpriteCommon* spriteCommon = nullptr;
+protected:
+
+
 };
