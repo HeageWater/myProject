@@ -12,6 +12,7 @@
 
 class Stage
 {
+public:	
 	Stage();
 	~Stage();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);

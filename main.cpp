@@ -17,6 +17,7 @@
 #include <map>
 #include "Re//Model.h"
 #include "Player.h"
+#include "Stage.h"
 #include "Sound.h"
 #include "Collision.h"
 #include "JsonFileOpen.h"
@@ -31,6 +32,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<MyDirectX> dx_(new MyDirectX(win_.get()));
 	size_t white_ = dx_->LoadTextureGraph(L"Resources/white1x1.png");
 	size_t playerPng_ = dx_->LoadTextureGraph(L"Resources/cube.jpeg");
+	size_t stagePng_ = dx_->LoadTextureGraph(L"Resources/br.png");
 
 	MyXAudio sound_;
 	//size_t bgm = sound_.SoundLoadWave("Resources/sound/bgm.wav");
@@ -83,6 +85,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<Player> player_;
 	player_->Initialize(dx_.get(), shader_, pipeline_.get());
 
+	std::unique_ptr<Stage> stage_;
+	stage_->Initialize(dx_.get(), shader_, pipeline_.get());
+
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
 	{
@@ -99,6 +104,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		screen_.MatUpdate(matView_.mat_, orthoProjection_, 0);
 
 		player_->Update(matView_.mat_, matProjection_);
+
+		stage_->Update(matView_.mat_, matProjection_);
+
 		//‚±‚±‚Ü‚Å
 
 		if (input_->GetTrigger(DIK_ESCAPE))
@@ -119,6 +127,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		screen_.Draw(0);
 
 		player_->Draw(playerPng_);
+
+		stage_->Draw(stagePng_);
 
 		dx_->PostDraw();
 	}
