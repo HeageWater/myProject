@@ -144,7 +144,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen_.MatUpdate(matView_.mat_, orthoProjection_, 0);
 
-		player_->Update(matView_.mat_, orthoProjection_);
+		player_->Update(matView_.mat_, matProjection_);
 		//‚±‚±‚Ü‚Å
 
 		if (input_->GetTrigger(DIK_ESCAPE))
