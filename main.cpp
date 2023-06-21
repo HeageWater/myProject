@@ -30,6 +30,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<MyDirectX> dx_(new MyDirectX(win_.get()));
 	size_t white_ = dx_->LoadTextureGraph(L"Resources/white1x1.png");
+	size_t playerPng_ = dx_->LoadTextureGraph(L"Resources/cube.jpeg");
 
 	MyXAudio sound_;
 	//size_t bgm = sound_.SoundLoadWave("Resources/sound/bgm.wav");
@@ -89,7 +90,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	///levelData = JsonFileOpen::FileOpen("Test");
 
 	//player
-	std::unique_ptr<Player> player;
+	std::unique_ptr<Player> player_;
+	player_->Initialize(dx_.get(), shader_, pipeline_.get());
 
 	std::map<std::string, Model*> models_;
 	std::vector<Model*> objects_;
@@ -142,6 +144,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen_.MatUpdate(matView_.mat_, orthoProjection_, 0);
 
+		player_->Update(matView_.mat_, orthoProjection_);
 		//‚±‚±‚Ü‚Å
 
 		if (input_->GetTrigger(DIK_ESCAPE))
@@ -155,7 +158,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			object->mat_.trans_.x_ -= (float)(input_->GetKey(DIK_D) - input_->GetKey(DIK_A));
 			object->mat_.trans_.y_ -= (float)(input_->GetKey(DIK_S) - input_->GetKey(DIK_W));
 			object->mat_.trans_.z_ -= (float)(input_->GetKey(DIK_E) - input_->GetKey(DIK_Q));
-																					  
+
 			object->MatUpdate(debugcamera_.mat, matProjection_);
 		}
 
@@ -177,6 +180,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		dx_->PrevDraw();
 
 		screen_.Draw(0);
+
+		player_->Draw(playerPng_);
 
 		dx_->PostDraw();
 	}
