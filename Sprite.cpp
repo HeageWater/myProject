@@ -6,10 +6,20 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
+	delete spriteCommon_;
 }
 
 void Sprite::Inilialize(SpriteCommon* spriteCommon)
 {
-	this->spriteCommon = new SpriteCommon;
-	this->spriteCommon = spriteCommon;
+	//spriteCommon_ = new SpriteCommon;
+	spriteCommon_ = spriteCommon;
+}
+
+void Sprite::Update()
+{
+}
+
+void Sprite::Draw()
+{
+	spriteCommon_->Draw();
 }

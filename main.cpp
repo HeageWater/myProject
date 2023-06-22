@@ -16,15 +16,6 @@ using namespace Microsoft::WRL;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-#ifdef _DEBUG
-	//デバッグレイヤーをオンに
-	ComPtr<ID3D12Debug1> debugController;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-	{
-		debugController->EnableDebugLayer();
-		debugController->SetEnableGPUBasedValidation(TRUE);
-	}
-#endif
 
 	//3Dオブジェクトの数
 	const size_t kObjectCount = 1;
@@ -74,40 +65,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//int bgm = sound->SoundLoadWave("Resource/BGM.wav");
 	//int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
 
-	/*SpriteCommon* spriteCommon = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Inilialize(dxCommon);
 
 	Sprite* sprite = new Sprite();
-	sprite->Inilialize(spriteCommon);*/
+	sprite->Inilialize(spriteCommon);
+
 	//初期化
-
-#ifdef _DEBUG
-	ComPtr<ID3D12InfoQueue> infoQueue;
-	if (SUCCEEDED(dxCommon->GetDevice()->QueryInterface(IID_PPV_ARGS(&infoQueue))))
-	{
-		//ヤバイとき止まる
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
-		//エラー時に止まる
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
-		infoQueue->Release();
-
-		//抑制するエラー
-		D3D12_MESSAGE_ID denyIds[] = {
-		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
-
-		//抑制する表示レベル
-		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
-		D3D12_INFO_QUEUE_FILTER filter{};
-		filter.DenyList.NumIDs = _countof(denyIds);
-		filter.DenyList.pIDList = denyIds;
-		filter.DenyList.NumSeverities = _countof(severities);
-		filter.DenyList.pSeverityList = severities;
-
-		//指定したエラーの表示を抑制する
-		infoQueue->PushStorageFilter(&filter);
-}
-#endif
 
 	//DirectX初期化処理ここまで
 
@@ -917,6 +882,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
+		if (key->Keep(DIK_D))
+		{
+			eye.x += 1;		//視点座標
+		}
+
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
 
@@ -965,6 +937,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画コマンド
 		object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
+		sprite->Draw();
+
 		//4.描画処理ここまで
 
 		//5.リソースバリア
@@ -980,6 +954,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete window;
 	delete object3ds;
 	//delete dxCommon;
+	delete sprite;
+	delete spriteCommon;
 
 	//ウィンドウクラスを登録解除
 	dxCommon->GetWindow()->Finalize();

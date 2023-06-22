@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Vector3.h"
+#include "Vector2.h"
 #include <DirectXMath.h>
 #include <vector>
 using namespace DirectX;
@@ -7,9 +9,9 @@ using namespace DirectX;
 //頂点データ構造体
 struct Vertex
 {
-	XMFLOAT3 pos;
-	XMFLOAT3 noemal;
-	XMFLOAT2 uv;
+	Vector3 pos;
+	Vector3 noemal;
+	Vector2 uv;
 };
 
 class Vertexs
@@ -17,5 +19,5 @@ class Vertexs
 public:
 	Vertexs();
 	//頂点データ
-	Vertex vertices[];
+	Vertex vertices;
 };

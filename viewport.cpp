@@ -19,7 +19,7 @@ Port::Port()
 }
 
 //初期化(代入)
-Port::Port(int Width, int Height)
+Port::Port(float Width, float Height)
 {
 	//ビュー設定
 	viewport.Width = Width;
@@ -31,13 +31,13 @@ Port::Port(int Width, int Height)
 
 	//シザー設定
 	scissorRec.left = 0;				 //切り抜き座標左
-	scissorRec.right = Width;	 //切り抜き座標右
+	scissorRec.right = (LONG)Width;	 //切り抜き座標右
 	scissorRec.top = 0;				 //切り抜き座標上
-	scissorRec.bottom = Height;	 //切り抜き座標下
+	scissorRec.bottom = (LONG)Height;	 //切り抜き座標下
 }
 
 //描画範囲の変更
-void Port::ChengePort(int Width, int Height)
+void Port::ChengePort(float Width, float Height)
 {
 	viewport.Width = Width;
 	viewport.Height = Height;

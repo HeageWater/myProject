@@ -12,6 +12,16 @@ std::vector<ID3D12Resource*> backBuffers;
 
 void DirectXCommon::Initialize()
 {
+#ifdef _DEBUG
+	//デバッグレイヤーをオンに
+	ComPtr<ID3D12Debug1> debugController;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	{
+		debugController->EnableDebugLayer();
+		debugController->SetEnableGPUBasedValidation(TRUE);
+	}
+#endif
+
 	assert(window);
 
 	this->window = window;
@@ -35,6 +45,33 @@ void DirectXCommon::Initialize()
 
 	//フェンスの初期化
 	InitializeFence();
+
+#ifdef _DEBUG
+	ComPtr<ID3D12InfoQueue> infoQueue;
+	if (SUCCEEDED(GetDevice()->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	{
+		//ヤバイとき止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+		//エラー時に止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+		infoQueue->Release();
+
+		//抑制するエラー
+		D3D12_MESSAGE_ID denyIds[] = {
+		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
+
+		//抑制する表示レベル
+		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+		D3D12_INFO_QUEUE_FILTER filter{};
+		filter.DenyList.NumIDs = _countof(denyIds);
+		filter.DenyList.pIDList = denyIds;
+		filter.DenyList.NumSeverities = _countof(severities);
+		filter.DenyList.pSeverityList = severities;
+
+		//指定したエラーの表示を抑制する
+		infoQueue->PushStorageFilter(&filter);
+	}
+#endif
 }
 
 void DirectXCommon::InitializeDevice()
@@ -312,14 +349,22 @@ void DirectXCommon::PostDraw()
 	ID3D12CommandList* commandLists[] = { commandList.Get()};
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
+	//画面表示するバッファをフリップ(裏表の入れ替え)
+	result = swapChain->Present(1, 0);
+	assert(SUCCEEDED(result));
+
 	//コマンドの実行完了を待つ
 	commandQueue->Signal(fence, ++fenceVal);
 	if (fence->GetCompletedValue() != fenceVal)
 	{
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 		fence->SetEventOnCompletion(fenceVal, event);
-		WaitForSingleObject(event, INFINITE);
-		CloseHandle(event);
+
+		if (event != 0)
+		{
+			WaitForSingleObject(event, INFINITE);
+			CloseHandle(event);
+		}
 	}
 
 	//キューをクリア
@@ -328,9 +373,5 @@ void DirectXCommon::PostDraw()
 
 	//再びコマンドリストをためる準備
 	result = commandList->Reset(cmdAllocator, nullptr);
-	assert(SUCCEEDED(result));
-
-	//画面表示するバッファをフリップ(裏表の入れ替え)
-	result = swapChain->Present(1, 0);
 	assert(SUCCEEDED(result));
 }
