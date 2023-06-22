@@ -6,7 +6,7 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
-	delete spriteCommon_;
+	//delete spriteCommon_;
 }
 
 void Sprite::Inilialize(SpriteCommon* spriteCommon)

@@ -8,7 +8,7 @@ SpriteCommon::SpriteCommon()
 
 SpriteCommon::~SpriteCommon()
 {
-	delete dxCommon_;
+	//delete dxCommon_;
 }
 
 void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
@@ -20,52 +20,11 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 
 	dxCommon_ = dxCommon;
 
-	////頂点データ
-	//Vertex vertices[] =
-	//{
-	//	//	x,		y,		z,		u,	 v
-	//	//前
-	//	{{ -5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
-	//	{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
-	//	{{  5.0f, -5.0f, -5.0f},{},{1.0f,1.0f}},//右下
-	//	{{  5.0f,  5.0f, -5.0f},{},{1.0f,0.0f}},//右上 
-
-	//	//後
-	//	{{ -5.0f, -5.0f,  5.0f},{},{0.0f,1.0f}},//左下
-	//	{{ -5.0f,  5.0f,  5.0f},{},{0.0f,0.0f}},//左上
-	//	{{  5.0f, -5.0f,  5.0f},{},{1.0f,1.0f}},//右下
-	//	{{  5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
-
-	//	//左
-	//	{{ -5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
-	//	{{ -5.0f, -5.0f,  5.0f},{},{0.0f,0.0f}},//左上
-	//	{{ -5.0f,  5.0f, -5.0f},{},{1.0f,1.0f}},//右下
-	//	{{ -5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
-
-	//	//右
-	//	{{  5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
-	//	{{  5.0f, -5.0f,  5.0f},{},{0.0f,0.0f}},//左上
-	//	{{  5.0f,  5.0f, -5.0f},{},{1.0f,1.0f}},//右下
-	//	{{  5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
-
-	//	//下
-	//	{{  5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
-	//	{{ -5.0f, -5.0f, -5.0f},{},{0.0f,0.0f}},//左上
-	//	{{  5.0f, -5.0f,  5.0f},{},{1.0f,1.0f}},//右下
-	//	{{ -5.0f, -5.0f,  5.0f},{},{1.0f,0.0f}},//右上
-
-	//	//上
-	//	{{  5.0f,  5.0f, -5.0f},{},{0.0f,1.0f}},//左下
-	//	{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
-	//	{{  5.0f,  5.0f,  5.0f},{},{1.0f,1.0f}},//右下
-	//	{{ -5.0f,  5.0f,  5.0f},{},{1.0f,0.0f}},//右上
-	//};
-
 	Vector3 vertices[] =
 	{
-		{-0.5f,-0.5f,0.0f},
-		{-0.5f,+0.5f,0.0f},
-		{+0.5f,-0.5f,0.0f}
+		{-10.5f,-10.5f,0.0f},
+		{-10.5f,+10.5f,0.0f},
+		{+10.5f,-10.5f,0.0f}
 	};
 	
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
@@ -289,8 +248,8 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	//パイプランステートの生成
 	//ID3D12PipelineState* pipelineState = nullptr;
 
-	result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result));
+	//result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	//assert(SUCCEEDED(result));
 
 	verticesCount = _countof(vertices);
 }

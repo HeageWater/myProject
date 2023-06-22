@@ -2,7 +2,6 @@
 #include "key.h"
 #include "WindowApi.h"
 #include "DirectXCommon.h"
-#include "SpriteCommon.h"
 #include "Sprite.h"
 #include "Controller.h"
 #include "Vector2.h"
@@ -862,11 +861,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//移動
 		if (key->Keep(DIK_UP) || vec.y < -DeadSpace)
 		{
-			object3ds->position.y += speed;
+			eye.z -= speed;
 		}
 		if (key->Keep(DIK_DOWN) || vec.y > DeadSpace)
 		{
-			object3ds->position.y -= speed;
+			eye.z  += speed;
 		}
 		if (key->Keep(DIK_RIGHT) || vec.x > DeadSpace)
 		{
@@ -954,8 +953,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete window;
 	delete object3ds;
 	//delete dxCommon;
-	delete sprite;
 	delete spriteCommon;
+	delete sprite;
 
 	//ウィンドウクラスを登録解除
 	dxCommon->GetWindow()->Finalize();

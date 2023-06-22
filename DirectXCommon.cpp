@@ -341,6 +341,8 @@ void DirectXCommon::PostDraw()
 	//表示状態に
 	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 
+	commandList->ResourceBarrier(1, &barrierDesc);
+
 	//命令のクローズ
 	result = commandList->Close();
 	assert(SUCCEEDED(result));
