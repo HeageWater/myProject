@@ -936,6 +936,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//•`‰æƒRƒ}ƒ“ƒh
 		object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
+		//
 		sprite->Draw();
 
 		//4.•`‰æˆ—‚±‚±‚Ü‚Å

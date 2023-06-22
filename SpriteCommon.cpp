@@ -205,9 +205,60 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	//深度クリッピングを有効に
 	pipelineDesc.RasterizerState.DepthClipEnable = true;
 
+
+
 	//ブレンドステート
 	pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
 		= D3D12_COLOR_WRITE_ENABLE_ALL;
+
+	//レンダーターゲットのブレンド設定
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+
+	//ブレンドを無効
+	blenddesc.BlendEnable = false;
+
+	{
+		////ブレンドを有効
+		//blenddesc.BlendEnable = true;
+		////加算
+		//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		////ソースの値を10%使う
+		//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+		////デストの値を0%使う
+		//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+		//加算合成
+		////加算
+		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		////ソースの値を10%使う
+		//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		////デストの値を0%使う
+		//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+
+		////減算
+		//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		////ソースの値を10%使う
+		//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		////デストの値を0%使う
+		//blenddesc.DestBlend = D3D12_BLEND_ONE;
+
+		////色反転
+		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		////1.0f-デストカラーの値
+		//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+		////使わない
+		//blenddesc.DestBlend = D3D12_BLEND_ZERO;
+
+		////半透明合成
+		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		////ソースのα値
+		//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		////1.0f-ソースのα値
+		//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	}
+
 
 	//頂点レイアウトの設定
 	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
