@@ -31,7 +31,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<MyDirectX> dx_(new MyDirectX(win_.get()));
 	size_t white_ = dx_->LoadTextureGraph(L"Resources/white1x1.png");
-	size_t playerPng_ = dx_->LoadTextureGraph(L"Resources/cube.jpeg");
+	size_t playerPng_ = dx_->LoadTextureGraph(L"Resources/cube.jpg");
 	size_t stagePng_ = dx_->LoadTextureGraph(L"Resources/br.png");
 
 	//MyXAudio sound_;
