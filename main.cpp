@@ -82,10 +82,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection_ = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
 	//player
-	std::unique_ptr<Player> player_;
+	Player* player_ = new Player();
 	player_->Initialize(dx_.get(), shader_, pipeline_.get());
 
-	std::unique_ptr<Stage> stage_;
+	Stage* stage_ = new Stage();
 	stage_->Initialize(dx_.get(), shader_, pipeline_.get());
 
 	//	ÉQÅ[ÉÄÉãÅ[Év
