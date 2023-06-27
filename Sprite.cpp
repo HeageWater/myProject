@@ -15,6 +15,10 @@ void Sprite::Inilialize(SpriteCommon* spriteCommon)
 	spriteCommon_ = spriteCommon;
 }
 
+void Sprite::Inilialize()
+{
+}
+
 void Sprite::Update()
 {
 }

@@ -7,6 +7,7 @@ public:
 	Sprite();
 	~Sprite();
 	void Inilialize(SpriteCommon* spriteCommon);
+	void Inilialize();
 	void Update();
 	void Draw();
 
