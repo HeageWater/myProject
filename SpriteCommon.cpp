@@ -303,14 +303,15 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	//assert(SUCCEEDED(result));
 
 	verticesCount = _countof(vertices);
+
+	//パイプラインステートとルートシグネチャの設定コマンド
+	/*dxCommon_->GetCommandList()->SetPipelineState(pipelineState);
+	dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);*/
 }
 
 void SpriteCommon::Draw()
 {
-	//パイプラインステートとルートシグネチャの設定コマンド
-	//dxCommon_->GetCommandList()->SetPipelineState(pipelineState);
-	//dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
-
+	
 	//プリミティブ形状の設定コマンド
 	//三角形リスト
 	dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
