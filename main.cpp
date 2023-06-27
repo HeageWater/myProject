@@ -123,6 +123,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		objects.push_back(newModel);
 	}
 
+	Player* player = new Player();
+	player->Initialize(dx.get(), shader, pipeline.get());
+
+
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
 	{
@@ -133,6 +137,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//Update
 		input->Update();
 		controller->Update();
+
+		player->Update(matView.mat, orthoProjection);
 
 		debugcamera.Update(*input);
 
@@ -175,6 +181,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		dx->PrevDraw();
 
 		screen.Draw(0);
+
+		player->Draw(texP);
 
 		dx->PostDraw();
 	}
