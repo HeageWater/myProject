@@ -8,6 +8,7 @@
 #include "Vector3.h"
 #include "Sound.h"
 #include "ObjFile.h"
+#include "PostEffect.h"
 #include <fstream>
 #include <wrl.h>
 
@@ -70,6 +71,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	Sprite* sprite = new Sprite();
 	sprite->Inilialize(spriteCommon);
+
+	PostEffect* postEffect = nullptr;
+
+	postEffect = new PostEffect(dxCommon);
+	postEffect->Initialize();
 
 	//初期化
 
@@ -865,7 +871,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (key->Keep(DIK_DOWN) || vec.y > DeadSpace)
 		{
-			eye.z  += speed;
+			eye.z += speed;
 		}
 		if (key->Keep(DIK_RIGHT) || vec.x > DeadSpace)
 		{
@@ -933,11 +939,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
+		postEffect->PreDraw(dxCommon->GetCommandList());
+
 		//描画コマンド
 		object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
+		postEffect->PostDraw(dxCommon->GetCommandList());
+
 		//
 		//sprite->Draw();
+
+		postEffect->Draw(dxCommon->GetCommandList());
 
 		//4.描画処理ここまで
 
@@ -956,6 +968,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete dxCommon;
 	delete spriteCommon;
 	delete sprite;
+	delete postEffect;
 
 	//ウィンドウクラスを登録解除
 	dxCommon->GetWindow()->Finalize();
