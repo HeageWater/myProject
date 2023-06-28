@@ -102,6 +102,9 @@
     <ClCompile Include="JsonFileOpen.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Re</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PShader.hlsl">
@@ -201,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="JsonFileOpen.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

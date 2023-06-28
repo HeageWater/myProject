@@ -2,7 +2,8 @@
 
 Player::Player()
 {
-
+	player.mat.Initialize();
+	player.mat.scale = { 3,3,3 };
 }
 
 Player::~Player()
@@ -13,6 +14,12 @@ Player::~Player()
 void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
 	player.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+
+	player.mat.Initialize();
+	player.mat.scale = { 10,10,10 };
+	player.mat.trans.x = 0;
+	player.mat.trans.y = 0;
+	player.mat.trans.z = 0;
 }
 
 void Player::Draw(int tex)

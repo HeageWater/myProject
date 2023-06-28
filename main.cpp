@@ -17,6 +17,7 @@
 #include <map>
 #include "Re//Model.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Sound.h"
 #include "Collision.h"
 #include "JsonFileOpen.h"
@@ -82,7 +83,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	LevelData* levelData = nullptr;
 
 	//親子ありファイル
-	levelData = JsonFileOpen::FileOpen("untitled");
+	levelData = JsonFileOpen::FileOpen("0620");
 
 	//複数個ファイル
 	//levelData = JsonFileOpen::FileOpen("Test");
@@ -154,14 +155,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//読み込んだモデルのUpdate
 		for (auto& object : objects)
 		{
-			object->mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
-			object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
-			object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
+			//object->mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
+			//object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
+			//object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
 
 			object->MatUpdate(debugcamera.mat, matProjection);
 
-			break;
+			//break;
 		}
+
+		player->player.mat.trans.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
+		player->player.mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
+		player->player.mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
 
 		//Draw
 		dx->PrevDrawScreen();
