@@ -110,6 +110,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//trans
 		newModel->mat.trans = objectdata.translation;
+		newModel->mat.trans.y = -newModel->mat.trans.y;
+
+		newModel->mat.trans = { 0,0,0 };
 
 		//rotation
 		newModel->mat.rotAngle = objectdata.rotation;
@@ -118,7 +121,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		newModel->mat.scale = objectdata.scaling;
 
 		//Update
-		newModel->MatUpdate(debugcamera.mat, matProjection);
+		newModel->MatUpdate(matView.mat, orthoProjection);
 
 		//Ši”[
 		objects.push_back(newModel);
@@ -164,7 +167,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			//object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
 			//object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
 
-			object->MatUpdate(debugcamera.mat, matProjection);
+			object->MatUpdate(matView.mat, orthoProjection);
 
 			//break;
 		}
