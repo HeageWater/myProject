@@ -17,6 +17,7 @@ using namespace DirectX;
 struct ConstBufferDataMaterial
 {
 	XMFLOAT4 color;
+	XMMATRIX mat;
 };
 
 struct ConstBufferDataTransform
@@ -32,7 +33,7 @@ public:
 	//定数バッファマップ(行列用)
 	ConstBufferDataTransform* constMapTransform;
 	//アフィン変換情報
-	XMFLOAT3 scale = { 1,1,1 };
+	XMFLOAT3 scale = { 2,2,2 };
 	XMFLOAT3 rotation = { 0,0,0 };
 	XMFLOAT3 position = { 0,0,0 };
 	//ワールド変換行列

@@ -16,7 +16,6 @@ using namespace Microsoft::WRL;
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-
 	//3Dオブジェクトの数
 	const size_t kObjectCount = 1;
 
@@ -74,7 +73,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	PostEffect* postEffect = nullptr;
 
-	postEffect = new PostEffect(dxCommon);
+	postEffect = new PostEffect(dxCommon->GetDevice());
 	postEffect->Initialize();
 
 	//初期化
@@ -472,6 +471,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//値を書き込むと自動的に転送される 
 	constMapMaterial->color = XMFLOAT4(1, 1, 1, 0.5f);	//普通の色
 
+	constMapMaterial->mat = XMMatrixIdentity();
+
 	//デスクリプタレンジの設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange = {};
 	descriptorRange.NumDescriptors = 1;
@@ -761,7 +762,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			(float)window->window_width / window->window_height,
 			0.1f, 1000.0f*/
 
-			//射影変換行列
+		//射影変換行列
 		matProjection = XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),
 			(float)dxCommon->GetWindow()->window_width / dxCommon->GetWindow()->window_height,
@@ -814,7 +815,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	dxCommon->GetDevice()->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 
-
 	//ハンドルのサイズ調整
 	UINT incrementSize = dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvHandle.ptr += incrementSize;
@@ -843,6 +843,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//キー入力更新
 		key->Update();
 		controller->Update();
+
+		//postEffect->Update();
 
 		//windowsのメッセージ処理
 		if (dxCommon->GetWindow()->ProcessMessege())
@@ -934,23 +936,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (draw_flg)
 		{
 			srvGpuHandle.ptr += incrementSize;
+
+			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+			postEffect->PreDraw(dxCommon->GetCommandList());
+
+			//描画コマンド
+			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
+
+
+			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature);
+
+
+			postEffect->PostDraw(dxCommon->GetCommandList());
 		}
+		else
+		{
+			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
-		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+			//postEffect->PreDraw(dxCommon->GetCommandList());
 
-		postEffect->PreDraw(dxCommon->GetCommandList());
+			//描画コマンド
+			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
-		//描画コマンド
-		object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
-		postEffect->PostDraw(dxCommon->GetCommandList());
+			//postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature);
 
-		//
-		//sprite->Draw();
 
-		postEffect->Draw(dxCommon->GetCommandList());
-
+			//postEffect->PostDraw(dxCommon->GetCommandList());
+		}
 		//4.描画処理ここまで
 
 		//5.リソースバリア

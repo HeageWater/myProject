@@ -5,6 +5,11 @@ Object3ds::Object3ds(ID3D12Device* device)
 {
 	HRESULT result;
 
+	for (size_t i = 0; i < 4; i++)
+	{
+		matWorld.r[i] = { 0,0,0 };
+	}
+
 	//定数バッファのヒープ設定
 	D3D12_HEAP_PROPERTIES heapProp{};
 	//GPUへの転送用
@@ -62,7 +67,7 @@ void Object3ds::UpdateObject3d(XMMATRIX& matView, XMMATRIX& matProjection)
 void Object3ds::DrawObject3d(
 	ID3D12GraphicsCommandList* commandList,
 	D3D12_VERTEX_BUFFER_VIEW& vbView,
-	D3D12_INDEX_BUFFER_VIEW& ibView, 
+	D3D12_INDEX_BUFFER_VIEW& ibView,
 	UINT numIndices)
 {
 	//頂点バッファの設定

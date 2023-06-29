@@ -22,9 +22,9 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 
 	Vector3 vertices[] =
 	{
-		{-10.5f,-10.5f,0.0f},
-		{-10.5f,+10.5f,0.0f},
-		{+10.5f,-10.5f,0.0f}
+		{-1.5f,-1.5f,0.0f},
+		{-1.5f,+1.5f,0.0f},
+		{+1.5f,-1.5f,0.0f}
 	};
 	
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数

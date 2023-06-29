@@ -69,6 +69,12 @@
     <FxCompile Include="BasicVS.hlsl" />
     <FxCompile Include="SpritePS.hlsl" />
     <FxCompile Include="SpriteVS.hlsl" />
+    <FxCompile Include="PostEffectPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="PostEffectVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="key.h">
@@ -128,5 +134,8 @@
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Sprite.hlsli" />
+    <None Include="PostEffect.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
   </ItemGroup>
 </Project>
