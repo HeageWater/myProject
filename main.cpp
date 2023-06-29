@@ -141,7 +141,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		player->Update(matView.mat, orthoProjection);
 
-		debugcamera.Update(*input);
+		//debugcamera.Update(*input);
 
 		screen.MatUpdate(matView.mat, orthoProjection, 0);
 
@@ -150,6 +150,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		if (input->GetTrigger(DIK_ESCAPE))
 		{
 			break;
+		}
+
+		if (input->GetTrigger(DIK_SPACE))
+		{
+			//matView.eye.x = objects[2]->mat.trans.x;
 		}
 
 		//“Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚ÌUpdate
