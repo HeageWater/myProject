@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="ImGui.cpp" />
     <ClCompile Include="JsonFileOpen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Collision.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="ImGui.h" />
     <ClInclude Include="JsonFileOpen.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Re\ConstBuff.h" />

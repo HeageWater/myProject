@@ -21,6 +21,7 @@
 #include "Sound.h"
 #include "Collision.h"
 #include "JsonFileOpen.h"
+#include "ImGUi.h"
 
 #include "GameScene.h"
 
@@ -34,11 +35,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	size_t playerPng_ = dx_->LoadTextureGraph(L"Resources/cube.jpg");
 	size_t stagePng_ = dx_->LoadTextureGraph(L"Resources/br.png");
 
-	//MyXAudio sound_;
-	//size_t bgm = sound_.SoundLoadWave("Resources/sound/bgm.wav");
-
-	//Controller* controller_ = nullptr;
-	//controller_ = Controller::GetInstance();
+	Controller* controller_ = nullptr;
+	controller_ = Controller::GetInstance();
 
 	MyDebugCamera debugcamera_(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera_(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -82,11 +80,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection_ = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
 	//player
-	Player* player_ = new Player();
-	player_->Initialize(dx_.get(), shader_, pipeline_.get());
+	Player player_;
+	player_.Initialize(dx_.get(), shader_, pipeline_.get());
 
-	Stage* stage_ = new Stage();
-	stage_->Initialize(dx_.get(), shader_, pipeline_.get());
+	Stage stage_;
+	stage_.Initialize(dx_.get(), shader_, pipeline_.get());
 
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
@@ -97,15 +95,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//Update
 		input_->Update();
-		//controller_->Update();
+		controller_->Update();
 
 		debugcamera_.Update(*input_);
 
 		screen_.MatUpdate(matView_.mat_, orthoProjection_, 0);
 
-		player_->Update(matView_.mat_, matProjection_);
+		player_.Update(matView_.mat_, matProjection_);
 
-		stage_->Update(matView_.mat_, matProjection_);
+		stage_.Update(matView_.mat_, matProjection_);
 
 		//‚±‚±‚Ü‚Å
 
@@ -126,9 +124,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen_.Draw(0);
 
-		player_->Draw(playerPng_);
+		player_.Draw(playerPng_);
 
-		stage_->Draw(stagePng_);
+		stage_.Draw(stagePng_);
 
 		dx_->PostDraw();
 	}

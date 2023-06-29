@@ -79,7 +79,7 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 			//transform格納
 			SetMatrix(transform, objectData);
 		}
-		else if ((type.compare("MESH") == 0)
+		else if ((type.compare("MESH") == 0))
 		{
 			//チェック
 			assert(object.contains("type"));
