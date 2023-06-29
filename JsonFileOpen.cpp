@@ -78,49 +78,42 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 
 			//transform格納
 			SetMatrix(transform, objectData);
+		}
+		else if ((type.compare("MESH") == 0)
+		{
+			//チェック
+			assert(object.contains("type"));
 
+			//種別を取得
+			std::string type = object["type"].get<std::string>();
 
+			//種別の処理
 
-			//子がいるか
-			//if (object.contains("children"))
-			//{
-			//	//チェック
-			//	assert(object.contains("type"));
+			//Mesh
+			if (type.compare("CAMARA") == 0)
+			{
+				//要素追加
+				levelData->objects.emplace_back(LevelData::ObjectData{});
 
-			//	//種別を取得
-			//	std::string type = object["type"].get<std::string>();
+				//今追加した要素の参照を得る
+				LevelData::ObjectData& objectData = levelData->objects.back();
 
-			//	//Mesh
-			//	if (type.compare("MESH") == 0)
-			//	{
-			//		//reserve
-			//		levelData->objects.reserve(levelData->objects.size());
+				//ファイルネームだったら
+				if (object.contains("file_name"))
+				{
+					//ファイル名
+					objectData.fileName = object["file_name"];
+				}
 
-			//		//要素追加
-			//		levelData->objects.emplace_back(LevelData::ObjectData{});
+				//Transformのパラメータ読み込み
+				nlohmann::json& transform = object["transform"];
 
-			//		//今追加した要素の参照を得る
-			//		LevelData::ObjectData& objectData2 = levelData->objects.back();
-
-			//		//ファイルネームだったら
-			//		if (object.contains("file_name"))
-			//		{
-			//			//ファイル名
-			//			objectData2.fileName = object["file_name"];
-			//		}
-
-			//		//Transformのパラメータ読み込み
-			//		nlohmann::json& transform2 = object["transform"];
-
-			//		//transform格納
-			//		SetMatrix(transform2, objectData2);
-			//	}
-			//}
-
-
+				//transform格納
+				SetMatrix(transform, objectData);
+			}
 		}
 	}
-
+	
 
 	return levelData;
 }
