@@ -2,7 +2,8 @@
 
 Player::Player()
 {
-
+	player_.mat_.Initialize();
+	player_.mat_.trans_ = { 3,3,3 };
 }
 
 Player::~Player()

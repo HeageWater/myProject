@@ -80,11 +80,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix orthoProjection_ = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
 	//player
-	Player player_;
-	player_.Initialize(dx_.get(), shader_, pipeline_.get());
+	Player* player_ = new Player();
+	player_->Initialize(dx_.get(), shader_, pipeline_.get());
 
-	Stage stage_;
-	stage_.Initialize(dx_.get(), shader_, pipeline_.get());
+	Stage* stage_ = new Stage();
+	stage_->Initialize(dx_.get(), shader_, pipeline_.get());
 
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
@@ -101,9 +101,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen_.MatUpdate(matView_.mat_, orthoProjection_, 0);
 
-		player_.Update(matView_.mat_, matProjection_);
+		player_->Update(matView_.mat_, matProjection_);
 
-		stage_.Update(matView_.mat_, matProjection_);
+		stage_->Update(matView_.mat_, matProjection_);
 
 		//‚±‚±‚Ü‚Å
 
@@ -124,9 +124,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen_.Draw(0);
 
-		player_.Draw(playerPng_);
+		player_->Draw(playerPng_);
 
-		stage_.Draw(stagePng_);
+		stage_->Draw(stagePng_);
 
 		dx_->PostDraw();
 	}
