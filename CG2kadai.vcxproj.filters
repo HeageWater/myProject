@@ -19,6 +19,18 @@
     <Filter Include="ヘッダー ファイル\Re">
       <UniqueIdentifier>{1d4d485b-bfeb-4316-8847-1ce693f89451}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game">
+      <UniqueIdentifier>{f905f5a4-fbcd-4e51-9e91-bce77118e796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game">
+      <UniqueIdentifier>{44f7f15c-6eab-4d67-801b-fa673eb92b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Actor">
+      <UniqueIdentifier>{89408d1f-61c1-4eb6-af5a-4cc1af015b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Actor">
+      <UniqueIdentifier>{5d13a4fd-ce7a-4313-a316-66a258413b17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Re\ConstBuff.cpp">
@@ -93,17 +105,23 @@
     <ClCompile Include="Sound.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Re</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="JsonFileOpen.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Re</Filter>
+      <Filter>ソース ファイル\Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>ソース ファイル\Game\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,20 +211,26 @@
     <ClInclude Include="Re\Controller.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\Re</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>ヘッダー ファイル\Re</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="JsonFileOpen.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Re</Filter>
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

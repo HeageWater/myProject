@@ -17,6 +17,7 @@
 #include <map>
 #include "Re//Model.h"
 #include "Player.h"
+#include "Stage.h"
 #include "Enemy.h"
 #include "Sound.h"
 #include "Collision.h"
@@ -75,61 +76,66 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//描画用行列
 	MyMath::MatView matView;
-	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	matView.Init(Vector3D(0.0f, 100.0f, -150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
-	//ここから
-	LevelData* levelData = nullptr;
-
-	//親子ありファイル
-	levelData = JsonFileOpen::FileOpen("0620");
-
-	//複数個ファイル
-	//levelData = JsonFileOpen::FileOpen("Test");
-
-	std::map<std::string, Model*> models;
-	std::vector<Model*> objects;
-
-	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData->objects)
 	{
-		//ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models)::iterator it = models.find(objectdata.fileName);
+		////ここから
+		//LevelData* levelData = nullptr;
 
-		//終わりか
-		if (it != models.end())
-		{
-			model = it->second;
-		}
+		////親子ありファイル
+		//levelData = JsonFileOpen::FileOpen("0620");
 
-		//モデルを指定して3Dオブジェクトを生成
-		Model* newModel = new Model();
-		newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
+		//複数個ファイル
+		//levelData = JsonFileOpen::FileOpen("Test");
 
-		//trans
-		newModel->mat.trans = objectdata.translation;
-		newModel->mat.trans.y = -newModel->mat.trans.y;
+		//std::map<std::string, Model*> models;
+		//std::vector<Model*> objects;
 
-		newModel->mat.trans = { 0,0,0 };
+		////レベルデータからオブジェクトに生成、配置
+		//for (auto& objectdata : levelData->objects)
+		//{
+		//	//ファイル名から登録済みモデルを検索
+		//	Model* model = nullptr;
+		//	decltype(models)::iterator it = models.find(objectdata.fileName);
 
-		//rotation
-		newModel->mat.rotAngle = objectdata.rotation;
+		//	//終わりか
+		//	if (it != models.end())
+		//	{
+		//		model = it->second;
+		//	}
 
-		//scale;
-		newModel->mat.scale = objectdata.scaling;
+		//	//モデルを指定して3Dオブジェクトを生成
+		//	Model* newModel = new Model();
+		//	newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
 
-		//Update
-		newModel->MatUpdate(matView.mat, orthoProjection);
+		//	//trans
+		//	newModel->mat.trans = objectdata.translation;
 
-		//格納
-		objects.push_back(newModel);
+		//	newModel->mat.trans = { 0,0,0 };
+
+		//	//rotation
+		//	newModel->mat.rotAngle = objectdata.rotation;
+
+		//	//scale;
+		//	newModel->mat.scale = objectdata.scaling;
+
+		//	//Update
+		//	newModel->MatUpdate(matView.mat, orthoProjection);
+
+		//	//格納
+		//	objects.push_back(newModel);
+		//}
 	}
 
+	//player
 	Player* player = new Player();
 	player->Initialize(dx.get(), shader, pipeline.get());
 
+	//stage
+	Stage* stage = new Stage();
+	stage->Initialize(dx.get(), shader, pipeline.get());
 
 	//	ゲームループ
 	while (true)
@@ -142,11 +148,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		input->Update();
 		controller->Update();
 
-		player->Update(matView.mat, orthoProjection);
+		player->Update(matView.mat, matProjection,input.get());
+		player->Update(matView.mat, matProjection, controller);
+
+		stage->Update(matView.mat, matProjection,input.get());
 
 		//debugcamera.Update(*input);
 
-		screen.MatUpdate(matView.mat, orthoProjection, 0);
+		screen.MatUpdate(matView.mat, matProjection, 0);
 
 		//ここまで
 
@@ -155,35 +164,35 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
-		if (input->GetTrigger(DIK_SPACE))
 		{
-			//matView.eye.x = objects[2]->mat.trans.x;
+			if (input->GetTrigger(DIK_SPACE))
+			{
+				//matView.eye.x = objects[2]->mat.trans.x;
+			}
+
+			////読み込んだモデルのUpdate
+			//for (auto& object : objects)
+			//{
+			//	//object->mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
+			//	//object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
+			//	//object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
+
+			//	object->MatUpdate(matView.mat, orthoProjection);
+
+			//	//break;
+			//}
 		}
-
-		//読み込んだモデルのUpdate
-		for (auto& object : objects)
-		{
-			//object->mat.trans.x -= input->GetKey(DIK_D) - input->GetKey(DIK_A);
-			//object->mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
-			//object->mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
-
-			object->MatUpdate(matView.mat, orthoProjection);
-
-			//break;
-		}
-
-		player->player.mat.trans.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-		player->player.mat.trans.y -= input->GetKey(DIK_S) - input->GetKey(DIK_W);
-		player->player.mat.trans.z -= input->GetKey(DIK_E) - input->GetKey(DIK_Q);
 
 		//Draw
 		dx->PrevDrawScreen();
 
-		//読み込んだモデルのDraw(White)
-		for (auto& object : objects) {
-			object->Draw(white);
+		{
+			////読み込んだモデルのDraw(White)
+			//for (auto& object : objects) {
+			//	object->Draw(white);
 
-			object->mat.trans;
+			//	object->mat.trans;
+			//}
 		}
 
 		//// 描画コマンド
@@ -196,13 +205,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		screen.Draw(0);
 
 		player->Draw(texP);
+		stage->Draw(brPng);
 
 		dx->PostDraw();
 	}
 
-	for (auto& object : objects)
 	{
-		delete object;
+		/*for (auto& object : objects)
+		{
+			delete object;
+		}*/
 	}
 
 	return 0;

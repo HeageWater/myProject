@@ -10,16 +10,15 @@
 #include <memory>
 #include "Re//Model.h"
 
-class Player {
-
+class Stage
+{
 public:
-	Player();
-	~Player();
+	Stage();
+	~Stage();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Draw(int tex);
 	void Update(Matrix matView, Matrix matProjection, Input* input);
-	void Update(Matrix matView, Matrix matProjection, Controller* controller);
 	void Reset();
 
-	Model player;
+	Model stage_;
 };

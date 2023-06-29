@@ -103,7 +103,6 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 
 	}
 
-
 	return levelData;
 }
 

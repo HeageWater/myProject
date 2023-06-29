@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="JsonFileOpen.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Re\ViewPort.cpp" />
     <ClCompile Include="Re\Window.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
@@ -201,6 +203,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="JsonFileOpen.h" />
@@ -228,6 +231,7 @@
     <ClInclude Include="Re\ViewPort.h" />
     <ClInclude Include="Re\Window.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022.vcxproj">
