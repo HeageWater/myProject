@@ -81,7 +81,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//player
 	Player* player_ = new Player();
-	player_->Initialize(dx_.get(), shader_, pipeline_.get());
+	player_ ->Initialize(dx_.get(), shader_, pipeline_.get());
 
 	Stage* stage_ = new Stage();
 	stage_->Initialize(dx_.get(), shader_, pipeline_.get());
