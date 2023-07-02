@@ -16,10 +16,24 @@ public:
 	Player();
 	~Player();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
-	void Draw(int tex);
+	void Draw(int tex, int tex2);
 	void Update(Matrix matView, Matrix matProjection, Input* input);
-	void Update(Matrix matView, Matrix matProjection, Controller* controller);
+	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
 
-	Model player;
+	void Jump();
+	void Attack();
+
+	//左スティックの値を返す
+	Vector2D GetController() { return controller->GetLeftStickVec(); };
+
+	Model player_;
+	Model playerAttack_;
+
+	bool attackF = false;
+
+	float jumpPower = 0;
+	float gravirtPower = 0;
+
+	Controller* controller = nullptr;
 };

@@ -15,7 +15,7 @@ void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	stage_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 
 	stage_.mat.Initialize();
-	stage_.mat.scale = { 20,5,20 };
+	stage_.mat.scale = { 1020,5,120 };
 	stage_.mat.trans.x = 0;
 	stage_.mat.trans.y = 0;
 	stage_.mat.trans.z = 0;

@@ -20,8 +20,10 @@
 #include "Stage.h"
 #include "Enemy.h"
 #include "Sound.h"
+#include "Goal.h"
 #include "Collision.h"
 #include "JsonFileOpen.h"
+#include "Scene.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -32,12 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
 	int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
 	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
-
-	MyXAudio sound;
-	int bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
-
-	Controller* controller = nullptr;
-	controller = Controller::GetInstance();
+	int enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -57,22 +54,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Square screen(dx.get(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
-	screen.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
+	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
 
 	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader));
-
-	//スフィア
-	Square playText(dx.get(), uiPipeline.get(), bilShader);
-	playText.obj.trans.z = 0;
-	playText.obj.scale = { 720,420,0.3f };
-
-	Square LifeText(dx.get(), uiPipeline.get(), bilShader);
-	LifeText.obj.trans.x = -500;
-	LifeText.obj.trans.y = 280;
-	LifeText.obj.scale = { 40,40,0.0f };
-
-	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
-	LifeText.MatUpdate(Matrix(), spriteProjection, 0);
 
 	//描画用行列
 	MyMath::MatView matView;
@@ -84,9 +68,26 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Player* player = new Player();
 	player->Initialize(dx.get(), shader, pipeline.get());
 
+	//enemy
+	Enemy* enemy = new Enemy();
+	enemy->Initialize(dx.get(), shader, pipeline.get());
+	enemy->SetTrans(Vector3D{ 100,20,0 });
 	//stage
 	Stage* stage = new Stage();
 	stage->Initialize(dx.get(), shader, pipeline.get());
+	float minMapX = stage->stage_.mat.scale.x - 200;
+	stage->stage_.mat.trans.x = minMapX;
+
+	Stage* stageWhite = new Stage();
+	stageWhite->Initialize(dx.get(), shader, pipeline.get());
+	stageWhite->stage_.mat.trans.y += 1;
+	stageWhite->stage_.mat.scale.z = 10;
+	stageWhite->Update(matView.mat, matProjection, input.get());
+
+	Goal* goal = new Goal();
+	goal->Initialize(dx.get(), shader, pipeline.get());
+
+	bool scene = false;
 
 	//	ゲームループ
 	while (true)
@@ -97,25 +98,50 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//Update
 		input->Update();
-		controller->Update();
 
+		//座標更新
 		matView.MatUpdate();
 
-		player->Update(matView.mat, matProjection,input.get());
-		player->Update(matView.mat, matProjection, controller);
+		if (scene == false)
+		{
+			//player更新
+			player->Update(matView.mat, matProjection);
 
-		stage->Update(matView.mat, matProjection,input.get());
+			//enemy更新
+			enemy->Update(matView.mat, matProjection);
+			bool sheikF = enemy->BoxCollision(player->playerAttack_);
 
-		//debugcamera.Update(*input);
+			//ステージ更新
+			stage->Update(matView.mat, matProjection, input.get());
+			goal->Update(matView.mat, matProjection);
 
-		screen.MatUpdate(matView.mat, matProjection, 0);
+			//debugcamera.Update(*input);
 
-		matView.eye.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-		//matView.target.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-		matView.target.x = player->player.mat.trans.x;
+			//スクリーン更新
+			screen.MatUpdate(matView.mat, matProjection, 0);
 
+			Vector2D moveCamera = { 0,0 };
+
+			moveCamera = player->GetController();
+
+			//targetをplayerに
+			matView.eye.x += moveCamera.x;
+			matView.target.x = player->player_.mat.trans.x;
+
+			matView.eye.x = min(matView.eye.x, 1050);
+			matView.eye.x = max(matView.eye.x, 0);
+
+			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
+			bool checkGoal = goal->BoxCollision(player->player_);
+
+			if (checkGoal)
+			{
+				scene = true;
+			}
+		}
 		//ここまで
 
+		//Escapeで抜ける
 		if (input->GetTrigger(DIK_ESCAPE))
 		{
 			break;
@@ -131,10 +157,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//UIDraw
 		dx->PrevDraw();
 
+		//スクリーン描画
 		screen.Draw(texP);
 
-		player->Draw(texP);
+		//Actor描画
+		player->Draw(texP, white);
+		enemy->Draw(enemyPng);
 		stage->Draw(brPng);
+		stageWhite->Draw(white);
+		goal->Draw(white);
+
+		if (scene == true)
+		{
+
+		}
 
 		dx->PostDraw();
 	}
