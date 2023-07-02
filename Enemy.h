@@ -25,8 +25,9 @@ public:
 	bool deadVec = false;
 	Vector3D Vec = {0,0,0};
 	void DeadVec();
+	float Time = 0;
 
-	bool SetTrans(Vector3D trans) { enemy_.mat.trans = trans; };
+	void SetTrans(Vector3D trans) { enemy_.mat.trans = trans; };
 
 	Model enemy_;
 };

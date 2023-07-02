@@ -20,6 +20,7 @@ void Enemy::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	isDead = false;
 	deadVec = false;
 	Vec = { 0,0,0 };
+
 }
 
 void Enemy::Draw(int tex)

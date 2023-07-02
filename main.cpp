@@ -31,10 +31,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<Window> win(new Window());
 
 	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
-	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
-	int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
-	int enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 
 	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -58,6 +54,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader));
 
+	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
+
+	Square pressText(dx.get(), uiPipeline.get(), bilShader);
+	pressText.obj.trans.y = -200;
+	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
+	pressText.MatUpdate(Matrix(), spriteProjection, 0);
+
 	//描画用行列
 	MyMath::MatView matView;
 	matView.Init(Vector3D(0.0f, 60.0f, -150.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -72,6 +75,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Enemy* enemy = new Enemy();
 	enemy->Initialize(dx.get(), shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 100,20,0 });
+
+	Enemy* enemy2 = new Enemy();
+	enemy2->Initialize(dx.get(), shader, pipeline.get());
+	enemy2->SetTrans(Vector3D{ 300,40,0 });
+
+	Enemy* enemy3 = new Enemy();
+	enemy3->Initialize(dx.get(), shader, pipeline.get());
+	enemy3->SetTrans(Vector3D{ 600,30,0 });
+
+	Enemy* enemy4 = new Enemy();
+	enemy4->Initialize(dx.get(), shader, pipeline.get());
+	enemy4->SetTrans(Vector3D{ 800,50,0 });
+
 	//stage
 	Stage* stage = new Stage();
 	stage->Initialize(dx.get(), shader, pipeline.get());
@@ -88,6 +104,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	goal->Initialize(dx.get(), shader, pipeline.get());
 
 	bool scene = false;
+	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
+	int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
+	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
+	size_t enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
+	int clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
 
 	//	ゲームループ
 	while (true)
@@ -110,6 +131,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
 			bool sheikF = enemy->BoxCollision(player->playerAttack_);
+
+			//enemy更新
+			enemy2->Update(matView.mat, matProjection);
+			sheikF = enemy2->BoxCollision(player->playerAttack_);
+
+			//enemy更新
+			enemy3->Update(matView.mat, matProjection);
+			sheikF = enemy3->BoxCollision(player->playerAttack_);
+
+			//enemy更新
+			enemy4->Update(matView.mat, matProjection);
+			sheikF = enemy4->BoxCollision(player->playerAttack_);
 
 			//ステージ更新
 			stage->Update(matView.mat, matProjection, input.get());
@@ -163,20 +196,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//Actor描画
 		player->Draw(texP, white);
 		enemy->Draw(enemyPng);
+		enemy2->Draw(enemyPng);
+		enemy3->Draw(enemyPng);
+		enemy4->Draw(enemyPng);
 		stage->Draw(brPng);
 		stageWhite->Draw(white);
 		goal->Draw(white);
 
 		if (scene == true)
 		{
-
+			pressText.Draw(clearTex);
 		}
 
 		dx->PostDraw();
 	}
-
-	delete player;
-	delete stage;
 
 	return 0;
 }
