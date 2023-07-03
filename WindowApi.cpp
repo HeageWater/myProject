@@ -1,7 +1,15 @@
 #include "WindowApi.h"
+#include <imgui_impl_win32.h>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPram);
 
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+	{
+		return true;
+	}
+
 	switch (msg)
 	{
 	case WM_DESTROY:
@@ -27,7 +35,7 @@ WindowApi::WindowApi()
 	//自動でサイズを補正する
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
-	 hwnd = CreateWindow(w.lpszClassName, //クラス名
+	hwnd = CreateWindow(w.lpszClassName, //クラス名
 		L"DirectXGame",						  //タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,				  //標準的なウィンドウスタイル
 		CW_USEDEFAULT,						  //表示x座標(OSに任せる)

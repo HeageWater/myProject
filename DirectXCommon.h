@@ -4,6 +4,14 @@
 #include <dxgi1_6.h>
 #include <wrl.h>
 
+#include <vector>
+#include <cassert>
+
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"dxgi.lib")
+
+using namespace Microsoft::WRL;
+
 #include "WindowApi.h"
 #include "viewport.h"
 
@@ -27,6 +35,7 @@ public:
 	ID3D12Device* GetDevice() const { return device.Get(); };
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); };
 	WindowApi* GetWindow() const { return window; };
+
 private:
 	WindowApi* window = new WindowApi();
 
@@ -54,7 +63,7 @@ private:
 	ID3D12Fence* fence = nullptr;
 	UINT64 fenceVal = 0;
 
-
+	std::vector<ID3D12Resource*> backBuffers;
 
 	/*HRESULT result;
 
@@ -73,4 +82,9 @@ private:
 
 	Microsoft::WRL::ComPtr <ID3D12Fence> fence = nullptr;
 	UINT64 fenceVal = 0;*/
+
+public:
+
+	//バックバッファの数を取得
+	size_t GetBackByfferCount() const { return backBuffers.size(); };
 };

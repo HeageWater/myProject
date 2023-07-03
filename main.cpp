@@ -9,7 +9,9 @@
 #include "Sound.h"
 #include "ObjFile.h"
 #include "PostEffect.h"
+#include "ImguiManager.h"
 #include <fstream>
+#include <imgui.h>
 #include <wrl.h>
 
 using namespace Microsoft::WRL;
@@ -75,6 +77,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	postEffect = new PostEffect(dxCommon->GetDevice());
 	postEffect->Initialize();
+
+	ImguiManager* imguiManager = new ImguiManager();
+	imguiManager->Initialize(dxCommon);
 
 	//初期化
 
@@ -899,6 +904,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
 
+		//ImGuiここから
+		imguiManager->Begin();
+
+		static float f1 = 1.e10f;
+		ImGui::InputFloat("input scientific", &f1, 0.0f, 0.0f, "%e");
+
+		//ImGui::Text("Hello, world %d", 123);
+
+		//ImGuiここまで
+		imguiManager->End();
+
 		//毎フレーム処理ここまで
 
 		dxCommon->PreDraw();
@@ -971,6 +987,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//5.リソースバリア
 
+		//Imgui描画
+		imguiManager->Draw(dxCommon);
+
 		dxCommon->PostDraw();
 		////描画状態から
 	}
@@ -985,6 +1004,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete spriteCommon;
 	delete sprite;
 	delete postEffect;
+	delete imguiManager;
 
 	//ウィンドウクラスを登録解除
 	dxCommon->GetWindow()->Finalize();

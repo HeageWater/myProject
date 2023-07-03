@@ -1,14 +1,7 @@
 #include "DirectXCommon.h"
 
-#include <vector>
-#include <cassert>
-
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-
-using namespace Microsoft::WRL;
 //std::vector<Microsoft::WRL::ComPtr<ID3D12Resource*>> backBuffers;
-std::vector<ID3D12Resource*> backBuffers;
+//std::vector<ID3D12Resource*> backBuffers;
 
 void DirectXCommon::Initialize()
 {
