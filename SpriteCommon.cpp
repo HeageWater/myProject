@@ -13,82 +13,9 @@ SpriteCommon::~SpriteCommon()
 
 void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 {
-	////dxCommon_ = new DirectXCommon();
-	////dxCommon_->Initialize();
-
 	assert(dxCommon);
 
 	dxCommon_ = dxCommon;
-
-	Vector3 vertices[] =
-	{
-		{-1.5f,-1.5f,0.0f},
-		{-1.5f,+1.5f,0.0f},
-		{+1.5f,-1.5f,0.0f}
-	};
-	
-	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
-	//UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
-	UINT sizeVB = static_cast<UINT>(sizeof(Vector3) * _countof(vertices));
-
-	//頂点バッファの設定
-	//ヒープの設定
-	D3D12_HEAP_PROPERTIES heapProp{};
-
-	//GPUへの転送用
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-
-	//リソース設定
-	D3D12_RESOURCE_DESC resDesc{};
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeVB;
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	//頂点バッファの生成
-	ID3D12Resource* vertBuff = nullptr;
-	result = dxCommon_->GetDevice()->CreateCommittedResource(
-		//ヒープ設定
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		//リソース設定
-		&resDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&vertBuff));
-	assert(SUCCEEDED(result));
-
-	//gpu状のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	//Vertex* vertMap = nullptr;
-	Vector3* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-
-	//全頂点に対して
-	for (auto i = 0; i < _countof(vertices); i++)
-	{
-		//座標コピー
-		vertMap[i] = vertices[i];
-	}
-
-	//つながりを削除
-	vertBuff->Unmap(0, nullptr);
-
-	// 頂点バッファビューの作成
-	//D3D12_VERTEX_BUFFER_VIEW vbView{};
-
-	//GPU仮想アドレス
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-
-	//頂点バッファのサイズ
-	vbView.SizeInBytes = sizeVB;
-
-	//頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(Vector3);
-	//vbView.StrideInBytes = sizeof(vertices[0]);
 
 	//頂点シェーダオブジェクト
 	ID3DBlob* vsBlob = nullptr;
@@ -345,23 +272,23 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
-	verticesCount = _countof(vertices);
+	//verticesCount = _countof(vertices);
 }
 
 void SpriteCommon::Draw()
 {
-	//パイプラインステートとルートシグネチャの設定コマンド
-	dxCommon_->GetCommandList()->SetPipelineState(pipelineState);
-	dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
+	////パイプラインステートとルートシグネチャの設定コマンド
+	//dxCommon_->GetCommandList()->SetPipelineState(pipelineState);
+	//dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
 
-	//プリミティブ形状の設定コマンド
-	//三角形リスト
-	dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	////プリミティブ形状の設定コマンド
+	////三角形リスト
+	//dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	//頂点バッファビューの設定コマンド
-	dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	////頂点バッファビューの設定コマンド
+	//dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 
-	//描画コマンド
-	dxCommon_->GetCommandList()->DrawInstanced(verticesCount, 1, 0, 0);
-	//dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+	////描画コマンド
+	//dxCommon_->GetCommandList()->DrawInstanced(verticesCount, 1, 0, 0);
+	////dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
 }

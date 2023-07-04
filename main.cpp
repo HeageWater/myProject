@@ -73,6 +73,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Sprite* sprite = new Sprite();
 	sprite->Inilialize(spriteCommon);
 
+	sprite->LoadResource();
+
 	PostEffect* postEffect = nullptr;
 
 	postEffect = new PostEffect(dxCommon->GetDevice());
@@ -1009,7 +1011,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 			//描画コマンド
-			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
+			//object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
+
+
+
+			//頂点バッファの設定
+			dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+
+			//インデックスバッファの設定
+			dxCommon->GetCommandList()->IASetIndexBuffer(&ibView);
+
+			//定数バッファビューの設定コマンド
+			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+
+			//描画コマンド
+			dxCommon->GetCommandList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
+
+			//画像
+			sprite->Draw();
 
 			//Imgui描画
 			imguiManager->Draw(dxCommon);
