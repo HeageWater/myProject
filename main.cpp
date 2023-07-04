@@ -767,7 +767,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			(float)window->window_width / window->window_height,
 			0.1f, 1000.0f*/
 
-		//射影変換行列
+			//射影変換行列
 		matProjection = XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),
 			(float)dxCommon->GetWindow()->window_width / dxCommon->GetWindow()->window_height,
@@ -896,20 +896,52 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (key->Keep(DIK_D))
 		{
-			eye.x += 1;		//視点座標
+			eye.x += 3;		//視点座標
 		}
+		if (key->Keep(DIK_A))
+		{
+			eye.x -= 3;		//視点座標
+		}
+		if (key->Keep(DIK_W))
+		{
+			eye.y += 3;		//視点座標
+		}
+		if (key->Keep(DIK_S))
+		{
+			eye.y -= 3;		//視点座標
+		}
+		if (key->Keep(DIK_Q))
+		{
+			eye.z += 3;		//視点座標
+		}
+		if (key->Keep(DIK_E))
+		{
+			eye.z -= 3;		//視点座標
+		}
+
 
 		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
 
+		postEffect->Update(matView, matProjection);
+
 		//ImGuiここから
 		imguiManager->Begin();
 
-		static float f1 = 1.e10f;
-		ImGui::InputFloat("input scientific", &f1, 0.0f, 0.0f, "%e");
+		ImGui::InputFloat("object3ds->position.x", &object3ds->position.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->position.x", &postEffect->position.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->position.y", &postEffect->position.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->position.z", &postEffect->position.z, 0.0f, 10.0f, "%f");
 
+		ImGui::InputFloat("post->scale.x", &postEffect->scale.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->scale.y", &postEffect->scale.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->scale.z", &postEffect->scale.z, 0.0f, 10.0f, "%f");
+
+		ImGui::InputFloat("post->rotation.x", &postEffect->rotation.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->rotation.y", &postEffect->rotation.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("post->rotation.z", &postEffect->rotation.z, 0.0f, 10.0f, "%f");
 		//ImGui::Text("Hello, world %d", 123);
 
 		//ImGuiここまで
@@ -951,20 +983,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画フラグ
 		if (draw_flg)
 		{
-			srvGpuHandle.ptr += incrementSize;
+			//srvGpuHandle.ptr += incrementSize;
 
 			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
+			//PostEffect準備
 			postEffect->PreDraw(dxCommon->GetCommandList());
 
 			//描画コマンド
 			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
+			//Imgui描画
+			imguiManager->Draw(dxCommon);
 
-			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature);
+			//PostEffect描画
+			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature, ibView);
 
-
+			//PostEffect終了
 			postEffect->PostDraw(dxCommon->GetCommandList());
 		}
 		else
@@ -972,42 +1008,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-			//postEffect->PreDraw(dxCommon->GetCommandList());
-
 			//描画コマンド
 			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 
-
-			//postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature);
-
-
-			//postEffect->PostDraw(dxCommon->GetCommandList());
+			//Imgui描画
+			imguiManager->Draw(dxCommon);
 		}
 		//4.描画処理ここまで
 
 		//5.リソースバリア
-
-		//Imgui描画
-		imguiManager->Draw(dxCommon);
 
 		dxCommon->PostDraw();
 		////描画状態から
 	}
 
 	//windowAPI後始末
-	// 
+
+	//ウィンドウクラスを登録解除
+	dxCommon->GetWindow()->Finalize();
+	imguiManager->Finalize();
+
 	//元データ解放
 	delete key;
-	//delete window;
 	delete object3ds;
-	//delete dxCommon;
+	delete dxCommon;
 	delete spriteCommon;
 	delete sprite;
 	delete postEffect;
 	delete imguiManager;
-
-	//ウィンドウクラスを登録解除
-	dxCommon->GetWindow()->Finalize();
 
 	return 0;
 }

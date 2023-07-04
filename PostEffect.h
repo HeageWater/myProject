@@ -13,8 +13,8 @@ public:
 	void PreDraw(ID3D12GraphicsCommandList* cmdList);
 	void PostDraw(ID3D12GraphicsCommandList* cmdList);
 
-	void Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* pipelineState, ID3D12RootSignature* rootSignature);
-	void Update();
+	void Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* pipelineState, ID3D12RootSignature* rootSignature, D3D12_INDEX_BUFFER_VIEW& ibView);
+	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	void Initialize();
 
 	void CreateGraphicsPipelineState();
@@ -24,9 +24,6 @@ public:
 
 	static const float clearColor[4];
 
-	//ConstBufferDataMaterial materialPos;
-	ConstBufferDataTransform transform;
-	Vector2 position;
 private:
 	ComPtr<ID3D12Resource> texBuff;
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
@@ -50,4 +47,17 @@ private:
 	//ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCommandList(); };
 
 	UINT verticesCount;
+
+	//定数バッファ
+	ID3D12Resource* constBuffTransform;
+	//定数バッファマップ(行列用)
+	ConstBufferDataTransform* constMapTransform;
+
+public:
+	//アフィン変換情報
+	XMFLOAT3 scale = { 2,2,2 };
+	XMFLOAT3 rotation = { 0,0,0 };
+	XMFLOAT3 position = { 0,0,0 };
+	//ワールド変換行列
+	XMMATRIX matWorld;
 };

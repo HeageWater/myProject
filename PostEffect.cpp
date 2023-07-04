@@ -9,11 +9,18 @@ using namespace DirectX;
 
 const float PostEffect::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f };
 
+float Vnum = 0;
+
 PostEffect::PostEffect(ID3D12Device* device)
 {
 	//dxCommon_ = dxCommon;
 
 	this->device = device;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		matWorld.r[i] = { 0,0,0 };
+	}
 }
 
 PostEffect::~PostEffect()
@@ -71,11 +78,14 @@ void PostEffect::PostDraw(ID3D12GraphicsCommandList* cmdList)
 	cmdList->ResourceBarrier(1, &barrier);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* pipelineState, ID3D12RootSignature* rootSignature)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* pipelineState, ID3D12RootSignature* rootSignature, D3D12_INDEX_BUFFER_VIEW& ibView)
 {
 	//ワールド座標の更新
+	
+	
 	//定数バッファにデータ転送
 
+	//
 	cmdList->SetPipelineState(pipelineStateP.Get());
 
 	cmdList->SetGraphicsRootSignature(rootSignatureP.Get());
@@ -97,20 +107,49 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* p
 	//SRVヒープの先頭にあるSRVをルートパラメーター1番に設定
 	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
+	//頂点バッファの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+
+	//インデックスバッファの設定
+	cmdList->IASetIndexBuffer(&ibView);
+
+	////定数バッファビューの設定コマンド
+	//cmdList->SetGraphicsRootConstantBufferView(rootSignatureP., this->constBuffTransform->GetGPUVirtualAddress());
+
+	//描画コマンド
+	cmdList->DrawIndexedInstanced(Vnum, 1, 0, 0, 0);
 }
 
-void PostEffect::Update()
+void PostEffect::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 {
-	//XMMATRIX matTrans;
+	XMMATRIX matScale, matRot, matTrans;
 
-	//matTrans = XMMatrixTranslation(position.x, position.y, 0.0f);
+	//スケールなどの計算
+	matScale = XMMatrixScaling(this->scale.x, this->scale.y, this->scale.z);
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(this->rotation.z);
+	matRot *= XMMatrixRotationX(this->rotation.x);
+	matRot *= XMMatrixRotationY(this->rotation.y);
+
+	matTrans = XMMatrixTranslation(this->position.x, this->position.y, this->position.z);
+
+	this->matWorld = XMMatrixIdentity();
+	this->matWorld *= matScale;
+	this->matWorld *= matRot;
+	this->matWorld *= matTrans;
+
+	//データ転送
+	this->constMapTransform->mat = this->matWorld * matView * matProjection;
 }
 
 void PostEffect::Initialize()
 {
-	//position = { 1.0f,1.0f };
-
 	HRESULT result;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		matWorld.r[i] = { 0,0,0 };
+	}
 
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
@@ -251,15 +290,24 @@ void PostEffect::Initialize()
 		{{  0.5f,  0.5f, -0.0f},{1.0f,0.0f}},//右上 
 	};
 
+	unsigned short indices[] =
+	{
+		//前
+		0,1,2,
+		2,1,3,
+	};
+
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+//	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+
+	Vnum = _countof(indices);
 
 	prote.Type = D3D12_HEAP_TYPE_UPLOAD;
 
 	CD3DX12_RESOURCE_DESC resourceDesc = {};
 	resourceDesc.Buffer(sizeof(Vertex));
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resourceDesc.Width = sizeVB;
+	resourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
 	resourceDesc.Height = 1;
 	resourceDesc.DepthOrArraySize = 1;
 	resourceDesc.MipLevels = 1;
@@ -334,14 +382,14 @@ void PostEffect::Initialize()
 		IID_PPV_ARGS(&constBuffMaterial));
 	assert(SUCCEEDED(result));
 
-	transform.mat = XMMatrixIdentity();
+	matWorld = XMMatrixIdentity();
 
 	//転送
-	result = constBuffMaterial->Map(0, nullptr, (void**)&this->transform);
+	result = constBuffMaterial->Map(0, nullptr, (void**)&this->constMapTransform);
 	assert(SUCCEEDED(result));
 
 	//単位行列
-	transform.mat = XMMatrixIdentity();
+	matWorld = XMMatrixIdentity();
 	constBuffMaterial->Unmap(0, nullptr);	
 
 	//パイプライン生成
@@ -484,10 +532,9 @@ void PostEffect::CreateGraphicsPipelineState()
 	//ブレンドステートの設定
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
 
-	//
+	//深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
-	//
 	//頂点レイアウトの設定
 	gpipeline.InputLayout.pInputElementDescs = inputLayout;
 	gpipeline.InputLayout.NumElements = _countof(inputLayout);

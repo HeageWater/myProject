@@ -8,6 +8,14 @@ using namespace DirectX;
 
 #pragma comment(lib,"d3dcompiler.lib")
 
+//頂点データ構造体
+static struct Vertex
+{
+	XMFLOAT3 pos;
+	XMFLOAT3 noemal;
+	XMFLOAT2 uv;
+};
+
 class SpriteCommon
 {
 public:
