@@ -2,27 +2,6 @@
     "name": "scene",
     "objects": [
         {
-            "type": "MESH",
-            "name": "Cube.001",
-            "transform": {
-                "translation": [
-                    -1.3747600317001343,
-                    -0.3947015106678009,
-                    0.39948490262031555
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    0.5,
-                    0.10000000149011612
-                ]
-            }
-        },
-        {
             "type": "LIGHT",
             "name": "Light",
             "transform": {
@@ -66,7 +45,28 @@
         },
         {
             "type": "MESH",
-            "name": "Cube",
+            "name": "立方体",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -3.1756036281585693,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.001",
             "transform": {
                 "translation": [
                     0.0,
@@ -80,8 +80,8 @@
                 ],
                 "scaling": [
                     1.0,
-                    0.5,
-                    0.10000000149011612
+                    1.0,
+                    1.0
                 ]
             }
         }

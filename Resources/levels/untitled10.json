@@ -1,6 +1,6 @@
 {
     "name": "scene",
-    "objects": [
+    "object": [
         {
             "type": "MESH",
             "name": "Cube.001",

@@ -17,8 +17,6 @@
 #include <map>
 #include "Re//Model.h"
 #include "Player.h"
-#include "Stage.h"
-#include "Enemy.h"
 #include "Sound.h"
 #include "Collision.h"
 #include "JsonFileOpen.h"
@@ -30,16 +28,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<MyDirectX> dx(new MyDirectX(win.get()));
 	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
-	int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
+	//int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
+	//int brPng = dx->LoadTextureGraph(L"Resources/br.png");
 
 	MyXAudio sound;
-	int bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
+	//int bgm = sound.SoundLoadWave("Resources/sound/bgm.wav");
 
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
 
-	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	MyDebugCamera debugcamera(Vector3D(0.0f, 10.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), win->window_width, win->window_height));
@@ -56,7 +54,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	std::unique_ptr<GPipeline> multipathPipeline(new GPipeline(dx->GetDev(), bilShader));
 
 	Square screen(dx.get(), multipathPipeline.get(), bilShader);
-	screen.obj.trans.z = 100.1f;
+	screen.obj.trans.z = 0.1f;
 	screen.obj.scale = { Window::window_width / 2,Window::window_height / 2,0.2f };
 
 	std::unique_ptr<GPipeline> uiPipeline(new GPipeline(dx->GetDev(), bilShader));
@@ -76,17 +74,54 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//描画用行列
 	MyMath::MatView matView;
-	matView.Init(Vector3D(0.0f, 60.0f, -150.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
-	//player
-	Player* player = new Player();
-	player->Initialize(dx.get(), shader, pipeline.get());
+	//ここから
+	LevelData* levelData = nullptr;
 
-	//stage
-	Stage* stage = new Stage();
-	stage->Initialize(dx.get(), shader, pipeline.get());
+	//親子ありファイル
+	levelData = JsonFileOpen::FileOpen("untitled");
+
+	//複数個ファイル
+	///levelData = JsonFileOpen::FileOpen("Test");
+
+	std::map<std::string, Model*> models;
+	std::vector<Model*> objects;
+
+	//レベルデータからオブジェクトに生成、配置
+	for (auto& objectdata : levelData->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models)::iterator it = models.find(objectdata.fileName);
+
+		//終わりか
+		if (it != models.end())
+		{
+			model = it->second;
+		}
+
+		//モデルを指定して3Dオブジェクトを生成
+		Model* newModel = new Model();
+		newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
+
+		//trans
+		newModel->mat.trans = objectdata.translation;
+
+		//rotation
+		newModel->mat.rotAngle = objectdata.rotation;
+
+		//scale;
+		newModel->mat.scale = objectdata.scaling;
+
+		//Update
+		newModel->MatUpdate(debugcamera.mat, matProjection);
+
+		//格納
+		objects.push_back(newModel);
+	}
 
 	//	ゲームループ
 	while (true)
@@ -99,20 +134,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		input->Update();
 		controller->Update();
 
-		matView.MatUpdate();
+		debugcamera.Update(*input);
 
-		player->Update(matView.mat, matProjection,input.get());
-		player->Update(matView.mat, matProjection, controller);
-
-		stage->Update(matView.mat, matProjection,input.get());
-
-		//debugcamera.Update(*input);
-
-		screen.MatUpdate(matView.mat, matProjection, 0);
-
-		matView.eye.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-		//matView.target.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-		matView.target.x = player->player.mat.trans.x;
+		screen.MatUpdate(matView.mat, orthoProjection, 0);
 
 		//ここまで
 
@@ -121,8 +145,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
+		//読み込んだモデルのUpdate
+		for (auto& object : objects)
+		{
+			object->MatUpdate(debugcamera.mat, matProjection);
+		}
+
 		//Draw
 		dx->PrevDrawScreen();
+
+		//読み込んだモデルのDraw(White)
+		for (auto& object : objects) {
+			object->Draw(white);
+
+			object->mat.trans;
+		}
 
 		//// 描画コマンド
 
@@ -131,16 +168,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//UIDraw
 		dx->PrevDraw();
 
-		screen.Draw(texP);
-
-		player->Draw(texP);
-		stage->Draw(brPng);
+		screen.Draw(0);
 
 		dx->PostDraw();
 	}
 
-	delete player;
-	delete stage;
+	for (auto& object : objects)
+	{
+		delete object;
+	}
 
 	return 0;
 }
