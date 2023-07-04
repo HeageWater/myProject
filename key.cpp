@@ -26,9 +26,9 @@ Key::~Key()
 }
 
 //‰Šú‰»
-void Key::Initialize(WindowApi* winapi) {
+void Key::Initialize() {
 
-	this->winapi = winapi;
+	WindowApi* winapi = WindowApi::Get();
 
 	result = DirectInput8Create(
 		winapi->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,

@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ビュー変換行列
 	XMMATRIX matView;
-	XMFLOAT3 eye(0, 0, -100);		//視点座標
+	XMFLOAT3 eye(0, 0, 10);		//視点座標
 	XMFLOAT3 target(0, 0, 0);		//注意点座標
 	XMFLOAT3 up(0, 1, 0);			//上方向ベクトル
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ComPtr<Key> key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
 	Key* key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
-	key->Initialize(dxCommon->GetWindow());
+	key->Initialize();
 
 	/*ID3D12Resource* constBuffTransform0 = nullptr;
 	ConstBufferDataTransform* constMapTransform0 = nullptr;
@@ -66,22 +66,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//int bgm = sound->SoundLoadWave("Resource/BGM.wav");
 	//int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
 
-	SpriteCommon* spriteCommon = nullptr;
-	spriteCommon = new SpriteCommon;
-	spriteCommon->Inilialize(dxCommon);
 
-	Sprite* sprite = new Sprite();
-	sprite->Inilialize(spriteCommon);
-
-	sprite->LoadResource();
-
-	PostEffect* postEffect = nullptr;
-
-	postEffect = new PostEffect(dxCommon->GetDevice());
-	postEffect->Initialize();
-
-	ImguiManager* imguiManager = new ImguiManager();
-	imguiManager->Initialize(dxCommon);
 
 	//初期化
 
@@ -774,11 +759,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			XMConvertToRadians(45.0f),
 			(float)dxCommon->GetWindow()->window_width / dxCommon->GetWindow()->window_height,
 			0.1f, 1000.0f);
+
+		//matProjection = XMMatrixIdentity();
 	}
 
 	//deviceに代入してから入れる
 	//ComPtr<Object3ds> object3ds = new Object3ds(dxCommon->GetDevice());
 	Object3ds* object3ds = new Object3ds(dxCommon->GetDevice());
+	Object3ds* object3ds2 = new Object3ds(dxCommon->GetDevice());
 
 	//全ミップマップについて
 	for (size_t i = 0; i < metadata2.mipLevels; i++)
@@ -841,6 +829,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//sound->SoundPlayLoopWave(bgm);
 
 	//描画初期化処理ここまで
+
+	SpriteCommon* spriteCommon = nullptr;
+	spriteCommon = new SpriteCommon;
+	spriteCommon->Inilialize(dxCommon);
+
+	Sprite* sprite = new Sprite();
+	sprite->Inilialize(spriteCommon);
+
+	sprite->LoadResource();
+
+	PostEffect* postEffect = nullptr;
+
+	postEffect = new PostEffect(dxCommon->GetDevice());
+	postEffect->Initialize();
+
+	ImguiManager* imguiManager = new ImguiManager();
+	imguiManager->Initialize(dxCommon);
 
 	//ゲームループ1
 	while (true)
@@ -921,11 +926,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			eye.z -= 3;		//視点座標
 		}
 
-
 		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 		//更新処理
 		object3ds->UpdateObject3d(matView, matProjection);
+		sprite->Update(matView);
 
 		postEffect->Update(matView, matProjection);
 
@@ -933,13 +938,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		imguiManager->Begin();
 
 		ImGui::InputFloat("object3ds->position.x", &object3ds->position.x, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("post->position.x", &postEffect->position.x, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("post->position.y", &postEffect->position.y, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("post->position.z", &postEffect->position.z, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("sprite->position.x", &sprite->position.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("sprite->position.y", &sprite->position.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("sprite->position.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 
-		ImGui::InputFloat("post->scale.x", &postEffect->scale.x, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("post->scale.y", &postEffect->scale.y, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("post->scale.z", &postEffect->scale.z, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("eye->scale.x", &eye.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("eye->scale.y", &eye.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("eye->scale.z", &eye.z, 0.0f, 10.0f, "%f");
 
 		ImGui::InputFloat("post->rotation.x", &postEffect->rotation.x, 0.0f, 10.0f, "%f");
 		ImGui::InputFloat("post->rotation.y", &postEffect->rotation.y, 0.0f, 10.0f, "%f");
@@ -951,7 +956,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//毎フレーム処理ここまで
 
-		dxCommon->PreDraw();
 
 		//2.描画先の変更
 
@@ -982,13 +986,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭ハンドルを取得(SRVを指している)
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 
+		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+		//DirectXCommon
+		dxCommon->PreDraw();
+
 		//描画フラグ
 		if (draw_flg)
 		{
 			//srvGpuHandle.ptr += incrementSize;
-
-			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
-			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 			//PostEffect準備
 			postEffect->PreDraw(dxCommon->GetCommandList());
@@ -999,37 +1006,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//Imgui描画
 			imguiManager->Draw(dxCommon);
 
-			//PostEffect描画
-			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature, ibView);
-
 			//PostEffect終了
 			postEffect->PostDraw(dxCommon->GetCommandList());
+
+			//PostEffect描画
+			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature, ibView);
 		}
 		else
 		{
 			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
+			//この中で画像入れてるからさっさとスプライトに移動
+			//dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+			//描画コマンド
+			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
+
+			//postEffect->Draw();
+			sprite->PreDraw();
+
+			//画像を1に入れたものに
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-			//描画コマンド
-			//object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
-
-
-
-			//頂点バッファの設定
-			dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
-
-			//インデックスバッファの設定
-			dxCommon->GetCommandList()->IASetIndexBuffer(&ibView);
-
-			//定数バッファビューの設定コマンド
-			dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-
-			//描画コマンド
-			dxCommon->GetCommandList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
-
-			//画像
-			sprite->Draw();
+			//三角形描画
+			sprite->Draw(srvGpuHandle);
 
 			//Imgui描画
 			imguiManager->Draw(dxCommon);
@@ -1037,8 +1036,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//4.描画処理ここまで
 
 		//5.リソースバリア
-
 		dxCommon->PostDraw();
+
 		////描画状態から
 	}
 
@@ -1052,8 +1051,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete key;
 	delete object3ds;
 	delete dxCommon;
-	delete spriteCommon;
-	delete sprite;
+	//delete spriteCommon;
+	//delete sprite;
 	delete postEffect;
 	delete imguiManager;
 

@@ -4,8 +4,6 @@
 class WindowApi
 {
 public:
-	//インスタンス
-	WindowApi();
 
 	void Initialize();
 
@@ -27,4 +25,16 @@ public:
 	HWND GetHwnd() const { return hwnd; };
 
 	HINSTANCE GetHInstance() const { return w.hInstance; };
+
+	static WindowApi* Get() 
+	{
+		static WindowApi window;
+		return &window;
+	};
+private:
+	//インスタンス
+	WindowApi();
+	~WindowApi() {};
+
+
 };

@@ -17,8 +17,6 @@ void DirectXCommon::Initialize()
 
 	assert(window);
 
-	this->window = window;
-
 	port->ChengePort(this->window->window_width, this->window->window_height);
 
 	//デバイスの初期化

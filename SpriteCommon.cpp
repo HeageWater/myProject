@@ -28,7 +28,7 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 
 	//頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"BasicVS.hlsl",//シェーダファイル名
+		L"SpriteVS.hlsl",//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルードを可能にする
 		"main", "vs_5_0",//エントリーポインタ名、シェーダモデル指定
@@ -53,7 +53,7 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 
 	//ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"BasicPS.hlsl",//シェーダファイル名
+		L"SpritePS.hlsl",//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルードを可能にする
 		"main", "ps_5_0",//エントリーポインタ名、シェーダモデル指定
@@ -126,11 +126,12 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	//ラスタライザの設定
 
 	//カリングしない
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
+	//pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
+	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	//ポリゴン内塗りつぶし
 	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 	//深度クリッピングを有効に
-	pipelineDesc.RasterizerState.DepthClipEnable = true;
+	pipelineDesc.RasterizerState.DepthClipEnable = false;
 
 
 
@@ -209,10 +210,11 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	descriptorRange.NumDescriptors = 1;
 	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRange.BaseShaderRegister = 0;
+	descriptorRange.RegisterSpace = 0;
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	//ルートパラメタの設定
-	D3D12_ROOT_PARAMETER rootParams[3] = {};
+	D3D12_ROOT_PARAMETER rootParams[2] = {};
 
 	//定数バッファ0番
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
@@ -221,14 +223,14 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
 	//テクスチャレジスタ0番
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;	//定数バッファビュー
-	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;					//定数バッファ番号
+	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;			//定数バッファ番号
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;						//デフォルト値
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
-	// 定数バッファ1番
-	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
-	rootParams[2].Descriptor.ShaderRegister = 1;					//定数バッファ番号
-	rootParams[2].Descriptor.RegisterSpace = 0;						//デフォルト値
-	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
+	//// 定数バッファ1番
+	//rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	//rootParams[2].Descriptor.ShaderRegister = 1;					//定数バッファ番号
+	//rootParams[2].Descriptor.RegisterSpace = 0;						//デフォルト値
+	//rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
 
 	//テクスチャサンプラーの設定
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
@@ -277,18 +279,18 @@ void SpriteCommon::Inilialize(DirectXCommon* dxCommon)
 
 void SpriteCommon::Draw()
 {
-	////パイプラインステートとルートシグネチャの設定コマンド
-	//dxCommon_->GetCommandList()->SetPipelineState(pipelineState);
-	//dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
+	//パイプラインステートとルートシグネチャの設定コマンド
+	dxCommon_->GetCommandList()->SetPipelineState(pipelineState);
+	dxCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
 
-	////プリミティブ形状の設定コマンド
-	////三角形リスト
-	//dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//プリミティブ形状の設定コマンド
+	//三角形リスト
+	dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	////頂点バッファビューの設定コマンド
-	//dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	//頂点バッファビューの設定コマンド
+	dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 
-	////描画コマンド
-	//dxCommon_->GetCommandList()->DrawInstanced(verticesCount, 1, 0, 0);
-	////dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+	//描画コマンド
+	dxCommon_->GetCommandList()->DrawInstanced(verticesCount, 1, 0, 0);
+	//dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
 }

@@ -5,18 +5,19 @@
 #include <stdint.h>
 #include "Vector2.h"
 #include "Vector3.h"
+#include "Vertex.h"
 #include <wrl.h>
 #include <vector>
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-struct Vertex
-{
-	Vector3 pos;
-	Vector3 normal;
-	Vector2 uv;
-};
+//struct Vertex
+//{
+//	Vector3 pos;
+//	Vector3 normal;
+//	Vector2 uv;
+//};
 
 struct VertexObj
 {

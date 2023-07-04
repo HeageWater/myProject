@@ -22,4 +22,5 @@ float4 main(VSOutput input) : SV_TARGET
 
 	//‹P“x‚ğRGB‚É‘ã“ü‚µ‚Äo—Í
 	return float4(texcolor.rgb * brightness, texcolor.a) * color;
+	//return float4(1, 1, 1, 1);
 }

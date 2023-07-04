@@ -18,8 +18,6 @@ private:
 	//DirectInput‚Ì‰Šú‰»
 	IDirectInput8* directInput = nullptr;
 
-	WindowApi* winapi = nullptr;
-
 public:
 
 	HRESULT result;
@@ -33,7 +31,7 @@ public:
 	Key(HINSTANCE a, HWND hw);
 	~Key();
 	//‰Šú‰»
-	void Initialize(WindowApi* winapi);
+	void Initialize();
 	//XV
 	void Update();
 	//‰Ÿ‚µ‚½

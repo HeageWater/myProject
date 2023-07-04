@@ -53,18 +53,18 @@ WindowApi::WindowApi()
 
 void WindowApi::Initialize() {
 
-	////ウィンドウクラスの設定
-	//w.cbSize = sizeof(WNDCLASSEX);
-	//w.lpfnWndProc = (WNDPROC)WindowProc;
-	//w.lpszClassName = L"DirectXGame";
-	//w.hInstance = GetModuleHandle(nullptr);
-	//w.hCursor = LoadCursor(NULL, IDC_ARROW);
+	//ウィンドウクラスの設定
+	w.cbSize = sizeof(WNDCLASSEX);
+	w.lpfnWndProc = (WNDPROC)WindowProc;
+	w.lpszClassName = L"DirectXGame";
+	w.hInstance = GetModuleHandle(nullptr);
+	w.hCursor = LoadCursor(NULL, IDC_ARROW);
 
-	////ウィンドウクラスをOSに登録する
-	//RegisterClassEx(&w);
+	//ウィンドウクラスをOSに登録する
+	RegisterClassEx(&w);
 
-	////自動でサイズを補正する
-	//AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
+	//自動でサイズを補正する
+	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	hwnd = CreateWindow(w.lpszClassName, //クラス名
 		L"DirectXGame",						  //タイトルバーの文字

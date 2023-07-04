@@ -23,6 +23,11 @@ PostEffect::PostEffect(ID3D12Device* device)
 	}
 }
 
+PostEffect::PostEffect(Sprite* sprite)
+{
+	this->sprite = sprite;
+}
+
 PostEffect::~PostEffect()
 {
 
@@ -114,10 +119,27 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* p
 	cmdList->IASetIndexBuffer(&ibView);
 
 	////定数バッファビューの設定コマンド
-	//cmdList->SetGraphicsRootConstantBufferView(rootSignatureP., this->constBuffTransform->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(2, this->constBuffTransform->GetGPUVirtualAddress());
 
 	//描画コマンド
 	cmdList->DrawIndexedInstanced(Vnum, 1, 0, 0, 0);
+}
+
+void PostEffect::Draw()
+{
+	//パイプラインステートとルートシグネチャの設定コマンド
+	spriteCommon_->dxCommon_->GetCommandList()->SetPipelineState(spriteCommon_->pipelineState);
+	spriteCommon_->dxCommon_->GetCommandList()->SetGraphicsRootSignature(spriteCommon_->rootSignature);
+
+	//プリミティブ形状の設定コマンド
+	//三角形リスト
+	spriteCommon_->dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//頂点バッファビューの設定コマンド
+	spriteCommon_->dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+
+	//描画コマンド
+	spriteCommon_->dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
 }
 
 void PostEffect::Update(XMMATRIX& matView, XMMATRIX& matProjection)
@@ -379,18 +401,18 @@ void PostEffect::Initialize()
 		&resourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffMaterial));
+		IID_PPV_ARGS(&constBuffTransform));
 	assert(SUCCEEDED(result));
 
 	matWorld = XMMatrixIdentity();
 
 	//転送
-	result = constBuffMaterial->Map(0, nullptr, (void**)&this->constMapTransform);
+	result = constBuffTransform->Map(0, nullptr, (void**)&this->constMapTransform);
 	assert(SUCCEEDED(result));
 
-	//単位行列
-	matWorld = XMMatrixIdentity();
-	constBuffMaterial->Unmap(0, nullptr);	
+	////単位行列
+	//matWorld = XMMatrixIdentity();
+	//constBuffMaterial->Unmap(0, nullptr);	
 
 	//パイプライン生成
 	CreateGraphicsPipelineState();

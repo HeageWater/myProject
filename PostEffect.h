@@ -8,12 +8,14 @@ class  PostEffect : Sprite
 {
 public:
 	PostEffect(ID3D12Device* device);
+	PostEffect(Sprite* sprite);
 	~PostEffect();
 
 	void PreDraw(ID3D12GraphicsCommandList* cmdList);
 	void PostDraw(ID3D12GraphicsCommandList* cmdList);
 
 	void Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* pipelineState, ID3D12RootSignature* rootSignature, D3D12_INDEX_BUFFER_VIEW& ibView);
+	void Draw();
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	void Initialize();
 
@@ -55,9 +57,11 @@ private:
 
 public:
 	//アフィン変換情報
-	XMFLOAT3 scale = { 2,2,2 };
+	XMFLOAT3 scale = { 10,10,10 };
 	XMFLOAT3 rotation = { 0,0,0 };
 	XMFLOAT3 position = { 0,0,0 };
 	//ワールド変換行列
 	XMMATRIX matWorld;
+
+	Sprite* sprite = new Sprite();
 };

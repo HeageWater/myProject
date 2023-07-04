@@ -37,7 +37,7 @@ public:
 	WindowApi* GetWindow() const { return window; };
 
 private:
-	WindowApi* window = new WindowApi();
+	WindowApi* window = WindowApi::Get();
 
 	Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory = nullptr;
