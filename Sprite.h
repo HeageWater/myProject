@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteCommon.h"
+#include "Vertex.h"
 
 class Sprite
 {
@@ -15,16 +16,16 @@ public:
 	//Microsoft::WRL::ComPtr<SpriteCommon> spriteCommon_;
 
 protected:
-	//頂点データ
-	Vertex vertices[4] =
-	{
-		//	x,		y,		z,		u,	 v
-		//前
-		{{ -5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
-		{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
-		{{  5.0f, -5.0f, -5.0f},{},{1.0f,1.0f}},//右下
-		{{  5.0f,  5.0f, -5.0f},{},{1.0f,0.0f}},//右上 
-	};
+	////頂点データ
+	//Vertex vertices[4] =
+	//{
+	//	//	x,		y,		z,		u,	 v
+	//	//前
+	//	{{ -5.0f, -5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+	//	{{ -5.0f,  5.0f, -5.0f},{},{0.0f,0.0f}},//左上
+	//	{{  5.0f, -5.0f, -5.0f},{},{1.0f,1.0f}},//右下
+	//	{{  5.0f,  5.0f, -5.0f},{},{1.0f,0.0f}},//右上 
+	//};
 
 	//Vector3 vertices[] =
 	//{
