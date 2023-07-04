@@ -112,6 +112,7 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* p
 	//SRVヒープの先頭にあるSRVをルートパラメーター1番に設定
 	cmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
+
 	//頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
@@ -119,10 +120,10 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* p
 	cmdList->IASetIndexBuffer(&ibView);
 
 	////定数バッファビューの設定コマンド
-	cmdList->SetGraphicsRootConstantBufferView(2, this->constBuffTransform->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, this->constBuffTransform->GetGPUVirtualAddress());
 
 	//描画コマンド
-	cmdList->DrawIndexedInstanced(Vnum, 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
 void PostEffect::Draw()
@@ -139,7 +140,8 @@ void PostEffect::Draw()
 	spriteCommon_->dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 
 	//描画コマンド
-	spriteCommon_->dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+	//spriteCommon_->dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+	spriteCommon_->dxCommon_->GetCommandList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
 void PostEffect::Update(XMMATRIX& matView, XMMATRIX& matProjection)
@@ -160,8 +162,35 @@ void PostEffect::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 	this->matWorld *= matRot;
 	this->matWorld *= matTrans;
 
-	//データ転送
-	this->constMapTransform->mat = this->matWorld * matView * matProjection;
+	constMapTransform->mat.r[0].m128_f32[0] = 2.0f / WindowApi::window_width;
+	constMapTransform->mat.r[1].m128_f32[1] = -2.0f / WindowApi::window_height;
+
+	constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
+	constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
+
+	XMMATRIX matProjection1 = XMMatrixIdentity();
+
+	////射影変換行列
+	//matProjection = XMMatrixPerspectiveFovLH(
+	//	XMConvertToRadians(45.0f),
+	//	(float)spriteCommon_->dxCommon_->GetWindow()->window_width / spriteCommon_->dxCommon_->GetWindow()->window_height,
+	//	0.1f, 1000.0f);
+
+	//↑のまとめ
+	matProjection1 = XMMatrixOrthographicOffCenterLH
+	(0,
+		WindowApi::Get()->window_width,
+		WindowApi::Get()->window_height,
+		0,
+		0.0f,
+		1.0f);
+
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
+	assert(SUCCEEDED(result));
+
+	constMapTransform->mat = this->matWorld * matProjection1;
+
+	constBuffTransform->Unmap(0, nullptr);
 }
 
 void PostEffect::Initialize()
@@ -295,21 +324,21 @@ void PostEffect::Initialize()
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(depthBuff.Get(), &dsvDesc, descHeapDSV->GetCPUDescriptorHandleForHeapStart());
 
-	struct Vertex
-	{
-		XMFLOAT3 pos;
-		XMFLOAT2 uv;
-	};
+	//struct Vertex
+	//{
+	//	XMFLOAT3 pos;
+	//	XMFLOAT2 uv;
+	//};
 
 	//頂点データ
 	Vertex vertices[4] =
 	{
 		//	x,		y,		z,		u,	 v
 		//前
-		{{ -0.5f, -0.5f, -0.0f},{0.0f,1.0f}},//左下
-		{{ -0.5f,  0.5f, -0.0f},{0.0f,0.0f}},//左上
-		{{  0.5f, -0.5f, -0.0f},{1.0f,1.0f}},//右下
-		{{  0.5f,  0.5f, -0.0f},{1.0f,0.0f}},//右上 
+		{{ 5.0f,   5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+		{{ 5.0f,  10.0f, -5.0f},{},{0.0f,0.0f}},//左上
+		{{ 10.0f,  5.0f, -5.0f},{},{1.0f,1.0f}},//右下
+		{{ 10.0f, 10.0f, -5.0f},{},{1.0f,0.0f}},//右上 
 	};
 
 	unsigned short indices[] =

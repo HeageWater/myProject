@@ -35,7 +35,7 @@ public:
 	//アフィン変換情報
 	XMFLOAT3 scale = { 2,2,2 };
 	XMFLOAT3 rotation = { 0,0,0 };
-	XMFLOAT3 position = { 0,0,0 };
+	XMFLOAT3 position = { 0,0,-50 };
 	//ワールド変換行列
 	XMMATRIX matWorld;
 

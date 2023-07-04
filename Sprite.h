@@ -12,7 +12,7 @@ public:
 	void Inilialize();
 	void Update(XMMATRIX& matView);
 	void PreDraw();
-	void Draw(D3D12_GPU_DESCRIPTOR_HANDLE handle);
+	void Draw();
 
 	void LoadResource();
 

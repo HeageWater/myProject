@@ -57,11 +57,47 @@ private:
 
 public:
 	//アフィン変換情報
-	XMFLOAT3 scale = { 10,10,10 };
-	XMFLOAT3 rotation = { 0,0,0 };
-	XMFLOAT3 position = { 0,0,0 };
-	//ワールド変換行列
-	XMMATRIX matWorld;
 
 	Sprite* sprite = new Sprite();
+
+	//アフィン変換情報
+	XMFLOAT3 scale = { 30,30,30 };
+	XMFLOAT3 rotation = { 0,0,0 };
+	XMFLOAT3 position = { 10,10,10 };
+	//ワールド変換行列
+	XMMATRIX matWorld;
+protected:
+	//頂点データ
+	Vertex vertices[4] =
+	{
+		//	x,		y,		z,		u,	 v
+		//前
+		{{ 5.0f,   5.0f, -5.0f},{},{0.0f,1.0f}},//左下
+		{{ 5.0f,  10.0f, -5.0f},{},{0.0f,0.0f}},//左上
+		{{ 10.0f,  5.0f, -5.0f},{},{1.0f,1.0f}},//右下
+		{{ 10.0f, 10.0f, -5.0f},{},{1.0f,0.0f}},//右上 
+	};
+
+	//Vector3 vertices[] =
+	//{
+	//	{-1.5f,-1.5f,0.0f},
+	//	{-1.5f,+1.5f,0.0f},
+	//	{+1.5f,-1.5f,0.0f}
+	//};
+
+	//Vector3 vertices[4] =
+	//{
+	//	{+2.5f,+2.5f,0.0f},//左下
+	//	{+4.5f,+2.5f,0.0f},//右下
+	//	{+2.5f,+4.5f,0.0f},//左上
+	//	{+4.5f,+4.5f,0.0f},//右上
+	//};
+
+	uint16_t indices[6] =
+	{
+		0,1,2,
+		1,2,3,
+	};
+
+	HRESULT result;
 };

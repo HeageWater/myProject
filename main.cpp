@@ -1028,7 +1028,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 			//ŽOŠpŒ`•`‰æ
-			sprite->Draw(srvGpuHandle);
+			sprite->Draw();
 
 			//Imgui•`‰æ
 			imguiManager->Draw(dxCommon);

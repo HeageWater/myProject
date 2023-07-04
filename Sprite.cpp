@@ -205,7 +205,7 @@ void Sprite::PreDraw()
 	spriteCommon_->dxCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void Sprite::Draw(D3D12_GPU_DESCRIPTOR_HANDLE handle)
+void Sprite::Draw()
 {
 	//頂点バッファビューの設定コマンド
 	spriteCommon_->dxCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);

@@ -157,6 +157,7 @@
     <ClCompile Include="Mymath.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="ObjFile.cpp" />
+    <ClCompile Include="Post.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="key.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="Post.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
