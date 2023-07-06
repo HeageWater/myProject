@@ -9,9 +9,9 @@ MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyDebugCamera::Update(Input& input)
 {
-	//eye.x += input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT);
-	//eye.y += input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN);
-	//eye.z += input.GetKey(DIK_O) - input.GetKey(DIK_P);/*
+	eye.x += input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT);
+	eye.y += input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN);
+	eye.z += input.GetKey(DIK_O) - input.GetKey(DIK_P);
 
 	/*if (input.Click(Input::LeftClick))
 	{
