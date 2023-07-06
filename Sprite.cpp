@@ -174,9 +174,9 @@ void Sprite::Update(XMMATRIX& matView)
 
 	//ª‚Ì‚Ü‚Æ‚ß
 	matProjection = XMMatrixOrthographicOffCenterLH
-	(0,
-		WindowApi::Get()->window_width,
-		WindowApi::Get()->window_height,
+		(0,
+		(float)WindowApi::Get()->window_width,
+			(float)WindowApi::Get()->window_height,
 		0,
 		0.0f,
 		1.0f);

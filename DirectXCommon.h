@@ -18,13 +18,13 @@ using namespace Microsoft::WRL;
 class DirectXCommon {
 public:
 
+	static DirectXCommon* Get()
+	{
+		static DirectXCommon dxCommon;
+		return &dxCommon;
+	};
+
 	void Initialize();
-	void InitializeDevice();
-	void InitializeComand();
-	void InitializeSwapchain();
-	void InitializeREnderTargetView();
-	void InitializeDeathBuffer();
-	void InitializeFence();
 
 	void PreDraw();
 	void PostDraw();
@@ -37,6 +37,13 @@ public:
 	WindowApi* GetWindow() const { return window; };
 
 private:
+	void InitializeDevice();
+	void InitializeComand();
+	void InitializeSwapchain();
+	void InitializeREnderTargetView();
+	void InitializeDeathBuffer();
+	void InitializeFence();
+
 	WindowApi* window = WindowApi::Get();
 
 	Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;

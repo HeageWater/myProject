@@ -225,6 +225,7 @@
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
     <ClInclude Include="VertBuff.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="viewport.h" />

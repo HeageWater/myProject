@@ -158,6 +158,9 @@
     <ClInclude Include="PEffect.h">
       <Filter>ソース ファイル\nowCreate</Filter>
     </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>ソース ファイル\nowCreate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli">

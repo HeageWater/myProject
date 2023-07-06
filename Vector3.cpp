@@ -33,11 +33,13 @@ Vector3& Vector3::normalize()
 float Vector3::dot(const Vector3& v)const
 {
 	return x * x + y * y + z * z;
+	return v.x * x + v.y * y + v.z * z;
 }
 
 float Vector3::cross(const Vector3& v)const
 {
 	return x * x - y * y - z * z;
+	return v.x * x - v.y * y - v.z * z;
 }
 
 Vector3 Vector3::operator+()const

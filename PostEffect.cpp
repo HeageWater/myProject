@@ -178,8 +178,8 @@ void PostEffect::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 	//ª‚Ì‚Ü‚Æ‚ß
 	matProjection1 = XMMatrixOrthographicOffCenterLH
 	(0,
-		WindowApi::Get()->window_width,
-		WindowApi::Get()->window_height,
+		(float)WindowApi::Get()->window_width,
+		(float)WindowApi::Get()->window_height,
 		0,
 		0.0f,
 		1.0f);

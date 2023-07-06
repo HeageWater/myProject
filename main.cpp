@@ -849,7 +849,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	imguiManager->Initialize(dxCommon);
 
 	//
-	PEffect* pEffect = new PEffect(spriteCommon,dxCommon);
+	PEffect* pEffect = new PEffect(spriteCommon, dxCommon);
 
 
 
@@ -997,15 +997,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-		
+
 		//描画フラグ
 		if (!draw_flg)
 		{
 			//DirectXCommon
 			dxCommon->PreDraw();
 
-			//srvGpuHandle.ptr += incrementSize;
-			
+			srvGpuHandle.ptr += incrementSize;
+
 			//画像を1に入れたものに
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
@@ -1024,6 +1024,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			//DirectXCommon
 			dxCommon->PreDraw();
+
+			srvGpuHandle.ptr += incrementSize;
 
 			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 			//この中で画像入れてるからさっさとスプライトに移動
