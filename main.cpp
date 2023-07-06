@@ -1001,10 +1001,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画フラグ
 		if (!draw_flg)
 		{
-			//srvGpuHandle.ptr += incrementSize;
+			//DirectXCommon
+			dxCommon->PreDraw();
 
-			//PostEffect準備
-			postEffect->PreDraw(dxCommon->GetCommandList());
+			//srvGpuHandle.ptr += incrementSize;
 			
 			//画像を1に入れたものに
 			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
@@ -1015,18 +1015,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//Imgui描画
 			imguiManager->Draw(dxCommon);
 
-			//仮posteffect
-			//pEffect->Draw();
 			sprite->PreDraw();
-
-			//PostEffect終了
-			postEffect->PostDraw(dxCommon->GetCommandList());
-
-			//DirectXCommon
-			dxCommon->PreDraw();
-
-			//PostEffect描画
-			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature, ibView);
 
 			//5.リソースバリア
 			dxCommon->PostDraw();
