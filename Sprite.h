@@ -9,7 +9,6 @@ public:
 	Sprite();
 	~Sprite();
 	void Inilialize(SpriteCommon* spriteCommon);
-	void Inilialize();
 	void Update(XMMATRIX& matView);
 	void PreDraw();
 	void Draw();
@@ -36,7 +35,7 @@ public:
 	XMFLOAT3 position = { 10,10,10 };
 	//ワールド変換行列
 	XMMATRIX matWorld;
-protected:
+public:
 	//頂点データ
 	Vertex vertices[4] =
 	{

@@ -78,6 +78,12 @@
     <ClCompile Include="Matrix.cpp">
       <Filter>ソース ファイル\nowCreate</Filter>
     </ClCompile>
+    <ClCompile Include="Post.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PEffect.cpp">
+      <Filter>ソース ファイル\nowCreate</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl" />
@@ -145,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="ImguiManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Post.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PEffect.h">
+      <Filter>ソース ファイル\nowCreate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

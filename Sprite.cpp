@@ -140,10 +140,6 @@ void Sprite::Inilialize(SpriteCommon* spriteCommon)
 
 }
 
-void Sprite::Inilialize()
-{
-}
-
 void Sprite::Update(XMMATRIX& matView)
 {
 	XMMATRIX matScale, matRot, matTrans;

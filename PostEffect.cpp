@@ -85,16 +85,7 @@ void PostEffect::PostDraw(ID3D12GraphicsCommandList* cmdList)
 
 void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* pipelineState, ID3D12RootSignature* rootSignature, D3D12_INDEX_BUFFER_VIEW& ibView)
 {
-	//ワールド座標の更新
-	
-	
-	//定数バッファにデータ転送
-
-	//
-	cmdList->SetPipelineState(pipelineStateP.Get());
-
-	cmdList->SetGraphicsRootSignature(rootSignatureP.Get());
-
+	//三角形リスト
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	////各種コマンドリスト
@@ -102,6 +93,13 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* p
 	ID3D12DescriptorHeap* srvHeap = descHeapSRV.Get();
 
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+
+
+	//定数バッファにデータ転送
+
+	//
+	cmdList->SetPipelineState(pipelineStateP.Get());
+	cmdList->SetGraphicsRootSignature(rootSignatureP.Get());
 
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
@@ -123,7 +121,8 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, ID3D12PipelineState* p
 	cmdList->SetGraphicsRootConstantBufferView(0, this->constBuffTransform->GetGPUVirtualAddress());
 
 	//描画コマンド
-	cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+	cmdList->DrawInstanced(_countof(indices), 1, 0, 0);
+	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
 void PostEffect::Draw()
@@ -197,10 +196,10 @@ void PostEffect::Initialize()
 {
 	HRESULT result;
 
-	for (size_t i = 0; i < 4; i++)
+	/*for (size_t i = 0; i < 4; i++)
 	{
 		matWorld.r[i] = { 0,0,0 };
-	}
+	}*/
 
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,

@@ -9,6 +9,7 @@
 #include "Sound.h"
 #include "ObjFile.h"
 #include "PostEffect.h"
+#include "PEffect.h"
 #include <fstream>
 #include "ImguiManager.h"
 #include <imgui.h>
@@ -847,6 +848,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ImguiManager* imguiManager = new ImguiManager();
 	imguiManager->Initialize(dxCommon);
 
+	//
+	PEffect* pEffect = new PEffect(spriteCommon,dxCommon);
+
+
+
+
 	//ゲームループ1
 	while (true)
 	{
@@ -933,6 +940,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		sprite->Update(matView);
 
 		postEffect->Update(matView, matProjection);
+		pEffect->Update(matView, matProjection);
 
 		//ImGuiここから
 		imguiManager->Begin();
@@ -942,9 +950,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		ImGui::InputFloat("sprite->position.y", &sprite->position.y, 0.0f, 10.0f, "%f");
 		ImGui::InputFloat("sprite->position.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 
-		ImGui::InputFloat("eye->scale.x", &eye.x, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("eye->scale.y", &eye.y, 0.0f, 10.0f, "%f");
-		ImGui::InputFloat("eye->scale.z", &eye.z, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("pEffect->sprite_.position.x", &sprite->position.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("pEffect->sprite_.position.y", &sprite->position.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("pEffect->sprite_.position.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 
 		ImGui::InputFloat("post->rotation.x", &postEffect->rotation.x, 0.0f, 10.0f, "%f");
 		ImGui::InputFloat("post->rotation.y", &postEffect->rotation.y, 0.0f, 10.0f, "%f");
@@ -989,16 +997,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 		dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-		//DirectXCommon
-		dxCommon->PreDraw();
-
+		
 		//描画フラグ
-		if (draw_flg)
+		if (!draw_flg)
 		{
 			//srvGpuHandle.ptr += incrementSize;
 
 			//PostEffect準備
 			postEffect->PreDraw(dxCommon->GetCommandList());
+			
+			//画像を1に入れたものに
+			dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 			//描画コマンド
 			object3ds->DrawObject3d(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
@@ -1006,14 +1015,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//Imgui描画
 			imguiManager->Draw(dxCommon);
 
+			//仮posteffect
+			//pEffect->Draw();
+			sprite->PreDraw();
+
 			//PostEffect終了
 			postEffect->PostDraw(dxCommon->GetCommandList());
 
+			//DirectXCommon
+			dxCommon->PreDraw();
+
 			//PostEffect描画
 			postEffect->Draw(dxCommon->GetCommandList(), pipelineState, rootSignature, ibView);
+
+			//5.リソースバリア
+			dxCommon->PostDraw();
 		}
 		else
 		{
+			//DirectXCommon
+			dxCommon->PreDraw();
+
 			//SRVヒープの先頭にあるSRVをルートパラメータ１番に設定
 			//この中で画像入れてるからさっさとスプライトに移動
 			//dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
@@ -1030,14 +1052,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//三角形描画
 			sprite->Draw();
 
+			//仮posteffect
+			pEffect->Draw();
+
 			//Imgui描画
 			imguiManager->Draw(dxCommon);
+
+			//5.リソースバリア
+			dxCommon->PostDraw();
 		}
-		//4.描画処理ここまで
-
-		//5.リソースバリア
-		dxCommon->PostDraw();
-
 		////描画状態から
 	}
 
@@ -1054,6 +1077,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete spriteCommon;
 	//delete sprite;
 	delete postEffect;
+	delete pEffect;
 	delete imguiManager;
 
 	return 0;
