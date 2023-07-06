@@ -9,6 +9,7 @@ namespace MyMath
 {
 	struct float4
 	{
+	public:
 		float x;
 		float y;
 		float z;
@@ -19,7 +20,7 @@ namespace MyMath
 
 	const float PI = 3.14159265358979f;
 	//const float PIx2 =6.2831853071f;
-	// 
+
 	//	視点座標、注視点座標、上方向ベクトル
 	Matrix LookAtLH(const Vector3& eye, const Vector3& target, const Vector3& up);
 

@@ -11,6 +11,7 @@
 #include "PostEffect.h"
 #include <fstream>
 #include "ImguiManager.h"
+#include "MyMath.h"
 #include <imgui.h>
 #include <wrl.h>
 
@@ -23,6 +24,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ビュー変換行列
 	XMMATRIX matView;
+	MyMath::ObjMatrix matview;
 	XMFLOAT3 eye(0, 0, 10);		//視点座標
 	XMFLOAT3 target(0, 0, 0);		//注意点座標
 	XMFLOAT3 up(0, 1, 0);			//上方向ベクトル
@@ -36,8 +38,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	bool draw_flg = false;
 
-	MSG msg{};
-
 	HRESULT result;
 
 	//宣言
@@ -49,26 +49,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Key* key = new Key(dxCommon->GetWindow()->GetHInstance(), dxCommon->GetWindow()->GetHwnd());
 	key->Initialize();
 
-	/*ID3D12Resource* constBuffTransform0 = nullptr;
-	ConstBufferDataTransform* constMapTransform0 = nullptr;
-
-	ID3D12Resource* constBuffTransform1 = nullptr;
-	ConstBufferDataTransform* constMapTransform1 = nullptr;*/
-
 	//ComPtr<Controller> controller = nullptr;
 	Controller* controller = nullptr;
 	controller = Controller::GetInstance();
 
 	//Sound* sound = new Sound();
 
-	//Sound sound2;
-
 	//int bgm = sound->SoundLoadWave("Resource/BGM.wav");
 	//int bgm = sound2.SoundLoadWave("Resource//BGM.wav");
-
-
-
-	//初期化
 
 	//DirectX初期化処理ここまで
 
