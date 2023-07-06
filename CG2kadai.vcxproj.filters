@@ -69,20 +69,20 @@
     <ClCompile Include="ImguiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Mymath.cpp">
-      <Filter>ソース ファイル\nowCreate</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector4.cpp">
-      <Filter>ソース ファイル\nowCreate</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>ソース ファイル\nowCreate</Filter>
-    </ClCompile>
     <ClCompile Include="Post.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PEffect.cpp">
-      <Filter>ソース ファイル\nowCreate</Filter>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Easing.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MyMath.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,11 +155,17 @@
     <ClInclude Include="Post.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PEffect.h">
-      <Filter>ソース ファイル\nowCreate</Filter>
-    </ClInclude>
     <ClInclude Include="Vector4.h">
-      <Filter>ソース ファイル\nowCreate</Filter>
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMath.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Easing.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

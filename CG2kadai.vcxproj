@@ -150,14 +150,14 @@
   <ItemGroup>
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
+    <ClCompile Include="Easing.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Mymath.cpp" />
+    <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="ObjFile.cpp" />
-    <ClCompile Include="PEffect.cpp" />
     <ClCompile Include="Post.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Sound.cpp" />
@@ -212,12 +212,14 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Definition.h" />
     <ClInclude Include="DirectXCommon.h" />
+    <ClInclude Include="Easing.h" />
     <ClInclude Include="function.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="key.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MyMath.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="ObjFile.h" />
-    <ClInclude Include="PEffect.h" />
     <ClInclude Include="Post.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Sound.h" />

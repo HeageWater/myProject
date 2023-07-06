@@ -6,10 +6,10 @@ public:
 	float x;
 	float y;
 	float z;
-	float r;
+	float w;
 public:
 	Vector4();
-	Vector4(float x, float y, float z,float r);
+	Vector4(float x, float y, float z,float w);
 
 	float length()const;
 	Vector4& normalize();

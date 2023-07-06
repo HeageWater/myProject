@@ -9,7 +9,6 @@
 #include "Sound.h"
 #include "ObjFile.h"
 #include "PostEffect.h"
-#include "PEffect.h"
 #include <fstream>
 #include "ImguiManager.h"
 #include <imgui.h>
@@ -848,11 +847,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ImguiManager* imguiManager = new ImguiManager();
 	imguiManager->Initialize(dxCommon);
 
-	//
-	PEffect* pEffect = new PEffect(spriteCommon, dxCommon);
-
-
-
 
 	//ƒQ[ƒ€ƒ‹[ƒv1
 	while (true)
@@ -940,7 +934,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		sprite->Update(matView);
 
 		postEffect->Update(matView, matProjection);
-		pEffect->Update(matView, matProjection);
 
 		//ImGui‚±‚±‚©‚ç
 		imguiManager->Begin();
@@ -1043,9 +1036,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//ŽOŠpŒ`•`‰æ
 			sprite->Draw();
 
-			//‰¼posteffect
-			pEffect->Draw();
-
 			//Imgui•`‰æ
 			imguiManager->Draw(dxCommon);
 
@@ -1068,7 +1058,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete spriteCommon;
 	//delete sprite;
 	delete postEffect;
-	delete pEffect;
 	delete imguiManager;
 
 	return 0;

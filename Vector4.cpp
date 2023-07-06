@@ -6,20 +6,20 @@ Vector4::Vector4()
 	x = 0.0f;
 	y = 0.0f;
 	z = 0.0f;
-	r = 0.0f;
+	w = 0.0f;
 }
 
-Vector4::Vector4(float x, float y, float z, float r)
+Vector4::Vector4(float x, float y, float z, float w)
 {
 	this->x = x;
 	this->y = y;
 	this->z = z;
-	this->r = r;
+	this->w = w;
 }
 
 float Vector4::length() const
 {
-	return sqrt(x * x + y * y + z * z + r * r);
+	return sqrt(x * x + y * y + z * z + w * w);
 }
 
 Vector4& Vector4::normalize()
@@ -34,14 +34,14 @@ Vector4& Vector4::normalize()
 
 float Vector4::dot(const Vector4& v) const
 {
-	return x * x + y * y + z * z + r * r;
-	return v.x * x + v.y * y + v.z * z + v.r * r;
+	return x * x + y * y + z * z + w * w;
+	return v.x * x + v.y * y + v.z * z + v.w * w;
 }
 
 float Vector4::cross(const Vector4& v) const
 {
-	return x * x - y * y - z * z - r * r;
-	return v.x * x - v.y * y - v.z * z - v.r * r;
+	return x * x - y * y - z * z - w * w;
+	return v.x * x - v.y * y - v.z * z - v.w * w;
 }
 
 Vector4 Vector4::operator+() const
@@ -59,7 +59,7 @@ Vector4& Vector4::operator+=(const Vector4& v)
 	x += v.x;
 	y += v.y;
 	z += v.z;
-	r += v.r;
+	w += v.w;
 	return *this;
 }
 
@@ -68,7 +68,7 @@ Vector4& Vector4::operator-=(const Vector4& v)
 	x -= v.x;
 	y -= v.y;
 	z -= v.z;
-	r -= v.r;
+	w -= v.w;
 	return *this;
 }
 
@@ -77,7 +77,7 @@ Vector4& Vector4::operator*=(float s)
 	x *= s;
 	y *= s;
 	z *= s;
-	r *= s;
+	w *= s;
 	return *this;
 }
 
@@ -86,7 +86,7 @@ Vector4& Vector4::operator/=(float s)
 	x /= s;
 	y /= s;
 	z /= s;
-	r /= s;
+	w /= s;
 	return *this;
 }
 
@@ -108,7 +108,7 @@ const Vector4 operator*(const Vector4& v, float s)
 	temp.x = v.x * s;
 	temp.y = v.y * s;
 	temp.z = v.z * s;
-	temp.r = v.r * s;
+	temp.w = v.w * s;
 	return temp;
 }
 
@@ -118,7 +118,7 @@ const Vector4 operator*(float s, const Vector4& v)
 	temp.x = v.x * s;
 	temp.y = v.y * s;
 	temp.z = v.z * s;
-	temp.r = v.r * s;
+	temp.w = v.w * s;
 	return temp;
 }
 
