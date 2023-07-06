@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "Collision.h"
+#include "PostEffect.h"
 #include "JsonFileOpen.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
@@ -72,56 +73,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 	LifeText.MatUpdate(Matrix(), spriteProjection, 0);
 
+	PostEffect* postEffect = new PostEffect();
+
 	//描画用行列
 	MyMath::MatView matView;
 	matView.Init(Vector3D(0.0f, 0.0f, -100.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
-
-	//ここから
-	LevelData* levelData = nullptr;
-
-	//親子ありファイル
-	levelData = JsonFileOpen::FileOpen("untitled");
-
-	//複数個ファイル
-	///levelData = JsonFileOpen::FileOpen("Test");
-
-	std::map<std::string, Model*> models;
-	std::vector<Model*> objects;
-
-	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData->objects)
-	{
-		//ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models)::iterator it = models.find(objectdata.fileName);
-
-		//終わりか
-		if (it != models.end())
-		{
-			model = it->second;
-		}
-
-		//モデルを指定して3Dオブジェクトを生成
-		Model* newModel = new Model();
-		newModel->Initialize(dx.get(), shader, "Resources\\Model\\box.obj", pipeline.get());
-
-		//trans
-		newModel->mat.trans = objectdata.translation;
-
-		//rotation
-		newModel->mat.rotAngle = objectdata.rotation;
-
-		//scale;
-		newModel->mat.scale = objectdata.scaling;
-
-		//Update
-		newModel->MatUpdate(debugcamera.mat, matProjection);
-
-		//格納
-		objects.push_back(newModel);
-	}
 
 	//	ゲームループ
 	while (true)
@@ -145,21 +103,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
-		//読み込んだモデルのUpdate
-		for (auto& object : objects)
-		{
-			object->MatUpdate(debugcamera.mat, matProjection);
-		}
-
 		//Draw
 		dx->PrevDrawScreen();
-
-		//読み込んだモデルのDraw(White)
-		for (auto& object : objects) {
-			object->Draw(white);
-
-			object->mat.trans;
-		}
 
 		//// 描画コマンド
 
@@ -170,12 +115,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		screen.Draw(0);
 
-		dx->PostDraw();
-	}
+		postEffect->Draw();
 
-	for (auto& object : objects)
-	{
-		delete object;
+		dx->PostDraw();
 	}
 
 	return 0;

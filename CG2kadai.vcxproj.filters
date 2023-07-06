@@ -123,6 +123,9 @@
     <ClCompile Include="Actor.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="PostEffect.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PShader.hlsl">
@@ -231,6 +234,9 @@
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PostEffect.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

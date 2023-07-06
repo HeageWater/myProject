@@ -132,6 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,6 +148,7 @@
     <ClCompile Include="JsonFileOpen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="Re\ConstBuff.cpp" />
     <ClCompile Include="Re\Controller.cpp" />
     <ClCompile Include="Re\DirectX.cpp" />
@@ -208,6 +210,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="JsonFileOpen.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PostEffect.h" />
     <ClInclude Include="Re\ConstBuff.h" />
     <ClInclude Include="Re\Controller.h" />
     <ClInclude Include="Re\DirectX.h" />
