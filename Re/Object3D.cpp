@@ -132,7 +132,7 @@ void Object3D::SetVertices()
 	assert(SUCCEEDED(result));
 
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 
@@ -143,7 +143,7 @@ void Object3D::SetVertices()
 	vbView.StrideInBytes = sizeof(vertices[0]);
 }
 
-void Object3D::Draw(int handle)
+void Object3D::Draw(size_t handle)
 {
 	pipeline->Setting(dx->GetCmdList());
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

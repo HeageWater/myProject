@@ -34,7 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	MyDebugCamera debugcamera(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	MyDebugCamera playcamera(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), win->window_width, win->window_height));
+	std::unique_ptr<ConstBuff> cBuff(new ConstBuff(dx->GetDev(), (float)win->window_width, (float)win->window_height));
 
 	std::unique_ptr<Input> input(new Input(win.get()));
 	//Resources/shader/
@@ -103,11 +103,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	goal->Initialize(dx.get(), shader, pipeline.get());
 
 	bool scene = false;
-	int white = dx->LoadTextureGraph(L"Resources/white1x1.png");
-	int texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
+	size_t white = dx->LoadTextureGraph(L"Resources/white1x1.png");
+	size_t texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
+	size_t brPng = dx->LoadTextureGraph(L"Resources/br.png");
 	size_t enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
-	int clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
+	size_t clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
 
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
@@ -204,7 +204,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		if (scene == true)
 		{
-			pressText.Draw(clearTex);
+			pressText.Draw((int)clearTex);
 		}
 
 		dx->PostDraw();

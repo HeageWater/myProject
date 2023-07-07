@@ -74,7 +74,7 @@ bool MyMath::CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, fl
 	return false;
 }
 
-Matrix MyMath::PerspectiveFovLH(const int winwidth, const int winheight, float fovY, float nearZ, float farZ)
+Matrix MyMath::PerspectiveFovLH(const float winwidth, const float winheight, float fovY, float nearZ, float farZ)
 {
 	assert(nearZ > 0.f && farZ > 0.f);
 	//assert(!XMScalarNearEqual(FovAngleY, 0.0f, 0.00001f * 2.0f));
@@ -98,7 +98,7 @@ Matrix MyMath::PerspectiveFovLH(const int winwidth, const int winheight, float f
 	return matProjection;
 }
 
-Matrix MyMath::OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ)
+Matrix MyMath::OrthoLH(const float winwidth, const float winheight, float nearZ, float farZ)
 {
 	Matrix matProjection;
 	matProjection.Identity();

@@ -13,8 +13,8 @@ class Input
 public:
 	static enum MouseButton {
 		LeftClick = 0,
-		RightClick,
-		WheelClick,
+		RightClick = 1,
+		WheelClick = 2,
 	};
 private:
 	Window* win = nullptr;
@@ -35,12 +35,12 @@ public:
 	void Initialize(Window* win_);
 	void Update();
 
-	bool GetKey(int _key);
-	bool GetTrigger(int _key);
-	bool ReleaseKey(int _key);
+	bool GetKey(size_t _key);
+	bool GetTrigger(size_t _key);
+	bool ReleaseKey(size_t _key);
 
-	bool Click(int type);
-	bool ClickTrriger(int type);
+	bool Click(size_t type);
+	bool ClickTrriger(size_t type);
 
 	POINT CursorPos();
 	void CursorPos(Vector2D& pos);

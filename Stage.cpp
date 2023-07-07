@@ -21,7 +21,7 @@ void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	stage_.mat.trans.z = 0;
 }
 
-void Stage::Draw(int tex)
+void Stage::Draw(size_t tex)
 {
 	stage_.Draw(tex);
 }

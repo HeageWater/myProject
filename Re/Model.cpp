@@ -58,7 +58,7 @@ Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pip
 {
 	dx = dx_;
 	pipeline = pipeline_;
-	Initialize(shader,filename);
+	Initialize(shader, filename);
 }
 
 void Model::MatUpdate(Matrix matView, Matrix matProjection)
@@ -70,7 +70,7 @@ void Model::MatUpdate(Matrix matView, Matrix matProjection)
 	constMapTransform->mat *= matProjection;
 }
 
-void Model::Draw(int handle)
+void Model::Draw(size_t handle)
 {
 	pipeline->Setting(dx->GetCmdList());
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -90,7 +90,7 @@ void Model::SetVertices()
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除

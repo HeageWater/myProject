@@ -26,6 +26,6 @@ public:
 
 	//	getter
 	HWND GetHwnd() const { return hwnd; }
-	WNDCLASSEX GetWND() const { return w;}
+	WNDCLASSEX GetWND() const { return w; }
 };
 

@@ -11,7 +11,7 @@ void Actor::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	actor.mat.trans.z = 0;*/
 }
 
-void Actor::Draw(int tex)
+void Actor::Draw(size_t tex)
 {
 	//actor.Draw(tex);
 }

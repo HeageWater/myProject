@@ -38,7 +38,7 @@ public:
 	Object3D();
 	Object3D(MyDirectX* dx_, GPipeline* pipeline_, Shader shader);
 	void MatUpdate(Matrix matView, Matrix matProjection);
-	void Draw(int handle);
+	void Draw(size_t handle);
 
 private:
 	void SetVertices() override;

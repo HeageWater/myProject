@@ -32,7 +32,7 @@ public:
 	Model();
 	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
 	void MatUpdate(Matrix matView, Matrix matProjection);
-	void Draw(int handle);
+	void Draw(size_t handle);
 private:
 	void SetVertices() override;
 };

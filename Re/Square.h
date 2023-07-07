@@ -49,11 +49,11 @@ public:
 	MyMath::ObjMatrix obj;
 
 public:
-	void Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMord = GPipeline::NONE_BLEND);
-	Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMord = GPipeline::NONE_BLEND);
+	void Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord = GPipeline::NONE_BLEND);
+	Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord = GPipeline::NONE_BLEND);
 	Square();
 	void MatUpdate(Matrix matView, Matrix matProjection, float a, Matrix billboard = Matrix());
-	void Draw(int handle);
+	void Draw(size_t handle);
 private:
 	void SetVertices() override;
 };

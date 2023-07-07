@@ -23,8 +23,8 @@ const float PIx2 = 6.2831853071f;
 //	視点座標、注視点座標、上方向ベクトル
 Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
 
-Matrix PerspectiveFovLH(const int winwidth, const int winheight, float fovY, float nearZ, float farZ);
-Matrix OrthoLH(const int winwidth, const int winheight, float nearZ, float farZ);
+Matrix PerspectiveFovLH(const float winwidth, const float winheight, float fovY, float nearZ, float farZ);
+Matrix OrthoLH(const float winwidth, const float winheight, float nearZ, float farZ);
 
 float ConvertToRad(float angle);
 

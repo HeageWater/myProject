@@ -4,7 +4,7 @@ ScissorRect::ScissorRect()
 {
 }
 
-void ScissorRect::Init(const int left, const int width, const int top, const int height)
+void ScissorRect::Init(const float left, const float width, const float top, const float height)
 {
 	scissorRect.left = left; // Ø‚è”²‚«À•W¶
 	scissorRect.right = scissorRect.left + width; // Ø‚è”²‚«À•W‰E

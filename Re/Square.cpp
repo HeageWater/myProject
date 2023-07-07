@@ -31,7 +31,7 @@ void UISquare::SetVertices()
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = pv[i]; // 座標をコピー
 	}
 	// 繋がりを解除
@@ -48,7 +48,7 @@ void UISquare::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HAN
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
 
-void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMord)
+void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord)
 {
 	dx = dx_;
 	pipeline = pipeline_;
@@ -133,7 +133,7 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int
 #pragma endregion
 }
 
-Square::Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, int blendMord)
+Square::Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord)
 {
 	Initialize(dx_, pipeline_, shader, blendMord);
 }
@@ -153,7 +153,7 @@ void Square::MatUpdate(Matrix matView, Matrix matProjection, float a, Matrix bil
 	constMapTransform->mat *= matProjection;
 }
 
-void Square::Draw(int handle)
+void Square::Draw(size_t handle)
 {
 	pipeline->Setting(dx->GetCmdList());
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -176,7 +176,7 @@ void Square::SetVertices()
 	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < vertexSize; i++) {
+	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = pv[i]; // 座標をコピー
 	}
 	// 繋がりを解除

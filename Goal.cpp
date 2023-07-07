@@ -19,7 +19,7 @@ void Goal::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	goal_.mat.trans = { 1000,15,0 };
 }
 
-void Goal::Draw(int tex)
+void Goal::Draw(size_t tex)
 {
 	goal_.mat.rotAngle.y += 0.01f;
 
@@ -33,10 +33,10 @@ void Goal::Update(Matrix matView, Matrix matProjection)
 
 bool Goal::BoxCollision(Model model)
 {
-	int a = (model.mat.trans.x - goal_.mat.trans.x) * (model.mat.trans.x - goal_.mat.trans.x);
-	int b = (model.mat.trans.y - goal_.mat.trans.y) * (model.mat.trans.y - goal_.mat.trans.y);
+	float a = (model.mat.trans.x - goal_.mat.trans.x) * (model.mat.trans.x - goal_.mat.trans.x);
+	float b = (model.mat.trans.y - goal_.mat.trans.y) * (model.mat.trans.y - goal_.mat.trans.y);
 
-	int c = model.mat.scale.x * goal_.mat.scale.x;
+	float c = model.mat.scale.x * goal_.mat.scale.x;
 
 	//‚ ‚½‚è”»’è
 	if (a + b < c)

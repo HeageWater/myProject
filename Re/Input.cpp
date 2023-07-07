@@ -71,28 +71,28 @@ void Input::Update()
 	ScreenToClient(win->GetHwnd(), &cursor);
 }
 
-bool Input::GetKey(int _key)
+bool Input::GetKey(size_t _key)
 {
 	return key[_key];
 }
 
-bool Input::GetTrigger(int _key)
+bool Input::GetTrigger(size_t _key)
 {
 	return key[_key] && !prev[_key];
 }
 
-bool Input::ReleaseKey(int _key)
+bool Input::ReleaseKey(size_t _key)
 {
 	return prev[_key] && !key[_key];
 }
 
-bool Input::Click(int type)
+bool Input::Click(size_t type)
 {
 	return (click.rgbButtons[type] & (0x80));
-	
+
 }
 
-bool Input::ClickTrriger(int type)
+bool Input::ClickTrriger(size_t type)
 {
 	return (click.rgbButtons[type] & (0x80)) && !(prevclick.rgbButtons[type] & (0x80));
 }
@@ -105,8 +105,8 @@ POINT Input::CursorPos()
 
 void Input::CursorPos(Vector2D& pos)
 {
-	pos.x = cursor.x;
-	pos.y = cursor.y;
+	pos.x = (float)cursor.x;
+	pos.y = (float)cursor.y;
 }
 
 LONG Input::Wheel()

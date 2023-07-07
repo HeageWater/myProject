@@ -14,7 +14,7 @@ class Actor {
 
 protected:
 	static void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
-	static void Draw(int tex);
+	static void Draw(size_t tex);
 	static void Update(Matrix matView, Matrix matProjection);
 
 	Model actor;

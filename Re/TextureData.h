@@ -29,7 +29,7 @@ public:
 	ScratchImage scratchImg{};
 	ID3D12DescriptorHeap* srvHeap = nullptr;
 	UINT incrementSize;
-	int textureNum = 0;
+	size_t textureNum = 0;
 	
 public:
 	TextureDeta(ID3D12Device* dev, D3D12_RESOURCE_DESC resDesc, Texture* texture);

@@ -23,7 +23,7 @@ void Enemy::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 }
 
-void Enemy::Draw(int tex)
+void Enemy::Draw(size_t tex)
 {
 	if (isDead == false)
 	{
@@ -51,10 +51,10 @@ bool Enemy::BoxCollision(Model model)
 {
 	if (deadVec == false)
 	{
-		int a = (model.mat.trans.x - enemy_.mat.trans.x) * (model.mat.trans.x - enemy_.mat.trans.x);
-		int b = (model.mat.trans.y - enemy_.mat.trans.y) * (model.mat.trans.y - enemy_.mat.trans.y);
+		float a = (model.mat.trans.x - enemy_.mat.trans.x) * (model.mat.trans.x - enemy_.mat.trans.x);
+		float b = (model.mat.trans.y - enemy_.mat.trans.y) * (model.mat.trans.y - enemy_.mat.trans.y);
 
-		int c = model.mat.scale.x * enemy_.mat.scale.x;
+		float c = model.mat.scale.x * enemy_.mat.scale.x;
 
 		//‚ ‚½‚è”»’è
 		if (a + b < c)

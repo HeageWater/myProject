@@ -16,7 +16,7 @@ public:
 	Enemy();
 	~Enemy();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
-	void Draw(int tex);
+	void Draw(size_t tex);
 	//void Update(Matrix matView, Matrix matProjection, Input* input);
 	void Update(Matrix matView, Matrix matProjection);
 	bool BoxCollision(Model model);

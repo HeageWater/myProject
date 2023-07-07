@@ -75,7 +75,7 @@ struct FormatChunk {
 struct SoundData {
 	WAVEFORMATEX wfex;
 	BYTE* pBuffer;
-	unsigned int bufferSize;
+	size_t bufferSize;
 };
 
 class MyXAudio
@@ -85,16 +85,16 @@ private:
 	IXAudio2MasteringVoice* masterVoice;
 	std::vector<SoundData> soundData;
 	std::vector<IXAudio2SourceVoice*> soundPtr;
-	int handle;
+	size_t handle;
 	void SoundUnload(SoundData* soundData);
 public:
 	ComPtr<IXAudio2> xAudio2;
 	MyXAudio();
 	~MyXAudio();
-	int SoundLoadWave(const char* filename);
+	size_t SoundLoadWave(const char* filename);
 	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
-	void SoundPlayWave(int handle, bool stop = false);
-	void SoundPlayLoopWave(int handle);
+	void SoundPlayWave(size_t handle, bool stop = false);
+	void SoundPlayLoopWave(size_t handle);
 	void StopAllLoopSound();
 };
 

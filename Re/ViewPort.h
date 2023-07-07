@@ -10,7 +10,7 @@ private:
 	D3D12_VIEWPORT viewport{};
 	Matrix mat;
 public:
-	void Init(const int width, const int height, const int topLftX, const int topLftY, const float MinDepth = 0.0f, const float MaxDepth = 1.0f);
+	void Init(const float width, const float height, const float topLftX, const float topLftY, const float MinDepth = 0.0f, const float MaxDepth = 1.0f);
 	ViewPort();
 	void Update(ID3D12GraphicsCommandList* cmdList);
 	Matrix Mat() { return mat; }

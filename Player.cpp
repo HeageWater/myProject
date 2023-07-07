@@ -36,7 +36,7 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	attackF = false;
 }
 
-void Player::Draw(int tex, int tex2)
+void Player::Draw(size_t tex, size_t tex2)
 {
 	player_.Draw(tex);
 
