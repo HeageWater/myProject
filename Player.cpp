@@ -9,6 +9,9 @@ Player::Player()
 	playerAttack_.mat.scale = { 3,3,3 };
 
 	attackF = false;
+
+	sound_ = nullptr;
+	volcano = 0;
 }
 
 Player::~Player()
@@ -88,7 +91,7 @@ void Player::Update(Matrix matView, Matrix matProjection)
 
 	if (controller->ButtonTriggerPush(RT))
 	{
-		sound_->SoundPlayWave(volcano);
+		sound_->SoundPlayWave(2);
 	}
 
 	player_.mat.trans.y = max(player_.mat.trans.y, 11);

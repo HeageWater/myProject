@@ -41,6 +41,6 @@ public:
 	Controller* controller = nullptr;
 
 private:
-	MyXAudio* sound_;
-	size_t volcano;
+	MyXAudio* sound_ = nullptr;
+	size_t volcano = 0;
 };
