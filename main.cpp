@@ -67,6 +67,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
+	MyXAudio sound_;
+	size_t bgm = sound_.SoundLoadWave("Resources/sound/BGM.wav");
+	size_t fanfare = sound_.SoundLoadWave("Resources/sound/fanfare.wav");
+	
 	//player
 	Player* player = new Player();
 	player->Initialize(dx.get(), shader, pipeline.get());
@@ -173,6 +177,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			}
 		}
 		//‚±‚±‚Ü‚Å
+
+		if (input->GetTrigger(DIK_P))
+		{
+			sound_.SoundPlayWave(bgm);
+		}
+
+		if (input->GetTrigger(DIK_O))
+		{
+			sound_.SoundPlayWave(fanfare);
+		}
 
 		//Escape‚Å”²‚¯‚é
 		if (input->GetTrigger(DIK_ESCAPE))
