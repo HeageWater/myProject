@@ -95,5 +95,9 @@ public:
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 	Matrix GetViewportMat() { return viewPort.Mat(); }
 	UINT GetIncrementSize() { return incrementSize; }
+
+	Window GetWindow() { return *win; };
+	//バックバッファの数を取得
+	size_t GetBackByfferCount() const { return backBuffers.size(); };
 };
 
