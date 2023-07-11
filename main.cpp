@@ -70,7 +70,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	MyXAudio* sound_ = MyXAudio::Get();
 	size_t bgm = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 	size_t fanfare = sound_->SoundLoadWave("Resources/sound/fanfare.wav");
-	
+
 	//player
 	Player* player = new Player();
 	player->Initialize(dx.get(), shader, pipeline.get());
@@ -114,6 +114,43 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	size_t enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 	size_t clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
 
+	int x = 30;
+
+	Vector2D cameraMove[30] =
+	{
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0},
+		{0,0}
+
+	};
+
 	//	ゲームループ
 	while (true)
 	{
@@ -130,7 +167,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		if (scene == false)
 		{
 			//player更新
-			player->Update(matView.mat, matProjection);
+			//player->Update(matView.mat, matProjection);
+
+			for (int i = x - 1; i > 0; i--)
+			{
+				cameraMove[i] = cameraMove[i - 1];
+			}
+			cameraMove[0] = player->MoveCamera(matView.mat, matProjection, input.get());
 
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
@@ -162,8 +205,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			moveCamera = player->GetController();
 
 			//targetをplayerに
-			matView.eye.x += moveCamera.x;
-			matView.target.x = player->player_.mat.trans.x;
+			matView.eye.x += cameraMove[x - 1].x;
+			matView.target.x += cameraMove[x - 1].x;
+
+			matView.eye.z += cameraMove[x - 1].y;
+			matView.target.z += cameraMove[x - 1].y;
 
 			matView.eye.x = min(matView.eye.x, 1050);
 			matView.eye.x = max(matView.eye.x, 0);

@@ -52,21 +52,20 @@ void Player::Draw(size_t tex, size_t tex2)
 	}
 }
 
-void Player::Update(Matrix matView, Matrix matProjection, Input* input)
+Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 {
 	controller->Update();
 
 	Vector3D move = { 0 ,0 ,0 };
 
 	move.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-	move.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
+	move.z += input->GetKey(DIK_W) - input->GetKey(DIK_S);
 
-	Jump();
-	Attack();
-
-	player_.mat.trans = move;
+	player_.mat.trans += move;
 
 	player_.MatUpdate(matView, matProjection);
+
+	return Vector2D(move.x, move.z);
 }
 
 void Player::Update(Matrix matView, Matrix matProjection)

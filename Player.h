@@ -19,7 +19,7 @@ public:
 	~Player();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Draw(size_t tex, size_t tex2);
-	void Update(Matrix matView, Matrix matProjection, Input* input);
+	Vector2D MoveCamera(Matrix matView, Matrix matProjection, Input* input);
 	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
 	void Jump();
