@@ -1,9 +1,9 @@
 #include "key.h"
 
-Key::Key(WNDCLASSEX a, HWND hw)
+Key::Key(HINSTANCE a, HWND hw)
 {
 	result = DirectInput8Create(
-		a.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		a, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
@@ -25,11 +25,35 @@ Key::~Key()
 {
 }
 
+//初期化
+void Key::Initialize() {
+
+	WindowApi* winapi = WindowApi::Get();
+
+	result = DirectInput8Create(
+		winapi->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,
+		(void**)&directInput, nullptr);
+	assert(SUCCEEDED(result));
+
+	result = directInput->CreateDevice(GUID_SysKeyboard,
+		&keyboard, NULL);
+
+	//入力データ形式のセット
+	//標準形式
+	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+	assert(SUCCEEDED(result));
+
+	//排他制御レベルのセット
+	result = keyboard->SetCooperativeLevel(
+		winapi->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	assert(SUCCEEDED(result));
+}
+
 //更新
 void Key::Update()
 {
 	//全キーの入力状態を保存する
-	for (int i = 0; i < sizeof(oldkey); i++)
+	for (int32_t i = 0; i < sizeof(oldkey); i++)
 	{
 		oldkey[i] = keys[i];
 	}
