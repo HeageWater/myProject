@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Game\Engine">
       <UniqueIdentifier>{b384cf40-3013-415a-8e86-2e494b58109d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Particle">
+      <UniqueIdentifier>{ca49a805-d119-4630-b050-c8bbfa67eaa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Particle">
+      <UniqueIdentifier>{098d4b27-c7e5-4c98-a68f-89117b77eed5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Re\ConstBuff.cpp">
@@ -149,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="ImguiManager.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleParticle.cpp">
+      <Filter>ソース ファイル\Game\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +291,12 @@
     </ClInclude>
     <ClInclude Include="ImguiManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleParticle.h">
+      <Filter>ヘッダー ファイル\Game\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
