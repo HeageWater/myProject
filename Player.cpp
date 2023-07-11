@@ -34,6 +34,9 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 	controller = Controller::GetInstance();
 	attackF = false;
+
+	sound_ = MyXAudio::Get();
+	volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 }
 
 void Player::Draw(size_t tex, size_t tex2)
@@ -82,6 +85,11 @@ void Player::Update(Matrix matView, Matrix matProjection)
 
 	//UŒ‚
 	Attack();
+
+	if (controller->ButtonTriggerPush(RT))
+	{
+		sound_->SoundPlayWave(volcano);
+	}
 
 	player_.mat.trans.y = max(player_.mat.trans.y, 11);
 	player_.mat.trans.x = min(player_.mat.trans.x, 1050);

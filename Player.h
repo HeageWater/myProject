@@ -10,6 +10,7 @@
 #include <memory>
 #include "Re//Model.h"
 #include "PlayerAttack.h"
+#include "Sound.h"
 
 class Player {
 
@@ -21,7 +22,6 @@ public:
 	void Update(Matrix matView, Matrix matProjection, Input* input);
 	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
-
 	void Jump();
 	void Attack();
 
@@ -39,4 +39,8 @@ public:
 	float gravirtPower = 0;
 
 	Controller* controller = nullptr;
+
+private:
+	MyXAudio* sound_;
+	size_t volcano;
 };

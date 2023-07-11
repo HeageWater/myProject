@@ -87,10 +87,19 @@ private:
 	std::vector<IXAudio2SourceVoice*> soundPtr;
 	size_t handle;
 	void SoundUnload(SoundData* soundData);
-public:
-	ComPtr<IXAudio2> xAudio2;
+
 	MyXAudio();
 	~MyXAudio();
+public:
+
+	static MyXAudio* Get()
+	{
+		static MyXAudio xaudio;
+		return &xaudio;
+	}
+
+	ComPtr<IXAudio2> xAudio2;
+
 	size_t SoundLoadWave(const char* filename);
 	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
 	void SoundPlayWave(size_t handle, bool stop = false);
