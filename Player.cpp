@@ -88,10 +88,11 @@ void Player::Update(Matrix matView, Matrix matProjection)
 	//UŒ‚
 	Attack();
 
-	if (controller->ButtonTriggerPush(RT))
+	//player‚Å‚Ì‰¹ƒeƒXƒg
+	/*if (controller->ButtonTriggerPush(RT))
 	{
 		sound_->SoundPlayWave(2);
-	}
+	}*/
 
 	player_.mat.trans.y = max(player_.mat.trans.y, 11);
 	player_.mat.trans.x = min(player_.mat.trans.x, 1050);

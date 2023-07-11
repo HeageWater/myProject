@@ -178,16 +178,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		}
 		//‚±‚±‚Ü‚Å
 
-		if (input->GetTrigger(DIK_P))
-		{
-			sound_->SoundPlayWave(bgm);
-		}
-
-		if (input->GetTrigger(DIK_O))
-		{
-			sound_->SoundPlayWave(fanfare);
-		}
-
 		//Escape‚Å”²‚¯‚é
 		if (input->GetTrigger(DIK_ESCAPE))
 		{
