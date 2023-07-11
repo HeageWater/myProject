@@ -149,6 +149,7 @@
     <ClCompile Include="JsonFileOpen.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerAttack.cpp" />
     <ClCompile Include="Re\ConstBuff.cpp" />
     <ClCompile Include="Re\Controller.cpp" />
     <ClCompile Include="Re\DirectX.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Goal.h" />
     <ClInclude Include="JsonFileOpen.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerAttack.h" />
     <ClInclude Include="Re\ConstBuff.h" />
     <ClInclude Include="Re\Controller.h" />
     <ClInclude Include="Re\DirectX.h" />

@@ -129,6 +129,9 @@
     <ClCompile Include="Goal.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAttack.cpp">
+      <Filter>ソース ファイル\Game\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PShader.hlsl">
@@ -242,6 +245,9 @@
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="Goal.h">
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAttack.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
   </ItemGroup>

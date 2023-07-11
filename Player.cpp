@@ -165,3 +165,7 @@ void Player::Attack()
 		attackF = true;
 	}
 }
+
+void Player::PopPlayerAttack()
+{
+}

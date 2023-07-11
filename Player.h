@@ -9,6 +9,7 @@
 #include "Re//Controller.h"
 #include <memory>
 #include "Re//Model.h"
+#include "PlayerAttack.h"
 
 class Player {
 
@@ -23,6 +24,8 @@ public:
 
 	void Jump();
 	void Attack();
+
+	void PopPlayerAttack();
 
 	//左スティックの値を返す
 	Vector2D GetController() { return controller->GetLeftStickVec(); };
