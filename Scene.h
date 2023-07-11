@@ -1,33 +1,33 @@
-//#pragma once
-//#include "Re//Window.h"
-//#include "Re//DirectX.h"
-//#include "Re//Input.h"
-//#include "Re//GPipeline.h"
-//#include "Re//Object3D.h"
-//#include "Re//ConstBuff.h"
-//#include "Re//TextureData.h"
-//#include "Re//Shader.h"
-//#include "Re//MyDebugCamera.h"
-//#include "Re//Square.h"
-//#include "Re//Controller.h"
-//#include <memory>
-//#include <random>
-//#include <cassert>
-//#include <sstream>
-//#include <iomanip>
-//#include <map>
-//#include "Re//Model.h"
-//#include "Player.h"
-//#include "Stage.h"
-//#include "Enemy.h"
-//#include "Sound.h"
-//#include "Goal.h"
-//#include "Collision.h"
-//#include "JsonFileOpen.h"
-//
-//class Scene
-//{
-//private:
+#pragma once
+#include "Re//Window.h"
+#include "Re//DirectX.h"
+#include "Re//Input.h"
+#include "Re//GPipeline.h"
+#include "Re//Object3D.h"
+#include "Re//ConstBuff.h"
+#include "Re//TextureData.h"
+#include "Re//Shader.h"
+#include "Re//MyDebugCamera.h"
+#include "Re//Square.h"
+#include "Re//Controller.h"
+#include <memory>
+#include <random>
+#include <cassert>
+#include <sstream>
+#include <iomanip>
+#include <map>
+#include "Re//Model.h"
+#include "Player.h"
+#include "Stage.h"
+#include "Enemy.h"
+#include "Sound.h"
+#include "Goal.h"
+#include "Collision.h"
+#include "JsonFileOpen.h"
+
+class Scene
+{
+private:
 //#pragma region Initialize
 //	std::unique_ptr<Window> win(new Window());
 //
@@ -90,10 +90,10 @@
 //	int brPng = dx->LoadTextureGraph(L"Resources/br.png");
 //	size_t enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 //	int clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
-//
-//public:
-//	Scene();
-//	~Scene();
-//	void Initialize();
-//	void Run();
-//};
+
+public:
+	Scene();
+	~Scene();
+	void Initialize();
+	void Run();
+};
