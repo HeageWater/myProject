@@ -11,7 +11,7 @@
 class Input
 {
 public:
-	static enum MouseButton {
+	enum MouseButton {
 		LeftClick = 0,
 		RightClick = 1,
 		WheelClick = 2,

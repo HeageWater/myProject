@@ -251,7 +251,7 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = rootParams.size();						//	ルートパラメータ数
+	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();						//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
@@ -302,7 +302,7 @@ void GPipeline::SetScreenRootSignature(ID3D12Device* dev)
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = rootParams.size();						//	ルートパラメータ数
+	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();						//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ

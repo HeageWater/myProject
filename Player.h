@@ -25,10 +25,24 @@ public:
 	void Jump();
 	void Attack();
 
+	//攻撃生成用
 	void PopPlayerAttack();
 
 	//左スティックの値を返す
 	Vector2D GetController() { return controller->GetLeftStickVec(); };
+
+	Vector3D GetPos() { return player_.mat.trans; };
+	Vector3D GetRot() { return player_.mat.rotAngle; };
+	Vector3D GetScale() { return player_.mat.scale; };
+	Model GetModel() { return player_; };
+
+	Vector3D GetAttackPos() { return playerAttack_.mat.trans; };
+	Vector3D GetAttackRot() { return playerAttack_.mat.rotAngle; };
+	Vector3D GetAttackScale() { return playerAttack_.mat.scale; };
+	Model GetAttackModel() { return playerAttack_; };
+private:
+	MyXAudio* sound_ = nullptr;
+	size_t volcano = 0;
 
 	Model player_;
 	Model playerAttack_;
@@ -39,8 +53,4 @@ public:
 	float gravirtPower = 0;
 
 	Controller* controller = nullptr;
-
-private:
-	MyXAudio* sound_ = nullptr;
-	size_t volcano = 0;
 };

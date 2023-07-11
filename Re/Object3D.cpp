@@ -150,7 +150,7 @@ void Object3D::Draw(size_t handle)
 	VertBuffUpdate(dx->GetCmdList());
 
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle((int32_t)handle));
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	dx->GetCmdList()->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);

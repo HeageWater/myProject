@@ -34,7 +34,7 @@ void Model::Initialize(Shader shader, const char* filename)
 	assert(SUCCEEDED(result));
 
 	ObjFile objfile(filename, vertices);
-	vertexSize = vertices.size();
+	vertexSize = (UINT)vertices.size();
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
 
@@ -76,7 +76,7 @@ void Model::Draw(size_t handle)
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	VertBuffUpdate(dx->GetCmdList());
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle((int32_t)handle));
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);

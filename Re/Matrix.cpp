@@ -60,7 +60,7 @@ bool InverseMatrix(const Matrix& mat, Matrix& invMat)
     for (k = 0; k < 4; k++) {
 
         /* 最大の絶対値を注目対角成分の絶対値と仮定 */
-        double max = fabs(sweep[k][k]);
+        float max = fabs(sweep[k][k]);
         size_t max_i = k;
 
         /* k列目が最大の絶対値となる行を探す */
@@ -79,7 +79,7 @@ bool InverseMatrix(const Matrix& mat, Matrix& invMat)
         /* 操作（１）：k行目とmax_i行目を入れ替える */
         if (k != max_i) {
             for (size_t x = 0; x < 8; x++) {
-                double tmp = sweep[max_i][x];
+                float tmp = sweep[max_i][x];
                 sweep[max_i][x] = sweep[k][x];
                 sweep[k][x] = tmp;
             }

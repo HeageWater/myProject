@@ -75,7 +75,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Player* player = new Player();
 	player->Initialize(dx.get(), shader, pipeline.get());
 
-	//enemy
+	//仮enemy置き
 	Enemy* enemy = new Enemy();
 	enemy->Initialize(dx.get(), shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 100,20,0 });
@@ -114,43 +114,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	size_t enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 	size_t clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
 
-	int x = 30;
-
-	Vector2D cameraMove[30] =
-	{
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0},
-		{0,0}
-
-	};
-
 	//	ゲームループ
 	while (true)
 	{
@@ -167,29 +130,23 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		if (scene == false)
 		{
 			//player更新
-			//player->Update(matView.mat, matProjection);
-
-			for (int i = x - 1; i > 0; i--)
-			{
-				cameraMove[i] = cameraMove[i - 1];
-			}
-			cameraMove[0] = player->MoveCamera(matView.mat, matProjection, input.get());
+			player->Update(matView.mat, matProjection);
 
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
-			bool sheikF = enemy->BoxCollision(player->playerAttack_);
+			bool sheikF = enemy->BoxCollision(player->GetAttackModel());
 
 			//enemy更新
 			enemy2->Update(matView.mat, matProjection);
-			sheikF = enemy2->BoxCollision(player->playerAttack_);
+			sheikF = enemy2->BoxCollision(player->GetAttackModel());
 
 			//enemy更新
 			enemy3->Update(matView.mat, matProjection);
-			sheikF = enemy3->BoxCollision(player->playerAttack_);
+			sheikF = enemy3->BoxCollision(player->GetAttackModel());
 
 			//enemy更新
 			enemy4->Update(matView.mat, matProjection);
-			sheikF = enemy4->BoxCollision(player->playerAttack_);
+			sheikF = enemy4->BoxCollision(player->GetAttackModel());
 
 			//ステージ更新
 			stage->Update(matView.mat, matProjection, input.get());
@@ -205,17 +162,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			moveCamera = player->GetController();
 
 			//targetをplayerに
-			matView.eye.x += cameraMove[x - 1].x;
-			matView.target.x += cameraMove[x - 1].x;
-
-			matView.eye.z += cameraMove[x - 1].y;
-			matView.target.z += cameraMove[x - 1].y;
+			matView.eye.x += moveCamera.x;
+			matView.target.x = player->GetPos().x;
 
 			matView.eye.x = min(matView.eye.x, 1050);
 			matView.eye.x = max(matView.eye.x, 0);
 
 			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
-			bool checkGoal = goal->BoxCollision(player->player_);
+			bool checkGoal = goal->BoxCollision(player->GetModel());
 
 			if (checkGoal)
 			{

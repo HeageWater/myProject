@@ -101,9 +101,11 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 	indices.resize(indexSize);
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
 
-	for (size_t i = 0; i < vertexNum; i++)
+	int32_t num = vertexNum;
+
+	for (auto i = 0; i < num; i++)
 	{
-		size_t n = i * 3;
+		int32_t n = i * 3;
 		indices[n + 2] = vertexSize;
 		indices[n] = i;
 		if (i == vertexNum - 1) {

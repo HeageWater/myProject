@@ -2,8 +2,6 @@
 
 UISquare::UISquare(ID3D12Device* dev, Shader shader)
 {
-	HRESULT result;
-
 	pv[0] = { {-1.0f,-1.0f,0.1f},{0,1} };
 	pv[1] = { {-1.0f, 1.0f,0.1f},{0,0} };
 	pv[2] = { { 1.0f,-1.0f,0.1f},{1,1} };
@@ -126,7 +124,7 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, siz
 	VBInitialize(dx->GetDev(), sizePV, vertexSize, sizeIB, indices, indexSize);
 
 	if (blendMord != GPipeline::NONE_BLEND) {
-		pipeline->SetBlend(dx->GetDev(), blendMord);
+		pipeline->SetBlend(dx->GetDev(), (int32_t)blendMord);
 	}
 #pragma region  WorldMatrix初期値
 	obj.Initialize();
@@ -159,7 +157,7 @@ void Square::Draw(size_t handle)
 	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	VertBuffUpdate(dx->GetCmdList());
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle(handle));
+	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle((int32_t)handle));
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	dx->GetCmdList()->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
