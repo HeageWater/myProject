@@ -190,7 +190,7 @@ void MyXAudio::SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData)
 
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData.pBuffer;
-	buf.AudioBytes = soundData.bufferSize;
+	buf.AudioBytes = (int32_t)soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
@@ -209,7 +209,7 @@ void MyXAudio::SoundPlayWave(size_t handle, bool stop)
 
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData[handle].pBuffer;
-	buf.AudioBytes = soundData[handle].bufferSize;
+	buf.AudioBytes = (int32_t)soundData[handle].bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
 
@@ -229,7 +229,7 @@ void MyXAudio::SoundPlayLoopWave(size_t handle)
 
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData[handle].pBuffer;
-	buf.AudioBytes = soundData[handle].bufferSize;
+	buf.AudioBytes = (int32_t)soundData[handle].bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 	buf.LoopCount = XAUDIO2_LOOP_INFINITE;
 

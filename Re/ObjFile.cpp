@@ -9,29 +9,30 @@ bool ObjFile::ReadFile()
 	while (true)
 	{
 		char lineHeader[128];
+
 		// çsÇÃç≈èâÇÃï∂éöóÒÇì«Ç›çûÇ›Ç‹Ç∑ÅB
-		size_t res = fscanf_s(file, "%s", lineHeader, _countof(lineHeader));
+		int32_t res = fscanf_s(file, "%s", &lineHeader);
 		if (res == EOF)	break;
 
-		if (strcmp(lineHeader, "v") == 0) {
+		if (lineHeader == "v") {
 			Vector3D vertex;
 			fscanf_s(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z);
 			temp_vertices.push_back(vertex);
 		}
-		else if (strcmp(lineHeader, "vt") == 0) {
+		else if (lineHeader == "vt") {
 			Vector2D uv;
 			fscanf_s(file, "%f %fn", &uv.x, &uv.y);
 			temp_uvs.push_back(uv);
 		}
-		else if (strcmp(lineHeader, "vn") == 0) {
+		else if (lineHeader == "vn") {
 			Vector3D normal;
 			fscanf_s(file, "%f %f %fn", &normal.x, &normal.y, &normal.z);
 			temp_normals.push_back(normal);
 		}
-		else if (strcmp(lineHeader, "f") == 0) {
+		else if (lineHeader == "f") {
 			std::string vertex1, vertex2, vertex3;
-			size_t vertexIndex[3], uvIndex[3], normalIndex[3];
-			size_t matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+			int32_t vertexIndex[3], uvIndex[3], normalIndex[3];
+			int32_t matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 			if (matches != 9) {
 				return false;
 			}
@@ -45,6 +46,10 @@ bool ObjFile::ReadFile()
 			normalIndices.push_back(normalIndex[1]);
 			normalIndices.push_back(normalIndex[2]);
 		}
+		else
+		{
+			return false;
+		}
 	}
 	return true;
 }
@@ -52,17 +57,17 @@ bool ObjFile::ReadFile()
 ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 {
 	fopen_s(&file, filename, "r");
-	
+
 	if (ReadFile()) {
 		out_vertices.resize(vertexIndices.size());
-		for (size_t i = 0; i < vertexIndices.size(); i++)
+		for (auto i = 0; i < vertexIndices.size(); i++)
 		{
-			size_t vertexIndex = vertexIndices[i];
+			int32_t vertexIndex = vertexIndices[i];
 			out_vertices[i].pos = temp_vertices[vertexIndex - 1];
-			size_t uvIndex = uvIndices[i];
+			int32_t uvIndex = uvIndices[i];
 			out_vertices[i].uv = temp_uvs[uvIndex - 1];
 			out_vertices[i].uv.y = 1.0f - out_vertices[i].uv.y;
-			size_t normalIndex = normalIndices[i];
+			int32_t normalIndex = normalIndices[i];
 			out_vertices[i].normal = temp_normals[normalIndex - 1];
 		}
 	}
