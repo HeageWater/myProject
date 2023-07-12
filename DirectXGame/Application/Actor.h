@@ -1,14 +1,14 @@
 #pragma once
-#include "Re//GPipeline.h"
-#include "Re//Object3D.h"
-#include "Re//ConstBuff.h"
-#include "Re//TextureData.h"
-#include "Re//Shader.h"
-#include "Re//MyDebugCamera.h"
-#include "Re//Square.h"
-#include "Re//Controller.h"
+#include "GPipeline.h"
+#include "Object3D.h"
+#include "ConstBuff.h"
+#include "TextureData.h"
+#include "Shader.h"
+#include "MyDebugCamera.h"
+#include "Square.h"
+#include "Controller.h"
 #include <memory>
-#include "Re//Model.h"
+#include "Model.h"
 
 class Actor {
 
