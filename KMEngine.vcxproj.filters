@@ -170,22 +170,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PShader.hlsl">
+    <FxCompile Include="Resources\shader\PShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="VShader.hlsl">
+    <FxCompile Include="Resources\shader\VShader.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="SpritePS.hlsl">
+    <FxCompile Include="Resources\shader\SpritePS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="SpriteVS.hlsl">
+    <FxCompile Include="Resources\shader\SpriteVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="BasicPS.hlsl">
+    <FxCompile Include="Resources\shader\BasicPS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
-    <FxCompile Include="BasicVS.hlsl">
+    <FxCompile Include="Resources\shader\BasicVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -306,10 +306,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Basic.hlsli">
+    <None Include="Resources\shader\Basic.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
-    <None Include="SpriteHeader.hlsli">
+    <None Include="Resources\shader\SpriteHeader.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

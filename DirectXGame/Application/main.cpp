@@ -42,9 +42,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<Input> input(new Input(win.get()));
 	//Resources/shader/
-	Shader shader(L"BasicVS.hlsl", L"BasicPS.hlsl");
-	Shader bilShader(L"VShader.hlsl", L"PShader.hlsl");
-	Shader spriteShader(L"SpriteVS.hlsl", L"SpritePS.hlsl");
+	Shader shader(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
+	Shader bilShader(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	Shader spriteShader(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
 
 	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 
