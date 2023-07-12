@@ -3,7 +3,11 @@
 #include <string>
 #include <vector>
 #include "Re/MyMath.h"
+
+#pragma warning (push)
+#pragma warning (disable:26800)
 #include "json.hpp"
+#pragma warning (pop)
 
 // レベルデータ
 struct LevelData {
