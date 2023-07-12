@@ -15,6 +15,8 @@
 #include <sstream>
 #include <iomanip>
 #include <map>
+#include <imgui.h>
+#include <wrl.h>
 #include "Re//Model.h"
 #include "Player.h"
 #include "Stage.h"
@@ -116,6 +118,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	size_t clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
 
 	ImguiManager* imgui = new ImguiManager();
+	imgui->Initialize(dx.get());
 
 	//	ゲームループ
 	while (true)
@@ -129,6 +132,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//座標更新
 		matView.MatUpdate();
+
+		//Imgui
+		imgui->Begin();
+
+		ImGui::InputFloat("matView.eye.x", &matView.eye.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("matView.eye.y", &matView.eye.y, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("matView.eye.z", &matView.eye.z, 0.0f, 10.0f, "%f");
+
+		//ImGuiここまで
+		imgui->End();
 
 		if (scene == false)
 		{
@@ -187,6 +200,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			break;
 		}
 
+		if (input->GetTrigger(DIK_K))
+		{
+			enemy->enemy_.mat.trans.x -= 1;
+		}
+
+		if (input->GetTrigger(DIK_P))
+		{
+			sound_->SoundPlayWave(bgm);
+		}
+
 		//Draw
 		dx->PrevDrawScreen();
 
@@ -215,8 +238,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			pressText.Draw((int)clearTex);
 		}
 
+		imgui->Draw(dx.get());
+
 		dx->PostDraw();
 	}
+
+	imgui->Finalize();
 
 	return 0;
 }
