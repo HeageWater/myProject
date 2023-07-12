@@ -79,28 +79,6 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 			//transform格納
 			SetMatrix(transform, objectData);
 		}
-		//else if (type.compare("CAMERA") == 0)
-		//{
-		//	//要素追加
-		//	levelData->objects.emplace_back(LevelData::ObjectData{});
-
-		//	//今追加した要素の参照を得る
-		//	LevelData::ObjectData& objectData = levelData->objects.back();
-
-		//	//ファイルネームだったら
-		//	if (object.contains("file_name"))
-		//	{
-		//		//ファイル名
-		//		objectData.fileName = object["file_name"];
-		//	}
-
-		//	//Transformのパラメータ読み込み
-		//	nlohmann::json& transform = object["transform"];
-
-		//	//transform格納
-		//	SetMatrix(transform, objectData);
-		//}
-
 	}
 
 	return levelData;
@@ -113,9 +91,9 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	Vector3D vec;
 
 	// 平行移動
-	vec.x = (float)transform["translation"][0];
-	vec.y = -(float)transform["translation"][1];
-	vec.z = (float)transform["translation"][2];
+	vec.x = (float)transform["translation"][1];
+	vec.y = (float)transform["translation"][2];
+	vec.z = -(float)transform["translation"][0];
 	objectData.translation.SetVector3(vec);
 
 	// 回転角
@@ -125,9 +103,9 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	objectData.rotation.SetVector3(vec);
 
 	// スケーリング
-	vec.x = (float)transform["scaling"][0];
-	vec.y = (float)transform["scaling"][1];
-	vec.z = (float)transform["scaling"][2];
+	vec.x = (float)transform["scaling"][1];
+	vec.y = (float)transform["scaling"][2];
+	vec.z = (float)transform["scaling"][0];
 	objectData.scaling.SetVector3(vec);
 }
 

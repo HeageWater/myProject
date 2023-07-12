@@ -13,10 +13,10 @@ bool ObjFile::ReadFile()
 	}
 	while (true)
 	{
-		char lineHeader[128];
+		char lineHeader[128] = { 0 };
 
 		// s‚ÌÅ‰‚Ì•¶š—ñ‚ğ“Ç‚İ‚İ‚Ü‚·B
-		uint32_t res = fscanf_s(file, "%s", &lineHeader,static_cast<uint32_t>(_countof(lineHeader)));
+		uint32_t res = fscanf_s(file, "%s", &lineHeader, static_cast<uint32_t>(_countof(lineHeader)));
 
 		if (res == EOF)
 		{
@@ -40,7 +40,7 @@ bool ObjFile::ReadFile()
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
 			std::string vertex1, vertex2, vertex3;
-			int32_t vertexIndex[3], uvIndex[3], normalIndex[3];
+			int32_t vertexIndex[3] = { 0,0,0 }, uvIndex[3] = { 0,0,0 }, normalIndex[3] = { 0,0,0 };
 			int32_t matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 			if (matches != 9) {
 				return false;
