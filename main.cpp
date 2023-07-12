@@ -238,7 +238,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			pressText.Draw((int)clearTex);
 		}
 
-		imgui->Draw(dx.get());
+		//imgui->Draw(dx.get());
 
 		dx->PostDraw();
 	}
