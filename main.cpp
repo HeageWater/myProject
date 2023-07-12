@@ -24,6 +24,7 @@
 #include "Collision.h"
 #include "JsonFileOpen.h"
 #include "Easing.h"
+#include "ImguiManager.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -113,6 +114,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	size_t brPng = dx->LoadTextureGraph(L"Resources/br.png");
 	size_t enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 	size_t clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
+
+	ImguiManager* imgui = new ImguiManager();
 
 	//	ƒQ[ƒ€ƒ‹[ƒv
 	while (true)
