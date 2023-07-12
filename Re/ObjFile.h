@@ -6,8 +6,9 @@
 class ObjFile
 {
 private:
-	FILE* file = NULL;
-
+	FILE* file;
+	//std::FILE* file = NULL;
+	
 	std::vector<unsigned short> vertexIndices, uvIndices, normalIndices;
 	std::vector<Vector3D> temp_vertices;
 	std::vector<Vector2D> temp_uvs;

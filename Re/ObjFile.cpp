@@ -1,5 +1,10 @@
 #include "ObjFile.h"
-#include <string>
+#include<fstream>
+#include<sstream>
+#include<string>
+#include<vector>
+#include <cassert>
+using namespace std;
 
 bool ObjFile::ReadFile()
 {
@@ -11,25 +16,29 @@ bool ObjFile::ReadFile()
 		char lineHeader[128];
 
 		// çsÇÃç≈èâÇÃï∂éöóÒÇì«Ç›çûÇ›Ç‹Ç∑ÅB
-		int32_t res = fscanf_s(file, "%s", &lineHeader);
-		if (res == EOF)	break;
+		uint32_t res = fscanf_s(file, "%s", &lineHeader,static_cast<uint32_t>(_countof(lineHeader)));
 
-		if (lineHeader == "v") {
+		if (res == EOF)
+		{
+			break;
+		}
+
+		if (strcmp(lineHeader, "v") == 0) {
 			Vector3D vertex;
 			fscanf_s(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z);
 			temp_vertices.push_back(vertex);
 		}
-		else if (lineHeader == "vt") {
+		else if (strcmp(lineHeader, "vt") == 0) {
 			Vector2D uv;
 			fscanf_s(file, "%f %fn", &uv.x, &uv.y);
 			temp_uvs.push_back(uv);
 		}
-		else if (lineHeader == "vn") {
+		else if (strcmp(lineHeader, "vn") == 0) {
 			Vector3D normal;
 			fscanf_s(file, "%f %f %fn", &normal.x, &normal.y, &normal.z);
 			temp_normals.push_back(normal);
 		}
-		else if (lineHeader == "f") {
+		else if (strcmp(lineHeader, "f") == 0) {
 			std::string vertex1, vertex2, vertex3;
 			int32_t vertexIndex[3], uvIndex[3], normalIndex[3];
 			int32_t matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%dn", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
@@ -45,10 +54,6 @@ bool ObjFile::ReadFile()
 			normalIndices.push_back(normalIndex[0]);
 			normalIndices.push_back(normalIndex[1]);
 			normalIndices.push_back(normalIndex[2]);
-		}
-		else
-		{
-			return false;
 		}
 	}
 	return true;
@@ -71,5 +76,8 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 			out_vertices[i].normal = temp_normals[normalIndex - 1];
 		}
 	}
+
 	fclose(file);
+
+
 }
