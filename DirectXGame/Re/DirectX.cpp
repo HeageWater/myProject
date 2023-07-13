@@ -4,6 +4,9 @@
 #include <DirectXTex.h>
 using namespace DirectX;
 
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
+
 // ‘Î‰žƒŒƒxƒ‹‚Ì”z—ñ
 D3D_FEATURE_LEVEL levels[] = {
 	D3D_FEATURE_LEVEL_12_1,

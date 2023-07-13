@@ -14,9 +14,9 @@ private:
 	HWND hwnd;
 	// メッセージ
 	MSG msg{};
-public:
 	// ウィンドウプロシージャ
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+public:
 
 	Window();
 	~Window();

@@ -37,12 +37,6 @@
     <Filter Include="ヘッダー ファイル\Game\Particle">
       <UniqueIdentifier>{098d4b27-c7e5-4c98-a68f-89117b77eed5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\External">
-      <UniqueIdentifier>{362a7ef9-f039-420b-aafd-3630285b8df5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\External">
-      <UniqueIdentifier>{a5a90c8e-47c7-4fbe-a061-a910396f4d75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Engine">
       <UniqueIdentifier>{8c8ab9af-bb69-4d06-8158-4d850997bf1b}</UniqueIdentifier>
     </Filter>
