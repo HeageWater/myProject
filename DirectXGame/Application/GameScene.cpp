@@ -2,11 +2,7 @@
 
 void GameScene::Update()
 {
-	win->MsgUpdate();
-	if (win->EndLoop())
-	{
-		SetEndRwqust(true);
-	}
+	FlameWork::Update();
 
 	//Update
 	input->Update();
@@ -94,6 +90,8 @@ void GameScene::Update()
 
 void GameScene::Initilize()
 {
+	FlameWork::Initilize();
+
 	//windowApi
 	win = std::make_unique<Window>();
 
@@ -193,7 +191,8 @@ void GameScene::Initilize()
 }
 
 void GameScene::Draw()
-{//Draw
+{
+	//Draw
 	dx->PrevDrawScreen();
 
 	//// 描画コマンド
@@ -229,29 +228,6 @@ void GameScene::Draw()
 void GameScene::Finalize()
 {
 	imgui->Finalize();
-}
 
-void GameScene::Run()
-{
-	//初期化
-	Initilize();
-
-	//ゲームループ
-	while (true)
-	{
-		//更新
-		Update();
-
-		//描画
-		Draw();
-
-		//もしエンドフラグがTrueなら抜ける
-		if (IsEndRequst() == true)
-		{
-			break;
-		}
-	}
-
-	//終了処理
-	Finalize();
+	FlameWork::Finalize();
 }

@@ -1,22 +1,10 @@
 #pragma once
-#include "Window.h"
-#include "DirectX.h"
 #include "Input.h"
-#include "GPipeline.h"
 #include "Object3D.h"
-#include "ConstBuff.h"
 #include "TextureData.h"
 #include "MyDebugCamera.h"
 #include "Square.h"
 #include "Controller.h"
-#include <memory>
-#include <random>
-#include <cassert>
-#include <sstream>
-#include <iomanip>
-#include <map>
-#include <imgui.h>
-#include <wrl.h>
 #include "Model.h"
 #include "Player.h"
 #include "Stage.h"
@@ -24,26 +12,25 @@
 #include "Sound.h"
 #include "Goal.h"
 #include "Collision.h"
-#include "JsonFileOpen.h"
 #include "Easing.h"
 #include "ImguiManager.h"
 #include "Shader.h"
+#include "FlameWork.h"
 
-class GameScene
+class GameScene : public FlameWork
 {
 public:
-	void Update();
-	void Initilize();
-	void Draw();
-	void Finalize();
-	void Run();
-	
-	bool IsEndRequst() { return endRequest_; };
-	void SetEndRwqust(bool flag) { endRequest_ = flag; };
+	void Update() override;
+	void Initilize() override;
+	void Draw()override;
+	void Finalize()override;
+
+	//bool IsEndRequst() { return endRequest_; };
+	//void SetEndRwqust(bool flag) { endRequest_ = flag; };
 private:
 
 	//èIóπÉtÉâÉO
-	bool endRequest_ = false;
+	//bool endRequest_ = false;
 
 	//windowApi
 	std::unique_ptr<Window> win;
@@ -116,7 +103,7 @@ private:
 	bool scene = false;
 
 	//tex
-	size_t white=0;
+	size_t white = 0;
 	size_t texP = 0;
 	size_t brPng = 0;
 	size_t enemyPng = 0;

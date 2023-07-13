@@ -1,10 +1,51 @@
 #pragma once
+#include "Window.h"
+#include "DirectX.h"
+#include "JsonFileOpen.h"
+#include "ConstBuff.h"
+#include "GPipeline.h"
+#include <memory>
+#include <random>
+#include <cassert>
+#include <sstream>
+#include <iomanip>
+#include <map>
+#include <imgui.h>
+#include <wrl.h>
 
 class FlameWork
 {
 public:
-	void Update();
-	void Initilize();
-	void Draw();
-	void Finalize();
+	virtual void Update();
+	virtual void Initilize();
+	virtual void Draw() = 0;
+	virtual void Finalize();
+	void Run();
+	bool IsEndRequst() { return endRequest_; };
+	void SetEndRwqust(bool flag) { endRequest_ = flag; };
+
+	virtual~FlameWork() = default;
+private:
+
+	//èIóπÉtÉâÉO
+	bool endRequest_ = false;
+
+	//windowApi
+	//std::unique_ptr<Window> win;
+
+	////dxCommon
+	//std::unique_ptr<MyDirectX> dx;
+
+	////buff
+	//std::unique_ptr<ConstBuff> cBuff;
+
+	////pipeline
+	//std::unique_ptr<GPipeline> pipeline;
+
+	////ï`âÊèâä˙âª
+	//std::unique_ptr<GPipeline> multipathPipeline;
+
+	////gpipeline
+	//std::unique_ptr<GPipeline> uiPipeline;
+
 };
