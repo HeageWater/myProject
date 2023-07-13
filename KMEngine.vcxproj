@@ -80,10 +80,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\External\DirectXTex;$(SolutionDir)\External\Imgui</IncludePath>
+    <OutDir>$(SolutionDir)\Generated\Outputs\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Generated\Obj\$(ProjectName)\$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)DirectXTex;$(SolutionDir)Imgui</IncludePath>
+    <OutDir>$(SolutionDir)\Generated\Outputs\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Generated\Obj\$(ProjectName)\$(Configuration)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -120,7 +124,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\Resource;$(ProjectDir)\Resource\shader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\Resource;$(ProjectDir)\Resource\shader;$(ProjectDir)\DirectXGame\Application\Actor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,20 +151,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Application\Actor.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision.cpp" />
     <ClCompile Include="DirectXGame\Application\Easing.cpp" />
-    <ClCompile Include="DirectXGame\Application\Enemy.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp" />
     <ClCompile Include="DirectXGame\Engine\FlameWork.cpp" />
     <ClCompile Include="DirectXGame\Application\GameScene.cpp" />
-    <ClCompile Include="DirectXGame\Application\Goal.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp" />
     <ClCompile Include="DirectXGame\Engine\ImguiManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\JsonFileOpen.cpp" />
     <ClCompile Include="DirectXGame\Application\main.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle.cpp" />
-    <ClCompile Include="DirectXGame\Application\Player.cpp" />
-    <ClCompile Include="DirectXGame\Application\PlayerAttack.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\Player.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp" />
     <ClCompile Include="DirectXGame\Re\ConstBuff.cpp" />
     <ClCompile Include="DirectXGame\Re\Controller.cpp" />
     <ClCompile Include="DirectXGame\Re\DirectX.cpp" />
@@ -188,7 +192,7 @@
     <ClCompile Include="DirectXGame\Re\Window.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene.cpp" />
     <ClCompile Include="DirectXGame\Application\Sound.cpp" />
-    <ClCompile Include="DirectXGame\Application\Stage.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -221,19 +225,19 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Application\Actor.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\CircleParticle.h" />
     <ClInclude Include="DirectXGame\Application\Collision.h" />
     <ClInclude Include="DirectXGame\Application\Easing.h" />
-    <ClInclude Include="DirectXGame\Application\Enemy.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\Enemy.h" />
     <ClInclude Include="DirectXGame\Engine\FlameWork.h" />
     <ClInclude Include="DirectXGame\Application\GameScene.h" />
-    <ClInclude Include="DirectXGame\Application\Goal.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\Goal.h" />
     <ClInclude Include="DirectXGame\Engine\ImguiManager.h" />
     <ClInclude Include="DirectXGame\Engine\JsonFileOpen.h" />
     <ClInclude Include="DirectXGame\Application\Particle.h" />
-    <ClInclude Include="DirectXGame\Application\Player.h" />
-    <ClInclude Include="DirectXGame\Application\PlayerAttack.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\Player.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\PlayerAttack.h" />
     <ClInclude Include="DirectXGame\Re\ConstBuff.h" />
     <ClInclude Include="DirectXGame\Re\Controller.h" />
     <ClInclude Include="DirectXGame\Re\DirectX.h" />
@@ -258,7 +262,7 @@
     <ClInclude Include="DirectXGame\Re\Window.h" />
     <ClInclude Include="DirectXGame\Application\Scene.h" />
     <ClInclude Include="DirectXGame\Application\Sound.h" />
-    <ClInclude Include="DirectXGame\Application\Stage.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />

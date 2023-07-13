@@ -129,25 +129,25 @@
     <ClCompile Include="DirectXGame\Application\Collision.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Enemy.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Player.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\Player.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Stage.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Scene.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Goal.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\PlayerAttack.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Easing.cpp">
@@ -265,25 +265,25 @@
     <ClInclude Include="DirectXGame\Application\Collision.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Enemy.h">
+    <ClInclude Include="DirectXGame\Application\Actor\Enemy.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Player.h">
+    <ClInclude Include="DirectXGame\Application\Actor\Player.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Stage.h">
+    <ClInclude Include="DirectXGame\Application\Actor\Stage.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor.h">
+    <ClInclude Include="DirectXGame\Application\Actor\Actor.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Goal.h">
+    <ClInclude Include="DirectXGame\Application\Actor\Goal.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\PlayerAttack.h">
+    <ClInclude Include="DirectXGame\Application\Actor\PlayerAttack.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Easing.h">
