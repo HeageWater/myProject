@@ -32,8 +32,6 @@
 class GameScene
 {
 public:
-	GameScene();
-	~GameScene();
 	void Update();
 	void Initilize();
 	void Draw();
@@ -92,7 +90,7 @@ private:
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
 
 	//sound
-	MyXAudio* sound_;
+	MyXAudio* sound_ = nullptr;
 	size_t bgm = 0;
 	size_t fanfare = 0;
 

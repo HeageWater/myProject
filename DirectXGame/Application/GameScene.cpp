@@ -1,18 +1,7 @@
 #include "GameScene.h"
 
-GameScene::GameScene()
-{
-}
-
-GameScene::~GameScene()
-{
-}
-
 void GameScene::Update()
 {
-	//while (true)
-	//{
-		//WinMsg
 	win->MsgUpdate();
 	if (win->EndLoop())
 	{
@@ -101,10 +90,6 @@ void GameScene::Update()
 	{
 		sound_->SoundPlayWave(bgm);
 	}
-
-	//•`‰æ
-	//Draw();
-//}
 }
 
 void GameScene::Initilize()
