@@ -81,13 +81,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\External\DirectXTex;$(SolutionDir)\External\Imgui</IncludePath>
     <OutDir>$(SolutionDir)\Generated\Outputs\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Generated\Obj\$(ProjectName)\$(Configuration)</IntDir>
+    <IntDir>$(SolutionDir)\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)DirectXTex;$(SolutionDir)Imgui</IncludePath>
     <OutDir>$(SolutionDir)\Generated\Outputs\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Generated\Obj\$(ProjectName)\$(Configuration)</IntDir>
+    <IntDir>$(SolutionDir)\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -193,6 +193,7 @@
     <ClCompile Include="DirectXGame\Application\Scene.cpp" />
     <ClCompile Include="DirectXGame\Application\Sound.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
+    <ClCompile Include="Skydome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -263,6 +264,7 @@
     <ClInclude Include="DirectXGame\Application\Scene.h" />
     <ClInclude Include="DirectXGame\Application\Sound.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
+    <ClInclude Include="Skydome.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />

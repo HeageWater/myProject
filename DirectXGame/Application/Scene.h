@@ -1,5 +1,5 @@
 #pragma once
-#include "Window.h"
+/*include "Window.h"
 #include "DirectX.h"
 #include "Input.h"
 #include "GPipeline.h"
@@ -23,7 +23,7 @@
 #include "Sound.h"
 #include "Goal.h"
 #include "Collision.h"
-#include "JsonFileOpen.h"
+#include "JsonFileOpen.h"*/
 
 class Scene
 {

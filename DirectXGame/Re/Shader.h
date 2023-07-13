@@ -11,7 +11,6 @@
 class Shader
 {
 private:
-	HRESULT result;
 
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -25,8 +24,9 @@ private:
 private:
 	void Error();
 public:
+	Shader();
 	Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint = "main", LPCWSTR GSFileName = nullptr, LPCWSTR DSFileName = nullptr, LPCWSTR HSFileName = nullptr);
-
+	void Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint = "main", LPCWSTR GSFileName = nullptr, LPCWSTR DSFileName = nullptr, LPCWSTR HSFileName = nullptr);
 	//	Getter
 	ID3DBlob* VSBlob() { return vsBlob.Get(); }
 	ID3DBlob* HSBlob() { return hsBlob.Get(); }

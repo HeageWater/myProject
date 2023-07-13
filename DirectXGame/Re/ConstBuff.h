@@ -29,6 +29,7 @@ public:
 public:
 	ConstBuff(ID3D12Device* dev, const float winwidth, const float winheight);
 	~ConstBuff();
+	void Initialize(ID3D12Device* dev, const float winwidth, const float winheight);
 	void ChangeColor(const Vector4D& color);
 	void TimeUpdate();
 	void Update(ID3D12GraphicsCommandList* cmdList);
