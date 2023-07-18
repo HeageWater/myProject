@@ -4,7 +4,7 @@
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 	//êÈåæ
-	std::unique_ptr<FlameWork> gameScene = std::make_unique<GameScene>();
+	std::unique_ptr<GameScene> gameScene = std::make_unique<GameScene>();
 
 	//ÉQÅ[ÉÄÉãÅ[Év
 	gameScene->Run();

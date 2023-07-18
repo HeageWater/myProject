@@ -17,20 +17,36 @@
 #include "Shader.h"
 #include "FlameWork.h"
 
-class GameScene : public FlameWork
+#include "Window.h"
+#include "DirectX.h"
+#include "JsonFileOpen.h"
+#include "ConstBuff.h"
+#include "GPipeline.h"
+#include <memory>
+#include <random>
+#include <cassert>
+#include <sstream>
+#include <iomanip>
+#include <map>
+#include <imgui.h>
+#include <wrl.h>
+
+
+class GameScene
 {
 public:
-	void Update() override;
-	void Initilize() override;
-	void Draw()override;
-	void Finalize()override;
+	void Update();
+	void Initilize();
+	void Draw();
+	void Finalize();
+	void Run();
 
-	//bool IsEndRequst() { return endRequest_; };
-	//void SetEndRwqust(bool flag) { endRequest_ = flag; };
+	bool IsEndRequst() { return endRequest_; };
+	void SetEndRwqust(bool flag) { endRequest_ = flag; };
 private:
 
 	//èIóπÉtÉâÉO
-	//bool endRequest_ = false;
+	bool endRequest_ = false;
 
 	//windowApi
 	std::unique_ptr<Window> win;

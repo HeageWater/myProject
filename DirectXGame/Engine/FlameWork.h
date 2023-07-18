@@ -1,17 +1,4 @@
 #pragma once
-#include "Window.h"
-#include "DirectX.h"
-#include "JsonFileOpen.h"
-#include "ConstBuff.h"
-#include "GPipeline.h"
-#include <memory>
-#include <random>
-#include <cassert>
-#include <sstream>
-#include <iomanip>
-#include <map>
-#include <imgui.h>
-#include <wrl.h>
 
 class FlameWork
 {

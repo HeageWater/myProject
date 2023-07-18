@@ -2,7 +2,7 @@
 
 void GameScene::Update()
 {
-	FlameWork::Update();
+	//FlameWork::Update();
 
 	//Update
 	input->Update();
@@ -90,7 +90,7 @@ void GameScene::Update()
 
 void GameScene::Initilize()
 {
-	FlameWork::Initilize();
+	//FlameWork::Initilize();
 
 	//windowApi
 	win = std::make_unique<Window>();
@@ -229,5 +229,30 @@ void GameScene::Finalize()
 {
 	imgui->Finalize();
 
-	FlameWork::Finalize();
+	//FlameWork::Finalize();
+}
+
+void GameScene::Run()
+{
+	//初期化
+	Initilize();
+
+	//ゲームループ
+	while (true)
+	{
+		//更新
+		Update();
+
+		//描画
+		Draw();
+
+		//もしエンドフラグがTrueなら抜ける
+		if (IsEndRequst() == true)
+		{
+			break;
+		}
+	}
+
+	//終了処理
+	Finalize();
 }
