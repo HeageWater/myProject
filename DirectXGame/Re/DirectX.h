@@ -53,7 +53,7 @@ private:
 	D3D12_RESOURCE_BARRIER screenBarrierDesc;
 	ComPtr<ID3D12DescriptorHeap> screenRTVHeap;
 	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap;
-	
+
 	//	ビューポート
 	ViewPort viewPort;
 	// シザー矩形
@@ -72,12 +72,14 @@ private:
 
 	void ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
 	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
-	
+
 	void SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource = nullptr);
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
 public:
 	MyDirectX(Window* win_);
+	MyDirectX();
+	//MyDirectX() = default;
 	void Initialize(Window* win_);
 	void PrevDrawScreen(FLOAT* clearColor = nullptr);
 	void PostDrawScreen();
@@ -96,5 +98,7 @@ public:
 	Window GetWindow() { return *win; };
 	//バックバッファの数を取得
 	size_t GetBackByfferCount() const { return backBuffers.size(); };
+
+	static MyDirectX* GetInstance();
 };
 

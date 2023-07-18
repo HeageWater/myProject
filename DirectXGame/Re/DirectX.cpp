@@ -359,7 +359,7 @@ void MyDirectX::PrevDraw(FLOAT* clearColor)
 	// バックバッファの番号を取得(2つなので0番か1番)
 	UINT64 bbIndex = swapChain->GetCurrentBackBufferIndex();		//	現在のバックバッファ設定
 #pragma endregion ReleaseBarrier
-	
+
 	// 2.描画先の変更
 #pragma region Change
 	// レンダーターゲットビューのハンドルを取得
@@ -406,7 +406,7 @@ void MyDirectX::PostDraw()
 	result = cmdList->Close();
 	assert(SUCCEEDED(result));
 	// 溜めていたコマンドリストの実行(close必須)
-	ID3D12CommandList* commandLists[] = { cmdList.Get()};
+	ID3D12CommandList* commandLists[] = { cmdList.Get() };
 	cmdQueue->ExecuteCommandLists(1, commandLists);
 	// 画面に表示するバッファをフリップ(裏表の入替え)
 	result = swapChain->Present(1, 0);
@@ -540,6 +540,12 @@ D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
 	srvGpuHandle.ptr += incrementSize * handle;
 	return srvGpuHandle;
+}
+
+MyDirectX* MyDirectX::GetInstance()
+{
+	static MyDirectX dirextX;
+	return &dirextX;
 }
 
 void MyDirectX::ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)

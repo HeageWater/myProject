@@ -165,10 +165,10 @@
     <ClCompile Include="DirectXGame\Application\Skydome.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="DirectXGame\Engine\Sprite.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
+    <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -310,10 +310,10 @@
     <ClInclude Include="DirectXGame\Application\Skydome.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
+    <ClInclude Include="DirectXGame\Engine\Sprite.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteManager.h">
+    <ClInclude Include="DirectXGame\Engine\SpriteManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

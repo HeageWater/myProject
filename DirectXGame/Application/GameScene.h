@@ -39,7 +39,7 @@ public:
 	void Initilize()override;
 	void Draw()override;
 	void Finalize()override;
-	void Run();
+	//void Run();
 
 	bool IsEndRequst() { return endRequest_; };
 	void SetEndRwqust(bool flag) { endRequest_ = flag; };

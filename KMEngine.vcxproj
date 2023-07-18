@@ -194,8 +194,8 @@
     <ClCompile Include="DirectXGame\Application\Sound.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
     <ClCompile Include="DirectXGame\Application\Skydome.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="DirectXGame\Engine\Sprite.cpp" />
+    <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -267,8 +267,8 @@
     <ClInclude Include="DirectXGame\Application\Sound.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
     <ClInclude Include="DirectXGame\Application\Skydome.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="DirectXGame\Engine\Sprite.h" />
+    <ClInclude Include="DirectXGame\Engine\SpriteManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />
