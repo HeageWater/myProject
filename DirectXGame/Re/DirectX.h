@@ -99,6 +99,6 @@ public:
 	//バックバッファの数を取得
 	size_t GetBackByfferCount() const { return backBuffers.size(); };
 
-	static MyDirectX* GetInstance();
+	//static MyDirectX* GetInstance();
 };
 

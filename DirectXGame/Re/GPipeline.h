@@ -5,10 +5,6 @@
 #include <cassert>
 #include <wrl.h>
 
-
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-
 class GPipeline
 {
 public:

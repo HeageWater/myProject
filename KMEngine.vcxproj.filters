@@ -43,6 +43,12 @@
     <Filter Include="ヘッダー ファイル\Engine">
       <UniqueIdentifier>{b384cf40-3013-415a-8e86-2e494b58109d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Scene">
+      <UniqueIdentifier>{d28f896a-0e19-4a78-8704-4f2e23eec181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene">
+      <UniqueIdentifier>{5f84abc5-19bf-4508-947e-3e07523f65b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Re\ConstBuff.cpp">
@@ -147,9 +153,6 @@
     <ClCompile Include="DirectXGame\Application\Easing.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\GameScene.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engine\FlameWork.cpp">
       <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
@@ -170,6 +173,15 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\GameScene.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,9 +304,6 @@
     <ClInclude Include="DirectXGame\Application\Easing.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameScene.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Engine\FlameWork.h">
       <Filter>ヘッダー ファイル\Engine</Filter>
     </ClInclude>
@@ -315,6 +324,15 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\SpriteManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\GameScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

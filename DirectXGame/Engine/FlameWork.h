@@ -7,7 +7,7 @@ public:
 	virtual void Initilize();
 	virtual void Draw() = 0;
 	virtual void Finalize();
-	void Run();
+	virtual void Run();
 	//bool IsEndRequst() { return endRequest_; };
 	//void SetEndRwqust(bool flag) { endRequest_ = flag; };
 

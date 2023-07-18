@@ -1,4 +1,5 @@
 #include "ViewPort.h"
+#pragma comment(lib, "d3dcompiler.lib")
 
 ViewPort::ViewPort()
 {

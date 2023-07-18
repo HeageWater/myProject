@@ -4,10 +4,6 @@
 #include <d3dcompiler.h>
 #include <wrl.h>
 
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-
 class Shader
 {
 private:

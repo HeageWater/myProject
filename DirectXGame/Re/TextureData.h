@@ -1,8 +1,8 @@
 #pragma once
 #include <DirectXTex.h>
 using namespace DirectX;
-#include <d3d12.h>
 #pragma comment(lib, "d3d12.lib")
+#include <d3d12.h>
 #include <wrl.h>
 
 class Texture

@@ -9,7 +9,8 @@ public:
 	Sprite();
 	~Sprite();
 	void Inilialize(SpriteCommon* spriteCommon);
-	void Update(XMMATRIX& matView);
+	//void Update(XMMATRIX& matView);
+	void Update();
 	void PreDraw();
 	void Draw();
 
@@ -29,12 +30,12 @@ public:
 	//ConstBufferDataMaterial* constMapTransform = nullptr;
 
 public:
-	//アフィン変換情報
-	XMFLOAT3 scale = { 30,30,30 };
-	XMFLOAT3 rotation = { 0,0,0 };
-	XMFLOAT3 position = { 10,10,10 };
-	//ワールド変換行列
-	XMMATRIX matWorld;
+	////アフィン変換情報
+	//XMFLOAT3 scale = { 30,30,30 };
+	//XMFLOAT3 rotation = { 0,0,0 };
+	//XMFLOAT3 position = { 10,10,10 };
+	////ワールド変換行列
+	//XMMATRIX matWorld;
 public:
 	//頂点データ
 	//Vertex vertices[4] =

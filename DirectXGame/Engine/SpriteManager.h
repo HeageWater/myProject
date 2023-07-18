@@ -4,9 +4,7 @@
 #include <d3dcompiler.h>
 #include <vector>
 #include <fstream>
-using namespace DirectX;
 
-#pragma comment(lib,"d3dcompiler.lib")
 //
 ////頂点データ構造体
 //static struct Vertex

@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="DirectXGame\Application\Skydome.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -228,6 +230,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\CircleParticle.h" />
     <ClInclude Include="DirectXGame\Application\Collision.h" />
@@ -269,6 +272,7 @@
     <ClInclude Include="DirectXGame\Application\Skydome.h" />
     <ClInclude Include="DirectXGame\Engine\Sprite.h" />
     <ClInclude Include="DirectXGame\Engine\SpriteManager.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />

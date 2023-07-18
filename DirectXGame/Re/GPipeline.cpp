@@ -1,6 +1,10 @@
 #include "GPipeline.h"
 #include <vector>
 
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
+
+
 GPipeline::GPipeline(D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, ID3D12Device* dev, Shader shader)
 {
 	D3D12_DESCRIPTOR_RANGE range = {};

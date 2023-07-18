@@ -3,7 +3,6 @@
 #include "MyMath.h"
 #include <wrl.h>
 
-#pragma comment(lib, "d3d12.lib")
 class ConstBuff
 {
 private:

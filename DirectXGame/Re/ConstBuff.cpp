@@ -2,6 +2,8 @@
 #include "Vector3D.h"
 #include <cassert>
 
+#pragma comment(lib, "d3d12.lib")
+
 ConstBuff::ConstBuff(ID3D12Device* dev, const float winwidth, const float winheight)
 {
 	//	ÉqÅ[Évê›íË

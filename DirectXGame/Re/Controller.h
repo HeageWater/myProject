@@ -4,7 +4,6 @@
 #include<wrl.h>
 #include "myMath.h"
 #include <xinput.h>
-#pragma comment (lib, "xinput.lib")
 
 enum ControllerButton
 {

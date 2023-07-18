@@ -542,11 +542,11 @@ D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
 	return srvGpuHandle;
 }
 
-MyDirectX* MyDirectX::GetInstance()
-{
-	static MyDirectX dirextX;
-	return &dirextX;
-}
+//MyDirectX* MyDirectX::GetInstance()
+//{
+//	static MyDirectX dirextX;
+//	return &dirextX;
+//}
 
 void MyDirectX::ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
 {
