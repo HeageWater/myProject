@@ -32,13 +32,13 @@
 #include <wrl.h>
 
 
-class GameScene
+class GameScene :public FlameWork
 {
 public:
-	void Update();
-	void Initilize();
-	void Draw();
-	void Finalize();
+	void Update() override;
+	void Initilize()override;
+	void Draw()override;
+	void Finalize()override;
 	void Run();
 
 	bool IsEndRequst() { return endRequest_; };

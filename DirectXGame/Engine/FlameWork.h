@@ -8,14 +8,14 @@ public:
 	virtual void Draw() = 0;
 	virtual void Finalize();
 	void Run();
-	bool IsEndRequst() { return endRequest_; };
-	void SetEndRwqust(bool flag) { endRequest_ = flag; };
+	//bool IsEndRequst() { return endRequest_; };
+	//void SetEndRwqust(bool flag) { endRequest_ = flag; };
 
-	virtual~FlameWork() = default;
+	//virtual~FlameWork() = default;
 private:
 
 	//èIóπÉtÉâÉO
-	bool endRequest_ = false;
+	//bool endRequest_ = false;
 
 	//windowApi
 	//std::unique_ptr<Window> win;

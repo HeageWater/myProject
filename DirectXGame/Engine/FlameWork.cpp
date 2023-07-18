@@ -44,25 +44,25 @@ void FlameWork::Finalize()
 
 void FlameWork::Run()
 {
-	//初期化
-	Initilize();
+	////初期化
+	//Initilize();
 
-	//ゲームループ
-	while (true)
-	{
-		//更新
-		Update();
+	////ゲームループ
+	//while (true)
+	//{
+	//	//更新
+	//	Update();
 
-		//描画
-		Draw();
+	//	//描画
+	//	Draw();
 
-		//もしエンドフラグがTrueなら抜ける
-		if (IsEndRequst() == true)
-		{
-			break;
-		}
-	}
+	//	//もしエンドフラグがTrueなら抜ける
+	//	if (IsEndRequst() == true)
+	//	{
+	//		break;
+	//	}
+	//}
 
-	//終了処理
-	Finalize();
+	////終了処理
+	//Finalize();
 }

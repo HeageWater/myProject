@@ -2,7 +2,8 @@
 
 void GameScene::Update()
 {
-	//FlameWork::Update();
+	FlameWork::Update();
+
 	win->MsgUpdate();
 	if (win->EndLoop())
 	{
@@ -95,7 +96,7 @@ void GameScene::Update()
 
 void GameScene::Initilize()
 {
-	//FlameWork::Initilize();
+	FlameWork::Initilize();
 
 	//windowApi
 	win = std::make_unique<Window>();
@@ -182,6 +183,7 @@ void GameScene::Initilize()
 	//ゴール初期化
 	goal->Initialize(dx.get(), shader, pipeline.get());
 
+	//シーンフラグ
 	scene = false;
 
 	//画像読み込み
@@ -234,7 +236,7 @@ void GameScene::Finalize()
 {
 	imgui->Finalize();
 
-	//FlameWork::Finalize();
+	FlameWork::Finalize();
 }
 
 void GameScene::Run()
