@@ -193,7 +193,7 @@
     <ClCompile Include="DirectXGame\Application\Scene.cpp" />
     <ClCompile Include="DirectXGame\Application\Sound.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
-    <ClCompile Include="Skydome.cpp" />
+    <ClCompile Include="DirectXGame\Application\Skydome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -264,7 +264,7 @@
     <ClInclude Include="DirectXGame\Application\Scene.h" />
     <ClInclude Include="DirectXGame\Application\Sound.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
-    <ClInclude Include="Skydome.h" />
+    <ClInclude Include="DirectXGame\Application\Skydome.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />
