@@ -2,6 +2,7 @@
 
 GameScene::GameScene()
 {
+	sound_ = nullptr;
 }
 
 GameScene::~GameScene()
