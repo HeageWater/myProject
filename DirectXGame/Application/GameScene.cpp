@@ -3,6 +3,11 @@
 void GameScene::Update()
 {
 	//FlameWork::Update();
+	win->MsgUpdate();
+	if (win->EndLoop())
+	{
+		SetEndRwqust(true);
+	}
 
 	//Update
 	input->Update();
