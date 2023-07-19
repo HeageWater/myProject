@@ -1,16 +1,16 @@
 #pragma once
-#include "GPipeline.h"
-#include "Object3D.h"
-#include "ConstBuff.h"
-#include "TextureData.h"
-#include "Shader.h"
-#include "MyDebugCamera.h"
-#include "Square.h"
-#include "Controller.h"
-#include <memory>
-#include "Model.h"
+//#include "GPipeline.h"
+//#include "Object3D.h"
+//#include "ConstBuff.h"
+//#include "TextureData.h"
+//#include "Shader.h"
+//#include "MyDebugCamera.h"
+//#include "Square.h"
+//#include "Controller.h"
+//#include <memory>
+//#include "Model.h"
+//#include "Sound.h"
 #include "PlayerAttack.h"
-#include "Sound.h"
 
 class Player {
 
@@ -20,10 +20,10 @@ public:
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Draw(size_t tex, size_t tex2);
 	Vector2D MoveCamera(Matrix matView, Matrix matProjection, Input* input);
-	void Update(Matrix matView, Matrix matProjection);
+	void Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Reset();
 	void Jump();
-	void Attack();
+	void Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 
 	//çUåÇê∂ê¨óp
 	void PopPlayerAttack();
@@ -40,6 +40,8 @@ public:
 	Vector3D GetAttackRot() { return playerAttack_.mat.rotAngle; };
 	Vector3D GetAttackScale() { return playerAttack_.mat.scale; };
 	Model GetAttackModel() { return playerAttack_; };
+
+	bool CollisionAttackToEnemy(Model enemy);
 private:
 	MyXAudio* sound_ = nullptr;
 	size_t volcano = 0;
@@ -47,7 +49,10 @@ private:
 	Model player_;
 	Model playerAttack_;
 
+	std::vector<PlayerAttack*> attack;
+
 	bool attackF = false;
+	bool createAttackFlag = false;
 
 	float jumpPower = 0;
 	float gravirtPower = 0;

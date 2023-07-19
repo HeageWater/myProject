@@ -16,7 +16,10 @@ Player::Player()
 
 Player::~Player()
 {
-
+	for (size_t i = 0; i < attack.size(); i++)
+	{
+		delete attack[i];
+	}
 }
 
 void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
@@ -37,6 +40,7 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 	controller = Controller::GetInstance();
 	attackF = false;
+	createAttackFlag = false;
 
 	sound_ = MyXAudio::Get();
 	volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
@@ -49,6 +53,11 @@ void Player::Draw(size_t tex, size_t tex2)
 	if (attackF)
 	{
 		playerAttack_.Draw(tex2);
+	}
+
+	for (size_t i = 0; i < attack.size(); i++)
+	{
+		attack[i]->Draw();
 	}
 }
 
@@ -68,7 +77,7 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 	return Vector2D(move.x, move.z);
 }
 
-void Player::Update(Matrix matView, Matrix matProjection)
+void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
 	//コントローラーUpdate
 	controller->Update();
@@ -86,7 +95,7 @@ void Player::Update(Matrix matView, Matrix matProjection)
 	player_.mat.trans += colVec;
 
 	//攻撃
-	Attack();
+	Attack(dx_, shader, pipeline_);
 
 	//playerでの音テスト
 	/*if (controller->ButtonTriggerPush(RT))
@@ -97,6 +106,16 @@ void Player::Update(Matrix matView, Matrix matProjection)
 	player_.mat.trans.y = max(player_.mat.trans.y, 11);
 	player_.mat.trans.x = min(player_.mat.trans.x, 1050);
 	player_.mat.trans.x = max(player_.mat.trans.x, 0);
+
+	for (size_t i = 0; i < attack.size(); i++)
+	{
+		attack[i]->Update(matView, matProjection);
+
+		if (attack[i]->GetIsDead())
+		{
+			attack.erase(attack.begin() + i);
+		}
+	}
 
 	//座標Update
 	player_.MatUpdate(matView, matProjection);
@@ -140,7 +159,7 @@ void Player::Jump()
 	player_.mat.trans.y -= gravirtPower;
 }
 
-void Player::Attack()
+void Player::Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
 	//playreの座標
 	playerAttack_.mat.trans = player_.mat.trans;
@@ -174,9 +193,55 @@ void Player::Attack()
 
 		//描画する
 		attackF = true;
+
+		//attackModel生成
+		if (createAttackFlag)
+		{
+			PlayerAttack* newAttack = new PlayerAttack(dx_, shader, pipeline_);
+
+			Vector3D pos = player_.mat.trans;
+			newAttack->SetPos(pos);
+
+			Vector2D vec = controller->GetRightStickVec();
+			vec *= -1;
+			newAttack->SetVec(vec);
+
+			newAttack->SetUpdate();
+
+			attack.push_back(newAttack);
+
+			createAttackFlag = false;
+		}
+	}
+	else if (!createAttackFlag)
+	{
+		//attackModel生成
+		createAttackFlag = true;
 	}
 }
 
 void Player::PopPlayerAttack()
 {
+}
+
+bool Player::CollisionAttackToEnemy(Model enemy)
+{
+	for (size_t i = 0; i < attack.size(); i++)
+	{
+		Vector3D nowPos = attack[i]->GetPos();
+		Vector3D nowScale = attack[i]->GetScale();
+
+		float a = (enemy.mat.trans.x - nowPos.x) * (enemy.mat.trans.x - nowPos.x);
+		float b = (enemy.mat.trans.y - nowPos.y) * (enemy.mat.trans.y - nowPos.y);
+
+		float c = enemy.mat.scale.x * nowScale.x;
+
+		//あたり判定
+		if (a + b < c)
+		{
+			attack.erase(attack.begin() + i);
+			return true;
+		}
+	}
+	return false;
 }

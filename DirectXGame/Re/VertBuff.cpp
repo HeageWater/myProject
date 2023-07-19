@@ -2,6 +2,9 @@
 #include <wrl.h>
 #include <vector>
 
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
+
 VertBuff::VertBuff()
 {
 }

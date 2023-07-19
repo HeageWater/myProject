@@ -198,6 +198,7 @@
     <ClCompile Include="DirectXGame\Engine\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Shake.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +275,7 @@
     <ClInclude Include="DirectXGame\Engine\Sprite.h" />
     <ClInclude Include="DirectXGame\Engine\SpriteManager.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Shake.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>

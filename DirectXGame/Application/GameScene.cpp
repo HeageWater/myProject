@@ -23,13 +23,18 @@ void GameScene::Update()
 	ImGui::InputFloat("matView.eye.y", &matView.eye.y, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("matView.eye.z", &matView.eye.z, 0.0f, 10.0f, "%f");
 
+	for (size_t i = 0; i < size; i++)
+	{
+		ImGui::InputFloat("dev", &dev[i], 0.0f, 10.0f, "%f");
+	}
+
 	//ImGuiここまで
 	imgui->End();
 
 	if (scene == false)
 	{
 		//player更新
-		player->Update(matView.mat, matProjection);
+		player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
 
 		//enemy更新
 		enemy->Update(matView.mat, matProjection);
@@ -51,18 +56,33 @@ void GameScene::Update()
 		stage->Update(matView.mat, matProjection, input.get());
 		goal->Update(matView.mat, matProjection);
 
+		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
+
+		if (hit)
+			enemy;
+
 		//debugcamera.Update(*input);
+
+		for (size_t i = size - 1; i < -1; i--)
+		{
+			if (i == 0)
+			{
+				dev[i] = player->GetController().x;
+				break;
+			}
+			dev[i] = dev[i - 1];
+		}
 
 		//スクリーン更新
 		screen.MatUpdate(matView.mat, matProjection, 0);
 
-		Vector2D moveCamera = { 0,0 };
+		//Vector2D moveCamera = { 0,0 };
 
-		moveCamera = player->GetController();
+		//moveCamera = player->GetController();
 
 		//targetをplayerに
-		matView.eye.x += moveCamera.x;
-		matView.target.x = player->GetPos().x;
+		matView.eye.x += dev[size - 1]; //moveCamera.x;
+		matView.target.x = player->GetPos().x - dev[size - 1];
 
 		matView.eye.x = min(matView.eye.x, 1050);
 		matView.eye.x = max(matView.eye.x, 0);
@@ -195,6 +215,11 @@ void GameScene::Initilize()
 
 	//imgui初期化
 	imgui->Initialize(dx.get());
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		dev[i] = 0;
+	}
 }
 
 void GameScene::Draw()
