@@ -86,9 +86,6 @@ private:
 	//gpipeline
 	std::unique_ptr<GPipeline> uiPipeline;
 
-	//sprite
-	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
-
 	//tex
 	Square pressText;
 
@@ -96,6 +93,8 @@ private:
 	MyMath::MatView matView;
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
+	//sprite
+	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
 	//sound
 	MyXAudio* sound_ = nullptr;
@@ -138,4 +137,8 @@ private:
 
 	//hitstop
 	HitStop* hitStop = new HitStop();
+
+	//sprite
+	SpriteCommon* spriteCommon = new SpriteCommon();
+	Sprite* sprite = new Sprite();
 };

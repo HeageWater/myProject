@@ -535,7 +535,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	return textureNum;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
+D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(size_t handle)
 {
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
 	srvGpuHandle.ptr += incrementSize * handle;
@@ -564,11 +564,4 @@ void MyDirectX::ClearDepthBuff()
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	// 深度バッファのクリア
 	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-}
-
-D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
-{
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
-	srvGpuHandle.ptr += incrementSize * handle;
-	return srvGpuHandle;
 }

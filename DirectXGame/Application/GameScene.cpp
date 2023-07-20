@@ -21,13 +21,7 @@ void GameScene::Update()
 
 	ImGui::InputFloat("matView.eye.x", &matView.eye.x, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("matView.eye.y", &matView.eye.y, 0.0f, 10.0f, "%f");
-	ImGui::InputFloat("matView.eye.z", &matView.eye.z, 0.0f, 10.0f, "%f");
-
-	//
-	for (uint32_t i = 0; i < (uint32_t)size; i++)
-	{
-		ImGui::InputFloat("dev", &dev[i], 0.0f, 10.0f, "%f");
-	}
+	ImGui::InputFloat("constMapTransform.eye.z", &sprite->constMapTransform->mat.m[1][1], 0.0f, 10.0f, "%f");
 
 	//ImGui‚±‚±‚Ü‚Å
 	imgui->End();
@@ -129,6 +123,8 @@ void GameScene::Update()
 	pressText.MatUpdate(Matrix(),spriteProjection);
 
 	hitStop->Update();
+
+	sprite->Update();
 
 	//Escape‚Å”²‚¯‚é
 	if (input->GetTrigger(DIK_ESCAPE))
@@ -253,6 +249,11 @@ void GameScene::Initilize()
 	{
 		dev[i] = 0;
 	}
+
+	spriteCommon->Inilialize(dx.get());
+
+	//sprite->TransferSpriteVertex(Vector2D(300, 300));
+	sprite->Inilialize(spriteCommon,&matProjection);
 }
 
 void GameScene::Draw()
@@ -268,17 +269,19 @@ void GameScene::Draw()
 	dx->PrevDraw();
 
 	//ƒXƒNƒŠ[ƒ“•`‰æ
-	screen.Draw(texP);
+	screen.Draw(0);
 
-	//Actor•`‰æ
-	player->Draw(texP, white);
-	enemy->Draw(enemyPng);
-	enemy2->Draw(enemyPng);
-	enemy3->Draw(enemyPng);
-	enemy4->Draw(enemyPng);
-	stage->Draw(brPng);
-	stageWhite->Draw(white);
-	goal->Draw(white);
+	////Actor•`‰æ
+	//player->Draw(texP, white);
+	//enemy->Draw(enemyPng);
+	//enemy2->Draw(enemyPng);
+	//enemy3->Draw(enemyPng);
+	//enemy4->Draw(enemyPng);
+	//stage->Draw(brPng);
+	//stageWhite->Draw(white);
+	//goal->Draw(white);
+
+	sprite->Draw(texP);
 
 	if (scene == true)
 	{

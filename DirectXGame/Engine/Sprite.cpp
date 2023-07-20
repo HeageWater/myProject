@@ -10,14 +10,17 @@ Sprite::~Sprite()
 	//delete spriteCommon_;
 }
 
-void Sprite::Inilialize(SpriteCommon* spriteCommon)
+void Sprite::Inilialize(SpriteCommon* spriteCommon, Matrix* matProjection_)
 {
 	//spriteCommon_ = new SpriteCommon;
-	spriteCommon_ = spriteCommon;
+	this->spriteCommon_ = spriteCommon;
+	this->matProjection_ = *matProjection_;
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
+	//UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+	//UINT sizeVB = static_cast<UINT>(sizeof(pv[0]) * vertexSize);
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
-
+	//VBInitialize(dx->GetDev(), sizePV, vertexSize);
 	//頂点バッファの設定
 	//ヒープの設定
 	D3D12_HEAP_PROPERTIES heapProp{};
@@ -51,14 +54,16 @@ void Sprite::Inilialize(SpriteCommon* spriteCommon)
 
 	//gpu状のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	//Vector3* vertMap = nullptr;
+	//ScreenVertex* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 
 	//全頂点に対して
-	for (auto i = 0; i < _countof(vertices); i++)
+	//for (size_t i = 0; i < vertexSize; i++)
+	for (size_t i = 0; i < _countof(vertices); i++)
 	{
 		//座標コピー
+		//vertMap[i] = pv[i];
 		vertMap[i] = vertices[i];
 	}
 
@@ -103,12 +108,12 @@ void Sprite::Inilialize(SpriteCommon* spriteCommon)
 	assert(SUCCEEDED(result));
 
 	//値を書き込むと自動的に転送される 
-	constMapTransform->color = Vector4D(1, 1, 1, 0.5f);	//普通の色
+	constMapTransform->color = MyMath::float4(1, 1, 1, 0.5f);	//普通の色
 
-	constMapTransform->mat = XMMatrixIdentity();
+	constMapTransform->mat = Matrix();
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
-	UINT sizeIB = static_cast<UINT>(sizeof(Vector3D) * _countof(indices));
+	UINT sizeIB = static_cast<UINT>(sizeof(Vertex) * _countof(indices));
 
 	//インデックスバッファの生成
 	ID3D12Resource* indexBuff = nullptr;
@@ -122,9 +127,10 @@ void Sprite::Inilialize(SpriteCommon* spriteCommon)
 
 	//インデックスバッファをマッピング
 	uint16_t* indexMap = nullptr;
+	//ScreenVertex* indexMap = nullptr;
 	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
 	//全インデックスに対して
-	for (int i = 0; i < _countof(indices); i++)
+	for (size_t i = 0; i < _countof(indices); i++)
 	{
 		//インデックスをコピー
 		indexMap[i] = indices[i];
@@ -140,54 +146,72 @@ void Sprite::Inilialize(SpriteCommon* spriteCommon)
 
 }
 
-//void Sprite::Update(XMMATRIX& matView)
 void Sprite::Update()
 {
-	//XMMATRIX matScale, matRot, matTrans;
+	constMapTransform->mat.Identity();
 
-	////スケールなどの計算
-	//matScale = XMMatrixScaling(this->scale.x, this->scale.y, this->scale.z);
-	//matRot = XMMatrixIdentity();
-	//matRot *= XMMatrixRotationZ(this->rotation.z);
-	//matRot *= XMMatrixRotationX(this->rotation.x);
-	//matRot *= XMMatrixRotationY(this->rotation.y);
+	//Initialize
+	Matrix matScale, matRot, matTrans;
+	this->matWorld.Identity();
 
-	//matTrans = XMMatrixTranslation(this->position.x, this->position.y, this->position.z);
+	//scale
+	matScale.Identity();
+	matScale.m[0][0] = scale.x;
+	matScale.m[1][1] = scale.y;
+	matScale.m[2][2] = scale.z;
 
-	//this->matWorld = XMMatrixIdentity();
-	//this->matWorld *= matScale;
-	//this->matWorld *= matRot;
-	//this->matWorld *= matTrans;
+	//rot
+	matTrans.Identity();
+	Matrix matRotX;
+	matRotX.Identity();
+	matRotX.m[1][1] = cos(rotation.x);
+	matRotX.m[1][2] = sin(rotation.x);
+	matRotX.m[2][1] = -sin(rotation.x);
+	matRotX.m[2][2] = cos(rotation.x);
+	Matrix matRotY;
+	matRotY.m[0][0] = cos(rotation.y);
+	matRotY.m[2][0] = sin(rotation.y);
+	matRotY.m[0][2] = -sin(rotation.y);
+	matRotY.m[2][2] = cos(rotation.y);
+	Matrix matRotZ;
+	matRotZ.m[0][0] = cos(rotation.z);
+	matRotZ.m[0][1] = sin(rotation.z);
+	matRotZ.m[1][0] = -sin(rotation.z);
+	matRotZ.m[1][1] = cos(rotation.z);
 
-	//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / Window::window_width;
-	//constMapTransform->mat.r[1].m128_f32[1] = -2.0f / Window::window_height;
+	matRot = matRotZ;
+	matRot *= matRotX;
+	matRot *= matRotY;
 
-	//constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-	//constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
+	//trans
+	matTrans.Identity();
+	matTrans.m[3][0] = position.x;
+	matTrans.m[3][1] = position.y;
+	matTrans.m[3][2] = position.z;
 
-	//XMMATRIX matProjection = XMMatrixIdentity();
+	//合体
+	this->matWorld = matScale;
+	this->matWorld *= matRot;
+	this->matWorld *= matTrans;
 
 	//////射影変換行列
-	////matProjection = XMMatrixPerspectiveFovLH(
-	////	XMConvertToRadians(45.0f),
-	////	(float)spriteCommon_->dxCommon_->GetWindow()->window_width / spriteCommon_->dxCommon_->GetWindow()->window_height,
-	////	0.1f, 1000.0f);
+	matProjection_ = MyMath::OrthoLH
+	(Window::window_width,
+		Window::window_height,
+		0.0f,
+		1.0f);
 
-	////↑のまとめ
-	//matProjection = XMMatrixOrthographicOffCenterLH
-	//(0,
-	//	Window::window_width,
-	//	Window::window_height,
-	//	0,
-	//	0.0f,
-	//	1.0f);
+	//constMapTransform->color = color;
+	constMapTransform->mat = matWorld;
+	constMapTransform->mat *= matProjection_;
+	constMapTransform->mat.m[1][1] = -constMapTransform->mat.m[1][1];
+	constMapTransform->mat.m[3][0] = -1.0f;
+	constMapTransform->mat.m[3][1] = 1.0f;
 
-	//result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
-	//assert(SUCCEEDED(result));
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
+	assert(SUCCEEDED(result));
 
-	//constMapTransform->mat = this->matWorld * matProjection;
-
-	//constBuffTransform->Unmap(0, nullptr);
+	constBuffTransform->Unmap(0, nullptr);
 }
 
 void Sprite::PreDraw()
@@ -210,8 +234,7 @@ void Sprite::Draw(size_t handle)
 	//デスクリプタ
 	//spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootDescriptorTable(1,);
 
-	//画像を1に入れたものに
-	//spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootDescriptorTable(1, handle);
+	//画像を引数に入れたものに
 	spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootDescriptorTable(1, spriteCommon_->dxCommon_->GetTextureHandle(handle));
 
 	//定数バッファビュー(CBV)の設定コマンド
@@ -219,104 +242,33 @@ void Sprite::Draw(size_t handle)
 
 	//描画コマンド
 	//spriteCommon_->dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
-	spriteCommon_->dxCommon_->GetCmdList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+	spriteCommon_->dxCommon_->GetCmdList()->DrawIndexedInstanced(_countof(vertices), 1, 0, 0, 0);
 }
 
-void Sprite::LoadResource()
+void Sprite::TransferSpriteVertex(Vector2D size_)
 {
-	//TexMetadata metadata{};
-	//ScratchImage scratchImg{};
-	////WICテクスチャのコード
-	//result = LoadFromWICFile(
-	//	L"Resources/reimu.png",
-	//	WIC_FLAGS_NONE,
-	//	&metadata,
-	//	scratchImg
-	//);
+	//size = size_;
 
-	//ScratchImage mipChain{};
-	////ミップマップ生成
-	//result = GenerateMipMaps(
-	//	scratchImg.GetImages(),
-	//	scratchImg.GetImageCount(),
-	//	scratchImg.GetMetadata(),
-	//	TEX_FILTER_DEFAULT,
-	//	0,
-	//	mipChain);
-	//if (SUCCEEDED(result))
-	//{
-	//	scratchImg = std::move(mipChain);
-	//	metadata = scratchImg.GetMetadata();
-	//}
+	//// 左下、左上、右下、右上
+	//enum { LB, LT, RB, RT };
 
-	////読み込んだディヒューズテクスチャをSRGBとして扱う
-	//metadata.format = MakeSRGB(metadata.format);
+	//float left = 0.0f * size.x;
+	//float right = 1.0f * size.x;
+	//float top = 0.0f * size.y;
+	//float bottom = 1.0f * size.y;
 
-	////リソース設定
-	//D3D12_RESOURCE_DESC textureResouceDesc{};
-	//textureResouceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	//textureResouceDesc.Format = metadata.format;
-	//textureResouceDesc.Width = metadata.width;
-	//textureResouceDesc.Height = (UINT)metadata.height;
-	//textureResouceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	//textureResouceDesc.MipLevels = (UINT16)metadata.mipLevels;
-	//textureResouceDesc.SampleDesc.Count = 1;
+	//pv[LB].pos = { left,	bottom,	0.0f }; // 左下
+	//pv[LT].pos = { left,	top,	0.0f }; // 左上
+	//pv[RB].pos = { right,	bottom,	0.0f }; // 右下
+	//pv[RT].pos = { right,	top,	0.0f }; // 右上
 
-	////シェーダーリソースビュー設定
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};			//設定構造体
-	//srvDesc.Format = resDesc.Format;	//RGBA float
-	//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;	//2Dテクスチャ
-	//srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
+	//float tex_left = 0.0f;
+	//float tex_right = 1.0f;
+	//float tex_top = 0.0f;
+	//float tex_bottom = 1.0f;
 
-	////テクスチャヒープ設定
-	//D3D12_HEAP_PROPERTIES textureHeapProp{};
-	//textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-	//textureHeapProp.CPUPageProperty =
-	//	D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-	//textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-
-	////テクスチャバッファの生成
-	//ID3D12Resource* texBuff = nullptr;
-	//result = spriteCommon_->dxCommon_->GetDev()->CreateCommittedResource(
-	//	&textureHeapProp,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&textureResouceDesc,
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&texBuff));
-
-	////全ミップマップについて
-	//for (size_t i = 0; i < metadata.mipLevels; i++)
-	//{
-	//	//ミップマップレベルを指定してイメージを取得
-	//	const Image* img = scratchImg.GetImage(i, 0, 0);
-	//	//テクスチャバッファにデータ転送
-	//	result = texBuff->WriteToSubresource(
-	//		(UINT)i,
-	//		nullptr,
-	//		img->pixels,
-	//		(UINT)img->rowPitch,
-	//		(UINT)img->slicePitch);
-	//	assert(SUCCEEDED(result));
-	//}
-
-	////SRVの最大個数
-	//const size_t kMaxSRVCount = 2056;
-
-	////デスクリプタヒープの設定
-	//D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	//srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	//srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダーから見えるように
-	//srvHeapDesc.NumDescriptors = kMaxSRVCount;
-
-	////設定を元にSRV用のデスクリプタヒープを生成
-	//ID3D12DescriptorHeap* srvHeap = nullptr;
-	//result = spriteCommon_->dxCommon_->GetDev()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
-
-	////SRVヒープの先頭ハンドルを取得
-	//D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
-
-	////ハンドルの指す位置にシェーダーリソースビュー作成
-	//spriteCommon_->dxCommon_->GetDev()->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
+	//pv[LB].uv = { tex_left,	tex_bottom }; // 左下
+	//pv[LT].uv = { tex_left,	tex_top }; // 左上
+	//pv[RB].uv = { tex_right,	tex_bottom }; // 右下
+	//pv[RT].uv = { tex_right,	tex_top }; // 右上
 }

@@ -90,12 +90,11 @@ public:
 	int LoadTextureGraph(const wchar_t* textureName);
 
 	//	Getter
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(size_t handle);
 	ID3D12Device* GetDev() { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 	Matrix GetViewportMat() { return viewPort.Mat(); }
 	UINT GetIncrementSize() { return incrementSize; }
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
 
 	Window GetWindow() { return *win; };
 	//バックバッファの数を取得

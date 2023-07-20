@@ -30,7 +30,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 
 	//頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"SpriteVS.hlsl",//シェーダファイル名
+		L"Resources/shader/SpriteVS.hlsl",//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルードを可能にする
 		"main", "vs_5_0",//エントリーポインタ名、シェーダモデル指定
@@ -55,7 +55,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 
 	//ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"SpritePS.hlsl",//シェーダファイル名
+		L"Resources/shader/SpritePS.hlsl",//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルードを可能にする
 		"main", "ps_5_0",//エントリーポインタ名、シェーダモデル指定
