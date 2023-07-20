@@ -78,7 +78,7 @@ private:
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
 public:
 	MyDirectX(Window* win_);
-	MyDirectX();
+	//MyDirectX();
 	//MyDirectX() = default;
 	void Initialize(Window* win_);
 	void PrevDrawScreen(FLOAT* clearColor = nullptr);
@@ -95,6 +95,7 @@ public:
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 	Matrix GetViewportMat() { return viewPort.Mat(); }
 	UINT GetIncrementSize() { return incrementSize; }
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
 
 	Window GetWindow() { return *win; };
 	//バックバッファの数を取得

@@ -28,7 +28,7 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 	player_.mat.Initialize();
 	player_.mat.scale = { 5,5,5 };
-	player_.mat.trans.x = 800;
+	player_.mat.trans.x = 0;
 	player_.mat.trans.y = 11;
 	player_.mat.trans.z = 0;
 

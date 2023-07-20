@@ -12,7 +12,7 @@ public:
 	//void Update(XMMATRIX& matView);
 	void Update();
 	void PreDraw();
-	void Draw();
+	void Draw(size_t handle);
 
 	void LoadResource();
 
@@ -71,4 +71,41 @@ public:
 
 	HRESULT result;
 
+};
+
+#include "VertBuff.h"
+#include "MyMath.h"
+#include "DirectX.h"
+#include "GPipeline.h"
+
+class Sprite :public VertBuff
+{
+private:
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	MyMath::ObjMatrix mat;
+	struct ConstBufferData {
+		Matrix mat;
+		MyMath::float4 color;
+	};
+	ComPtr<ID3D12Resource> transform;
+	ConstBufferData* constMapTransform = nullptr;
+	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	D3D12_RESOURCE_DESC cbResourceDesc{};
+
+	MyDirectX* dx = nullptr;
+	GPipeline pipeline;
+	Matrix* matProjection = nullptr;
+
+	ScreenVertex pv[4];
+	UINT vertexSize = 4;
+
+	MyMath::float4 color = MyMath::float4(1.0f, 1.0f, 1.0f, 1.0f);
+	Vector2D size;
+public:
+	void Initialize(MyDirectX* dx_, Shader shader, Matrix* matProjection_, Vector2D size_);
+	void TransferSpriteVertex();
+	void Update();
+	void Draw(int handle);
+private:
+	void SetVertices() override;
 };

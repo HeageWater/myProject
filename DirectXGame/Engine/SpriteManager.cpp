@@ -1,5 +1,4 @@
 #include "SpriteManager.h"
-//#include "Vertex.h"
 using namespace DirectX;
 
 #pragma comment(lib,"d3dcompiler.lib")

@@ -1,18 +1,10 @@
 #pragma once
 #include "DirectX.h"
+#include "VertBuff.h"
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
 #include <vector>
 #include <fstream>
-
-//
-////頂点データ構造体
-//static struct Vertex
-//{
-//	XMFLOAT3 pos;
-//	XMFLOAT3 noemal;
-//	XMFLOAT2 uv;
-//};
 
 class SpriteCommon
 {
@@ -41,7 +33,7 @@ public:
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 
-	//ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCommandList(); };
+	ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCmdList(); };
 
 	UINT verticesCount;
 };
