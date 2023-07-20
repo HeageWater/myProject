@@ -105,12 +105,6 @@ private:
 	//player
 	Player* player = new Player();
 
-	//‰¼enemy’u‚«
-	Enemy* enemy = new Enemy();
-	Enemy* enemy2 = new Enemy();
-	Enemy* enemy3 = new Enemy();
-	Enemy* enemy4 = new Enemy();
-
 	//stage
 	Stage* stage = new Stage();
 
@@ -129,9 +123,6 @@ private:
 	size_t brPng = 0;
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
-
-	const uint32_t size = 20;
-	float dev[20];
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();

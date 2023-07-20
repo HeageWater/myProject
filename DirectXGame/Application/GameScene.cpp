@@ -23,110 +23,17 @@ void GameScene::Update()
 	ImGui::InputFloat("matView.eye.y", &matView.eye.y, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("matView.eye.z", &matView.eye.z, 0.0f, 10.0f, "%f");
 
-	//
-	for (uint32_t i = 0; i < (uint32_t)size; i++)
-	{
-		ImGui::InputFloat("dev", &dev[i], 0.0f, 10.0f, "%f");
-	}
-
 	//ImGuiここまで
 	imgui->End();
 
-	if (scene == false && hitStop->GetTime() < 1)
-	{
-		//player更新
-		player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
+	//player更新
+	player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
 
-		//enemy更新
-		enemy->Update(matView.mat, matProjection);
-		bool sheikF = enemy->BoxCollision(player->GetAttackModel());
-
-		float setStopTime = 7.0f;
-
-		if (sheikF)
-		{
-			hitStop->SetTime(setStopTime);
-		}
-
-		//enemy更新
-		enemy2->Update(matView.mat, matProjection);
-		sheikF = enemy2->BoxCollision(player->GetAttackModel());
-
-		if (sheikF)
-		{
-			hitStop->SetTime(setStopTime);
-		}
-
-		//enemy更新
-		enemy3->Update(matView.mat, matProjection);
-		sheikF = enemy3->BoxCollision(player->GetAttackModel());
-
-		if (sheikF)
-		{
-			hitStop->SetTime(setStopTime);
-		}
-
-		//enemy更新
-		enemy4->Update(matView.mat, matProjection);
-		sheikF = enemy4->BoxCollision(player->GetAttackModel());
-
-		if (sheikF)
-		{
-			hitStop->SetTime(setStopTime);
-		}
-
-		//ステージ更新
-		stage->Update(matView.mat, matProjection, input.get());
-		goal->Update(matView.mat, matProjection);
-
-		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
-
-		if (hit)
-			enemy;
-
-		//debugcamera.Update(*input);
-
-		for (uint32_t i = 1; i < size; i++)
-		{
-			uint32_t reSize = i - 1;
-
-			dev[reSize] = dev[i];
-		}
-
-		uint32_t reSize = size - 1;
-
-		dev[reSize] = player->GetController().x;
-
-		if (dev[reSize] < 0.02f  && dev[reSize] > -0.02f)
-		{
-			dev[reSize] = 0;
-		}
-
-		//スクリーン更新
-		screen.MatUpdate(matView.mat, matProjection, 0);
-
-		//Vector2D moveCamera = { 0,0 };
-
-		//moveCamera = player->GetController();
-
-		//targetをplayerに
-		matView.eye.x += dev[19]; //moveCamera.x;
-		matView.target.x = player->GetPos().x - dev[0];
-
-		matView.eye.x = min(matView.eye.x, 1050);
-		matView.eye.x = max(matView.eye.x, 0);
-
-		//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
-		bool checkGoal = goal->BoxCollision(player->GetModel());
-
-		if (checkGoal)
-		{
-			scene = true;
-		}
-	}
+	//スクリーン更新
+	screen.MatUpdate(matView.mat, matProjection, 0);
 
 	//ここまで
-	pressText.MatUpdate(Matrix(),spriteProjection);
+	pressText.MatUpdate(Matrix(), spriteProjection);
 
 	hitStop->Update();
 
@@ -134,11 +41,6 @@ void GameScene::Update()
 	if (input->GetTrigger(DIK_ESCAPE))
 	{
 		SetEndRwqust(true);
-	}
-
-	if (input->GetTrigger(DIK_K))
-	{
-		enemy->enemy_.mat.trans.x -= 1;
 	}
 
 	if (input->GetTrigger(DIK_P))
@@ -209,19 +111,6 @@ void GameScene::Initilize()
 	//player
 	player->Initialize(dx.get(), shader, pipeline.get());
 
-	//仮enemy置き
-	enemy->Initialize(dx.get(), shader, pipeline.get());
-	enemy->SetTrans(Vector3D{ 100,20,0 });
-
-	enemy2->Initialize(dx.get(), shader, pipeline.get());
-	enemy2->SetTrans(Vector3D{ 300,40,0 });
-
-	enemy3->Initialize(dx.get(), shader, pipeline.get());
-	enemy3->SetTrans(Vector3D{ 600,30,0 });
-
-	enemy4->Initialize(dx.get(), shader, pipeline.get());
-	enemy4->SetTrans(Vector3D{ 800,50,0 });
-
 	//stage
 	//ステージ初期化
 	stage->Initialize(dx.get(), shader, pipeline.get());
@@ -248,11 +137,6 @@ void GameScene::Initilize()
 
 	//imgui初期化
 	imgui->Initialize(dx.get());
-
-	for (size_t i = 0; i < 10; i++)
-	{
-		dev[i] = 0;
-	}
 }
 
 void GameScene::Draw()
@@ -272,10 +156,6 @@ void GameScene::Draw()
 
 	//Actor描画
 	player->Draw(texP, white);
-	enemy->Draw(enemyPng);
-	enemy2->Draw(enemyPng);
-	enemy3->Draw(enemyPng);
-	enemy4->Draw(enemyPng);
 	stage->Draw(brPng);
 	stageWhite->Draw(white);
 	goal->Draw(white);
