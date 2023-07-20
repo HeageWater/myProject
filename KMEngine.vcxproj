@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision.cpp" />
@@ -197,9 +197,11 @@
     <ClCompile Include="DirectXGame\Application\Skydome.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Shake.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\GameCamera.cpp" />
+    <ClCompile Include="DirectXGame\Application\Shake.cpp" />
+    <ClCompile Include="DirectXGame\Application\TitleScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\HitStop.cpp" />
+    <ClCompile Include="Emitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -232,7 +234,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="DirectXGame\Application\BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\CircleParticle.h" />
     <ClInclude Include="DirectXGame\Application\Collision.h" />
@@ -274,9 +276,11 @@
     <ClInclude Include="DirectXGame\Application\Skydome.h" />
     <ClInclude Include="DirectXGame\Engine\Sprite.h" />
     <ClInclude Include="DirectXGame\Engine\SpriteManager.h" />
-    <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Shake.h" />
-    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="DirectXGame\Application\GameCamera.h" />
+    <ClInclude Include="DirectXGame\Application\Shake.h" />
+    <ClInclude Include="DirectXGame\Application\TitleScene.h" />
+    <ClInclude Include="DirectXGame\Application\HitStop.h" />
+    <ClInclude Include="Emitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />

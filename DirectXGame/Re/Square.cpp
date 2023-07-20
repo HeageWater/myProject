@@ -140,6 +140,15 @@ Square::Square()
 {
 }
 
+void Square::MatUpdate(Matrix matView, Matrix matProjection, Matrix billboard)
+{
+	obj.Update(billboard);
+
+	constMapTransform->mat = obj.matWorld;
+	constMapTransform->mat *= matView;
+	constMapTransform->mat *= matProjection;
+}
+
 void Square::MatUpdate(Matrix matView, Matrix matProjection, float a, Matrix billboard)
 {
 	obj.trans.x -= a;

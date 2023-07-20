@@ -85,6 +85,7 @@ public:
 	void PostDrawScreen();
 	void PrevDraw(FLOAT* clearColor = nullptr);
 	void PostDraw();
+	void ClearDepthBuff();
 
 	int LoadTextureGraph(const wchar_t* textureName);
 

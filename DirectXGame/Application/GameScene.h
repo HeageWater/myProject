@@ -15,8 +15,13 @@
 #include "Easing.h"
 #include "ImguiManager.h"
 #include "Shader.h"
+#include "HitStop.h"
+#include "Shake.h"
+#include "Sprite.h"
+
 #include "FlameWork.h"
 
+//flamework‚ÉˆÚ“®
 #include "Window.h"
 #include "DirectX.h"
 #include "JsonFileOpen.h"
@@ -125,9 +130,12 @@ private:
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
 
-	uint32_t size = 20;
+	const uint32_t size = 20;
 	float dev[20];
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();
+
+	//hitstop
+	HitStop* hitStop = new HitStop();
 };

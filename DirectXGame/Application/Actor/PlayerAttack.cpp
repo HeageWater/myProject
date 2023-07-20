@@ -1,4 +1,5 @@
 #include "PlayerAttack.h"
+#include "Easing.h"
 
 PlayerAttack::PlayerAttack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
@@ -22,7 +23,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 	sound_ = MyXAudio::Get();
 	volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 
-	time = 100;
+	time = 10;
 	isDead = false;
 }
 
@@ -40,26 +41,24 @@ void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 		isDead = true;
 	}
 
-	float spd = 1.5f;
+	float spd = 3.0f;
 
-	playerAttack_.mat.trans += Vector3D{ -vec.x * spd,-vec.y * spd,0 };
+	//playerAttack_.mat.trans += Vector3D{ -vec.x * spd,vec.y * spd,0 };
+	playerAttack_.mat.trans.x += controller->GetLeftStickVec().x;
+	playerAttack_.mat.trans.y += controller->GetLeftStickVec().y;
 
-	/*if (vec.x < vec.y)
-	{
-		playerAttack_.mat.scale += Vector3D{ 0,-vec.y * spd,0 };
-	}
-	else
-	{
-		playerAttack_.mat.scale += Vector3D{ -vec.x * spd,0,0 };
-	}*/
+	//playerAttack_.mat.trans.x += (float)Easing::EaseInBack((double)playerAttack_.mat.trans.x, (double)playerAttack_.mat.trans.x + 10, 10);
 
 	playerAttack_.MatUpdate(matView, matProjection);
 }
 
 void PlayerAttack::SetUpdate()
 {
-	float range = 20.0f;
+	float range = 120.0f;
 
-	playerAttack_.mat.trans.x += range * vec.x;
-	playerAttack_.mat.trans.y += range * vec.y;
+	//playerAttack_.mat.trans.x += range * vec.x;
+	//playerAttack_.mat.trans.y += range * vec.y;
+
+	playerAttack_.mat.scale.x = vec.x * range;
+	playerAttack_.mat.scale.y = vec.y * range;
 }

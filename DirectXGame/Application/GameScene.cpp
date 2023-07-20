@@ -23,7 +23,8 @@ void GameScene::Update()
 	ImGui::InputFloat("matView.eye.y", &matView.eye.y, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("matView.eye.z", &matView.eye.z, 0.0f, 10.0f, "%f");
 
-	for (size_t i = 0; i < size; i++)
+	//
+	for (uint32_t i = 0; i < (uint32_t)size; i++)
 	{
 		ImGui::InputFloat("dev", &dev[i], 0.0f, 10.0f, "%f");
 	}
@@ -31,7 +32,7 @@ void GameScene::Update()
 	//ImGuiここまで
 	imgui->End();
 
-	if (scene == false)
+	if (scene == false && hitStop->GetTime() < 1)
 	{
 		//player更新
 		player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
@@ -40,17 +41,39 @@ void GameScene::Update()
 		enemy->Update(matView.mat, matProjection);
 		bool sheikF = enemy->BoxCollision(player->GetAttackModel());
 
+		float setStopTime = 7.0f;
+
+		if (sheikF)
+		{
+			hitStop->SetTime(setStopTime);
+		}
+
 		//enemy更新
 		enemy2->Update(matView.mat, matProjection);
 		sheikF = enemy2->BoxCollision(player->GetAttackModel());
+
+		if (sheikF)
+		{
+			hitStop->SetTime(setStopTime);
+		}
 
 		//enemy更新
 		enemy3->Update(matView.mat, matProjection);
 		sheikF = enemy3->BoxCollision(player->GetAttackModel());
 
+		if (sheikF)
+		{
+			hitStop->SetTime(setStopTime);
+		}
+
 		//enemy更新
 		enemy4->Update(matView.mat, matProjection);
 		sheikF = enemy4->BoxCollision(player->GetAttackModel());
+
+		if (sheikF)
+		{
+			hitStop->SetTime(setStopTime);
+		}
 
 		//ステージ更新
 		stage->Update(matView.mat, matProjection, input.get());
@@ -63,14 +86,20 @@ void GameScene::Update()
 
 		//debugcamera.Update(*input);
 
-		for (size_t i = size - 1; i < -1; i--)
+		for (uint32_t i = 1; i < size; i++)
 		{
-			if (i == 0)
-			{
-				dev[i] = player->GetController().x;
-				break;
-			}
-			dev[i] = dev[i - 1];
+			uint32_t reSize = i - 1;
+
+			dev[reSize] = dev[i];
+		}
+
+		uint32_t reSize = size - 1;
+
+		dev[reSize] = player->GetController().x;
+
+		if (dev[reSize] < 0.02f  && dev[reSize] > -0.02f)
+		{
+			dev[reSize] = 0;
 		}
 
 		//スクリーン更新
@@ -81,8 +110,8 @@ void GameScene::Update()
 		//moveCamera = player->GetController();
 
 		//targetをplayerに
-		matView.eye.x += dev[size - 1]; //moveCamera.x;
-		matView.target.x = player->GetPos().x - dev[size - 1];
+		matView.eye.x += dev[19]; //moveCamera.x;
+		matView.target.x = player->GetPos().x - dev[0];
 
 		matView.eye.x = min(matView.eye.x, 1050);
 		matView.eye.x = max(matView.eye.x, 0);
@@ -95,7 +124,11 @@ void GameScene::Update()
 			scene = true;
 		}
 	}
+
 	//ここまで
+	pressText.MatUpdate(Matrix(),spriteProjection);
+
+	hitStop->Update();
 
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
@@ -155,12 +188,12 @@ void GameScene::Initilize()
 	//gpipeline
 	uiPipeline = std::make_unique<GPipeline>();
 	uiPipeline->Initialize(dx->GetDev(), bilShader);
-
+	//uiPipeline->SetBlend(dx->GetDev(), GPipeline::ALPHA_BLEND);
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
 	//tex
-	pressText.Initialize(dx.get(), uiPipeline.get(), bilShader);
+	pressText.Initialize(dx.get(), uiPipeline.get(), spriteShader);
 	pressText.obj.trans.y = -200;
 	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
@@ -249,7 +282,11 @@ void GameScene::Draw()
 
 	if (scene == true)
 	{
-		pressText.Draw(clearTex);
+		//dx->ClearDepthBuff();
+		if (input->GetKey(DIK_0))
+		{
+			pressText.Draw(clearTex);
+		}
 	}
 
 	imgui->Draw(dx.get());
