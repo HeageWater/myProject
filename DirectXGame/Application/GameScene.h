@@ -18,6 +18,7 @@
 #include "HitStop.h"
 #include "Shake.h"
 #include "Sprite.h"
+#include "Particle.h"
 
 #include "FlameWork.h"
 
@@ -129,8 +130,8 @@ private:
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
 
-	const uint32_t size = 20;
-	float dev[20];
+	////const uint32_t size = 20;
+	//float dev[20];
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();
@@ -141,4 +142,6 @@ private:
 	//sprite
 	SpriteCommon* spriteCommon = new SpriteCommon();
 	Sprite* sprite = new Sprite();
+
+	std::vector<Particle*> particles_;
 };

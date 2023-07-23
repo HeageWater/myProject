@@ -213,9 +213,9 @@ void MyMath::ObjMatrix::Update(Matrix billboard)
 
 size_t MyMath::GetRandom(size_t min, size_t max)
 {
-	/*std::random_device rd;
+	std::random_device rd;
 	std::default_random_engine eng(rd());
-	std::uniform_int_distribution<> distr(min, max);
-	return (size_t)distr(eng);*/
+	std::uniform_int_distribution<> distr((int32_t)min, (int32_t)max);
+	return (size_t)distr(eng);
 	return 0;
 }

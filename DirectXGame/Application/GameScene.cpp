@@ -19,9 +19,17 @@ void GameScene::Update()
 	//Imgui
 	imgui->Begin();
 
-	ImGui::InputFloat("matView.eye.x", &matView.eye.x, 0.0f, 10.0f, "%f");
-	ImGui::InputFloat("matView.eye.y", &matView.eye.y, 0.0f, 10.0f, "%f");
-	ImGui::InputFloat("constMapTransform.eye.z", &sprite->constMapTransform->mat.m[1][1], 0.0f, 10.0f, "%f");
+	float size = (float)particles_.size();
+
+	ImGui::InputFloat("constMapTransform.eye.x", &sprite->position.x, 0.0f, 10.0f, "%f");
+	ImGui::InputFloat("constMapTransform.eye.y", &sprite->position.y, 0.0f, 10.0f, "%f");
+	ImGui::InputFloat("constMapTransform.eye.z", &sprite->position.z, 0.0f, 10.0f, "%f");
+	ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
+
+	/*for (size_t i = 0; i < size; i++)
+	{
+		ImGui::InputFloat("dev", &dev[i], 0.0f, 10.0f, "%f");
+	}*/
 
 	//ImGuiここまで
 	imgui->End();
@@ -75,26 +83,37 @@ void GameScene::Update()
 
 		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
 
-		if (hit)
-			enemy;
+		//if (hit)
+			//enemy;
 
 		//debugcamera.Update(*input);
+		//パーティクル
+		for (size_t i = 0; i < particles_.size(); i++)
+		{
+			particles_[i]->Update(matView.mat, matProjection);
 
-		for (uint32_t i = 1; i < size; i++)
+			//削除
+			if (particles_[i]->IsDead() == true)
+			{
+				particles_.erase(particles_.begin() + i);
+			}
+		}
+
+	/*	for (uint32_t i = 1; i < size; i++)
 		{
 			uint32_t reSize = i - 1;
 
 			dev[reSize] = dev[i];
-		}
+		}*/
 
-		uint32_t reSize = size - 1;
+		/*uint32_t reSize = size - 1;
 
 		dev[reSize] = player->GetController().x;
 
 		if (dev[reSize] < 0.02f  && dev[reSize] > -0.02f)
 		{
 			dev[reSize] = 0;
-		}
+		}*/
 
 		//スクリーン更新
 		screen.MatUpdate(matView.mat, matProjection, 0);
@@ -104,8 +123,9 @@ void GameScene::Update()
 		//moveCamera = player->GetController();
 
 		//targetをplayerに
-		matView.eye.x += dev[19]; //moveCamera.x;
-		matView.target.x = player->GetPos().x - dev[0];
+		//matView.eye.x += dev[19]; //moveCamera.x;
+		matView.eye.x = player->GetPos().x; //moveCamera.x;
+		matView.target.x = player->GetPos().x;// -dev[0];
 
 		matView.eye.x = min(matView.eye.x, 1050);
 		matView.eye.x = max(matView.eye.x, 0);
@@ -125,6 +145,21 @@ void GameScene::Update()
 	hitStop->Update();
 
 	sprite->Update();
+
+	if (input->GetTrigger(DIK_SPACE))
+	{
+		size_t play = MyMath::GetRandom(10, 30);
+
+		for (size_t i = 0; i < play; i++)
+		{
+			Particle* newP = new Particle();
+
+			newP->Initialize(dx.get(),shader,pipeline.get(),player->GetPos());
+
+			particles_.push_back(newP);
+		}
+	}
+
 
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
@@ -245,10 +280,10 @@ void GameScene::Initilize()
 	//imgui初期化
 	imgui->Initialize(dx.get());
 
-	for (size_t i = 0; i < 10; i++)
+	/*for (size_t i = 0; i < 10; i++)
 	{
 		dev[i] = 0;
-	}
+	}*/
 
 	spriteCommon->Inilialize(dx.get());
 
@@ -269,19 +304,25 @@ void GameScene::Draw()
 	dx->PrevDraw();
 
 	//スクリーン描画
-	screen.Draw(0);
+	screen.Draw(texP);
 
-	////Actor描画
-	//player->Draw(texP, white);
-	//enemy->Draw(enemyPng);
-	//enemy2->Draw(enemyPng);
-	//enemy3->Draw(enemyPng);
-	//enemy4->Draw(enemyPng);
-	//stage->Draw(brPng);
-	//stageWhite->Draw(white);
-	//goal->Draw(white);
+	//Actor描画
+	player->Draw(texP, white);
+	enemy->Draw(enemyPng);
+	enemy2->Draw(enemyPng);
+	enemy3->Draw(enemyPng);
+	enemy4->Draw(enemyPng);
+	stage->Draw(brPng);
+	stageWhite->Draw(white);
+	goal->Draw(white);
 
-	sprite->Draw(texP);
+	sprite->Draw(clearTex);
+
+	//パーティクル
+	for (size_t i = 0; i < particles_.size(); i++)
+	{
+		particles_[i]->Draw(white);
+	}
 
 	if (scene == true)
 	{
