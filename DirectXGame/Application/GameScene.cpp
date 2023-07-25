@@ -26,10 +26,10 @@ void GameScene::Update()
 	//ImGui::InputFloat("constMapTransform.eye.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
 
-	/*for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < particles_.size(); i++)
 	{
-		ImGui::InputFloat("dev", &dev[i], 0.0f, 10.0f, "%f");
-	}*/
+		ImGui::InputFloat("dev", &particles_[i]->particle_.mat.trans.x, 0.0f, 10.0f, "%f");
+	}
 
 	//ImGui‚±‚±‚Ü‚Å
 	imgui->End();
@@ -292,7 +292,7 @@ void GameScene::Draw()
 	screen.Draw(texP);
 
 	//Actor•`‰æ
-	player->Draw(texP, white);
+	//player->Draw(texP, white);
 	enemy->Draw(enemyPng);
 	enemy2->Draw(enemyPng);
 	enemy3->Draw(enemyPng);
@@ -308,7 +308,6 @@ void GameScene::Draw()
 	{
 		particles_[i]->Draw(white);
 	}
-	//emitter_->Draw(white);
 
 	if (scene == true)
 	{

@@ -215,6 +215,12 @@
     <FxCompile Include="Resources\shader\BasicVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shader\GeometryPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shader\GeometryVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Re\Window.h">
@@ -364,6 +370,9 @@
       <Filter>リソース ファイル</Filter>
     </None>
     <None Include="Resources\shader\SpriteHeader.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="Resources\shader\Geometry.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

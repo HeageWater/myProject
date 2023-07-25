@@ -204,6 +204,10 @@ void Sprite::Update()
 	//constMapTransform->color = color;
 	constMapTransform->mat = matWorld;
 	constMapTransform->mat *= matProjection_;
+
+	constMapTransform->mat.m[0][0] = 2.0f / Window::window_width;
+	constMapTransform->mat.m[1][1] = -2.0f / Window::window_height;
+
 	constMapTransform->mat.m[1][1] = -constMapTransform->mat.m[1][1];
 	constMapTransform->mat.m[3][0] = -1.0f;
 	constMapTransform->mat.m[3][1] = 1.0f;
@@ -242,7 +246,7 @@ void Sprite::Draw(size_t handle)
 
 	//•`‰æƒRƒ}ƒ“ƒh
 	//spriteCommon_->dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
-	spriteCommon_->dxCommon_->GetCmdList()->DrawIndexedInstanced(_countof(vertices), 1, 0, 0, 0);
+	spriteCommon_->dxCommon_->GetCmdList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
 void Sprite::TransferSpriteVertex(Vector2D size_)

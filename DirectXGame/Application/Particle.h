@@ -19,8 +19,10 @@ public:
 	bool IsDead() { return isDead; };
 	Model GetModel() { return particle_; };
 	void SetModel(Model model) { particle_ = model; };
-private:
+
 	Model particle_;
+private:
+	//Model particle_;
 
 	bool isDead = false;
 	float spd;
