@@ -201,7 +201,7 @@
     <ClCompile Include="DirectXGame\Application\Shake.cpp" />
     <ClCompile Include="DirectXGame\Application\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\Application\HitStop.cpp" />
-    <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="DirectXGame\Application\Emitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\BasicPS.hlsl">
@@ -280,7 +280,7 @@
     <ClInclude Include="DirectXGame\Application\Shake.h" />
     <ClInclude Include="DirectXGame\Application\TitleScene.h" />
     <ClInclude Include="DirectXGame\Application\HitStop.h" />
-    <ClInclude Include="Emitter.h" />
+    <ClInclude Include="DirectXGame\Application\Emitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Basic.hlsli" />

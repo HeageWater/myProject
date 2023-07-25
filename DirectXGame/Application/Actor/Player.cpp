@@ -24,6 +24,7 @@ Player::~Player()
 
 void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
+	//player_.Initialize(dx_, shader, "Resources\\Player\\Player.obj", pipeline_);
 	player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	player_.mat.Initialize();

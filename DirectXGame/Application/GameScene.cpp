@@ -21,9 +21,9 @@ void GameScene::Update()
 
 	float size = (float)particles_.size();
 
-	ImGui::InputFloat("constMapTransform.eye.x", &sprite->position.x, 0.0f, 10.0f, "%f");
-	ImGui::InputFloat("constMapTransform.eye.y", &sprite->position.y, 0.0f, 10.0f, "%f");
-	ImGui::InputFloat("constMapTransform.eye.z", &sprite->position.z, 0.0f, 10.0f, "%f");
+	//ImGui::InputFloat("constMapTransform.eye.x", &sprite->position.x, 0.0f, 10.0f, "%f");
+	//ImGui::InputFloat("constMapTransform.eye.y", &sprite->position.y, 0.0f, 10.0f, "%f");
+	//ImGui::InputFloat("constMapTransform.eye.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
 
 	/*for (size_t i = 0; i < size; i++)
@@ -83,10 +83,8 @@ void GameScene::Update()
 
 		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
 
-		//if (hit)
-			//enemy;
-
 		//debugcamera.Update(*input);
+		
 		//パーティクル
 		for (size_t i = 0; i < particles_.size(); i++)
 		{
@@ -98,22 +96,6 @@ void GameScene::Update()
 				particles_.erase(particles_.begin() + i);
 			}
 		}
-
-	/*	for (uint32_t i = 1; i < size; i++)
-		{
-			uint32_t reSize = i - 1;
-
-			dev[reSize] = dev[i];
-		}*/
-
-		/*uint32_t reSize = size - 1;
-
-		dev[reSize] = player->GetController().x;
-
-		if (dev[reSize] < 0.02f  && dev[reSize] > -0.02f)
-		{
-			dev[reSize] = 0;
-		}*/
 
 		//スクリーン更新
 		screen.MatUpdate(matView.mat, matProjection, 0);
@@ -144,22 +126,27 @@ void GameScene::Update()
 
 	hitStop->Update();
 
-	sprite->Update();
+	sprite_->Update();
 
 	if (input->GetTrigger(DIK_SPACE))
 	{
+		//emitter_->Create();
+
 		size_t play = MyMath::GetRandom(10, 30);
 
 		for (size_t i = 0; i < play; i++)
 		{
 			Particle* newP = new Particle();
 
-			newP->Initialize(dx.get(),shader,pipeline.get(),player->GetPos());
+			//newP = copyParticle_;
+
+			newP->SetModel(copyParticle_->GetModel());
+
+			newP->Initialize(player->GetPos());
 
 			particles_.push_back(newP);
 		}
 	}
-
 
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
@@ -220,6 +207,7 @@ void GameScene::Initilize()
 	uiPipeline = std::make_unique<GPipeline>();
 	uiPipeline->Initialize(dx->GetDev(), bilShader);
 	//uiPipeline->SetBlend(dx->GetDev(), GPipeline::ALPHA_BLEND);
+	
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
@@ -280,15 +268,12 @@ void GameScene::Initilize()
 	//imgui初期化
 	imgui->Initialize(dx.get());
 
-	/*for (size_t i = 0; i < 10; i++)
-	{
-		dev[i] = 0;
-	}*/
-
 	spriteCommon->Inilialize(dx.get());
 
 	//sprite->TransferSpriteVertex(Vector2D(300, 300));
-	sprite->Inilialize(spriteCommon,&matProjection);
+	sprite_->Inilialize(spriteCommon,&matProjection);
+
+	copyParticle_->Initialize(dx.get(), shader, pipeline.get());
 }
 
 void GameScene::Draw()
@@ -312,17 +297,18 @@ void GameScene::Draw()
 	enemy2->Draw(enemyPng);
 	enemy3->Draw(enemyPng);
 	enemy4->Draw(enemyPng);
-	stage->Draw(brPng);
-	stageWhite->Draw(white);
+	//stage->Draw(brPng);
+	//stageWhite->Draw(white);
 	goal->Draw(white);
 
-	sprite->Draw(clearTex);
+	sprite_->Draw(clearTex);
 
 	//パーティクル
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
 		particles_[i]->Draw(white);
 	}
+	//emitter_->Draw(white);
 
 	if (scene == true)
 	{

@@ -18,7 +18,8 @@
 #include "HitStop.h"
 #include "Shake.h"
 #include "Sprite.h"
-#include "Particle.h"
+//#include "Particle.h"
+#include "Emitter.h"
 
 #include "FlameWork.h"
 
@@ -141,7 +142,9 @@ private:
 
 	//sprite
 	SpriteCommon* spriteCommon = new SpriteCommon();
-	Sprite* sprite = new Sprite();
+	Sprite* sprite_ = new Sprite();
 
 	std::vector<Particle*> particles_;
+	Particle* copyParticle_ = new Particle;
+	//Emitter* emitter_ = new Emitter();
 };

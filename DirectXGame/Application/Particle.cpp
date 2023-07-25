@@ -23,15 +23,38 @@ Particle::~Particle()
 {
 }
 
-void Particle::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_, Vector3D pos)
+void Particle::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
 	particle_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	particle_.mat.Initialize();
 	particle_.mat.scale = { 5,5,5 };
+	 
+	//方向,タイム,早さをランダムで
+	velocity = { 0.1f,0.1f, 0 };
+
+	time = 50.0f;
+
+	spd = 0.01f;
+}
+
+void Particle::Initialize(Vector3D pos)
+{
+	particle_.mat.Initialize();
+	particle_.mat.scale = { 5,5,5 };
+
 	particle_.mat.trans.x = pos.x;
 	particle_.mat.trans.y = pos.y;
 	particle_.mat.trans.z = pos.z;
+
+	//方向,タイム,早さをランダムで
+	velocity = { 0.1f,0.1f, 0 };
+
+	time = 50.0f;
+
+	spd = 0.01f;
+
+	isDead = false;
 }
 
 void Particle::Draw(size_t tex)
