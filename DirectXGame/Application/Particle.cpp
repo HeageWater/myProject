@@ -42,6 +42,11 @@ void Particle::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	spd = 0.01f;
 }
 
+void Particle::Initialize(MyDirectX* dx_, GPipeline* pipeline_)
+{
+	particle_.Initialize(dx_,pipeline_);
+}
+
 void Particle::Initialize(Vector3D pos)
 {
 	particle_.mat.Initialize();

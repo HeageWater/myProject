@@ -111,6 +111,7 @@ private:
 	Enemy* enemy2 = new Enemy();
 	Enemy* enemy3 = new Enemy();
 	Enemy* enemy4 = new Enemy();
+	std::vector<Enemy*> enemys_;
 
 	//stage
 	Stage* stage = new Stage();

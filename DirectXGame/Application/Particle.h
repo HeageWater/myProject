@@ -14,18 +14,19 @@ public:
 	//void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Initialize(Vector3D pos);
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+	void Initialize(MyDirectX* dx_,GPipeline* pipeline_);
 	void Draw(size_t tex);
 	void Update(Matrix matView, Matrix matProjection);
 	bool IsDead() { return isDead; };
 	Model GetModel() { return particle_; };
 	void SetModel(Model model) { particle_ = model; };
 
-	Model particle_;
+	float time = 0;
 private:
-	//Model particle_;
+	Model particle_;
 
 	bool isDead = false;
 	float spd;
-	float time = 0;
+	//float time = 0;
 	Vector3D velocity = { 0,0,0 };
 };

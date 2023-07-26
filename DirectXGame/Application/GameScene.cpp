@@ -26,9 +26,16 @@ void GameScene::Update()
 	//ImGui::InputFloat("constMapTransform.eye.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
 
+	ImGui::InputFloat("spriteX", &sprite_->position.x, 0.0f, 1000.0f, "%f");
+	ImGui::InputFloat("spriteY", &sprite_->position.y, 0.0f, 1000.00f, "%f");
+
+	sprite_->position.x += input->GetKey(DIK_L) - input->GetKey(DIK_K);
+	sprite_->position.y += input->GetKey(DIK_M) - input->GetKey(DIK_N);
+
+
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
-		ImGui::InputFloat("dev", &particles_[i]->particle_.mat.trans.x, 0.0f, 10.0f, "%f");
+		ImGui::InputFloat("dev", &particles_[i]->time, 0.0f, 10.0f, "%f");
 	}
 
 	//ImGuiここまで
@@ -84,8 +91,9 @@ void GameScene::Update()
 		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
 
 		//debugcamera.Update(*input);
-		
+
 		//パーティクル
+
 		for (size_t i = 0; i < particles_.size(); i++)
 		{
 			particles_[i]->Update(matView.mat, matProjection);
@@ -122,7 +130,7 @@ void GameScene::Update()
 	}
 
 	//ここまで
-	pressText.MatUpdate(Matrix(),spriteProjection);
+	pressText.MatUpdate(Matrix(), spriteProjection);
 
 	hitStop->Update();
 
@@ -141,6 +149,8 @@ void GameScene::Update()
 			//newP = copyParticle_;
 
 			newP->SetModel(copyParticle_->GetModel());
+
+			newP->Initialize(dx.get(), pipeline.get());
 
 			newP->Initialize(player->GetPos());
 
@@ -207,7 +217,7 @@ void GameScene::Initilize()
 	uiPipeline = std::make_unique<GPipeline>();
 	uiPipeline->Initialize(dx->GetDev(), bilShader);
 	//uiPipeline->SetBlend(dx->GetDev(), GPipeline::ALPHA_BLEND);
-	
+
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
@@ -271,7 +281,7 @@ void GameScene::Initilize()
 	spriteCommon->Inilialize(dx.get());
 
 	//sprite->TransferSpriteVertex(Vector2D(300, 300));
-	sprite_->Inilialize(spriteCommon,&matProjection);
+	sprite_->Inilialize(spriteCommon, &matProjection);
 
 	copyParticle_->Initialize(dx.get(), shader, pipeline.get());
 }
@@ -300,6 +310,8 @@ void GameScene::Draw()
 	//stage->Draw(brPng);
 	//stageWhite->Draw(white);
 	goal->Draw(white);
+
+	sprite_->PreDraw();
 
 	sprite_->Draw(clearTex);
 
