@@ -103,9 +103,9 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	objectData.rotation.SetVector3(vec);
 
 	// スケーリング
-	vec.x = (float)transform["scaling"][1];
-	vec.y = (float)transform["scaling"][2];
-	vec.z = (float)transform["scaling"][0];
+	vec.x = (float)transform["scaling"][1] * 10;
+	vec.y = (float)transform["scaling"][2] * 10;
+	vec.z = (float)transform["scaling"][0] * 10;
 	objectData.scaling.SetVector3(vec);
 }
 

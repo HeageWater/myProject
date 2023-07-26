@@ -142,10 +142,15 @@ private:
 	HitStop* hitStop = new HitStop();
 
 	//sprite
-	SpriteCommon* spriteCommon = new SpriteCommon();
+	SpriteCommon* spriteCommon = SpriteCommon::Get();
 	Sprite* sprite_ = new Sprite();
 
 	std::vector<Particle*> particles_;
 	Particle* copyParticle_ = new Particle;
 	//Emitter* emitter_ = new Emitter();
+
+	LevelData* levelData_ = nullptr;
+
+	std::map<std::string, Stage*> stages_;
+	std::vector<Stage*> objects_;
 };

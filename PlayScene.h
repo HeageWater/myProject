@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 
-class TitleScene : public BaseScene
+class PlayScene : public BaseScene
 {
 public:
 	void Update() override;
@@ -10,5 +10,5 @@ public:
 	void Finalize()  override;
 
 private:
-	//~TitleScene()override;
+	//~PlayScene()override;
 };

@@ -26,7 +26,7 @@ void Stage::Draw(size_t tex)
 	stage_.Draw(tex);
 }
 
-void Stage::Update(Matrix matView, Matrix matProjection, Input* input)
+void Stage::Update(Matrix matView, Matrix matProjection)
 {
 	stage_.MatUpdate(matView, matProjection);
 }

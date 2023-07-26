@@ -9,13 +9,20 @@
 class SpriteCommon
 {
 public:
-	SpriteCommon();
-	~SpriteCommon();
+	static SpriteCommon* Get()
+	{
+		static SpriteCommon spriteCommon_;
+		return &spriteCommon_;
+	}
 	void Inilialize(MyDirectX* dxCommon);
 	void Draw();
-	MyDirectX* dxCommon_;
 
-	HRESULT result;
+	ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCmdList(); };
+	ID3D12PipelineState* GetPipleLine() const { return pipelineState; };
+	MyDirectX* GetDxCommon() const { return dxCommon_; };
+
+	//private:
+	MyDirectX* dxCommon_;
 
 	//パイプランステートの生成
 	ID3D12PipelineState* pipelineState = nullptr;
@@ -26,7 +33,12 @@ public:
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 
-	ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCmdList(); };
-
 	UINT verticesCount;
+
+private:
+	SpriteCommon();
+	~SpriteCommon();
+
+
+	HRESULT result;
 };

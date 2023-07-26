@@ -85,7 +85,7 @@ void GameScene::Update()
 		}
 
 		//ステージ更新
-		stage->Update(matView.mat, matProjection, input.get());
+		stage->Update(matView.mat, matProjection);
 		goal->Update(matView.mat, matProjection);
 
 		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
@@ -111,6 +111,15 @@ void GameScene::Update()
 		//Vector2D moveCamera = { 0,0 };
 
 		//moveCamera = player->GetController();
+
+		for (auto& object : objects_)
+		{
+			object->stage_.mat.trans.x -= (float)(input->GetKey(DIK_D) - input->GetKey(DIK_A));
+			object->stage_.mat.trans.y -= (float)(input->GetKey(DIK_S) - input->GetKey(DIK_W));
+			object->stage_.mat.trans.z -= (float)(input->GetKey(DIK_E) - input->GetKey(DIK_Q));
+
+			object->Update(matView.mat, matProjection);
+		}
 
 		//targetをplayerに
 		//matView.eye.x += dev[19]; //moveCamera.x;
@@ -260,7 +269,7 @@ void GameScene::Initilize()
 	stageWhite->Initialize(dx.get(), shader, pipeline.get());
 	stageWhite->stage_.mat.trans.y += 1;
 	stageWhite->stage_.mat.scale.z = 10;
-	stageWhite->Update(matView.mat, matProjection, input.get());
+	stageWhite->Update(matView.mat, matProjection);
 
 	//ゴール初期化
 	goal->Initialize(dx.get(), shader, pipeline.get());
@@ -284,6 +293,42 @@ void GameScene::Initilize()
 	sprite_->Inilialize(spriteCommon, &matProjection);
 
 	copyParticle_->Initialize(dx.get(), shader, pipeline.get());
+
+	//stageファイル
+	levelData_ = JsonFileOpen::FileOpen("untitled");
+
+	//レベルデータからオブジェクトに生成、配置
+	for (auto& objectdata : levelData_->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Stage* model_ = nullptr;
+		decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
+
+		//終わりか
+		if (it != stages_.end())
+		{
+			model_ = it->second;
+		}
+
+		//モデルを指定して3Dオブジェクトを生成
+		Stage* newModel_ = new Stage();
+		newModel_->Initialize(dx.get(), shader,pipeline.get());
+
+		//trans
+		newModel_->stage_.mat.trans = objectdata.translation;
+
+		//rotation
+		newModel_->stage_.mat.rotAngle = objectdata.rotation;
+
+		//scale;
+		newModel_->stage_.mat.scale = objectdata.scaling;
+
+		//Update
+		newModel_->Update(matView.mat, matProjection);
+
+		//格納
+		objects_.push_back(newModel_);
+	}
 }
 
 void GameScene::Draw()
@@ -302,7 +347,7 @@ void GameScene::Draw()
 	screen.Draw(texP);
 
 	//Actor描画
-	//player->Draw(texP, white);
+	player->Draw(texP, white);
 	enemy->Draw(enemyPng);
 	enemy2->Draw(enemyPng);
 	enemy3->Draw(enemyPng);
@@ -311,6 +356,12 @@ void GameScene::Draw()
 	//stageWhite->Draw(white);
 	goal->Draw(white);
 
+	for (auto& object : objects_) {
+		object->Draw(white);
+	}
+
+
+	//ここから画像描画(y軸は-に)
 	sprite_->PreDraw();
 
 	sprite_->Draw(clearTex);
@@ -338,6 +389,11 @@ void GameScene::Draw()
 void GameScene::Finalize()
 {
 	imgui->Finalize();
+
+	for (auto& object : objects_)
+	{
+		delete object;
+	}
 
 	FlameWork::Finalize();
 }

@@ -6,7 +6,6 @@
 #include "Shader.h"
 #include "MyDebugCamera.h"
 #include "Square.h"
-#include "Controller.h"
 #include <memory>
 #include "Model.h"
 
@@ -17,8 +16,9 @@ public:
 	~Stage();
 	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
 	void Draw(size_t tex);
-	void Update(Matrix matView, Matrix matProjection, Input* input);
+	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
 
 	Model stage_;
+private:
 };
