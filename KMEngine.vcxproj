@@ -154,6 +154,7 @@
     <ClCompile Include="DirectXGame\Application\BoxParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
+    <ClCompile Include="DirectXGame\Application\ChengeScene.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision.cpp" />
     <ClCompile Include="DirectXGame\Application\Easing.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="DirectXGame\Application\BoxParticle.h" />
     <ClInclude Include="DirectXGame\Application\BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
+    <ClInclude Include="DirectXGame\Application\ChengeScene.h" />
     <ClInclude Include="DirectXGame\Application\CircleParticle.h" />
     <ClInclude Include="DirectXGame\Application\Collision.h" />
     <ClInclude Include="DirectXGame\Application\Easing.h" />
