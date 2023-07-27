@@ -92,6 +92,9 @@ void GameScene::Update()
 
 		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
 
+
+
+
 		//debugcamera.Update(*input);
 
 		//パーティクル
@@ -146,6 +149,9 @@ void GameScene::Update()
 
 	sprite_->Update();
 
+	chengeScene->Update(matView.mat, spriteProjection);
+
+	//パーティクル試し
 	if (input->GetTrigger(DIK_SPACE))
 	{
 		//emitter_->Create();
@@ -164,17 +170,19 @@ void GameScene::Update()
 		}
 	}
 
+	//シーンチェンジ試し
+	if (input->GetTrigger(DIK_O))
+	{
+		chengeScene->SetPlayFlag();
+	}
+
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
 	{
 		SetEndRwqust(true);
 	}
 
-	if (input->GetTrigger(DIK_K))
-	{
-		enemy->enemy_.mat.trans.x -= 1;
-	}
-
+	//BGM試し
 	if (input->GetTrigger(DIK_P))
 	{
 		sound_->SoundPlayWave(bgm);
@@ -284,10 +292,10 @@ void GameScene::Initilize()
 	//imgui初期化
 	imgui->Initialize(dx.get());
 
-	spriteCommon->Inilialize(dx.get());
+	semiArphaSpriteCommon->Inilialize(dx.get(),true);
+	normalSpriteCommon->Inilialize(dx.get(),false);
 
-	//sprite->TransferSpriteVertex(Vector2D(300, 300));
-	sprite_->Inilialize(spriteCommon, &matProjection);
+	sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
 
 	//stageファイル
 	levelData_ = JsonFileOpen::FileOpen("untitled2");
@@ -324,6 +332,8 @@ void GameScene::Initilize()
 		//格納
 		objects_.push_back(newModel_);
 	}
+
+	chengeScene->Initialize(dx.get(),pipeline.get(),matProjection);
 }
 
 void GameScene::Draw()
@@ -360,6 +370,8 @@ void GameScene::Draw()
 	sprite_->PreDraw();
 
 	sprite_->Draw(clearTex);
+
+	chengeScene->Draw();
 
 	//パーティクル
 	/*for (size_t i = 0; i < particles_.size(); i++)

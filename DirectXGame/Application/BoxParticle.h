@@ -17,7 +17,9 @@ public:
 	void Update(Matrix matView, Matrix matProjection);
 	bool IsDead() { return isDead; };
 	void SetPos(Vector3D pos) { box.mat.trans = pos; };
+	void SetVec(Vector3D vec) { velocity = vec; };
 	Vector3D GetPos() { return box.mat.trans; };
+	Vector3D GetVec() { return velocity; };
 private:
 
 	//Square box;

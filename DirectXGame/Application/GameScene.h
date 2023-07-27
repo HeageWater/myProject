@@ -18,8 +18,8 @@
 #include "HitStop.h"
 #include "Shake.h"
 #include "Sprite.h"
-//#include "Particle.h"
 #include "Emitter.h"
+#include "ChengeScene.h"
 
 #include "FlameWork.h"
 
@@ -132,9 +132,6 @@ private:
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
 
-	////const uint32_t size = 20;
-	//float dev[20];
-
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();
 
@@ -142,15 +139,22 @@ private:
 	HitStop* hitStop = new HitStop();
 
 	//sprite
-	SpriteCommon* spriteCommon = SpriteCommon::Get();
+	SpriteCommon* semiArphaSpriteCommon = new SpriteCommon();
+	SpriteCommon* normalSpriteCommon = new  SpriteCommon();
 	Sprite* sprite_ = new Sprite();
 
+	//パーティクル格納用
 	std::vector<Particle*> particles_;
 	std::vector<BoxParticle*> boxParticles_;
 	//Emitter* emitter_ = new Emitter();
 
+	//ステージ読み込み
 	LevelData* levelData_ = nullptr;
 
+	//ステージ格納用
 	std::map<std::string, Stage*> stages_;
 	std::vector<Stage*> objects_;
+
+	//シーンチェンジ
+	ChengeScene* chengeScene = new ChengeScene();
 };

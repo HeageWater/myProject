@@ -2,6 +2,9 @@
 #include "MyMath.h"
 #include "Input.h"
 
+//カメラをプレイヤーの足場とその天井の幅に合わせる(上限は持たせる)
+//カメラ端からちょっとだけ手前の場所を確認して足場がなかったらちょっとカメラを引く
+
 class GameCamera
 {
 public:

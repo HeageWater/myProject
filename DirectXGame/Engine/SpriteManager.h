@@ -9,12 +9,16 @@
 class SpriteCommon
 {
 public:
-	static SpriteCommon* Get()
+	/*static SpriteCommon* Get()
 	{
 		static SpriteCommon spriteCommon_;
 		return &spriteCommon_;
-	}
-	void Inilialize(MyDirectX* dxCommon);
+	}*/
+
+	SpriteCommon();
+	~SpriteCommon();
+
+	void Inilialize(MyDirectX* dxCommon, bool isSemiArpha);
 	void Draw();
 
 	ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCmdList(); };
@@ -36,8 +40,8 @@ public:
 	UINT verticesCount;
 
 private:
-	SpriteCommon();
-	~SpriteCommon();
+	/*SpriteCommon();
+	~SpriteCommon();*/
 
 
 	HRESULT result;

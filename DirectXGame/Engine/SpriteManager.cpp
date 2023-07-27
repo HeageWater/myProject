@@ -13,7 +13,7 @@ SpriteCommon::~SpriteCommon()
 	//delete dxCommon_;
 }
 
-void SpriteCommon::Inilialize(MyDirectX* dxCommon)
+void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 {
 	assert(dxCommon);
 
@@ -146,9 +146,12 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
-	//ブレンドを無効
-	//blenddesc.BlendEnable = false;
-
+	if (!isSemiArpha)
+	{
+		//ブレンドを無効
+		blenddesc.BlendEnable = false;
+	}
+	else
 	{
 		//ブレンドを有効
 		blenddesc.BlendEnable = true;
@@ -240,7 +243,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
-	
+
 	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
 	samplerDesc.MinLOD = 0.0f;
