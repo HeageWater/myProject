@@ -195,8 +195,11 @@
     <ClCompile Include="DirectXGame\Application\Emitter.cpp">
       <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
+    <ClCompile Include="DirectXGame\Application\PlayScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\BoxParticle.cpp">
+      <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,8 +370,11 @@
     <ClInclude Include="DirectXGame\Application\Emitter.h">
       <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="PlayScene.h">
+    <ClInclude Include="DirectXGame\Application\PlayScene.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\BoxParticle.h">
+      <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

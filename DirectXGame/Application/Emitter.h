@@ -1,5 +1,6 @@
 #pragma once
 #include "Particle.h"
+#include "BoxParticle.h"
 //field の中にパーティクルが入ったらの処理をエミッターに書く
 //パーティクルになるべくif文などを書かない
 

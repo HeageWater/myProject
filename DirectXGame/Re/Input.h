@@ -26,6 +26,7 @@ private:
 	IDirectInputDevice8* mouse = nullptr;
 	POINT cursor;
 public:
+
 	Input(Window* win_);
 	~Input();
 	void Initialize(Window* win_);

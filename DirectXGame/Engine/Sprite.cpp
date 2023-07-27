@@ -202,15 +202,14 @@ void Sprite::Update()
 		1.0f);
 
 	//constMapTransform->color = color;
-	constMapTransform->mat = matWorld;
-	constMapTransform->mat *= matProjection_;
 
 	constMapTransform->mat.m[0][0] = 2.0f / Window::window_width;
 	constMapTransform->mat.m[1][1] = -2.0f / Window::window_height;
 
+	constMapTransform->mat *= matWorld;
+	constMapTransform->mat *= matProjection_;
+
 	constMapTransform->mat.m[1][1] = -constMapTransform->mat.m[1][1];
-	constMapTransform->mat.m[3][0] = -1.0f;
-	constMapTransform->mat.m[3][1] = 1.0f;
 
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	assert(SUCCEEDED(result));

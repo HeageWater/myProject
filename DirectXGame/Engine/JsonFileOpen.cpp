@@ -47,7 +47,7 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 	//levelData = CheckObjects(deserialised, levelData);
 
 	//objectsの全オブジェクトを走査
-	for (nlohmann::json& object : deserialised["objects"])
+	for (nlohmann::json& object : deserialised["object"])
 	{
 		//チェック
 		assert(object.contains("type"));
@@ -90,22 +90,24 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	//格納用
 	Vector3D vec;
 
+	float size = 10.0f;
+
 	// 平行移動
-	vec.x = (float)transform["translation"][1];
-	vec.y = (float)transform["translation"][2];
-	vec.z = -(float)transform["translation"][0];
+	vec.x = -(float)transform["translation"][1] * size;
+	vec.y = (float)transform["translation"][2] * size;
+	vec.z = (float)transform["translation"][0] * size;
 	objectData.translation.SetVector3(vec);
 
 	// 回転角
 	vec.x = -(float)transform["rotation"][1];
 	vec.y = -(float)transform["rotation"][2];
-	vec.z = (float)transform["rotation"][0];
+	vec.z = -(float)transform["rotation"][0];
 	objectData.rotation.SetVector3(vec);
 
 	// スケーリング
-	vec.x = (float)transform["scaling"][1] * 10;
-	vec.y = (float)transform["scaling"][2] * 10;
-	vec.z = (float)transform["scaling"][0] * 10;
+	vec.x = (float)transform["scaling"][1] * size;
+	vec.y = (float)transform["scaling"][2] * size;
+	vec.z = (float)transform["scaling"][0] * size;
 	objectData.scaling.SetVector3(vec);
 }
 

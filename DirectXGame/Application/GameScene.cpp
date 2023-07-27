@@ -19,24 +19,26 @@ void GameScene::Update()
 	//Imgui
 	imgui->Begin();
 
-	float size = (float)particles_.size();
+	float size = (float)boxParticles_.size();
 
-	//ImGui::InputFloat("constMapTransform.eye.x", &sprite->position.x, 0.0f, 10.0f, "%f");
-	//ImGui::InputFloat("constMapTransform.eye.y", &sprite->position.y, 0.0f, 10.0f, "%f");
-	//ImGui::InputFloat("constMapTransform.eye.z", &sprite->position.z, 0.0f, 10.0f, "%f");
 	ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
 
-	ImGui::InputFloat("spriteX", &sprite_->position.x, 0.0f, 1000.0f, "%f");
-	ImGui::InputFloat("spriteY", &sprite_->position.y, 0.0f, 1000.00f, "%f");
+	ImGui::InputFloat("spriteX", &sprite_->scale.x, 0.0f, 1000.0f, "%f");
+	ImGui::InputFloat("spriteY", &sprite_->scale.y, 0.0f, 1000.00f, "%f");
 
-	sprite_->position.x += input->GetKey(DIK_L) - input->GetKey(DIK_K);
-	sprite_->position.y += input->GetKey(DIK_M) - input->GetKey(DIK_N);
+	for (auto& object : objects_) {
+		ImGui::InputFloat("stageX", &object->stage_.mat.trans.x, 0.0f, 1000.0f, "%f"); 
+		ImGui::InputFloat("stagey", &object->stage_.mat.trans.y, 0.0f, 1000.0f, "%f"); 
+	}
+
+	sprite_->scale.x += input->GetKey(DIK_L) - input->GetKey(DIK_K);
+	sprite_->scale.y += input->GetKey(DIK_M) - input->GetKey(DIK_N);
 
 
-	for (size_t i = 0; i < particles_.size(); i++)
+	/*for (size_t i = 0; i < particles_.size(); i++)
 	{
 		ImGui::InputFloat("dev", &particles_[i]->time, 0.0f, 10.0f, "%f");
-	}
+	}*/
 
 	//ImGuiここまで
 	imgui->End();
@@ -93,15 +95,14 @@ void GameScene::Update()
 		//debugcamera.Update(*input);
 
 		//パーティクル
-
-		for (size_t i = 0; i < particles_.size(); i++)
+		for (size_t i = 0; i < boxParticles_.size(); i++)
 		{
-			particles_[i]->Update(matView.mat, matProjection);
+			boxParticles_[i]->Update(matView.mat, matProjection);
 
 			//削除
-			if (particles_[i]->IsDead() == true)
+			if (boxParticles_[i]->IsDead() == true)
 			{
-				particles_.erase(particles_.begin() + i);
+				boxParticles_.erase(boxParticles_.begin() + i);
 			}
 		}
 
@@ -153,17 +154,13 @@ void GameScene::Update()
 
 		for (size_t i = 0; i < play; i++)
 		{
-			Particle* newP = new Particle();
+			BoxParticle* newP = new BoxParticle();
 
-			//newP = copyParticle_;
+			newP->Initialize(dx.get(),shader, pipeline.get());
 
-			newP->SetModel(copyParticle_->GetModel());
+			newP->SetPos(player->GetPos());
 
-			newP->Initialize(dx.get(), pipeline.get());
-
-			newP->Initialize(player->GetPos());
-
-			particles_.push_back(newP);
+			boxParticles_.push_back(newP);
 		}
 	}
 
@@ -292,10 +289,8 @@ void GameScene::Initilize()
 	//sprite->TransferSpriteVertex(Vector2D(300, 300));
 	sprite_->Inilialize(spriteCommon, &matProjection);
 
-	copyParticle_->Initialize(dx.get(), shader, pipeline.get());
-
 	//stageファイル
-	levelData_ = JsonFileOpen::FileOpen("untitled");
+	levelData_ = JsonFileOpen::FileOpen("untitled2");
 
 	//レベルデータからオブジェクトに生成、配置
 	for (auto& objectdata : levelData_->objects)
@@ -367,9 +362,15 @@ void GameScene::Draw()
 	sprite_->Draw(clearTex);
 
 	//パーティクル
-	for (size_t i = 0; i < particles_.size(); i++)
+	/*for (size_t i = 0; i < particles_.size(); i++)
 	{
 		particles_[i]->Draw(white);
+	}*/
+
+	//ボックスパーティクル
+	for (size_t i = 0; i < boxParticles_.size(); i++)
+	{
+		boxParticles_[i]->Draw(white);
 	}
 
 	if (scene == true)

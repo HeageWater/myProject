@@ -146,7 +146,7 @@ private:
 	Sprite* sprite_ = new Sprite();
 
 	std::vector<Particle*> particles_;
-	Particle* copyParticle_ = new Particle;
+	std::vector<BoxParticle*> boxParticles_;
 	//Emitter* emitter_ = new Emitter();
 
 	LevelData* levelData_ = nullptr;

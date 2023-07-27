@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Application\BoxParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
@@ -202,7 +203,7 @@
     <ClCompile Include="DirectXGame\Application\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\Application\HitStop.cpp" />
     <ClCompile Include="DirectXGame\Application\Emitter.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\PlayScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -247,6 +248,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Application\BoxParticle.h" />
     <ClInclude Include="DirectXGame\Application\BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\CircleParticle.h" />
@@ -294,7 +296,7 @@
     <ClInclude Include="DirectXGame\Application\TitleScene.h" />
     <ClInclude Include="DirectXGame\Application\HitStop.h" />
     <ClInclude Include="DirectXGame\Application\Emitter.h" />
-    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="DirectXGame\Application\PlayScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Geometry.hlsli" />
