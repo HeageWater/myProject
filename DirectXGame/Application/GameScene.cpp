@@ -26,13 +26,13 @@ void GameScene::Update()
 	ImGui::InputFloat("spriteX", &sprite_->scale.x, 0.0f, 1000.0f, "%f");
 	ImGui::InputFloat("spriteY", &sprite_->scale.y, 0.0f, 1000.00f, "%f");
 
-	for (auto& object : objects_) {
-		ImGui::InputFloat("stageX", &object->stage_.mat.trans.x, 0.0f, 1000.0f, "%f"); 
-		ImGui::InputFloat("stagey", &object->stage_.mat.trans.y, 0.0f, 1000.0f, "%f"); 
-	}
+	//for (auto& object : objects_) {
+	ImGui::InputFloat("stageX", &objects_[5]->stage_.mat.rotAngle.x, 0.0f, 1000.0f, "%f");
+	ImGui::InputFloat("stagey", &objects_[5]->stage_.mat.rotAngle.y, 0.0f, 1000.0f, "%f");
+	//}
 
-	sprite_->scale.x += input->GetKey(DIK_L) - input->GetKey(DIK_K);
-	sprite_->scale.y += input->GetKey(DIK_M) - input->GetKey(DIK_N);
+	objects_[5]->stage_.mat.rotAngle.z += (input->GetKey(DIK_L) - input->GetKey(DIK_K)) * 0.1f;
+	objects_[5]->stage_.mat.rotAngle.y += input->GetKey(DIK_M) - input->GetKey(DIK_N);
 
 
 	/*for (size_t i = 0; i < particles_.size(); i++)
@@ -156,7 +156,7 @@ void GameScene::Update()
 		{
 			BoxParticle* newP = new BoxParticle();
 
-			newP->Initialize(dx.get(),shader, pipeline.get());
+			newP->Initialize(dx.get(), shader, pipeline.get());
 
 			newP->SetPos(player->GetPos());
 
@@ -307,7 +307,7 @@ void GameScene::Initilize()
 
 		//モデルを指定して3Dオブジェクトを生成
 		Stage* newModel_ = new Stage();
-		newModel_->Initialize(dx.get(), shader,pipeline.get());
+		newModel_->Initialize(dx.get(), shader, pipeline.get());
 
 		//trans
 		newModel_->stage_.mat.trans = objectdata.translation;

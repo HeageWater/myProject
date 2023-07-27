@@ -147,17 +147,17 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
 	//ブレンドを無効
-	blenddesc.BlendEnable = false;
+	//blenddesc.BlendEnable = false;
 
 	{
-		////ブレンドを有効
-		//blenddesc.BlendEnable = true;
-		////加算
-		//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		////ソースの値を10%使う
-		//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-		////デストの値を0%使う
-		//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+		//ブレンドを有効
+		blenddesc.BlendEnable = true;
+		//加算
+		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		//ソースの値を10%使う
+		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+		//デストの値を0%使う
+		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
 		//加算合成
 		////加算
@@ -181,21 +181,21 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 		////使わない
 		//blenddesc.DestBlend = D3D12_BLEND_ZERO;
 
-		////半透明合成
-		//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-		////ソースのα値
-		//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		////1.0f-ソースのα値
-		//blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+		//半透明合成
+		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+		//ソースのα値
+		blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		//1.0f-ソースのα値
+		blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 	}
 
+
+	//図形の形状設定
+	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	//頂点レイアウトの設定
 	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
 	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
-	//図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	//その他の設定
 	//描画対象は一つ
@@ -240,6 +240,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon)
 	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+	
 	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
 	samplerDesc.MinLOD = 0.0f;
