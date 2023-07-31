@@ -16,7 +16,7 @@ void Enemy::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	enemy_.Initialize(dx_, shader, "Resources\\ene\\ene.obj", pipeline_);
 
 	enemy_.mat.Initialize();
-	enemy_.mat.scale = { 5,5,3 };
+	enemy_.mat.scale = { 1,1,1 };
 	isDead = false;
 	deadVec = false;
 	Vec = { 0,0,0 };

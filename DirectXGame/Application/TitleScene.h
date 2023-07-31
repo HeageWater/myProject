@@ -1,14 +1,15 @@
 #pragma once
 #include "BaseScene.h"
 
-class TitleScene : public BaseScene
+class TitleScene
 {
 public:
-	void Update() override;
-	void Initilize()override;
-	void Draw()	   override;
-	void Finalize()  override;
+	void Update();
+	void Initilize();
+	void Draw();
+	void Finalize();
 
 private:
-	//~TitleScene()override;
+	TitleScene();
+	~TitleScene();
 };

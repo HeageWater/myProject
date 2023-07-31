@@ -15,3 +15,12 @@ void TitleScene::Draw()
 void TitleScene::Finalize()
 {
 }
+
+TitleScene::TitleScene()
+{
+}
+
+TitleScene::~TitleScene()
+{
+}
+

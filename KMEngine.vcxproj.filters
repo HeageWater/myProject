@@ -93,9 +93,6 @@
     <ClCompile Include="DirectXGame\Re\Square.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Re\TextureData.cpp">
-      <Filter>ソース ファイル\Re</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Re\Vector2D.cpp">
       <Filter>ソース ファイル\Re</Filter>
     </ClCompile>
@@ -248,9 +245,6 @@
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Re\Vector2D.h">
-      <Filter>ヘッダー ファイル\Re</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Re\TextureData.h">
       <Filter>ヘッダー ファイル\Re</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Re\Square.h">

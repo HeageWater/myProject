@@ -1,11 +1,15 @@
 #pragma once
-#include "Controller.h"
-#include "Model.h"
+#include "Sprite.h"
 #include "Input.h"
 #include "Object3D.h"
-#include "TextureData.h"
+#include "MyDebugCamera.h"
 #include "Square.h"
-#include "Sprite.h"
+#include "Controller.h"
+#include "Model.h"
+#include "Sound.h"
+#include "Easing.h"
+#include "ImguiManager.h"
+#include "Shader.h"
 
 class BaseScene
 {

@@ -2,7 +2,6 @@
 #include "GPipeline.h"
 #include "Object3D.h"
 #include "ConstBuff.h"
-#include "TextureData.h"
 #include "Shader.h"
 #include "MyDebugCamera.h"
 #include "Square.h"

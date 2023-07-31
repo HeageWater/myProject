@@ -14,6 +14,8 @@ public:
 
 	void SetPlayFlag();
 	bool GetPlayFlag() { return isPlayFlag; };
+
+	float GetTime() { return time; };
 private:
 
 	//これをONにするとシーンチェンジが開始する

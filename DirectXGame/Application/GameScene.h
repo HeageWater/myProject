@@ -1,25 +1,36 @@
 #pragma once
-#include "Input.h"
-#include "Object3D.h"
-#include "TextureData.h"
-#include "MyDebugCamera.h"
-#include "Square.h"
-#include "Controller.h"
-#include "Model.h"
-#include "Player.h"
-#include "Stage.h"
-#include "Enemy.h"
-#include "Sound.h"
-#include "Goal.h"
-#include "Collision.h"
-#include "Easing.h"
-#include "ImguiManager.h"
-#include "Shader.h"
-#include "HitStop.h"
-#include "Shake.h"
-#include "Sprite.h"
-#include "Emitter.h"
-#include "ChengeScene.h"
+
+//scene‹¤’Ê
+//#include "Sprite.h"
+//#include "Input.h"
+//#include "Object3D.h"
+//#include "TextureData.h"
+//#include "MyDebugCamera.h"
+//#include "Square.h"
+//#include "Controller.h"
+//#include "Model.h"
+//#include "Sound.h"
+//#include "Easing.h"
+//#include "ImguiManager.h"
+//#include "Shader.h"
+
+//titlescene‚ÉˆÚ“®
+
+
+//playscene‚ÉˆÚ“®
+//#include "Player.h"
+//#include "Stage.h"
+//#include "Enemy.h"
+//#include "Goal.h"
+//#include "Collision.h"
+//#include "HitStop.h"
+//#include "Shake.h"
+//#include "Emitter.h"
+//#include "ChengeScene.h"
+
+
+#include "TitleScene.h"
+#include "PlayScene.h"
 
 #include "FlameWork.h"
 
@@ -38,6 +49,16 @@
 #include <imgui.h>
 #include <wrl.h>
 
+enum Scene
+{
+	Title = 0,
+	Select = 1,
+	Play = 2,
+	Pause = 3,
+	Movie = 4,
+	GameClear = 5,
+	GameOver = 6,
+};
 
 class GameScene :public FlameWork
 {
@@ -123,7 +144,7 @@ private:
 	Goal* goal = new Goal();
 
 	//sceneFlag
-	bool scene = false;
+	size_t scene = 0;
 
 	//tex
 	size_t white = 0;
@@ -131,6 +152,7 @@ private:
 	size_t brPng = 0;
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
+	size_t playerTex = 0;
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();

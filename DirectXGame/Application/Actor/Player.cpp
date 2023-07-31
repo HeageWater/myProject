@@ -12,6 +12,8 @@ Player::Player()
 
 	sound_ = nullptr;
 	volcano = 0;
+
+	Life = 3;
 }
 
 Player::~Player()
@@ -24,8 +26,8 @@ Player::~Player()
 
 void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	//player_.Initialize(dx_, shader, "Resources\\Player\\Player.obj", pipeline_);
-	player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
+	player_.Initialize(dx_, shader, "Resources\\Player\\Player.obj", pipeline_);
+	//player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	player_.mat.Initialize();
 	player_.mat.scale = { 5,5,5 };

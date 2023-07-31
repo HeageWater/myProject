@@ -183,7 +183,6 @@
     <ClCompile Include="DirectXGame\Re\ScissorRect.cpp" />
     <ClCompile Include="DirectXGame\Re\Shader.cpp" />
     <ClCompile Include="DirectXGame\Re\Square.cpp" />
-    <ClCompile Include="DirectXGame\Re\TextureData.cpp" />
     <ClCompile Include="DirectXGame\Re\Vector2D.cpp">
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatWarningAsError>
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</TreatWarningAsError>
@@ -280,7 +279,6 @@
     <ClInclude Include="DirectXGame\Re\ScissorRect.h" />
     <ClInclude Include="DirectXGame\Re\Shader.h" />
     <ClInclude Include="DirectXGame\Re\Square.h" />
-    <ClInclude Include="DirectXGame\Re\TextureData.h" />
     <ClInclude Include="DirectXGame\Re\Vector2D.h" />
     <ClInclude Include="DirectXGame\Re\Vector3D.h" />
     <ClInclude Include="DirectXGame\Re\Vector4D.h" />

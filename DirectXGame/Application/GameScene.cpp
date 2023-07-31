@@ -16,8 +16,9 @@ void GameScene::Update()
 	//座標更新
 	matView.MatUpdate();
 
-	//Imgui
-	imgui->Begin();
+	//Imgui 表示させるかどうか
+	if(true)
+	{	imgui->Begin();
 
 	float size = (float)boxParticles_.size();
 
@@ -29,120 +30,161 @@ void GameScene::Update()
 	//for (auto& object : objects_) {
 	ImGui::InputFloat("stageX", &objects_[5]->stage_.mat.rotAngle.x, 0.0f, 1000.0f, "%f");
 	ImGui::InputFloat("stagey", &objects_[5]->stage_.mat.rotAngle.y, 0.0f, 1000.0f, "%f");
-	//}
-
-	objects_[5]->stage_.mat.rotAngle.z += (input->GetKey(DIK_L) - input->GetKey(DIK_K)) * 0.1f;
-	objects_[5]->stage_.mat.rotAngle.y += input->GetKey(DIK_M) - input->GetKey(DIK_N);
-
-
-	/*for (size_t i = 0; i < particles_.size(); i++)
-	{
-		ImGui::InputFloat("dev", &particles_[i]->time, 0.0f, 10.0f, "%f");
-	}*/
 
 	//ImGuiここまで
 	imgui->End();
+	}
 
-	if (scene == false && hitStop->GetTime() < 1)
+	//8月中にsceneに改造
+	//ここからSceneの処理
+
+	//switch内で使う関数をここで定義
+	float chengeTime = 50;
+
+	if (input->GetTrigger(DIK_P))
 	{
-		//player更新
-		player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
+		scene = Title;
+	}
 
-		//enemy更新
-		enemy->Update(matView.mat, matProjection);
-		bool sheikF = enemy->BoxCollision(player->GetAttackModel());
+	switch (scene)
+	{
+	case Title:
 
-		float setStopTime = 7.0f;
-
-		if (sheikF)
+		if (chengeScene->GetTime() > chengeTime)
 		{
-			hitStop->SetTime(setStopTime);
+			scene = Play;
 		}
 
-		//enemy更新
-		enemy2->Update(matView.mat, matProjection);
-		sheikF = enemy2->BoxCollision(player->GetAttackModel());
-
-		if (sheikF)
+		if (input->GetTrigger(DIK_SPACE))
 		{
-			hitStop->SetTime(setStopTime);
+			chengeScene->SetPlayFlag();
 		}
+		break;
 
-		//enemy更新
-		enemy3->Update(matView.mat, matProjection);
-		sheikF = enemy3->BoxCollision(player->GetAttackModel());
+	case Select:
+		break;
 
-		if (sheikF)
+	case Play:
+		if (hitStop->GetTime() < 1)
 		{
-			hitStop->SetTime(setStopTime);
-		}
+			//player更新
+			player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
 
-		//enemy更新
-		enemy4->Update(matView.mat, matProjection);
-		sheikF = enemy4->BoxCollision(player->GetAttackModel());
+			//enemy更新
+			enemy->Update(matView.mat, matProjection);
+			bool sheikF = enemy->BoxCollision(player->GetAttackModel());
 
-		if (sheikF)
-		{
-			hitStop->SetTime(setStopTime);
-		}
+			float setStopTime = 7.0f;
 
-		//ステージ更新
-		stage->Update(matView.mat, matProjection);
-		goal->Update(matView.mat, matProjection);
-
-		bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
-
-
-
-
-		//debugcamera.Update(*input);
-
-		//パーティクル
-		for (size_t i = 0; i < boxParticles_.size(); i++)
-		{
-			boxParticles_[i]->Update(matView.mat, matProjection);
-
-			//削除
-			if (boxParticles_[i]->IsDead() == true)
+			if (sheikF)
 			{
-				boxParticles_.erase(boxParticles_.begin() + i);
+				hitStop->SetTime(setStopTime);
+			}
+
+			//enemy更新
+			enemy2->Update(matView.mat, matProjection);
+			sheikF = enemy2->BoxCollision(player->GetAttackModel());
+
+			if (sheikF)
+			{
+				hitStop->SetTime(setStopTime);
+			}
+
+			//enemy更新
+			enemy3->Update(matView.mat, matProjection);
+			sheikF = enemy3->BoxCollision(player->GetAttackModel());
+
+			if (sheikF)
+			{
+				hitStop->SetTime(setStopTime);
+			}
+
+			//enemy更新
+			enemy4->Update(matView.mat, matProjection);
+			sheikF = enemy4->BoxCollision(player->GetAttackModel());
+
+			if (sheikF)
+			{
+				hitStop->SetTime(setStopTime);
+			}
+
+			//ステージ更新
+			stage->Update(matView.mat, matProjection);
+			goal->Update(matView.mat, matProjection);
+
+			//bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
+
+			//パーティクル
+			for (size_t i = 0; i < boxParticles_.size(); i++)
+			{
+				boxParticles_[i]->Update(matView.mat, matProjection);
+
+				//削除
+				if (boxParticles_[i]->IsDead() == true)
+				{
+					boxParticles_.erase(boxParticles_.begin() + i);
+				}
+			}
+
+			//スクリーン更新
+			screen.MatUpdate(matView.mat, matProjection, 0);
+
+			//Vector2D moveCamera = { 0,0 };
+
+			//moveCamera = player->GetController();
+
+			for (auto& object : objects_)
+			{
+				object->Update(matView.mat, matProjection);
+			}
+
+			//targetをplayerに
+			//matView.eye.x += dev[19]; //moveCamera.x;
+			matView.eye.x = player->GetPos().x; //moveCamera.x;
+			matView.target.x = player->GetPos().x;// -dev[0];
+
+			matView.eye.x = min(matView.eye.x, 1050);
+			matView.eye.x = max(matView.eye.x, 0);
+
+			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
+			bool checkGoal = goal->BoxCollision(player->GetModel());
+
+			if (checkGoal)
+			{
+				scene = GameClear;
 			}
 		}
 
-		//スクリーン更新
-		screen.MatUpdate(matView.mat, matProjection, 0);
+		break;
 
-		//Vector2D moveCamera = { 0,0 };
+	case Pause:
+		break;
 
-		//moveCamera = player->GetController();
+	case Movie:
+		break;
 
-		for (auto& object : objects_)
+	case GameClear:
+		if (input->GetTrigger(DIK_SPACE))
 		{
-			object->stage_.mat.trans.x -= (float)(input->GetKey(DIK_D) - input->GetKey(DIK_A));
-			object->stage_.mat.trans.y -= (float)(input->GetKey(DIK_S) - input->GetKey(DIK_W));
-			object->stage_.mat.trans.z -= (float)(input->GetKey(DIK_E) - input->GetKey(DIK_Q));
 
-			object->Update(matView.mat, matProjection);
 		}
+		break;
 
-		//targetをplayerに
-		//matView.eye.x += dev[19]; //moveCamera.x;
-		matView.eye.x = player->GetPos().x; //moveCamera.x;
-		matView.target.x = player->GetPos().x;// -dev[0];
+	case GameOver:
 
-		matView.eye.x = min(matView.eye.x, 1050);
-		matView.eye.x = max(matView.eye.x, 0);
-
-		//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
-		bool checkGoal = goal->BoxCollision(player->GetModel());
-
-		if (checkGoal)
+		if (input->GetTrigger(DIK_SPACE))
 		{
-			scene = true;
+
 		}
+		break;
+
+	default:
+		break;
 	}
 
-	//ここまで
+	//ここまでSceneの処理
+
+	//Scene共通の処理
 	pressText.MatUpdate(Matrix(), spriteProjection);
 
 	hitStop->Update();
@@ -152,40 +194,26 @@ void GameScene::Update()
 	chengeScene->Update(matView.mat, spriteProjection);
 
 	//パーティクル試し
-	if (input->GetTrigger(DIK_SPACE))
-	{
-		//emitter_->Create();
+	//if (input->GetTrigger(DIK_SPACE))
+	//{
+	//	size_t play = MyMath::GetRandom(10, 30);
 
-		size_t play = MyMath::GetRandom(10, 30);
+	//	for (size_t i = 0; i < play; i++)
+	//	{
+	//		BoxParticle* newP = new BoxParticle();
 
-		for (size_t i = 0; i < play; i++)
-		{
-			BoxParticle* newP = new BoxParticle();
+	//		newP->Initialize(dx.get(), shader, pipeline.get());
 
-			newP->Initialize(dx.get(), shader, pipeline.get());
+	//		newP->SetPos(player->GetPos());
 
-			newP->SetPos(player->GetPos());
-
-			boxParticles_.push_back(newP);
-		}
-	}
-
-	//シーンチェンジ試し
-	if (input->GetTrigger(DIK_O))
-	{
-		chengeScene->SetPlayFlag();
-	}
+	//		boxParticles_.push_back(newP);
+	//	}
+	//}
 
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
 	{
 		SetEndRwqust(true);
-	}
-
-	//BGM試し
-	if (input->GetTrigger(DIK_P))
-	{
-		sound_->SoundPlayWave(bgm);
 	}
 }
 
@@ -253,17 +281,23 @@ void GameScene::Initilize()
 	player->Initialize(dx.get(), shader, pipeline.get());
 
 	//仮enemy置き
+	//今は決め打ち
+	//Bkenderで設定できるように
 	enemy->Initialize(dx.get(), shader, pipeline.get());
-	enemy->SetTrans(Vector3D{ 100,20,0 });
+	enemy->SetTrans(Vector3D{ 180,20,0 });
+	enemy->SetScale(Vector3D{ 1,1,1 });
 
 	enemy2->Initialize(dx.get(), shader, pipeline.get());
-	enemy2->SetTrans(Vector3D{ 300,40,0 });
+	enemy2->SetTrans(Vector3D{ 150,40,0 });
+	enemy2->SetScale(Vector3D{ 1,1,1 });
 
 	enemy3->Initialize(dx.get(), shader, pipeline.get());
-	enemy3->SetTrans(Vector3D{ 600,30,0 });
+	enemy3->SetTrans(Vector3D{ 200,30,0 });
+	enemy3->SetScale(Vector3D{ 1,1,1 });
 
 	enemy4->Initialize(dx.get(), shader, pipeline.get());
-	enemy4->SetTrans(Vector3D{ 800,50,0 });
+	enemy4->SetTrans(Vector3D{ 300,50,0 });
+	enemy4->SetScale(Vector3D{ 1,1,1 });
 
 	//stage
 	//ステージ初期化
@@ -280,7 +314,7 @@ void GameScene::Initilize()
 	goal->Initialize(dx.get(), shader, pipeline.get());
 
 	//シーンフラグ
-	scene = false;
+	scene = Play;
 
 	//画像読み込み
 	white = dx->LoadTextureGraph(L"Resources/white1x1.png");
@@ -288,6 +322,7 @@ void GameScene::Initilize()
 	brPng = dx->LoadTextureGraph(L"Resources/br.png");
 	enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 	clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
+	playerTex = dx->LoadTextureGraph(L"Resources/Player/Player.png");
 
 	//imgui初期化
 	imgui->Initialize(dx.get());
@@ -300,6 +335,7 @@ void GameScene::Initilize()
 	//stageファイル
 	levelData_ = JsonFileOpen::FileOpen("untitled2");
 
+	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
 	for (auto& objectdata : levelData_->objects)
 	{
@@ -317,14 +353,17 @@ void GameScene::Initilize()
 		Stage* newModel_ = new Stage();
 		newModel_->Initialize(dx.get(), shader, pipeline.get());
 
+		//調整
+		float scale = 10.0f;
+
 		//trans
-		newModel_->stage_.mat.trans = objectdata.translation;
+		newModel_->stage_.mat.trans = objectdata.translation * scale;
 
 		//rotation
 		newModel_->stage_.mat.rotAngle = objectdata.rotation;
 
 		//scale;
-		newModel_->stage_.mat.scale = objectdata.scaling;
+		newModel_->stage_.mat.scale = objectdata.scaling * scale;
 
 		//Update
 		newModel_->Update(matView.mat, matProjection);
@@ -334,6 +373,9 @@ void GameScene::Initilize()
 	}
 
 	chengeScene->Initialize(dx.get(),pipeline.get(),matProjection);
+
+	//音を鳴らす
+	sound_->SoundPlayLoopWave(bgm);
 }
 
 void GameScene::Draw()
@@ -348,52 +390,104 @@ void GameScene::Draw()
 	//UIDraw
 	dx->PrevDraw();
 
+	//ここから共通先描画
+	
 	//スクリーン描画
 	screen.Draw(texP);
 
-	//Actor描画
-	player->Draw(texP, white);
-	enemy->Draw(enemyPng);
-	enemy2->Draw(enemyPng);
-	enemy3->Draw(enemyPng);
-	enemy4->Draw(enemyPng);
-	//stage->Draw(brPng);
-	//stageWhite->Draw(white);
-	goal->Draw(white);
+	//ここまで共通先描画
 
-	for (auto& object : objects_) {
-		object->Draw(white);
-	}
-
-
-	//ここから画像描画(y軸は-に)
-	sprite_->PreDraw();
-
-	sprite_->Draw(clearTex);
-
-	chengeScene->Draw();
-
-	//パーティクル
-	/*for (size_t i = 0; i < particles_.size(); i++)
+	//ここから3D描画
+	switch (scene)
 	{
-		particles_[i]->Draw(white);
-	}*/
+	case Title:
+		break;
 
-	//ボックスパーティクル
-	for (size_t i = 0; i < boxParticles_.size(); i++)
-	{
-		boxParticles_[i]->Draw(white);
-	}
+	case Select:
+		break;
 
-	if (scene == true)
-	{
-		//dx->ClearDepthBuff();
+	case Play:
+
+		//Actor描画
+		player->Draw(playerTex, white);
+		enemy->Draw(enemyPng);
+		enemy2->Draw(enemyPng);
+		enemy3->Draw(enemyPng);
+		enemy4->Draw(enemyPng);
+		//stage->Draw(brPng);
+		//stageWhite->Draw(white);
+		goal->Draw(white);
+		for (auto& object : objects_) {
+			object->Draw(white);
+		}
+
+		//ボックスパーティクル
+		for (size_t i = 0; i < boxParticles_.size(); i++)
+		{
+			boxParticles_[i]->Draw(white);
+		}
+
+		break;
+
+	case Pause:
+		break;
+
+	case Movie:
+		break;
+
+	case GameClear:
+
 		if (input->GetKey(DIK_0))
 		{
 			pressText.Draw(clearTex);
 		}
+		break;
+
+	case GameOver:
+		break;
+
+	default:
+		break;
+	}
+	//ここまで3D描画
+
+	//ここから2D描画
+
+	sprite_->PreDraw();
+
+	switch (scene)
+	{
+	case Title:
+		break;
+
+	case Select:
+		break;
+
+	case Play:
+		break;
+
+	case Pause:
+		break;
+
+	case Movie:
+		break;
+
+	case GameClear:
+		sprite_->Draw(clearTex);
+		break;
+
+	case GameOver:
+		break;
+
+	default:
+		break;
 	}
 
+	//シーンチェンジ用描画
+	chengeScene->Draw();
+
+	//ここまで2D描画
+	
 	imgui->Draw(dx.get());
 
 	dx->PostDraw();

@@ -2,7 +2,6 @@
 #include "GPipeline.h"
 #include "Object3D.h"
 #include "ConstBuff.h"
-#include "TextureData.h"
 #include "Shader.h"
 #include "MyDebugCamera.h"
 #include "Square.h"
@@ -28,6 +27,7 @@ public:
 	float Time = 0;
 
 	void SetTrans(Vector3D trans) { enemy_.mat.trans = trans; };
+	void SetScale(Vector3D scale) { enemy_.mat.trans = scale; };
 
 	Model enemy_;
 };

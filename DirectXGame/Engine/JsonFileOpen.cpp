@@ -90,7 +90,8 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	//äiî[óp
 	Vector3D vec;
 
-	float size = 10.0f;
+	float size = 1.0f;
+	//float size = 10.0f;
 
 	// ïΩçsà⁄ìÆ
 	vec.x = -(float)transform["translation"][1] * size;

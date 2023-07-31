@@ -42,6 +42,8 @@ public:
 	Model GetAttackModel() { return playerAttack_; };
 
 	bool CollisionAttackToEnemy(Model enemy);
+
+	float GetLife() { return Life; };
 private:
 	MyXAudio* sound_ = nullptr;
 	size_t volcano = 0;
@@ -58,4 +60,6 @@ private:
 	float gravirtPower = 0;
 
 	Controller* controller = nullptr;
+
+	float Life;
 };
