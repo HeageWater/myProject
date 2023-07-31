@@ -16,9 +16,13 @@ void GameScene::Update()
 	//座標更新
 	matView.MatUpdate();
 
-	//Imgui 表示させるかどうか
-	if(true)
-	{	imgui->Begin();
+	if (input->GetTrigger(DIK_O))
+	{
+		imguiDrawFlag = !imguiDrawFlag;
+	}
+
+	//imgui
+	imgui->Begin();
 
 	float size = (float)boxParticles_.size();
 
@@ -31,9 +35,11 @@ void GameScene::Update()
 	ImGui::InputFloat("stageX", &objects_[5]->stage_.mat.rotAngle.x, 0.0f, 1000.0f, "%f");
 	ImGui::InputFloat("stagey", &objects_[5]->stage_.mat.rotAngle.y, 0.0f, 1000.0f, "%f");
 
+	ImGui::Text("O : ImGuiFlag");
+	ImGui::Checkbox("ImGuiDraw", &imguiDrawFlag);
+
 	//ImGuiここまで
 	imgui->End();
-	}
 
 	//8月中にsceneに改造
 	//ここからSceneの処理
@@ -327,8 +333,8 @@ void GameScene::Initilize()
 	//imgui初期化
 	imgui->Initialize(dx.get());
 
-	semiArphaSpriteCommon->Inilialize(dx.get(),true);
-	normalSpriteCommon->Inilialize(dx.get(),false);
+	semiArphaSpriteCommon->Inilialize(dx.get(), true);
+	normalSpriteCommon->Inilialize(dx.get(), false);
 
 	sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
 
@@ -372,7 +378,7 @@ void GameScene::Initilize()
 		objects_.push_back(newModel_);
 	}
 
-	chengeScene->Initialize(dx.get(),pipeline.get(),matProjection);
+	chengeScene->Initialize(dx.get(), pipeline.get(), matProjection);
 
 	//音を鳴らす
 	sound_->SoundPlayLoopWave(bgm);
@@ -391,7 +397,7 @@ void GameScene::Draw()
 	dx->PrevDraw();
 
 	//ここから共通先描画
-	
+
 	//スクリーン描画
 	screen.Draw(texP);
 
@@ -487,8 +493,12 @@ void GameScene::Draw()
 	chengeScene->Draw();
 
 	//ここまで2D描画
-	
-	imgui->Draw(dx.get());
+
+	//Imgui 表示させるかどうか
+	if (imguiDrawFlag)
+	{
+		imgui->Draw(dx.get());
+	}
 
 	dx->PostDraw();
 }

@@ -1,34 +1,4 @@
 #pragma once
-
-//scene共通
-//#include "Sprite.h"
-//#include "Input.h"
-//#include "Object3D.h"
-//#include "TextureData.h"
-//#include "MyDebugCamera.h"
-//#include "Square.h"
-//#include "Controller.h"
-//#include "Model.h"
-//#include "Sound.h"
-//#include "Easing.h"
-//#include "ImguiManager.h"
-//#include "Shader.h"
-
-//titlesceneに移動
-
-
-//playsceneに移動
-//#include "Player.h"
-//#include "Stage.h"
-//#include "Enemy.h"
-//#include "Goal.h"
-//#include "Collision.h"
-//#include "HitStop.h"
-//#include "Shake.h"
-//#include "Emitter.h"
-//#include "ChengeScene.h"
-
-
 #include "TitleScene.h"
 #include "PlayScene.h"
 
@@ -179,4 +149,6 @@ private:
 
 	//シーンチェンジ
 	ChengeScene* chengeScene = new ChengeScene();
+
+	bool imguiDrawFlag = true;
 };
