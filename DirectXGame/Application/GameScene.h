@@ -38,6 +38,7 @@ public:
 	void Draw()override;
 	void Finalize()override;
 	void Run()override;
+	void Reset();
 
 	bool IsEndRequst() { return endRequest_; };
 	void SetEndRwqust(bool flag) { endRequest_ = flag; };
@@ -61,6 +62,7 @@ private:
 
 	//input
 	std::unique_ptr<Input> input;
+	//Controller* controller = nullptr;
 
 	//shader
 	Shader shader;
@@ -123,6 +125,7 @@ private:
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
 	size_t playerTex = 0;
+	size_t titleTex = 0;
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();
@@ -134,6 +137,7 @@ private:
 	SpriteCommon* semiArphaSpriteCommon = new SpriteCommon();
 	SpriteCommon* normalSpriteCommon = new  SpriteCommon();
 	Sprite* sprite_ = new Sprite();
+	Sprite* titlePng = new Sprite();
 
 	//パーティクル格納用
 	std::vector<Particle*> particles_;
@@ -151,4 +155,7 @@ private:
 	ChengeScene* chengeScene = new ChengeScene();
 
 	bool imguiDrawFlag = true;
+	bool goalFlag = false;
+
+	Sphere titleObj;
 };

@@ -1,15 +1,4 @@
 #pragma once
-//#include "GPipeline.h"
-//#include "Object3D.h"
-//#include "ConstBuff.h"
-//#include "TextureData.h"
-//#include "Shader.h"
-//#include "MyDebugCamera.h"
-//#include "Square.h"
-//#include "Controller.h"
-//#include <memory>
-//#include "Model.h"
-//#include "Sound.h"
 #include "PlayerAttack.h"
 
 class Player {
@@ -44,9 +33,16 @@ public:
 	bool CollisionAttackToEnemy(Model enemy);
 
 	float GetLife() { return Life; };
+	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);
+	bool GetA()
+	{ //コントローラーUpdate
+		controller->Update(); 
+		return controller->ButtonTriggerPush(A);
+	};
 private:
 	MyXAudio* sound_ = nullptr;
-	size_t volcano = 0;
+	//size_t volcanoSE = 0;
+	size_t jumpSE = 0;
 
 	Model player_;
 	Model playerAttack_;
@@ -60,6 +56,9 @@ private:
 	float gravirtPower = 0;
 
 	Controller* controller = nullptr;
+
+	//移動用変数
+	Vector3D colVec = { 0,0,0 };
 
 	float Life;
 };

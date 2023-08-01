@@ -11,7 +11,7 @@ Player::Player()
 	attackF = false;
 
 	sound_ = nullptr;
-	volcano = 0;
+	jumpSE = 0;
 
 	Life = 3;
 }
@@ -30,12 +30,12 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	//player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	player_.mat.Initialize();
-	player_.mat.scale = { 5,5,5 };
+	player_.mat.scale = { 3,3,3 };
 	player_.mat.trans.x = 0;// 950;
 	player_.mat.trans.y = 11;
 	player_.mat.trans.z = 0;
 
-	playerAttack_.Initialize(dx_, shader, "Resources\\maru\\maru.obj", pipeline_);
+	playerAttack_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 
 	playerAttack_.mat.Initialize();
 	playerAttack_.mat.scale = { 5,5,5 };
@@ -46,7 +46,7 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	createAttackFlag = false;
 
 	sound_ = MyXAudio::Get();
-	volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
+	jumpSE = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
 }
 
 void Player::Draw(size_t tex, size_t tex2)
@@ -85,9 +85,6 @@ void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader
 	//コントローラーUpdate
 	controller->Update();
 
-	//移動用変数
-	Vector3D colVec = { 0,0,0 };
-
 	//左スティックの角度代入
 	colVec = { controller->GetLeftStickVec().x, 0,0 };
 
@@ -106,9 +103,9 @@ void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader
 		sound_->SoundPlayWave(2);
 	}*/
 
-	player_.mat.trans.y = max(player_.mat.trans.y, 11);
-	player_.mat.trans.x = min(player_.mat.trans.x, 1050);
-	player_.mat.trans.x = max(player_.mat.trans.x, 0);
+	//player_.mat.trans.y = max(player_.mat.trans.y, 11);
+	//player_.mat.trans.x = min(player_.mat.trans.x, 1050);
+	//player_.mat.trans.x = max(player_.mat.trans.x, 0);
 
 	for (size_t i = 0; i < attack.size(); i++)
 	{
@@ -127,8 +124,18 @@ void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader
 
 void Player::Reset()
 {
-	player_.mat.trans.x = 0;
-	player_.mat.trans.y = 0;
+	player_.mat.Initialize();
+	player_.mat.scale = { 3,3,3 };
+	player_.mat.trans.x = 0;// 950;
+	player_.mat.trans.y = 11;
+	player_.mat.trans.z = 0;
+
+	playerAttack_.mat.Initialize();
+	playerAttack_.mat.scale = { 5,5,5 };
+	playerAttack_.mat.trans = player_.mat.trans;
+
+	attackF = false;
+	createAttackFlag = false;
 }
 
 void Player::Jump()
@@ -137,7 +144,7 @@ void Player::Jump()
 	float maxGravity = 3;
 	float nowY = 11;
 	float jump = 1.0f;
-	float maxJunp = 10;
+	float maxJunp = 8;
 
 	if (jumpPower > 0)
 	{
@@ -151,11 +158,13 @@ void Player::Jump()
 
 	if (controller->ButtonTriggerPush(LT))
 	{
-		if (player_.mat.trans.y == nowY)
-		{
-			jumpPower = maxJunp;
-			gravirtPower = 0;
-		}
+		/*if (player_.mat.trans.y == nowY)
+		{*/
+		jumpPower = maxJunp;
+		gravirtPower = 0;
+
+		sound_->SoundPlayWave(jumpSE);
+		///}
 	}
 
 	player_.mat.trans.y += jumpPower;
@@ -192,29 +201,29 @@ void Player::Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 		//移送
 		playerAttack_.mat.trans += movePos;
-		//playerAttack_.mat.rotAngle.z = movePos.x;
+		playerAttack_.mat.rotAngle.z = movePos.x;
 
 		//描画する
 		attackF = true;
 
-		//attackModel生成
-		if (createAttackFlag)
-		{
-			PlayerAttack* newAttack = new PlayerAttack(dx_, shader, pipeline_);
+		////attackModel生成
+		//if (createAttackFlag)
+		//{
+		//	PlayerAttack* newAttack = new PlayerAttack(dx_, shader, pipeline_);
 
-			Vector3D pos = player_.mat.trans;
-			newAttack->SetPos(pos);
+		//	Vector3D pos = player_.mat.trans;
+		//	newAttack->SetPos(pos);
 
-			Vector2D vec = controller->GetRightStickVec();
-			vec *= -1;
-			newAttack->SetVec(vec);
+		//	Vector2D vec = controller->GetRightStickVec();
+		//	vec *= -1;
+		//	newAttack->SetVec(vec);
 
-			newAttack->SetUpdate();
+		//	newAttack->SetUpdate();
 
-			attack.push_back(newAttack);
+		//	attack.push_back(newAttack);
 
-			createAttackFlag = false;
-		}
+		//	createAttackFlag = false;
+		//}
 	}
 	else if (!createAttackFlag)
 	{
@@ -248,3 +257,111 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 	}
 	return false;
 }
+
+bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
+{
+	float DisX = player_.mat.trans.x - stage.mat.trans.x;
+	float DisY = player_.mat.trans.y - stage.mat.trans.y;
+
+	DisX = abs(DisX);
+	DisY = abs(DisY);
+
+	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
+		DisY <= player_.mat.scale.y + stage.mat.scale.y)
+	{
+		if (jumpPower > 0)
+		{
+			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+
+			while (colX && colY)
+			{
+				player_.mat.trans.y -= 1;
+
+				DisX = player_.mat.trans.x - stage.mat.trans.x;
+				DisY = player_.mat.trans.y - stage.mat.trans.y;
+
+				DisX = abs(DisX);
+				DisY = abs(DisY);
+
+				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			}
+		}
+
+		if (gravirtPower > 0)
+		{
+			//player_.mat.trans.y += gravirtPower;
+
+			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+
+			while (colX && colY)
+			{
+				player_.mat.trans.y += 1;
+
+				DisX = player_.mat.trans.x - stage.mat.trans.x;
+				DisY = player_.mat.trans.y - stage.mat.trans.y;
+
+				DisX = abs(DisX);
+				DisY = abs(DisY);
+
+				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			}
+		}
+
+		if (colVec.x > 0)
+		{
+			//player_.mat.trans -= colVec;
+
+			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+
+			while (colX && colY)
+			{
+				player_.mat.trans.x -= 1;
+
+				DisX = player_.mat.trans.x - stage.mat.trans.x;
+				DisY = player_.mat.trans.y - stage.mat.trans.y;
+
+				DisX = abs(DisX);
+				DisY = abs(DisY);
+
+				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			}
+		}
+		else
+		{
+			//player_.mat.trans += colVec;
+
+			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+
+			while (colX && colY)
+			{
+				player_.mat.trans.x += 1;
+
+				DisX = player_.mat.trans.x - stage.mat.trans.x;
+				DisY = player_.mat.trans.y - stage.mat.trans.y;
+
+				DisX = abs(DisX);
+				DisY = abs(DisY);
+
+				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
+				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			}
+		}
+
+		player_.MatUpdate(matView, matProjection);
+
+		return true;
+	}
+
+	player_.MatUpdate(matView, matProjection);
+
+	return false;
+}
+
+

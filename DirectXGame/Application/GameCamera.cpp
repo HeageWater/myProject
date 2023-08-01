@@ -14,14 +14,9 @@ GameCamera::GameCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void GameCamera::Update(Input& input)
 {
-	eye.x += input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT);
-	eye.y += input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN);
-	eye.z += input.GetKey(DIK_O) - input.GetKey(DIK_P);
-
-	/*if (input.Click(Input::LeftClick))
+	/*if (eye.x)
 	{
-		eye.x += (input.CursorPos().x - (float)640) / 100;
-		eye.y += (input.CursorPos().y - (float)320) / 100;
+
 	}*/
 
 	MatUpdate();

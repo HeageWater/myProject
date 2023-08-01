@@ -19,6 +19,7 @@ public:
 	void Update(Matrix matView, Matrix matProjection);
 
 	bool BoxCollision(Model model);
+	void Reset();
 
 	Model goal_;
 };

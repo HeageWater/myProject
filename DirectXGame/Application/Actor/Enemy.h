@@ -27,7 +27,9 @@ public:
 	float Time = 0;
 
 	void SetTrans(Vector3D trans) { enemy_.mat.trans = trans; };
-	void SetScale(Vector3D scale) { enemy_.mat.trans = scale; };
+	void SetScale(Vector3D scale) { enemy_.mat.scale = scale; };
+
+	Vector3D GetPos() {return  enemy_.mat.trans;};
 
 	Model enemy_;
 };

@@ -19,11 +19,16 @@ void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	stage_.mat.trans.x = 0;
 	stage_.mat.trans.y = 0;
 	stage_.mat.trans.z = 0;
+
+	drawFlag = true;
 }
 
 void Stage::Draw(size_t tex)
 {
-	stage_.Draw(tex);
+	if (drawFlag)
+	{
+		stage_.Draw(tex);
+	}
 }
 
 void Stage::Update(Matrix matView, Matrix matProjection)

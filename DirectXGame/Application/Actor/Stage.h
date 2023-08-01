@@ -18,6 +18,10 @@ public:
 	void Update(Matrix matView, Matrix matProjection);
 	void Reset();
 
+	void SetFlag(bool flag) { drawFlag = flag; };
+
 	Model stage_;
 private:
+
+	bool drawFlag = true;
 };

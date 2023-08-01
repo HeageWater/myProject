@@ -16,7 +16,7 @@ void Goal::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 	goal_.mat.Initialize();
 	goal_.mat.scale = { 5,5,3 };
-	goal_.mat.trans = { 1000,15,0 };
+	goal_.mat.trans = { 360,140,0 };
 }
 
 void Goal::Draw(size_t tex)
@@ -45,4 +45,11 @@ bool Goal::BoxCollision(Model model)
 	}
 
 	return false;
+}
+
+void Goal::Reset()
+{
+	goal_.mat.Initialize();
+	goal_.mat.scale = { 5,5,3 };
+	goal_.mat.trans = { 1000,15,0 };
 }

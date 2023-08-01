@@ -32,7 +32,7 @@ public:
 	Vector3D GetRot() { return playerAttack_.mat.rotAngle; };
 private:
 	MyXAudio* sound_ = nullptr;
-	size_t volcano = 0;
+	//size_t volcano = 0;
 	size_t tex = 0;
 	Model playerAttack_;
 

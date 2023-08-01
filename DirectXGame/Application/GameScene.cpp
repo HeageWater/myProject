@@ -12,7 +12,7 @@ void GameScene::Update()
 
 	//Update
 	input->Update();
-
+	//controller->Update();
 	//座標更新
 	matView.MatUpdate();
 
@@ -24,22 +24,37 @@ void GameScene::Update()
 	//imgui
 	imgui->Begin();
 
-	float size = (float)boxParticles_.size();
+	//float size = (float)boxParticles_.size();
 
-	ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
+	//ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
 
-	ImGui::InputFloat("spriteX", &sprite_->scale.x, 0.0f, 1000.0f, "%f");
-	ImGui::InputFloat("spriteY", &sprite_->scale.y, 0.0f, 1000.00f, "%f");
+	//ImGui::InputFloat("spriteX", &sprite_->scale.x, 0.0f, 1000.0f, "%f");
+	//ImGui::InputFloat("spriteY", &sprite_->scale.y, 0.0f, 1000.00f, "%f");
 
-	//for (auto& object : objects_) {
-	ImGui::InputFloat("stageX", &objects_[5]->stage_.mat.rotAngle.x, 0.0f, 1000.0f, "%f");
-	ImGui::InputFloat("stagey", &objects_[5]->stage_.mat.rotAngle.y, 0.0f, 1000.0f, "%f");
+	////for (auto& object : objects_) {
+	//ImGui::InputFloat("stageX", &matView.eye.z, 0.0f, 1000.0f, "%f");
+	//ImGui::InputFloat("stagey", &objects_[5]->stage_.mat.rotAngle.y, 0.0f, 1000.0f, "%f");
 
-	ImGui::Text("O : ImGuiFlag");
+	float x = player->GetPos().x;
+	float y = player->GetPos().y;
+
+	//ImGui::Text("player pos");
+	//ImGui::InputFloat("x", &x, 0.0f, 1000.0f, "%f");
+	//ImGui::InputFloat("y", &y, 0.0f, 1000.0f, "%f");
+
+	ImGui::Text("O Key : ImGuiDrawFlag");
 	ImGui::Checkbox("ImGuiDraw", &imguiDrawFlag);
+
+	ImGui::Text("P Key : Reset");
+
+	ImGui::Text("NextScene : SpaceKey or A Button");
+	ImGui::Text("LStick : Move");
+	ImGui::Text("RStick : Attack");
+	ImGui::Text("LT : Jump");
 
 	//ImGuiここまで
 	imgui->End();
+
 
 	//8月中にsceneに改造
 	//ここからSceneの処理
@@ -50,6 +65,7 @@ void GameScene::Update()
 	if (input->GetTrigger(DIK_P))
 	{
 		scene = Title;
+		Reset();
 	}
 
 	switch (scene)
@@ -58,10 +74,12 @@ void GameScene::Update()
 
 		if (chengeScene->GetTime() > chengeTime)
 		{
+			chengeTime = 0;
+
 			scene = Play;
 		}
 
-		if (input->GetTrigger(DIK_SPACE))
+		if (input->GetTrigger(DIK_SPACE) || player->GetA())
 		{
 			chengeScene->SetPlayFlag();
 		}
@@ -80,11 +98,25 @@ void GameScene::Update()
 			enemy->Update(matView.mat, matProjection);
 			bool sheikF = enemy->BoxCollision(player->GetAttackModel());
 
+			//この下の処理まとめろ
 			float setStopTime = 7.0f;
 
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
+
+				size_t play = MyMath::GetRandom(10, 30);
+
+				for (size_t i = 0; i < play; i++)
+				{
+					BoxParticle* newP = new BoxParticle();
+
+					newP->Initialize(dx.get(), shader, pipeline.get());
+
+					newP->SetPos(enemy->GetPos());
+
+					boxParticles_.push_back(newP);
+				}
 			}
 
 			//enemy更新
@@ -94,6 +126,19 @@ void GameScene::Update()
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
+
+				size_t play = MyMath::GetRandom(10, 30);
+
+				for (size_t i = 0; i < play; i++)
+				{
+					BoxParticle* newP = new BoxParticle();
+
+					newP->Initialize(dx.get(), shader, pipeline.get());
+
+					newP->SetPos(enemy2->GetPos());
+
+					boxParticles_.push_back(newP);
+				}
 			}
 
 			//enemy更新
@@ -103,6 +148,19 @@ void GameScene::Update()
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
+
+				size_t play = MyMath::GetRandom(10, 30);
+
+				for (size_t i = 0; i < play; i++)
+				{
+					BoxParticle* newP = new BoxParticle();
+
+					newP->Initialize(dx.get(), shader, pipeline.get());
+
+					newP->SetPos(enemy3->GetPos());
+
+					boxParticles_.push_back(newP);
+				}
 			}
 
 			//enemy更新
@@ -112,7 +170,22 @@ void GameScene::Update()
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
+
+				size_t play = MyMath::GetRandom(10, 30);
+
+				for (size_t i = 0; i < play; i++)
+				{
+					BoxParticle* newP = new BoxParticle();
+
+					newP->Initialize(dx.get(), shader, pipeline.get());
+
+					newP->SetPos(enemy4->GetPos());
+
+					boxParticles_.push_back(newP);
+				}
 			}
+
+			//ここまで
 
 			//ステージ更新
 			stage->Update(matView.mat, matProjection);
@@ -141,7 +214,14 @@ void GameScene::Update()
 
 			for (auto& object : objects_)
 			{
+				object->SetFlag(true);
+
 				object->Update(matView.mat, matProjection);
+
+				if (player->StageCollsion(object->stage_, matView.mat, matProjection))
+				{
+					//object->SetFlag(false);
+				}
 			}
 
 			//targetをplayerに
@@ -149,16 +229,25 @@ void GameScene::Update()
 			matView.eye.x = player->GetPos().x; //moveCamera.x;
 			matView.target.x = player->GetPos().x;// -dev[0];
 
-			matView.eye.x = min(matView.eye.x, 1050);
-			matView.eye.x = max(matView.eye.x, 0);
+			//float range = 50;
+
+			matView.eye.y = player->GetPos().y; //moveCamera.x;
+			matView.target.y = player->GetPos().y;// -dev[0];part
 
 			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
 			bool checkGoal = goal->BoxCollision(player->GetModel());
 
 			if (checkGoal)
 			{
+				chengeScene->SetPlayFlag();
+				goalFlag = true;
+			}
+
+			if (chengeScene->GetTime() > chengeTime && goalFlag)
+			{
 				scene = GameClear;
 			}
+
 		}
 
 		break;
@@ -170,10 +259,17 @@ void GameScene::Update()
 		break;
 
 	case GameClear:
-		if (input->GetTrigger(DIK_SPACE))
+		/*if (chengeScene->GetTime() > chengeTime)
 		{
+			scene = Title;
 
+			Reset();
 		}
+
+		if (input->GetTrigger(DIK_SPACE) || player->GetA())
+		{
+			chengeScene->SetPlayFlag();
+		}*/
 		break;
 
 	case GameOver:
@@ -196,6 +292,7 @@ void GameScene::Update()
 	hitStop->Update();
 
 	sprite_->Update();
+	titlePng->Update();
 
 	chengeScene->Update(matView.mat, spriteProjection);
 
@@ -276,7 +373,7 @@ void GameScene::Initilize()
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 
 	//描画用行列
-	matView.Init(Vector3D(0.0f, 60.0f, -150.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//sound
 	sound_ = MyXAudio::Get();
@@ -286,24 +383,26 @@ void GameScene::Initilize()
 	//player
 	player->Initialize(dx.get(), shader, pipeline.get());
 
+	float size = 3.0f;
+
 	//仮enemy置き
 	//今は決め打ち
 	//Bkenderで設定できるように
 	enemy->Initialize(dx.get(), shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
-	enemy->SetScale(Vector3D{ 1,1,1 });
+	enemy->SetScale(Vector3D{ size,size,size });
 
 	enemy2->Initialize(dx.get(), shader, pipeline.get());
 	enemy2->SetTrans(Vector3D{ 150,40,0 });
-	enemy2->SetScale(Vector3D{ 1,1,1 });
+	enemy2->SetScale(Vector3D{ size,size,size });
 
 	enemy3->Initialize(dx.get(), shader, pipeline.get());
 	enemy3->SetTrans(Vector3D{ 200,30,0 });
-	enemy3->SetScale(Vector3D{ 1,1,1 });
+	enemy3->SetScale(Vector3D{ size,size,size });
 
 	enemy4->Initialize(dx.get(), shader, pipeline.get());
 	enemy4->SetTrans(Vector3D{ 300,50,0 });
-	enemy4->SetScale(Vector3D{ 1,1,1 });
+	enemy4->SetScale(Vector3D{ size,size,size });
 
 	//stage
 	//ステージ初期化
@@ -318,7 +417,6 @@ void GameScene::Initilize()
 
 	//ゴール初期化
 	goal->Initialize(dx.get(), shader, pipeline.get());
-
 	//シーンフラグ
 	scene = Play;
 
@@ -329,15 +427,22 @@ void GameScene::Initilize()
 	enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
 	clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
 	playerTex = dx->LoadTextureGraph(L"Resources/Player/Player.png");
+	titleTex = dx->LoadTextureGraph(L"Resources/Title.png");
 
 	//imgui初期化
 	imgui->Initialize(dx.get());
+
+	//controller = Controller::GetInstance();
 
 	semiArphaSpriteCommon->Inilialize(dx.get(), true);
 	normalSpriteCommon->Inilialize(dx.get(), false);
 
 	sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
+	titlePng->Inilialize(normalSpriteCommon, &matProjection);
+	titlePng->position = {-680,-420,0};
+	titlePng->scale = {3600,1440,1};
 
+	goalFlag = false;
 	//stageファイル
 	levelData_ = JsonFileOpen::FileOpen("untitled2");
 
@@ -464,6 +569,7 @@ void GameScene::Draw()
 	switch (scene)
 	{
 	case Title:
+		titlePng->Draw(titleTex);
 		break;
 
 	case Select:
@@ -479,7 +585,8 @@ void GameScene::Draw()
 		break;
 
 	case GameClear:
-		sprite_->Draw(clearTex);
+		//sprite_->Draw(clearTex);
+		titlePng->Draw(clearTex);
 		break;
 
 	case GameOver:
@@ -538,4 +645,56 @@ void GameScene::Run()
 
 	//終了処理
 	Finalize();
+}
+
+void GameScene::Reset()
+{
+	screen.obj.trans.z = 100.1f;
+	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
+	goalFlag = false;
+
+	//tex
+	pressText.obj.trans.y = -200;
+	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
+	pressText.MatUpdate(Matrix(), spriteProjection, 0);
+
+	//描画用行列
+	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+
+	
+	//player
+	player->Reset();
+
+	//仮enemy置き
+	//今は決め打ち
+	//Bkenderで設定できるように
+	enemy->SetTrans(Vector3D{ 180,20,0 });
+	enemy->SetScale(Vector3D{ 1,1,1 });
+	enemy->isDead = false;
+
+	enemy2->SetTrans(Vector3D{ 150,40,0 });
+	enemy2->SetScale(Vector3D{ 1,1,1 });
+	enemy2->isDead = false;
+
+	enemy3->SetTrans(Vector3D{ 200,30,0 });
+	enemy3->SetScale(Vector3D{ 1,1,1 });
+	enemy3->isDead = false;
+
+	enemy4->SetTrans(Vector3D{ 300,50,0 });
+	enemy4->SetScale(Vector3D{ 1,1,1 });
+	enemy4->isDead = false;
+	//stage
+	//ステージ初期化
+	float minMapX = stage->stage_.mat.scale.x - 200;
+	stage->stage_.mat.trans.x = minMapX;
+
+	stageWhite->stage_.mat.trans.y += 1;
+	stageWhite->stage_.mat.scale.z = 10;
+	stageWhite->Update(matView.mat, matProjection);
+
+	//ゴール初期化
+	goal->Reset();
+
+	//シーンフラグ
+	scene = Title;
 }

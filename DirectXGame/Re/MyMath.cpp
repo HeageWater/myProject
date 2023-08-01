@@ -132,6 +132,34 @@ void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyMath::MatView::MatUpdate()
 {
+	if (eye.x < 200)
+	{
+		if (eye.z > -200)
+		{
+			eye.z--;
+		}
+	}
+	else if (eye.x > 33 && eye.x < 114)
+	{
+		if (eye.z > -150)
+		{
+			eye.z--;
+		}
+		else if(eye.z < -150)
+		{
+			eye.z++;
+		}
+		else
+		{
+			eye.z = -150;
+		}
+	}
+	else if (eye.x > 11)
+	{
+		if (eye.z > -100)
+			eye.z--;
+	}
+
 	mat = LookAtLH(eye, target, up);
 }
 
