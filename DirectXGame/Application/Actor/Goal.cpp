@@ -12,7 +12,7 @@ Goal::~Goal()
 
 void Goal::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	goal_.Initialize(dx_, shader, "Resources\\ene\\ene.obj", pipeline_);
+	goal_.Initialize(dx_, shader, "Resources\\Model\\ene\\ene.obj", pipeline_);
 
 	goal_.mat.Initialize();
 	goal_.mat.scale = { 5,5,3 };

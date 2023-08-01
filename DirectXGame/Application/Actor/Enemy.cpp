@@ -13,7 +13,7 @@ Enemy::~Enemy()
 
 void Enemy::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	enemy_.Initialize(dx_, shader, "Resources\\ene\\ene.obj", pipeline_);
+	enemy_.Initialize(dx_, shader, "Resources\\Model\\ene\\ene.obj", pipeline_);
 
 	enemy_.mat.Initialize();
 	enemy_.mat.scale = { 1,1,1 };

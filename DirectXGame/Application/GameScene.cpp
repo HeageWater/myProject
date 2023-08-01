@@ -382,13 +382,13 @@ void GameScene::Initilize()
 	scene = Play;
 
 	//‰æ‘œ“Ç‚Ýž‚Ý
-	white = dx->LoadTextureGraph(L"Resources/white1x1.png");
-	texP = dx->LoadTextureGraph(L"Resources/cube.jpg");
-	brPng = dx->LoadTextureGraph(L"Resources/br.png");
-	enemyPng = dx->LoadTextureGraph(L"Resources/ene/enemy.png");
-	clearTex = dx->LoadTextureGraph(L"Resources/gameclear.png");
-	playerTex = dx->LoadTextureGraph(L"Resources/Player/Player.png");
-	titleTex = dx->LoadTextureGraph(L"Resources/Title.png");
+	white = dx->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+	texP = dx->LoadTextureGraph(L"Resources/sprite/cube.jpg");
+	brPng = dx->LoadTextureGraph(L"Resources/sprite/br.png");
+	clearTex = dx->LoadTextureGraph(L"Resources/sprite/gameclear.png");
+	titleTex = dx->LoadTextureGraph(L"Resources/sprite/Title.png");
+	playerTex = dx->LoadTextureGraph(L"Resources/Model/Player/Player.png");
+	enemyPng = dx->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
 
 	//imgui‰Šú‰»
 	imgui->Initialize(dx.get());

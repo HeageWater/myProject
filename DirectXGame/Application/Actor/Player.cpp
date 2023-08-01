@@ -26,7 +26,7 @@ Player::~Player()
 
 void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	player_.Initialize(dx_, shader, "Resources\\Player\\Player.obj", pipeline_);
+	player_.Initialize(dx_, shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
 	//player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	player_.mat.Initialize();
@@ -291,8 +291,6 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 
 		if (gravirtPower > 0)
 		{
-			//player_.mat.trans.y += gravirtPower;
-
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
 
@@ -313,8 +311,6 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 
 		if (colVec.x > 0)
 		{
-			//player_.mat.trans -= colVec;
-
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
 

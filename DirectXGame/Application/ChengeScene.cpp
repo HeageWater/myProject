@@ -17,7 +17,7 @@ void ChengeScene::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Matrix matPro
 
 	sprite_->Inilialize(spriteCommon, &matProjection);
 
-	tex = dx_->LoadTextureGraph(L"Resources/br.png");
+	tex = dx_->LoadTextureGraph(L"Resources/sprite/br.png");
 
 	//scale—p
 	float size = 2.5f;
