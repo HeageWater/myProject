@@ -4,15 +4,9 @@ void GameScene::Update()
 {
 	FlameWork::Update();
 
-	win->MsgUpdate();
-	if (win->EndLoop())
-	{
-		SetEndRwqust(true);
-	}
-
 	//Update
 	input->Update();
-	//controller->Update();
+
 	//座標更新
 	matView.MatUpdate();
 
@@ -24,37 +18,45 @@ void GameScene::Update()
 	//imgui
 	imgui->Begin();
 
-	//float size = (float)boxParticles_.size();
+	if (ImGui::TreeNode("group 1"))
+	{
+		float x = player->GetPos().x;
+		float y = player->GetPos().y;
 
-	//ImGui::InputFloat("particleCount", &size, 0.0f, 10.0f, "%f");
+		ImGui::Text("player pos");
+		ImGui::InputFloat("x", &x, 0.0f, 1000.0f, "%f");
+		ImGui::SliderFloat("y", &y, 0.0f, 1000.0f, "%f");
 
-	//ImGui::InputFloat("spriteX", &sprite_->scale.x, 0.0f, 1000.0f, "%f");
-	//ImGui::InputFloat("spriteY", &sprite_->scale.y, 0.0f, 1000.00f, "%f");
+		ImGui::Text("O Key : ImGuiDrawFlag");
+		ImGui::Checkbox("ImGuiDraw", &imguiDrawFlag);
 
-	////for (auto& object : objects_) {
-	//ImGui::InputFloat("stageX", &matView.eye.z, 0.0f, 1000.0f, "%f");
-	//ImGui::InputFloat("stagey", &objects_[5]->stage_.mat.rotAngle.y, 0.0f, 1000.0f, "%f");
+		ImGui::Text("P Key : Reset");
 
-	float x = player->GetPos().x;
-	float y = player->GetPos().y;
+		ImGui::Text("NextScene : SpaceKey or A Button");
+		ImGui::Text("LStick : Move");
+		ImGui::Text("RStick : Attack");
+		ImGui::Text("LT : Jump");
 
-	//ImGui::Text("player pos");
-	//ImGui::InputFloat("x", &x, 0.0f, 1000.0f, "%f");
-	//ImGui::InputFloat("y", &y, 0.0f, 1000.0f, "%f");
+		if (ImGui::Button("Title"))
+		{
+			scene = Title;
+		}
 
-	ImGui::Text("O Key : ImGuiDrawFlag");
-	ImGui::Checkbox("ImGuiDraw", &imguiDrawFlag);
+		if (ImGui::Button("Play"))
+		{
+			scene = Play;
+		}
 
-	ImGui::Text("P Key : Reset");
+		if (ImGui::Button("GameClear"))
+		{
+			scene = GameClear;
+		}
 
-	ImGui::Text("NextScene : SpaceKey or A Button");
-	ImGui::Text("LStick : Move");
-	ImGui::Text("RStick : Attack");
-	ImGui::Text("LT : Jump");
+		ImGui::TreePop();
+	}
 
 	//ImGuiここまで
 	imgui->End();
-
 
 	//8月中にsceneに改造
 	//ここからSceneの処理
@@ -68,14 +70,15 @@ void GameScene::Update()
 		Reset();
 	}
 
+	//ステージホットリロード
+	StageReload();
+
 	switch (scene)
 	{
 	case Title:
 
 		if (chengeScene->GetTime() > chengeTime)
 		{
-			chengeTime = 0;
-
 			scene = Play;
 		}
 
@@ -296,23 +299,6 @@ void GameScene::Update()
 
 	chengeScene->Update(matView.mat, spriteProjection);
 
-	//パーティクル試し
-	//if (input->GetTrigger(DIK_SPACE))
-	//{
-	//	size_t play = MyMath::GetRandom(10, 30);
-
-	//	for (size_t i = 0; i < play; i++)
-	//	{
-	//		BoxParticle* newP = new BoxParticle();
-
-	//		newP->Initialize(dx.get(), shader, pipeline.get());
-
-	//		newP->SetPos(player->GetPos());
-
-	//		boxParticles_.push_back(newP);
-	//	}
-	//}
-
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
 	{
@@ -324,44 +310,19 @@ void GameScene::Initilize()
 {
 	FlameWork::Initilize();
 
-	//windowApi
-	win = std::make_unique<Window>();
+	//input
+	input = std::make_unique<Input>(win.get());
 
-	//dxCommon
-	dx = std::make_unique<MyDirectX>(win.get());
+	controller = Controller::GetInstance();
 
 	//camera
 	debugcamera.Init(Vector3D(0.0f, 30.0f, 10.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 	playcamera.Init(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	//buff
-	cBuff = std::make_unique<ConstBuff>(dx->GetDev(), (float)win->window_width, (float)win->window_height);
-
-	//input
-	input = std::make_unique<Input>(win.get());
-
-	//shader
-	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
-	bilShader.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
-	spriteShader.Initizlize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
-
-	//pipeline
-	pipeline = std::make_unique<GPipeline>();
-	pipeline->Initialize(dx->GetDev(), shader);
-
-	//描画初期化
-	multipathPipeline = std::make_unique<GPipeline>();
-	multipathPipeline->Initialize(dx->GetDev(), bilShader);
-
 	//screen
 	screen.Initialize(dx.get(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
-
-	//gpipeline
-	uiPipeline = std::make_unique<GPipeline>();
-	uiPipeline->Initialize(dx->GetDev(), bilShader);
-	//uiPipeline->SetBlend(dx->GetDev(), GPipeline::ALPHA_BLEND);
 
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
@@ -387,7 +348,7 @@ void GameScene::Initilize()
 
 	//仮enemy置き
 	//今は決め打ち
-	//Bkenderで設定できるように
+	//Bkenderで設定できるように+9	
 	enemy->Initialize(dx.get(), shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ size,size,size });
@@ -432,15 +393,13 @@ void GameScene::Initilize()
 	//imgui初期化
 	imgui->Initialize(dx.get());
 
-	//controller = Controller::GetInstance();
-
 	semiArphaSpriteCommon->Inilialize(dx.get(), true);
 	normalSpriteCommon->Inilialize(dx.get(), false);
 
 	sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
 	titlePng->Inilialize(normalSpriteCommon, &matProjection);
-	titlePng->position = {-680,-420,0};
-	titlePng->scale = {3600,1440,1};
+	titlePng->position = { -680,-420,0 };
+	titlePng->scale = { 3600,1440,1 };
 
 	goalFlag = false;
 	//stageファイル
@@ -661,7 +620,7 @@ void GameScene::Reset()
 	//描画用行列
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	
+
 	//player
 	player->Reset();
 
@@ -697,4 +656,69 @@ void GameScene::Reset()
 
 	//シーンフラグ
 	scene = Title;
+}
+
+void GameScene::StageReload()
+{
+	bool plessZero = input->GetTrigger(DIK_0);
+	bool plessNine = input->GetTrigger(DIK_9);
+
+	if (plessZero || plessNine)
+	{
+		size_t count = objects_.size();
+
+		for (size_t i = 0; i < count; i++)
+		{
+			objects_.erase(objects_.begin());
+		}
+
+		//0ならuntitled
+		if (plessZero)
+		{
+			levelData_ = JsonFileOpen::FileOpen("untitled");
+		}
+
+		//9ならTest01
+		if (plessNine)
+		{
+			levelData_ = JsonFileOpen::FileOpen("Test01");
+		}
+
+		//ホットリロードでStageSelectごとに読み込むようにする
+		//レベルデータからオブジェクトに生成、配置
+		for (auto& objectdata : levelData_->objects)
+		{
+			//ファイル名から登録済みモデルを検索
+			Stage* model_ = nullptr;
+			decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
+
+			//終わりか
+			if (it != stages_.end())
+			{
+				model_ = it->second;
+			}
+
+			//モデルを指定して3Dオブジェクトを生成
+			Stage* newModel_ = new Stage();
+			newModel_->Initialize(dx.get(), shader, pipeline.get());
+
+			//調整
+			float scale = 10.0f;
+
+			//trans
+			newModel_->stage_.mat.trans = objectdata.translation * scale;
+
+			//rotation
+			newModel_->stage_.mat.rotAngle = objectdata.rotation;
+
+			//scale;
+			newModel_->stage_.mat.scale = objectdata.scaling * scale;
+
+			//Update
+			newModel_->Update(matView.mat, matProjection);
+
+			//格納
+			objects_.push_back(newModel_);
+		}
+	}
 }

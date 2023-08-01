@@ -5,19 +5,6 @@
 #include "FlameWork.h"
 
 //flameworkに移動
-#include "Window.h"
-#include "DirectX.h"
-#include "JsonFileOpen.h"
-#include "ConstBuff.h"
-#include "GPipeline.h"
-#include <memory>
-#include <random>
-#include <cassert>
-#include <sstream>
-#include <iomanip>
-#include <map>
-#include <imgui.h>
-#include <wrl.h>
 
 enum Scene
 {
@@ -42,47 +29,26 @@ public:
 
 	bool IsEndRequst() { return endRequest_; };
 	void SetEndRwqust(bool flag) { endRequest_ = flag; };
+	void StageReload();
 private:
 
 	//終了フラグ
 	bool endRequest_ = false;
 
-	//windowApi
-	std::unique_ptr<Window> win;
-
-	//dxCommon
-	std::unique_ptr<MyDirectX> dx;
-
 	//camera
 	MyDebugCamera debugcamera;
 	MyDebugCamera playcamera;
 
-	//buff
-	std::unique_ptr<ConstBuff> cBuff;
-
-	//input
-	std::unique_ptr<Input> input;
-	//Controller* controller = nullptr;
-
-	//shader
-	Shader shader;
-	Shader bilShader;
-	Shader spriteShader;
-
-	//pipeline
-	std::unique_ptr<GPipeline> pipeline;
-
-	//描画初期化
-	std::unique_ptr<GPipeline> multipathPipeline;
-
 	//screen
 	Square screen;
 
-	//gpipeline
-	std::unique_ptr<GPipeline> uiPipeline;
-
 	//tex
 	Square pressText;
+
+	//input
+	std::unique_ptr<Input> input;
+	//std::unique_ptr<Controller> controller;
+	Controller* controller = nullptr;
 
 	//描画用行列
 	MyMath::MatView matView;
