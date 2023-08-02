@@ -248,6 +248,27 @@ void Sprite::Draw(size_t handle)
 	spriteCommon_->dxCommon_->GetCmdList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 }
 
+void Sprite::Draw()
+{
+	//頂点バッファビューの設定コマンド
+	spriteCommon_->dxCommon_->GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
+
+	//画像を引数に入れたものに
+	spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootDescriptorTable(1, spriteCommon_->dxCommon_->GetTextureHandle(tex));
+
+	//定数バッファビュー(CBV)の設定コマンド
+	spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+
+	//描画コマンド
+	//spriteCommon_->dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+	spriteCommon_->dxCommon_->GetCmdList()->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+}
+
+void Sprite::LoadFile(const wchar_t* textureName)
+{
+	tex = spriteCommon_->dxCommon_->LoadTextureGraph(textureName);
+}
+
 void Sprite::TransferSpriteVertex(Vector2D size_)
 {
 	//size = size_;

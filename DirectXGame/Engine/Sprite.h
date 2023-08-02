@@ -15,6 +15,8 @@ public:
 	void Update();
 	void PreDraw();
 	void Draw(size_t handle);
+	void Draw();
+	void LoadFile(const wchar_t* textureName);
 
 	void TransferSpriteVertex(Vector2D size_);
 
@@ -73,5 +75,6 @@ public:
 	};
 
 	HRESULT result;
-
+private:
+	size_t tex;
 };

@@ -390,6 +390,8 @@ void GameScene::Initilize()
 	playerTex = dx->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 	enemyPng = dx->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
 
+	//sprite_->LoadFile(L"Resources/Model/ene/enemy.png");
+
 	//imgui初期化
 	imgui->Initialize(dx.get());
 
@@ -529,6 +531,7 @@ void GameScene::Draw()
 	{
 	case Title:
 		titlePng->Draw(titleTex);
+		//sprite_->Draw();
 		break;
 
 	case Select:
@@ -663,8 +666,11 @@ void GameScene::StageReload()
 	//デバッグ用
 	bool plessZero = input->GetTrigger(DIK_0);
 	bool plessNine = input->GetTrigger(DIK_9);
+	bool plessEight = input->GetTrigger(DIK_8);
 
-	if (plessZero || plessNine)
+	bool ChengeFlag = plessZero || plessNine || plessEight;
+
+	if (ChengeFlag)
 	{
 		size_t count = objects_.size();
 
@@ -684,6 +690,12 @@ void GameScene::StageReload()
 		if (plessNine)
 		{
 			levelData_ = JsonFileOpen::FileOpen("Test01");
+		}
+
+		//8ならatage2
+		if (plessEight)
+		{
+			levelData_ = JsonFileOpen::FileOpen("stage2");
 		}
 
 		//ホットリロードでStageSelectごとに読み込むようにする
