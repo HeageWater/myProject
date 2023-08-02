@@ -58,7 +58,7 @@ void GameScene::Update()
 	//ImGuiここまで
 	imgui->End();
 
-	//8月中にsceneに改造
+	//sceneに改造
 	//ここからSceneの処理
 
 	//switch内で使う関数をここで定義
@@ -660,6 +660,7 @@ void GameScene::Reset()
 
 void GameScene::StageReload()
 {
+	//デバッグ用
 	bool plessZero = input->GetTrigger(DIK_0);
 	bool plessNine = input->GetTrigger(DIK_9);
 
@@ -667,6 +668,7 @@ void GameScene::StageReload()
 	{
 		size_t count = objects_.size();
 
+		//今あるステージを削除
 		for (size_t i = 0; i < count; i++)
 		{
 			objects_.erase(objects_.begin());

@@ -31,6 +31,7 @@ public:
 	Model GetAttackModel() { return playerAttack_; };
 
 	bool CollisionAttackToEnemy(Model enemy);
+	//bool CollisionPlayerToEnemy(Model enemy);
 
 	float GetLife() { return Life; };
 	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);

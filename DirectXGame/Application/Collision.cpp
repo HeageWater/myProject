@@ -119,6 +119,43 @@ void Collision::ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& t
 	*closest = returnP.p0;
 }
 
+bool Collision::BoxCollision3D(Model model1, Model model2)
+{
+	float DisX = model1.mat.trans.x - model2.mat.trans.x;
+	float DisY = model1.mat.trans.y - model2.mat.trans.y;
+	float DisZ = model1.mat.trans.z - model2.mat.trans.z;
+
+	DisX = abs(DisX);
+	DisY = abs(DisY);
+	DisZ = abs(DisZ);
+
+	if (DisX <= model1.mat.scale.x + model2.mat.scale.x &&
+		DisY <= model1.mat.scale.y + model2.mat.scale.y &&
+		DisY <= model1.mat.scale.z + model2.mat.scale.z)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Collision::BoxCollision2D(Model model1, Model model2)
+{
+	float DisX = model1.mat.trans.x - model2.mat.trans.x;
+	float DisY = model1.mat.trans.y - model2.mat.trans.y;
+
+	DisX = abs(DisX);
+	DisY = abs(DisY);
+
+	if (DisX <= model1.mat.scale.x + model2.mat.scale.x &&
+		DisY <= model1.mat.scale.y + model2.mat.scale.y)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 bool Collision::CheckSphereToTriangle(const Sphere& sphere, const Triangle& triangle, Vector3D* inter)
 {
 	Vector3D p;

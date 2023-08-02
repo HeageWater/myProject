@@ -1,4 +1,5 @@
 #pragma once
+//全てのシーンで必要なものをIncude
 #include "Sprite.h"
 #include "Input.h"
 #include "Object3D.h"

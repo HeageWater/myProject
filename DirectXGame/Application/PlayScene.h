@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 
+//‚±‚ÌƒV[ƒ“‚É‚Ì‚İ’Ç‰Á‚·‚é‚à‚Ì
 #include "Player.h"
 #include "Stage.h"
 #include "Enemy.h"
