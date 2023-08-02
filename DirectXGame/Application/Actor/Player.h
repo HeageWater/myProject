@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerAttack.h"
+#include "ImGuiManager.h"
 
 class Player {
 

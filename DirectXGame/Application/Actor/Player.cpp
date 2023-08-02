@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <imgui.h>
 
 Player::Player()
 {
@@ -96,16 +97,6 @@ void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader
 
 	//UŒ‚
 	Attack(dx_, shader, pipeline_);
-
-	//player‚Å‚Ì‰¹ƒeƒXƒg
-	/*if (controller->ButtonTriggerPush(RT))
-	{
-		sound_->SoundPlayWave(2);
-	}*/
-
-	//player_.mat.trans.y = max(player_.mat.trans.y, 11);
-	//player_.mat.trans.x = min(player_.mat.trans.x, 1050);
-	//player_.mat.trans.x = max(player_.mat.trans.x, 0);
 
 	for (size_t i = 0; i < attack.size(); i++)
 	{

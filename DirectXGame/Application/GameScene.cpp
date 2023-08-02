@@ -7,9 +7,6 @@ void GameScene::Update()
 	//Update
 	input->Update();
 
-	//座標更新
-	matView.MatUpdate();
-
 	if (input->GetTrigger(DIK_O))
 	{
 		imguiDrawFlag = !imguiDrawFlag;
@@ -228,14 +225,35 @@ void GameScene::Update()
 			}
 
 			//targetをplayerに
-			//matView.eye.x += dev[19]; //moveCamera.x;
-			matView.eye.x = player->GetPos().x; //moveCamera.x;
-			matView.target.x = player->GetPos().x;// -dev[0];
+			matView.eye.x = player->GetPos().x;
+			matView.target.x = player->GetPos().x;
+
+			//debugcamera.eye.x += input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
+			//debugcamera.target.x += input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
 
 			//float range = 50;
 
 			matView.eye.y = player->GetPos().y; //moveCamera.x;
 			matView.target.y = player->GetPos().y;// -dev[0];part
+
+			//debugcamera.eye.y += input->GetKey(DIK_UP) - input->GetKey(DIK_DOWN);
+		//	debugcamera.target.y += input->GetKey(DIK_UP) - input->GetKey(DIK_DOWN);
+
+
+
+			matView.mat = playcamera.mat;
+
+			if (input->GetKey(DIK_1))
+			{
+				matView.mat = debugcamera.mat;
+			}
+
+			//座標更新
+			playcamera.Update(*input);
+			debugcamera.Update(*input);
+
+			matView.MatUpdate();
+
 
 			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
 			bool checkGoal = goal->BoxCollision(player->GetModel());
@@ -249,6 +267,8 @@ void GameScene::Update()
 			if (chengeScene->GetTime() > chengeTime && goalFlag)
 			{
 				scene = GameClear;
+
+				goalFlag = false;
 			}
 
 		}
@@ -262,7 +282,7 @@ void GameScene::Update()
 		break;
 
 	case GameClear:
-		/*if (chengeScene->GetTime() > chengeTime)
+		if (chengeScene->GetTime() > chengeTime)
 		{
 			scene = Title;
 
@@ -272,7 +292,7 @@ void GameScene::Update()
 		if (input->GetTrigger(DIK_SPACE) || player->GetA())
 		{
 			chengeScene->SetPlayFlag();
-		}*/
+		}
 		break;
 
 	case GameOver:
@@ -389,6 +409,7 @@ void GameScene::Initilize()
 	titleTex = dx->LoadTextureGraph(L"Resources/sprite/Title.png");
 	playerTex = dx->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 	enemyPng = dx->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
+	blackTex = dx->LoadTextureGraph(L"Resources/sprite/black.png");
 
 	//sprite_->LoadFile(L"Resources/Model/ene/enemy.png");
 
@@ -490,13 +511,13 @@ void GameScene::Draw()
 		//stageWhite->Draw(white);
 		goal->Draw(white);
 		for (auto& object : objects_) {
-			object->Draw(white);
+			object->Draw(texP);
 		}
 
 		//ボックスパーティクル
 		for (size_t i = 0; i < boxParticles_.size(); i++)
 		{
-			boxParticles_[i]->Draw(white);
+			boxParticles_[i]->Draw(blackTex);
 		}
 
 		break;
@@ -667,8 +688,9 @@ void GameScene::StageReload()
 	bool plessZero = input->GetTrigger(DIK_0);
 	bool plessNine = input->GetTrigger(DIK_9);
 	bool plessEight = input->GetTrigger(DIK_8);
+	bool plessSeven = input->GetTrigger(DIK_7);
 
-	bool ChengeFlag = plessZero || plessNine || plessEight;
+	bool ChengeFlag = plessZero || plessNine || plessEight || plessSeven;
 
 	if (ChengeFlag)
 	{
@@ -696,6 +718,12 @@ void GameScene::StageReload()
 		if (plessEight)
 		{
 			levelData_ = JsonFileOpen::FileOpen("stage2");
+		}
+
+		//7ならatage2test
+		if (plessSeven)
+		{
+			levelData_ = JsonFileOpen::FileOpen("stage2Test");
 		}
 
 		//ホットリロードでStageSelectごとに読み込むようにする

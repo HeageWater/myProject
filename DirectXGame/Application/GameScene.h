@@ -92,6 +92,7 @@ private:
 	size_t clearTex = 0;
 	size_t playerTex = 0;
 	size_t titleTex = 0;
+	size_t blackTex = 0;
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();
