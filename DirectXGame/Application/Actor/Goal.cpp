@@ -16,7 +16,7 @@ void Goal::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 	goal_.mat.Initialize();
 	goal_.mat.scale = { 5,5,3 };
-	goal_.mat.trans = { 360,140,0 };
+	goal_.mat.trans = { 380,-160,0 };
 }
 
 void Goal::Draw(size_t tex)

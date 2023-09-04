@@ -132,9 +132,11 @@ void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyMath::MatView::MatUpdate()
 {
-	if (eye.x < 200)
+	float back = 50;
+
+	if (eye.x < back)
 	{
-		if (eye.z > -200)
+		if (eye.z > -back)
 		{
 			eye.z--;
 		}
@@ -154,7 +156,15 @@ void MyMath::MatView::MatUpdate()
 			eye.z = -150;
 		}
 	}
-	else if (eye.x > 11)
+	/*else if (eye.x > 119)
+	{
+		if (eye.z > -250)
+		{
+			eye.z--;
+		}
+	}*/
+
+	if (eye.x < 30)
 	{
 		if (eye.z > -100)
 			eye.z--;

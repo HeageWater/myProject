@@ -22,6 +22,7 @@ public:
 	Vector2D GetController() { return controller->GetLeftStickVec(); };
 
 	Vector3D GetPos() { return player_.mat.trans; };
+	void SetPos(Vector3D pos) { player_.mat.trans = pos; };
 	Vector3D GetRot() { return player_.mat.rotAngle; };
 	Vector3D GetScale() { return player_.mat.scale; };
 	Model GetModel() { return player_; };
@@ -35,12 +36,37 @@ public:
 	//bool CollisionPlayerToEnemy(Model enemy);
 
 	float GetLife() { return Life; };
+	void SetLife(float x) { Life = x; };
 	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);
+	bool StageCollsionX(Model stage, Matrix matView, Matrix matProjection);
+	bool StageCollsionY(Model stage, Matrix matView, Matrix matProjection);
 	bool GetA()
 	{ //コントローラーUpdate
-		controller->Update(); 
+		controller->Update();
 		return controller->ButtonTriggerPush(A);
 	};
+
+	bool PlayerCollision(Model enemy);
+
+	//ワープするアクション
+	bool WarpAction();
+
+	//ワープの入口に触れた時
+	bool warpActionFlag = false;
+
+	uint32_t warpMord = 0;
+
+	//warpの入口と出口のpos
+	Vector3D warpPos[2];
+
+	void SetWarpPos(Vector3D pos1, Vector3D pos2) { warpPos[0] = pos1; warpPos[1] = pos2; };
+
+	uint32_t GetWarpMode() { return warpMord; };
+	void SetWarpMode(uint32_t mode) { warpMord = mode; };
+
+	void MoveX() { player_.mat.trans.x += colVec.x; };
+	void MoveY() { player_.mat.trans.y += colVec.y; };
+
 private:
 	MyXAudio* sound_ = nullptr;
 	//size_t volcanoSE = 0;
@@ -62,5 +88,22 @@ private:
 	//移動用変数
 	Vector3D colVec = { 0,0,0 };
 
+	//HP
 	float Life;
+
+	//点滅カウント
+	uint32_t lesFlag;
+
+	//ノックバックの向き
+	float knockBackVec = 0;
+
+	//ノックバックのフラグ
+	bool knockBackFlag;
+
+	//敵と当たった時にHP減らしてノックバックのフラグをONに
+	//点滅フラグもONに
+	void LesLife();
+
+	//敵と当たった時のノックバック
+	void KnockBack();
 };

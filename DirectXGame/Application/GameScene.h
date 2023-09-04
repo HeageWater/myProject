@@ -31,6 +31,7 @@ public:
 	void SetEndRwqust(bool flag) { endRequest_ = flag; };
 	void StageReload();
 private:
+	void CreatePatricle(Vector3D pos);
 
 	//終了フラグ
 	bool endRequest_ = false;
@@ -65,6 +66,9 @@ private:
 	//player
 	Player* player = new Player();
 
+	//Warp
+	Warp* warp = new Warp();
+
 	//仮enemy置き
 	Enemy* enemy = new Enemy();
 	Enemy* enemy2 = new Enemy();
@@ -90,9 +94,19 @@ private:
 	size_t brPng = 0;
 	size_t enemyPng = 0;
 	size_t clearTex = 0;
+	size_t overTex = 0;
 	size_t playerTex = 0;
 	size_t titleTex = 0;
+	size_t heartLesTex = 0;
+	size_t heartHaveTex = 0;
+	size_t lifeTex = 0;
 	size_t blackTex = 0;
+	size_t backTex = 0;
+	size_t LTex = 0;
+	size_t RTex = 0;
+	size_t AbuttonTex = 0;
+	size_t PressTex = 0;
+	size_t LTTex = 0;
 
 	//Imgui
 	ImguiManager* imgui = new ImguiManager();
@@ -105,6 +119,19 @@ private:
 	SpriteCommon* normalSpriteCommon = new  SpriteCommon();
 	Sprite* sprite_ = new Sprite();
 	Sprite* titlePng = new Sprite();
+	Sprite* lifePng = new Sprite();
+	Sprite* lesPng = new Sprite();
+	Sprite* lesPng2 = new Sprite();
+	Sprite* lesPng3 = new Sprite();
+	Sprite* havePng = new Sprite();
+	Sprite* havePng2 = new Sprite();
+	Sprite* havePng3 = new Sprite();
+	Sprite* UILStick = new Sprite();
+	Sprite* UIRStick = new Sprite();
+	Sprite* UILT = new Sprite();
+	Sprite* UIAButton = new Sprite();
+	Sprite* UIPress = new Sprite();
+
 
 	//パーティクル格納用
 	std::vector<Particle*> particles_;
@@ -123,6 +150,7 @@ private:
 
 	bool imguiDrawFlag = true;
 	bool goalFlag = false;
+	bool overFlag = false;
 
 	Sphere titleObj;
 };

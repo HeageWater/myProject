@@ -11,6 +11,7 @@
 #include "Shake.h"
 #include "Emitter.h"
 #include "ChengeScene.h"
+#include "Warp.h"
 
 class PlayScene : public BaseScene
 {

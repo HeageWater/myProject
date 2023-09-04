@@ -42,6 +42,15 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 
 	enemy_.mat.rotAngle.y += spd;
 
+	if (Time > 0)
+	{
+		Time--;
+
+		move = { 0,0,0 };
+	}
+
+	enemy_.mat.trans -= move;
+
 	DeadVec();
 
 	enemy_.MatUpdate(matView, matProjection);
@@ -69,6 +78,34 @@ bool Enemy::BoxCollision(Model model)
 	}
 
 	return false;
+}
+
+void Enemy::SertchPlayer(Model model)
+{
+	float sertchScale = 500;
+	//Vector3D sertchScale = {10,10,10};
+
+	float a = (model.mat.trans.x - enemy_.mat.trans.x) * (model.mat.trans.x - enemy_.mat.trans.x);
+	float b = (model.mat.trans.y - enemy_.mat.trans.y) * (model.mat.trans.y - enemy_.mat.trans.y);
+
+	float c = model.mat.scale.x * sertchScale;
+	//float c = model.mat.scale.x * enemy_.mat.scale.x;
+
+	//‚ ‚½‚è”»’è
+	if (a + b < c)
+	{
+		sertchFlag = true;
+		move = enemy_.mat.trans - model.mat.trans;
+		move.normalize();
+
+		move.x /= 2;
+		move.y /= 2;
+		move.z /= 2;
+	}
+	else
+	{
+		move = { 0,0,0 };
+	}
 }
 
 void Enemy::DeadVec()

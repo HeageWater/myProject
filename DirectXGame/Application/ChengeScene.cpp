@@ -17,7 +17,7 @@ void ChengeScene::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Matrix matPro
 
 	sprite_->Inilialize(spriteCommon, &matProjection);
 
-	tex = dx_->LoadTextureGraph(L"Resources/sprite/br.png");
+	tex = dx_->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
 
 	//scale—p
 	float size = 2.5f;
@@ -68,6 +68,7 @@ void ChengeScene::Update(Matrix matView, Matrix matProjection)
 	if (widthOut)
 	{
 		isPlayFlag = false;
+		time = 0;
 	}
 
 	sprite_->Update();

@@ -19,10 +19,12 @@ public:
 	//void Update(Matrix matView, Matrix matProjection, Input* input);
 	void Update(Matrix matView, Matrix matProjection);
 	bool BoxCollision(Model model);
+	void SertchPlayer(Model model);
 
 	bool isDead = false;
 	bool deadVec = false;
 	Vector3D Vec = {0,0,0};
+	Vector3D move = {0,0,0};
 	void DeadVec();
 	float Time = 0;
 
@@ -32,4 +34,5 @@ public:
 	Vector3D GetPos() {return  enemy_.mat.trans;};
 
 	Model enemy_;
+	bool sertchFlag = false;
 };

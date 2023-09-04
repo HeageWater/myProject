@@ -124,7 +124,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\Resource;$(ProjectDir)\Resource\shader;$(ProjectDir)\DirectXGame\Application\Actor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -204,6 +204,7 @@
     <ClCompile Include="DirectXGame\Application\HitStop.cpp" />
     <ClCompile Include="DirectXGame\Application\Emitter.cpp" />
     <ClCompile Include="DirectXGame\Application\PlayScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -297,6 +298,7 @@
     <ClInclude Include="DirectXGame\Application\HitStop.h" />
     <ClInclude Include="DirectXGame\Application\Emitter.h" />
     <ClInclude Include="DirectXGame\Application\PlayScene.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\Warp.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Geometry.hlsli" />

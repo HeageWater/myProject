@@ -201,6 +201,9 @@
     <ClCompile Include="DirectXGame\Application\ChengeScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp">
+      <Filter>ソース ファイル\Game\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\PShader.hlsl">
@@ -375,6 +378,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\ChengeScene.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Warp.h">
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
