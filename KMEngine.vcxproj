@@ -124,7 +124,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External$Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
