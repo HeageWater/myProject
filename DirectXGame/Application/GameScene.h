@@ -33,6 +33,9 @@ public:
 private:
 	void CreatePatricle(Vector3D pos);
 
+	//ステージ読み込み
+	void StageLoad();
+
 	//終了フラグ
 	bool endRequest_ = false;
 
@@ -62,6 +65,8 @@ private:
 	MyXAudio* sound_ = nullptr;
 	size_t bgm = 0;
 	size_t fanfare = 0;
+	size_t playerHit = 0;
+	size_t enemyHit = 0;
 
 	//player
 	Player* player = new Player();

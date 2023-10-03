@@ -9,93 +9,11 @@ void GameScene::Update()
 	//Update
 	input->Update();
 
-	if (input->GetTrigger(DIK_O))
-	{
-		imguiDrawFlag = !imguiDrawFlag;
-	}
-
-	//imgui
-	imgui->Begin();
-
-	if (ImGui::TreeNode("group 1"))
-	{
-		float x = player->GetPos().x;
-		float y = player->GetPos().y;
-		float nowLife = player->GetLife();
-		bool a = true;
-
-		ImGui::Text("player pos");
-		ImGui::SliderFloat("player pos.x", &UIPress->position.x, -1000.0f, 1000.0f, "%f");
-		ImGui::SliderFloat("player pos.y", &UIPress->position.y, -1000.0f, 1000.0f, "%f");
-		ImGui::Text("DebugCamera");
-		ImGui::Checkbox("DebugCamera", &a);
-		//ImGui::InputFloat("x", &x, 0.0f, 1000.0f, "%f");
-		ImGui::SliderFloat("camera.eye.x", &matView.eye.x, -1000.0f, 1000.0f, "%f");
-		//ImGui::SliderFloat("y", &y, 0.0f, 1000.0f, "%f");
-		ImGui::SliderFloat("lesPng->position.y", &lesPng->position.y, -1000.0f, 1000.0f, "%f");
-		ImGui::SliderFloat("Life", &nowLife, 0.0f, 1000.0f, "%f");
-
-		ImGui::Text("O Key : ImGuiDrawFlag");
-		ImGui::Checkbox("ImGuiDraw", &imguiDrawFlag);
-
-		ImGui::Text("P Key : Reset");
-
-		ImGui::Text("NextScene : SpaceKey or A Button");
-		ImGui::Text("LStick : Move");
-		ImGui::Text("RStick : Attack");
-		ImGui::Text("LT : Jump");
-
-		if (ImGui::Button("Title"))
-		{
-			scene = Title;
-		}
-
-		if (ImGui::Button("Play"))
-		{
-			scene = Play;
-		}
-
-		if (ImGui::Button("GameClear"))
-		{
-			scene = GameClear;
-		}
-
-		if (ImGui::Button("GameOver"))
-		{
-			scene = GameOver;
-		}
-
-		ImGui::TreePop();
-	}
-
-	if (ImGui::TreeNode("stageObjScale"))
-	{
-		for (auto& object : objects_)
-		{
-			ImGui::SliderFloat("objrotAngleX", &object->stage_.mat.rotAngle.x, 0.0f, 5.0f, "%f");
-
-			ImGui::SliderFloat("objrotAngleY", &object->stage_.mat.rotAngle.y, 0.0f, 5.0f, "%f");
-
-			ImGui::SliderFloat("objrotAngleZ", &object->stage_.mat.rotAngle.z, 0.0f, 5.0f, "%f");
-		}
-
-		ImGui::TreePop();
-	}
-
-	//ImGuiここまで
-	imgui->End();
-
 	//sceneに改造
 	//ここからSceneの処理
 
 	//switch内で使う関数をここで定義
 	float chengeTime = 50;
-
-	if (input->GetTrigger(DIK_P))
-	{
-		scene = Title;
-		Reset();
-	}
 
 	//ステージホットリロード
 	StageReload();
@@ -113,7 +31,7 @@ void GameScene::Update()
 			scene = Play;
 		}
 
-		if (input->GetTrigger(DIK_SPACE) || player->GetA())
+		if (player->GetA())
 		{
 			chengeScene->SetPlayFlag();
 		}
@@ -134,15 +52,6 @@ void GameScene::Update()
 			//player更新
 			player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
 
-			//player->player_.mat.trans.x += (input->GetKey(DIK_D) - input->GetKey(DIK_A));
-			//player->player_.mat.trans.y += (input->GetKey(DIK_W) - input->GetKey(DIK_S));
-
-			if (input->GetTrigger(DIK_B))
-			{
-				//player->LesLife();
-				player->SetLife(4);
-			}
-
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
 			enemy->SertchPlayer(player->GetModel());
@@ -150,6 +59,7 @@ void GameScene::Update()
 			{
 				CreatePatricle(player->GetPos());
 				enemy->Time = stopTime;
+				sound_->SoundPlayWave(playerHit);
 			}
 			bool sheikF = enemy->BoxCollision(player->GetAttackModel());
 
@@ -159,7 +69,7 @@ void GameScene::Update()
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
-
+				sound_->SoundPlayWave(enemyHit);
 				CreatePatricle(enemy->GetPos());
 			}
 
@@ -170,13 +80,14 @@ void GameScene::Update()
 			{
 				CreatePatricle(player->GetPos());
 				enemy2->Time = stopTime;
+				sound_->SoundPlayWave(playerHit);
 			}
 			sheikF = enemy2->BoxCollision(player->GetAttackModel());
 
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
-
+				sound_->SoundPlayWave(enemyHit);
 				CreatePatricle(enemy2->GetPos());
 			}
 
@@ -187,13 +98,14 @@ void GameScene::Update()
 			{
 				CreatePatricle(player->GetPos());
 				enemy3->Time = stopTime;
+				sound_->SoundPlayWave(playerHit);
 			}
 			sheikF = enemy3->BoxCollision(player->GetAttackModel());
 
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
-
+				sound_->SoundPlayWave(enemyHit);
 				CreatePatricle(enemy3->GetPos());
 			}
 
@@ -204,13 +116,14 @@ void GameScene::Update()
 			{
 				CreatePatricle(player->GetPos());
 				enemy4->Time = stopTime;
+				sound_->SoundPlayWave(playerHit);
 			}
 			sheikF = enemy4->BoxCollision(player->GetAttackModel());
 
 			if (sheikF)
 			{
 				hitStop->SetTime(setStopTime);
-
+				sound_->SoundPlayWave(enemyHit);
 				CreatePatricle(enemy4->GetPos());
 			}
 
@@ -297,34 +210,20 @@ void GameScene::Update()
 
 
 			//targetをplayerに
-			matView.eye.x = player->GetPos().x;// +(input->GetKey(DIK_C) * 90);
-			matView.target.x = player->GetPos().x;// +(input->GetKey(DIK_C) * 90);
+			matView.eye.x = player->GetPos().x;
+			matView.target.x = player->GetPos().x;
 
-			//debugcamera.eye.x += input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
-			//debugcamera.target.x += input->GetKey(DIK_RIGHT) - input->GetKey(DIK_LEFT);
-
-			//float range = 50;
-
-			matView.eye.y = player->GetPos().y; //moveCamera.x;
-			matView.target.y = player->GetPos().y;// -dev[0];part
-
-			//debugcamera.eye.y += input->GetKey(DIK_UP) - input->GetKey(DIK_DOWN);
-		//	debugcamera.target.y += input->GetKey(DIK_UP) - input->GetKey(DIK_DOWN);
-
+			matView.eye.y = player->GetPos().y;
+			matView.target.y = player->GetPos().y;
 
 			matView.mat = playcamera.mat;
-
-			if (input->GetKey(DIK_1))
-			{
-				matView.mat = debugcamera.mat;
-			}
 
 			//座標更新
 			playcamera.Update(*input);
 			debugcamera.Update(*input);
 
+			//カメラ更新
 			matView.MatUpdate();
-
 
 			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
 			bool checkGoal = goal->BoxCollision(player->GetModel());
@@ -346,6 +245,9 @@ void GameScene::Update()
 			{
 				chengeScene->SetPlayFlag();
 				overFlag = true;
+
+				Reset();
+
 			}
 
 			if (chengeScene->GetTime() > chengeTime && overFlag)
@@ -365,7 +267,7 @@ void GameScene::Update()
 		break;
 
 	case GameClear:
-		if (input->GetTrigger(DIK_SPACE) || player->GetA())
+		if (player->GetA())
 		{
 			chengeScene->SetPlayFlag();
 
@@ -377,7 +279,7 @@ void GameScene::Update()
 
 	case GameOver:
 
-		if (input->GetTrigger(DIK_SPACE) || player->GetA())
+		if (player->GetA())
 		{
 			chengeScene->SetPlayFlag();
 
@@ -453,6 +355,8 @@ void GameScene::Initilize()
 	sound_ = MyXAudio::Get();
 	bgm = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 	fanfare = sound_->SoundLoadWave("Resources/sound/fanfare.wav");
+	playerHit = sound_->SoundLoadWave("Resources/sound/se_hit_005.wav");
+	enemyHit = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 
 	//player
 	player->Initialize(dx.get(), shader, pipeline.get());
@@ -463,8 +367,6 @@ void GameScene::Initilize()
 	float size = 3.0f;
 
 	//仮enemy置き
-	//今は決め打ち
-	//Bkenderで設定できるように+9	
 	enemy->Initialize(dx.get(), shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ size,size,size });
@@ -516,7 +418,6 @@ void GameScene::Initilize()
 	AbuttonTex = dx->LoadTextureGraph(L"Resources/sprite/Abutton.png");
 	PressTex = dx->LoadTextureGraph(L"Resources/sprite/press.png");
 	LTTex = dx->LoadTextureGraph(L"Resources/sprite/LT.png");
-	//sprite_->LoadFile(L"Resources/Model/ene/enemy.png");
 
 	//imgui初期化
 	imgui->Initialize(dx.get());
@@ -525,119 +426,86 @@ void GameScene::Initilize()
 	semiArphaSpriteCommon->Inilialize(dx.get(), true);
 	normalSpriteCommon->Inilialize(dx.get(), false);
 
-	//基礎
-	sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
+	{
+		//基礎
+		sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
 
-	//タイトル
-	titlePng->Inilialize(normalSpriteCommon, &matProjection);
-	titlePng->position = { -680,-420,0 };
-	titlePng->scale = { 3600,1440,1 };
+		//タイトル
+		titlePng->Inilialize(normalSpriteCommon, &matProjection);
+		titlePng->position = { -680,-420,0 };
+		titlePng->scale = { 3600,1440,1 };
 
-	//ライフ英語
-	lifePng->Inilialize(normalSpriteCommon, &matProjection);
-	lifePng->position = { -590,240,0 };
-	lifePng->scale = { 360,144,1 };
+		//ライフ英語
+		lifePng->Inilialize(normalSpriteCommon, &matProjection);
+		lifePng->position = { -590,240,0 };
+		lifePng->scale = { 360,144,1 };
 
-	//ライフ1
-	lesPng->Inilialize(normalSpriteCommon, &matProjection);
-	lesPng->position = { -200,200,0 };
-	lesPng->scale = { 256,144,1 };
+		//ライフ1
+		lesPng->Inilialize(normalSpriteCommon, &matProjection);
+		lesPng->position = { -200,200,0 };
+		lesPng->scale = { 256,144,1 };
 
-	//ライフ2
-	lesPng2->Inilialize(normalSpriteCommon, &matProjection);
-	lesPng2->position = { -200,200,0 };
-	lesPng2->scale = { 256,144,1 };
+		//ライフ2
+		lesPng2->Inilialize(normalSpriteCommon, &matProjection);
+		lesPng2->position = { -200,200,0 };
+		lesPng2->scale = { 256,144,1 };
 
-	//ライフ3
-	lesPng3->Inilialize(normalSpriteCommon, &matProjection);
-	lesPng3->position = { -200,200,0 };
-	lesPng3->scale = { 256,144,1 };
+		//ライフ3
+		lesPng3->Inilialize(normalSpriteCommon, &matProjection);
+		lesPng3->position = { -200,200,0 };
+		lesPng3->scale = { 256,144,1 };
 
-	//ライフ1
-	havePng->Inilialize(normalSpriteCommon, &matProjection);
-	havePng->position = { -680,-420,0 };
-	havePng->scale = { 256,144,1 };
+		//ライフ1
+		havePng->Inilialize(normalSpriteCommon, &matProjection);
+		havePng->position = { -680,-420,0 };
+		havePng->scale = { 256,144,1 };
 
-	//ライフ2
-	havePng2->Inilialize(normalSpriteCommon, &matProjection);
-	havePng2->position = { -680,-420,0 };
-	havePng2->scale = { 256,144,1 };
+		//ライフ2
+		havePng2->Inilialize(normalSpriteCommon, &matProjection);
+		havePng2->position = { -680,-420,0 };
+		havePng2->scale = { 256,144,1 };
 
-	//ライフ3
-	havePng3->Inilialize(normalSpriteCommon, &matProjection);
-	havePng3->position = { -680,-420,0 };
-	havePng3->scale = { 256,144,1 };
+		//ライフ3
+		havePng3->Inilialize(normalSpriteCommon, &matProjection);
+		havePng3->position = { -680,-420,0 };
+		havePng3->scale = { 256,144,1 };
 
-	//LStick
-	UILStick->Inilialize(normalSpriteCommon, &matProjection);
-	UILStick->position = { -540,-280,0 };
-	UILStick->scale = { 240,120,1 };
+		//LStick
+		UILStick->Inilialize(normalSpriteCommon, &matProjection);
+		UILStick->position = { -540,-280,0 };
+		UILStick->scale = { 240,120,1 };
 
-	//RStick
-	UIRStick->Inilialize(normalSpriteCommon, &matProjection);
-	UIRStick->position = { -460,-320,0 };
-	UIRStick->scale = { 240,120,1 };
+		//RStick
+		UIRStick->Inilialize(normalSpriteCommon, &matProjection);
+		UIRStick->position = { -460,-320,0 };
+		UIRStick->scale = { 240,120,1 };
 
-	//LT
-	UILT->Inilialize(normalSpriteCommon, &matProjection);
-	UILT->position = { -600,-230,0 };
-	UILT->scale = { 200,120,1 };
+		//LT
+		UILT->Inilialize(normalSpriteCommon, &matProjection);
+		UILT->position = { -600,-230,0 };
+		UILT->scale = { 200,120,1 };
 
-	//Abutton
-	UIAButton->Inilialize(normalSpriteCommon, &matProjection);
-	UIAButton->position = { 180,-230,0 };
-	UIAButton->scale = { 480,240,1 };
+		//Abutton
+		UIAButton->Inilialize(normalSpriteCommon, &matProjection);
+		UIAButton->position = { 180,-230,0 };
+		UIAButton->scale = { 480,240,1 };
 
-	//Press
-	UIPress->Inilialize(normalSpriteCommon, &matProjection);
-	UIPress->position = { -280,-230,0 };
-	UIPress->scale = { 600,240,1 };
+		//Press
+		UIPress->Inilialize(normalSpriteCommon, &matProjection);
+		UIPress->position = { -280,-230,0 };
+		UIPress->scale = { 600,240,1 };
+
+	};
 
 	goalFlag = false;
-	//stageファイル
-	levelData_ = JsonFileOpen::FileOpen("stage4");
 
-	//ホットリロードでStageSelectごとに読み込むようにする
-	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData_->objects)
-	{
-		//ファイル名から登録済みモデルを検索
-		Stage* model_ = nullptr;
-		decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
-
-		//終わりか
-		if (it != stages_.end())
-		{
-			model_ = it->second;
-		}
-
-		//モデルを指定して3Dオブジェクトを生成
-		Stage* newModel_ = new Stage();
-		newModel_->Initialize(dx.get(), shader, pipeline.get());
-
-		//調整
-		float scale = 10.0f;
-
-		//trans
-		newModel_->stage_.mat.trans = objectdata.translation * scale;
-
-		//rotation
-		newModel_->stage_.mat.rotAngle = objectdata.rotation;
-
-		//scale;
-		newModel_->stage_.mat.scale = objectdata.scaling * scale;
-
-		//Update
-		newModel_->Update(matView.mat, matProjection);
-
-		//格納
-		objects_.push_back(newModel_);
-	}
+	//ステージ読み込み
+	StageLoad();
 
 	chengeScene->Initialize(dx.get(), pipeline.get(), matProjection);
 
 	//音を鳴らす
-	sound_->SoundPlayLoopWave(bgm);
+	//sound_->SoundPlayLoopWave(bgm);
 }
 
 void GameScene::Draw()
@@ -736,11 +604,6 @@ void GameScene::Draw()
 		break;
 
 	case GameClear:
-
-		/*if (input->GetKey(DIK_0))
-		{
-			pressText.Draw(clearTex);
-		}*/
 		break;
 
 	case GameOver:
@@ -865,12 +728,6 @@ void GameScene::Draw()
 
 	//ここまで2D描画
 
-	//Imgui 表示させるかどうか
-	if (imguiDrawFlag)
-	{
-		//imgui->Draw(dx.get());
-	}
-
 	dx->PostDraw();
 }
 
@@ -883,6 +740,8 @@ void GameScene::Finalize()
 	{
 		delete object;
 	}
+
+	sound_->StopAllLoopSound();
 
 	FlameWork::Finalize();
 }
@@ -1080,5 +939,48 @@ void GameScene::CreatePatricle(Vector3D pos)
 		newP->SetPos(pos);
 
 		boxParticles_.push_back(newP);
+	}
+}
+
+void GameScene::StageLoad()
+{
+	//stageファイル
+	levelData_ = JsonFileOpen::FileOpen("stage4");
+
+	//ホットリロードでStageSelectごとに読み込むようにする
+	//レベルデータからオブジェクトに生成、配置
+	for (auto& objectdata : levelData_->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Stage* model_ = nullptr;
+		decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
+
+		//終わりか
+		if (it != stages_.end())
+		{
+			model_ = it->second;
+		}
+
+		//モデルを指定して3Dオブジェクトを生成
+		Stage* newModel_ = new Stage();
+		newModel_->Initialize(dx.get(), shader, pipeline.get());
+
+		//調整
+		float scale = 10.0f;
+
+		//trans
+		newModel_->stage_.mat.trans = objectdata.translation * scale;
+
+		//rotation
+		newModel_->stage_.mat.rotAngle = objectdata.rotation;
+
+		//scale;
+		newModel_->stage_.mat.scale = objectdata.scaling * scale;
+
+		//Update
+		newModel_->Update(matView.mat, matProjection);
+
+		//格納
+		objects_.push_back(newModel_);
 	}
 }

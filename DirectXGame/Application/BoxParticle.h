@@ -3,7 +3,6 @@
 #include "Object3D.h"
 #include "ConstBuff.h"
 #include "Shader.h"
-#include <memory>
 #include "Model.h"
 #include "Square.h"
 

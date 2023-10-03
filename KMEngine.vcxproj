@@ -125,6 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,7 +142,7 @@
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Re;$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\External</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,14 +152,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Application\BoxParticle.cpp" />
-    <ClCompile Include="DirectXGame\Application\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
+    <ClCompile Include="DirectXGame\Application\BoxParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\ChengeScene.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision.cpp" />
     <ClCompile Include="DirectXGame\Application\Easing.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp" />
+    <ClCompile Include="DirectXGame\Application\SceneFactory.cpp" />
+    <ClCompile Include="DirectXGame\Application\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\FlameWork.cpp" />
     <ClCompile Include="DirectXGame\Application\GameScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp" />
@@ -249,14 +251,16 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Application\BoxParticle.h" />
-    <ClInclude Include="DirectXGame\Application\BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
+    <ClInclude Include="DirectXGame\Application\BaseScene.h" />
+    <ClInclude Include="DirectXGame\Application\BoxParticle.h" />
     <ClInclude Include="DirectXGame\Application\ChengeScene.h" />
     <ClInclude Include="DirectXGame\Application\CircleParticle.h" />
     <ClInclude Include="DirectXGame\Application\Collision.h" />
     <ClInclude Include="DirectXGame\Application\Easing.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Enemy.h" />
+    <ClInclude Include="DirectXGame\Application\SceneFactory.h" />
+    <ClInclude Include="DirectXGame\Application\SceneManager.h" />
     <ClInclude Include="DirectXGame\Engine\FlameWork.h" />
     <ClInclude Include="DirectXGame\Application\GameScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Goal.h" />

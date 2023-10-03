@@ -15,11 +15,18 @@
 class BaseScene
 {
 public:
-	virtual void Update();
-	virtual void Initilize();
-	virtual void Draw();
-	virtual void Finalize();
-	//virtual ~BaseScene() = delete;
+	//‰Šú‰»
+	virtual void Initilize() = 0;
 
+	//XV
+	virtual void Update() = 0;
+
+	//•`‰æ
+	virtual void Draw() = 0;
+
+	//”jŠü
+	virtual void Finalize() = 0;
+
+	virtual ~BaseScene() = default;
 private:
 };
