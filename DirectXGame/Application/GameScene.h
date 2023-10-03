@@ -34,7 +34,7 @@ private:
 	void CreatePatricle(Vector3D pos);
 
 	//ステージ読み込み
-	void StageLoad();
+	void StageLoad(const std::string& filePath);
 
 	//終了フラグ
 	bool endRequest_ = false;

@@ -1,12 +1,8 @@
 #pragma once
 #include<memory>
+#include<string>
 #include"BaseScene.h"
 
-#include<string>
-
-/// <summary>
-/// ƒV[ƒ“Hê(ŠT”O)
-/// </summary>
 class SceneFactory
 {
 public:

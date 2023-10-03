@@ -159,6 +159,7 @@
     <ClCompile Include="DirectXGame\Application\Collision.cpp" />
     <ClCompile Include="DirectXGame\Application\Easing.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp" />
+    <ClCompile Include="DirectXGame\Application\LoadObjectData.cpp" />
     <ClCompile Include="DirectXGame\Application\SceneFactory.cpp" />
     <ClCompile Include="DirectXGame\Application\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\FlameWork.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="DirectXGame\Application\Collision.h" />
     <ClInclude Include="DirectXGame\Application\Easing.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Enemy.h" />
+    <ClInclude Include="DirectXGame\Application\LoadObjectData.h" />
     <ClInclude Include="DirectXGame\Application\SceneFactory.h" />
     <ClInclude Include="DirectXGame\Application\SceneManager.h" />
     <ClInclude Include="DirectXGame\Engine\FlameWork.h" />

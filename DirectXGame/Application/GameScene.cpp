@@ -500,7 +500,7 @@ void GameScene::Initilize()
 	goalFlag = false;
 
 	//ステージ読み込み
-	StageLoad();
+	StageLoad("stage4");
 
 	chengeScene->Initialize(dx.get(), pipeline.get(), matProjection);
 
@@ -741,8 +741,6 @@ void GameScene::Finalize()
 		delete object;
 	}
 
-	sound_->StopAllLoopSound();
-
 	FlameWork::Finalize();
 }
 
@@ -942,10 +940,11 @@ void GameScene::CreatePatricle(Vector3D pos)
 	}
 }
 
-void GameScene::StageLoad()
+//ファイル名を入れるとそれを読み込む
+void GameScene::StageLoad(const std::string& filePath)
 {
 	//stageファイル
-	levelData_ = JsonFileOpen::FileOpen("stage4");
+	levelData_ = JsonFileOpen::FileOpen(filePath);
 
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
