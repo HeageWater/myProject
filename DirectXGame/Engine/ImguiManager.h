@@ -22,6 +22,17 @@ public:
 	//描画
 	void Draw(MyDirectX* dxCommon);
 
+	//static ImguiManager* GetInstance();
+
+private:
+
+	//ImguiManager() = default;
+	//~ImguiManager() = default;
+
+	////コピーコンストラクタ・代入演算子削除
+	//ImguiManager& operator=(const ImguiManager&) = delete;
+	//ImguiManager(const ImguiManager&) = delete;
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
 };

@@ -17,6 +17,10 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneNam
 		//newScene = new GameScene();
 		newScene = new PlayScene();
 	}
+	else if(sceneName == "")
+	{
+
+	}
 
 	return std::unique_ptr<BaseScene>(newScene);
 }

@@ -75,7 +75,13 @@ void ImguiManager::Draw(MyDirectX* dxCommon)
 
 	//デスクリプタヒープの配列をセットするコマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap_.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps),ppHeaps);
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//描画コマンド実行
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),cmdList);
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmdList);
 }
+
+//ImguiManager* ImguiManager::GetInstance()
+//{
+//	static ImguiManager imgui;
+//	return &imgui;
+//}

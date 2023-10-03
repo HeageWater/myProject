@@ -9,6 +9,12 @@ void GameScene::Update()
 	//Update
 	input->Update();
 
+	imgui->Begin();
+
+	ImGui::Text("player pos");
+
+	imgui->End();
+
 	//scene‚É‰ü‘¢
 	//‚±‚±‚©‚çScene‚Ìˆ—
 
@@ -421,6 +427,7 @@ void GameScene::Initilize()
 
 	//imgui‰Šú‰»
 	imgui->Initialize(dx.get());
+	//ImguiManager::GetInstance()->Initialize(dx.get());
 
 	//“§‰ß‚·‚é‚©‚Ç‚¤‚©
 	semiArphaSpriteCommon->Inilialize(dx.get(), true);
@@ -728,12 +735,16 @@ void GameScene::Draw()
 
 	//‚±‚±‚Ü‚Å2D•`‰æ
 
+	//imgui
+	imgui->Draw(dx.get());
+
 	dx->PostDraw();
 }
 
 //delete
 void GameScene::Finalize()
 {
+	//ImguiManager::GetInstance()->Finalize();
 	imgui->Finalize();
 
 	for (auto& object : objects_)
@@ -905,7 +916,7 @@ void GameScene::StageReload()
 			//trans
 			newModel_->stage_.mat.trans = objectdata.translation * scale;
 
-			//rotation
+			//rotationboxParticles_
 			newModel_->stage_.mat.rotAngle = objectdata.rotation;
 
 			//scale;

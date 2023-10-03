@@ -213,6 +213,12 @@
     <ClCompile Include="DirectXGame\Engine\SpriteManager.cpp">
       <Filter>ソース ファイル\Game\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\LoadObjectData.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\MyGame.cpp">
+      <Filter>ソース ファイル\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\PShader.hlsl">
@@ -396,6 +402,12 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\SpriteManager.h">
       <Filter>ヘッダー ファイル\Game\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\LoadObjectData.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\MyGame.h">
+      <Filter>ヘッダー ファイル\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
