@@ -81,7 +81,8 @@ public:
 	//MyDirectX();
 	//MyDirectX() = default;
 	void Initialize(Window* win_);
-	void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	//void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	void PrevDrawScreen();
 	void PostDrawScreen();
 	void PrevDraw(FLOAT* clearColor = nullptr);
 	void PostDraw();

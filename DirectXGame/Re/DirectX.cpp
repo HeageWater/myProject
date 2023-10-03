@@ -352,7 +352,7 @@ void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_
 	cmdList->ResourceBarrier(1, &desc);
 }
 
-void MyDirectX::PrevDraw(FLOAT* clearColor)
+void MyDirectX::PrevDraw(FLOAT* clearColor_)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -369,10 +369,10 @@ void MyDirectX::PrevDraw(FLOAT* clearColor)
 #pragma endregion Change
 
 	CmdListDrawAble(barrierDesc, backBuffers[bbIndex].Get(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor);
+		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor_);
 }
 
-void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor)
+void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_, FLOAT* clearColor_)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -380,17 +380,17 @@ void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pR
 #pragma endregion ReleaseBarrier
 	// 2.描画先の変更
 #pragma region Change
-	cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+	cmdList->OMSetRenderTargets(1, &rtvHandle_, false, &dsvHandle_);
 #pragma endregion Change
 	// 3.画面クリア
 #pragma region ScreenClear
-	if (clearColor == nullptr) {
+	if (clearColor_ == nullptr) {
 		ScreenClear(rtvHandle);
 	}
 	else {
-		ScreenClear(clearColor, rtvHandle);
+		ScreenClear(clearColor_, rtvHandle_);
 	}
-	cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	cmdList->ClearDepthStencilView(dsvHandle_, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 #pragma endregion
 }
 
@@ -434,7 +434,8 @@ void MyDirectX::PostDraw()
 #pragma endregion ChangeScreen
 }
 
-void MyDirectX::PrevDrawScreen(FLOAT* clearColor)
+//void MyDirectX::PrevDrawScreen(FLOAT* clearColor_)
+void MyDirectX::PrevDrawScreen()
 {
 	rtvHandle = screenRTVHeap->GetCPUDescriptorHandleForHeapStart();
 	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -461,18 +462,18 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result = LoadFromWICFile(
+	HRESULT result_ = LoadFromWICFile(
 		textureName,
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
 	//	ミニマップ生成
 	ScratchImage mipChain{};
-	result = GenerateMipMaps(
+	result_ = GenerateMipMaps(
 		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
 		TEX_FILTER_DEFAULT, 0, mipChain);
 
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result_)) {
 		scratchImg = std::move(mipChain);
 		metadata = scratchImg.GetMetadata();
 	}
@@ -496,7 +497,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 
 	int buffIndex = textureNum - 1;
 	//	テクスチャバッファ生成
-	result = device->CreateCommittedResource(
+	result_ = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&tectureResourceDesc,
@@ -508,14 +509,14 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	{
 		const Image* img = scratchImg.GetImage(i, 0, 0);
 
-		result = texBuff[buffIndex]->WriteToSubresource(
+		result_ = texBuff[buffIndex]->WriteToSubresource(
 			(UINT)i,
 			nullptr,
 			img->pixels,
 			(UINT)img->rowPitch,
 			(UINT)img->slicePitch
 		);
-		assert(SUCCEEDED(result));
+		assert(SUCCEEDED(result_));
 	}
 
 #pragma region SetSRV
@@ -548,14 +549,14 @@ D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(size_t handle)
 //	return &dirextX;
 //}
 
-void MyDirectX::ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
+void MyDirectX::ScreenClear(FLOAT* clearColor_, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
 {
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
 }
-void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
+void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
 {
-	FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f };
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	FLOAT clearColor_[] = { 0.1f,0.25f, 0.5f,0.0f };
+	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
 }
 
 void MyDirectX::ClearDepthBuff()

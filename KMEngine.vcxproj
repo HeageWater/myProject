@@ -174,7 +174,10 @@
     <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp" />
     <ClCompile Include="DirectXGame\Re\ConstBuff.cpp" />
     <ClCompile Include="DirectXGame\Re\Controller.cpp" />
-    <ClCompile Include="DirectXGame\Re\DirectX.cpp" />
+    <ClCompile Include="DirectXGame\Re\DirectX.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+    </ClCompile>
     <ClCompile Include="DirectXGame\Re\GPipeline.cpp" />
     <ClCompile Include="DirectXGame\Re\Input.cpp" />
     <ClCompile Include="DirectXGame\Re\Matrix.cpp" />

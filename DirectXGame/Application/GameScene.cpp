@@ -507,7 +507,8 @@ void GameScene::Initilize()
 	goalFlag = false;
 
 	//ステージ読み込み
-	StageLoad("stage4");
+	//StageLoad("stage4");
+	StageLoad("TitleStage");
 
 	chengeScene->Initialize(dx.get(), pipeline.get(), matProjection);
 
