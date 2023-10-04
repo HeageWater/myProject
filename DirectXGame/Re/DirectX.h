@@ -77,7 +77,7 @@ private:
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
 public:
-	MyDirectX(Window* win_);
+	//MyDirectX(Window* win_);
 	//MyDirectX();
 	//MyDirectX() = default;
 	void Initialize(Window* win_);
@@ -101,6 +101,6 @@ public:
 	//バックバッファの数を取得
 	size_t GetBackByfferCount() const { return backBuffers.size(); };
 
-	//static MyDirectX* GetInstance();
+	static MyDirectX* GetInstance();
 };
 

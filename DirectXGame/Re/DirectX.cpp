@@ -49,10 +49,10 @@ void MyDirectX::UpdateFPS()
 	reference_ = std::chrono::steady_clock::now();
 }
 
-MyDirectX::MyDirectX(Window* win_)
-{
-	Initialize(win_);
-}
+//MyDirectX::MyDirectX(Window* win_)
+//{
+//	Initialize(win_);
+//}
 
 void MyDirectX::Initialize(Window* win_)
 {
@@ -543,16 +543,17 @@ D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(size_t handle)
 	return srvGpuHandle;
 }
 
-//MyDirectX* MyDirectX::GetInstance()
-//{
-//	static MyDirectX dirextX;
-//	return &dirextX;
-//}
+MyDirectX* MyDirectX::GetInstance()
+{
+	static MyDirectX dirextX;
+	return &dirextX;
+}
 
 void MyDirectX::ScreenClear(FLOAT* clearColor_, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
 {
 	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
 }
+
 void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
 {
 	FLOAT clearColor_[] = { 0.1f,0.25f, 0.5f,0.0f };

@@ -14,11 +14,14 @@ void FlameWork::Initilize()
 	//windowApi
 	win = std::make_unique<Window>();
 
-	//dxCommon
-	dx = std::make_unique<MyDirectX>(win.get());
+	//DirextXの初期化
+	MyDirectX::GetInstance()->Initialize(win.get());
+
+	//ImGuiの初期化
+	ImguiManager::GetInstance()->Initialize();
 
 	//buff
-	cBuff = std::make_unique<ConstBuff>(dx->GetDev(), (float)win->window_width, (float)win->window_height);
+	cBuff = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev(), (float)win->window_width, (float)win->window_height);
 
 	//shader
 	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -27,19 +30,20 @@ void FlameWork::Initilize()
 
 	//pipeline
 	pipeline = std::make_unique<GPipeline>();
-	pipeline->Initialize(dx->GetDev(), shader);
+	pipeline->Initialize(MyDirectX::GetInstance()->GetDev(), shader);
 
 	//描画初期化
 	multipathPipeline = std::make_unique<GPipeline>();
-	multipathPipeline->Initialize(dx->GetDev(), bilShader);
+	multipathPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
 
 	//gpipeline
 	uiPipeline = std::make_unique<GPipeline>();
-	uiPipeline->Initialize(dx->GetDev(), bilShader);
+	uiPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
 }
 
 void FlameWork::Finalize()
 {
+	ImguiManager::GetInstance()->Finalize();
 }
 
 void FlameWork::Run()
@@ -50,14 +54,22 @@ void FlameWork::Run()
 	//ゲームループ
 	while (true)
 	{
+		////ImGui受付開始
+		//ImguiManager::GetInstance()->Begin();
+
 		//更新
 		Update();
+
+		////ImGui受付終了
+		//ImguiManager::GetInstance()->End();
 
 		//描画
 		Draw();
 
+		/*ImguiManager::GetInstance()->Draw();*/
+
 		//もしエンドフラグがTrueなら抜ける
-		if (IsEndRequst() == true)
+		if (IsEndRequst())
 		{
 			break;
 		}

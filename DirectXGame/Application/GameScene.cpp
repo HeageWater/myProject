@@ -9,11 +9,11 @@ void GameScene::Update()
 	//Update
 	input->Update();
 
-	imgui->Begin();
-
+	//ImGui受付開始
+	ImguiManager::GetInstance()->Begin();
 	ImGui::Text("player pos");
-
-	imgui->End();
+	//ImGui受付終了
+	ImguiManager::GetInstance()->End();
 
 	//sceneに改造
 	//ここからSceneの処理
@@ -56,7 +56,7 @@ void GameScene::Update()
 		if (hitStop->GetTime() < 1 && Time == t)
 		{
 			//player更新
-			player->Update(matView.mat, matProjection, dx.get(), shader, pipeline.get());
+			player->Update(matView.mat, matProjection, MyDirectX::GetInstance(), shader, pipeline.get());
 
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
@@ -166,8 +166,6 @@ void GameScene::Update()
 			stage->Update(matView.mat, matProjection);
 			goal->Update(matView.mat, matProjection);
 			warp->Update(matView.mat, matProjection);
-
-			//bool hit = player->CollisionAttackToEnemy(enemy->enemy_);
 
 			//パーティクル
 			for (size_t i = 0; i < boxParticles_.size(); i++)
@@ -341,7 +339,8 @@ void GameScene::Initilize()
 	playcamera.Init(Vector3D(0.0f, 30.0f, 150.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//screen
-	screen.Initialize(dx.get(), multipathPipeline.get(), bilShader);
+	//screen.Initialize(dx.get(), multipathPipeline.get(), bilShader);
+	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
 
@@ -349,7 +348,7 @@ void GameScene::Initilize()
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
 	//tex
-	pressText.Initialize(dx.get(), uiPipeline.get(), spriteShader);
+	pressText.Initialize(MyDirectX::GetInstance(), uiPipeline.get(), spriteShader);
 	pressText.obj.trans.y = -200;
 	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
@@ -365,73 +364,69 @@ void GameScene::Initilize()
 	enemyHit = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 
 	//player
-	player->Initialize(dx.get(), shader, pipeline.get());
+	player->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 
 	//warp
-	warp->Initialize(dx.get(), shader, pipeline.get());
+	warp->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 
 	float size = 3.0f;
 
 	//仮enemy置き
-	enemy->Initialize(dx.get(), shader, pipeline.get());
+	enemy->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ size,size,size });
 
-	enemy2->Initialize(dx.get(), shader, pipeline.get());
+	enemy2->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	enemy2->SetTrans(Vector3D{ 150,40,0 });
 	enemy2->SetScale(Vector3D{ size,size,size });
 
-	enemy3->Initialize(dx.get(), shader, pipeline.get());
+	enemy3->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	enemy3->SetTrans(Vector3D{ 200,30,0 });
 	enemy3->SetScale(Vector3D{ size,size,size });
 
-	enemy4->Initialize(dx.get(), shader, pipeline.get());
+	enemy4->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	enemy4->SetTrans(Vector3D{ 300,50,0 });
 	enemy4->SetScale(Vector3D{ size,size,size });
 
 	//stage
 	//ステージ初期化
-	stage->Initialize(dx.get(), shader, pipeline.get());
+	stage->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	float minMapX = stage->stage_.mat.scale.x - 200;
 	stage->stage_.mat.trans.x = minMapX;
 
-	stageWhite->Initialize(dx.get(), shader, pipeline.get());
+	stageWhite->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	stageWhite->stage_.mat.trans.y += 1;
 	stageWhite->stage_.mat.scale.z = 10;
 	stageWhite->Update(matView.mat, matProjection);
 
 	//ゴール初期化
-	goal->Initialize(dx.get(), shader, pipeline.get());
+	goal->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 	//シーンフラグ
 	scene = Title;
 
 	//画像読み込み
-	white = dx->LoadTextureGraph(L"Resources/sprite/white1x1.png");
-	texP = dx->LoadTextureGraph(L"Resources/sprite/cube.jpg");
-	brPng = dx->LoadTextureGraph(L"Resources/sprite/br.png");
-	clearTex = dx->LoadTextureGraph(L"Resources/sprite/gameclear.png");
-	overTex = dx->LoadTextureGraph(L"Resources/sprite/gameover.png");
-	titleTex = dx->LoadTextureGraph(L"Resources/sprite/Title.png");
-	playerTex = dx->LoadTextureGraph(L"Resources/Model/Player/Player.png");
-	enemyPng = dx->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
-	blackTex = dx->LoadTextureGraph(L"Resources/sprite/black.png");
-	heartLesTex = dx->LoadTextureGraph(L"Resources/sprite/heartLes.png");
-	heartHaveTex = dx->LoadTextureGraph(L"Resources/sprite/heartHave.png");
-	lifeTex = dx->LoadTextureGraph(L"Resources/sprite/life.png");
-	backTex = dx->LoadTextureGraph(L"Resources/sprite/background.png");
-	LTex = dx->LoadTextureGraph(L"Resources/sprite/Lstick.png");
-	RTex = dx->LoadTextureGraph(L"Resources/sprite/Rstick.png");
-	AbuttonTex = dx->LoadTextureGraph(L"Resources/sprite/Abutton.png");
-	PressTex = dx->LoadTextureGraph(L"Resources/sprite/press.png");
-	LTTex = dx->LoadTextureGraph(L"Resources/sprite/LT.png");
-
-	//imgui初期化
-	imgui->Initialize(dx.get());
-	//ImguiManager::GetInstance()->Initialize(dx.get());
+	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+	texP = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/cube.jpg");
+	brPng = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/br.png");
+	clearTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/gameclear.png");
+	overTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/gameover.png");
+	titleTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/Title.png");
+	playerTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
+	enemyPng = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
+	blackTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
+	heartLesTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/heartLes.png");
+	heartHaveTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/heartHave.png");
+	lifeTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/life.png");
+	backTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	LTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/Lstick.png");
+	RTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/Rstick.png");
+	AbuttonTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/Abutton.png");
+	PressTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/press.png");
+	LTTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/LT.png");
 
 	//透過するかどうか
-	semiArphaSpriteCommon->Inilialize(dx.get(), true);
-	normalSpriteCommon->Inilialize(dx.get(), false);
+	semiArphaSpriteCommon->Inilialize(MyDirectX::GetInstance(), true);
+	normalSpriteCommon->Inilialize(MyDirectX::GetInstance(), false);
 
 	{
 		//基礎
@@ -510,7 +505,7 @@ void GameScene::Initilize()
 	//StageLoad("stage4");
 	StageLoad("TitleStage");
 
-	chengeScene->Initialize(dx.get(), pipeline.get(), matProjection);
+	chengeScene->Initialize(MyDirectX::GetInstance(), pipeline.get(), matProjection);
 
 	//音を鳴らす
 	//sound_->SoundPlayLoopWave(bgm);
@@ -519,14 +514,14 @@ void GameScene::Initilize()
 void GameScene::Draw()
 {
 	//Draw
-	dx->PrevDrawScreen();
+	MyDirectX::GetInstance()->PrevDrawScreen();
 
 	//// 描画コマンド
 
-	dx->PostDrawScreen();
+	MyDirectX::GetInstance()->PostDrawScreen();
 
 	//UIDraw
-	dx->PrevDraw();
+	MyDirectX::GetInstance()->PrevDraw();
 
 	//ここから共通先描画
 
@@ -735,19 +730,14 @@ void GameScene::Draw()
 	chengeScene->Draw();
 
 	//ここまで2D描画
+	ImguiManager::GetInstance()->Draw();
 
-	//imgui
-	imgui->Draw(dx.get());
-
-	dx->PostDraw();
+	MyDirectX::GetInstance()->PostDraw();
 }
 
 //delete
 void GameScene::Finalize()
 {
-	//ImguiManager::GetInstance()->Finalize();
-	imgui->Finalize();
-
 	for (auto& object : objects_)
 	{
 		delete object;
@@ -772,7 +762,7 @@ void GameScene::Run()
 		Draw();
 
 		//もしエンドフラグがTrueなら抜ける
-		if (IsEndRequst() == true)
+		if (IsEndRequst())
 		{
 			break;
 		}
@@ -909,7 +899,7 @@ void GameScene::StageReload()
 
 			//モデルを指定して3Dオブジェクトを生成
 			Stage* newModel_ = new Stage();
-			newModel_->Initialize(dx.get(), shader, pipeline.get());
+			newModel_->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 
 			//調整
 			float scale = 10.0f;
@@ -944,7 +934,7 @@ void GameScene::CreatePatricle(Vector3D pos)
 	{
 		BoxParticle* newP = new BoxParticle();
 
-		newP->Initialize(dx.get(), shader, pipeline.get());
+		newP->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 
 		newP->SetPos(pos);
 
@@ -974,7 +964,7 @@ void GameScene::StageLoad(const std::string& filePath)
 
 		//モデルを指定して3Dオブジェクトを生成
 		Stage* newModel_ = new Stage();
-		newModel_->Initialize(dx.get(), shader, pipeline.get());
+		newModel_->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
 
 		//調整
 		float scale = 10.0f;

@@ -12,8 +12,9 @@
 #include <sstream>
 #include <iomanip>
 #include <map>
-#include <imgui.h>
+#include "imgui.h"
 #include <wrl.h>
+#include "ImguiManager.h"
 
 class FlameWork
 {
@@ -23,7 +24,7 @@ public:
 	virtual void Draw() = 0;
 	virtual void Finalize();
 	virtual void Run();
-	bool IsEndRequst() { return endRequest_; };
+	bool& IsEndRequst() { return endRequest_; };
 	void SetEndRwqust(bool flag) { endRequest_ = flag; };
 
 	virtual~FlameWork() = default;
@@ -34,9 +35,6 @@ protected:
 
 	//windowApi
 	std::unique_ptr<Window> win;
-
-	//dxCommon
-	std::unique_ptr<MyDirectX> dx;
 
 	//buff
 	std::unique_ptr<ConstBuff> cBuff;

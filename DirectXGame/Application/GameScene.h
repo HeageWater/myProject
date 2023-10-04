@@ -113,9 +113,6 @@ private:
 	size_t PressTex = 0;
 	size_t LTTex = 0;
 
-	//Imgui
-	ImguiManager* imgui = new ImguiManager();
-
 	//hitstop
 	HitStop* hitStop = new HitStop();
 
