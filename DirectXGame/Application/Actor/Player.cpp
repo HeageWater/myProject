@@ -28,9 +28,9 @@ Player::~Player()
 	}
 }
 
-void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Player::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	player_.Initialize(dx_, shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
+	player_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
 	//player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	player_.mat.Initialize();
@@ -40,7 +40,7 @@ void Player::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	player_.mat.trans.y = 11;
 	player_.mat.trans.z = 0;
 
-	playerAttack_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+	playerAttack_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\box.obj", pipeline_);
 
 	playerAttack_.mat.Initialize();
 	playerAttack_.mat.scale = { 5,5,5 };
@@ -97,7 +97,7 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 	return Vector2D(move.x, move.z);
 }
 
-void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Player::Update(Matrix matView, Matrix matProjection, Shader shader, GPipeline* pipeline_)
 {
 	//コントローラーUpdate
 	controller->Update();
@@ -118,7 +118,7 @@ void Player::Update(Matrix matView, Matrix matProjection, MyDirectX* dx_, Shader
 		//player_.mat.trans += colVec;
 
 		//攻撃
-		Attack(dx_, shader, pipeline_);
+		Attack(MyDirectX::GetInstance(), shader, pipeline_);
 
 		for (size_t i = 0; i < attack.size(); i++)
 		{
@@ -587,7 +587,7 @@ bool Player::WarpAction()
 {
 	if (warpActionFlag)
 	{
-		colVec = {0,0,0};
+		colVec = { 0,0,0 };
 
 		float spd = 0.3f;
 		float Ten = 10;

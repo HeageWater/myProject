@@ -4,6 +4,13 @@
 #include <d3dcompiler.h>
 #include <wrl.h>
 
+//enum Kind
+//{
+//	Normal,
+//	Bill,
+//	Sprite,
+//};
+
 class Shader
 {
 private:

@@ -56,7 +56,7 @@ void GameScene::Update()
 		if (hitStop->GetTime() < 1 && Time == t)
 		{
 			//player更新
-			player->Update(matView.mat, matProjection, MyDirectX::GetInstance(), shader, pipeline.get());
+			player->Update(matView.mat, matProjection, shader, pipeline.get());
 
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
@@ -364,37 +364,37 @@ void GameScene::Initilize()
 	enemyHit = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 
 	//player
-	player->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	player->Initialize(shader, pipeline.get());
 
 	//warp
-	warp->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	warp->Initialize(shader, pipeline.get());
 
 	float size = 3.0f;
 
 	//仮enemy置き
-	enemy->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	enemy->Initialize(shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ size,size,size });
 
-	enemy2->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	enemy2->Initialize(shader, pipeline.get());
 	enemy2->SetTrans(Vector3D{ 150,40,0 });
 	enemy2->SetScale(Vector3D{ size,size,size });
 
-	enemy3->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	enemy3->Initialize(shader, pipeline.get());
 	enemy3->SetTrans(Vector3D{ 200,30,0 });
 	enemy3->SetScale(Vector3D{ size,size,size });
 
-	enemy4->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	enemy4->Initialize(shader, pipeline.get());
 	enemy4->SetTrans(Vector3D{ 300,50,0 });
 	enemy4->SetScale(Vector3D{ size,size,size });
 
 	//stage
 	//ステージ初期化
-	stage->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	stage->Initialize(shader, pipeline.get());
 	float minMapX = stage->stage_.mat.scale.x - 200;
 	stage->stage_.mat.trans.x = minMapX;
 
-	stageWhite->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	stageWhite->Initialize(shader, pipeline.get());
 	stageWhite->stage_.mat.trans.y += 1;
 	stageWhite->stage_.mat.scale.z = 10;
 	stageWhite->Update(matView.mat, matProjection);
@@ -505,7 +505,7 @@ void GameScene::Initilize()
 	//StageLoad("stage4");
 	StageLoad("TitleStage");
 
-	chengeScene->Initialize(MyDirectX::GetInstance(), pipeline.get(), matProjection);
+	chengeScene->Initialize(pipeline.get(), matProjection);
 
 	//音を鳴らす
 	//sound_->SoundPlayLoopWave(bgm);
@@ -899,7 +899,7 @@ void GameScene::StageReload()
 
 			//モデルを指定して3Dオブジェクトを生成
 			Stage* newModel_ = new Stage();
-			newModel_->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+			newModel_->Initialize(shader, pipeline.get());
 
 			//調整
 			float scale = 10.0f;
@@ -934,7 +934,7 @@ void GameScene::CreatePatricle(Vector3D pos)
 	{
 		BoxParticle* newP = new BoxParticle();
 
-		newP->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+		newP->Initialize(shader, pipeline.get());
 
 		newP->SetPos(pos);
 
@@ -964,7 +964,7 @@ void GameScene::StageLoad(const std::string& filePath)
 
 		//モデルを指定して3Dオブジェクトを生成
 		Stage* newModel_ = new Stage();
-		newModel_->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+		newModel_->Initialize(shader, pipeline.get());
 
 		//調整
 		float scale = 10.0f;

@@ -27,9 +27,9 @@ BoxParticle::~BoxParticle()
 {
 }
 
-void BoxParticle::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void BoxParticle::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	box.Initialize(dx_, pipeline_, shader);
+	box.Initialize(MyDirectX::GetInstance(), pipeline_, shader);
 
 	box.mat.Initialize();
 

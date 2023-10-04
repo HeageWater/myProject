@@ -6,7 +6,7 @@ class ChengeScene
 public:
 	ChengeScene();
 	~ChengeScene();
-	void Initialize(MyDirectX* dx_, GPipeline* pipeline_, Matrix matProjection);
+	void Initialize(GPipeline* pipeline_, Matrix matProjection);
 	void Draw(size_t tex);
 	void Draw();
 	void Update(Matrix matView, Matrix matProjection);

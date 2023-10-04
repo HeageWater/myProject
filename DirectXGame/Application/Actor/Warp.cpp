@@ -13,11 +13,11 @@ Warp::~Warp()
 {
 }
 
-void Warp::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Warp::Initialize(Shader shader, GPipeline* pipeline_)
 {
 	for (size_t i = 0; i < size; i++)
 	{
-		warp_[i].Initialize(dx_, shader, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
+		warp_[i].Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
 
 		warp_[i].mat.Initialize();
 		warp_[i].mat.scale = { 5,5,5 };

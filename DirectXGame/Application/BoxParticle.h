@@ -11,7 +11,7 @@ class BoxParticle
 public:
 	BoxParticle();
 	~BoxParticle();
-	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+	void Initialize(Shader shader, GPipeline* pipeline_);
 	void Draw(size_t tex);
 	void Update(Matrix matView, Matrix matProjection);
 	bool IsDead() { return isDead; };

@@ -14,7 +14,7 @@ class Enemy {
 public:
 	Enemy();
 	~Enemy();
-	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+	void Initialize(Shader shader, GPipeline* pipeline_);
 	void Draw(size_t tex);
 	//void Update(Matrix matView, Matrix matProjection, Input* input);
 	void Update(Matrix matView, Matrix matProjection);

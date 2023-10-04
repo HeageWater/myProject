@@ -11,13 +11,13 @@ ChengeScene::~ChengeScene()
 {
 }
 
-void ChengeScene::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Matrix matProjection)
+void ChengeScene::Initialize(GPipeline* pipeline_, Matrix matProjection)
 {
-	spriteCommon->Inilialize(dx_, false);
+	spriteCommon->Inilialize(MyDirectX::GetInstance(), false);
 
 	sprite_->Inilialize(spriteCommon, &matProjection);
 
-	tex = dx_->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
+	tex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
 
 	//scale—p
 	float size = 2.5f;

@@ -10,9 +10,9 @@ Stage::~Stage()
 {
 }
 
-void Stage::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Stage::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	stage_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+	stage_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\box.obj", pipeline_);
 
 	stage_.mat.Initialize();
 	stage_.mat.scale = { 1020,5,120 };
