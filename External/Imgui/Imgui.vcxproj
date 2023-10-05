@@ -133,12 +133,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-<<<<<<<< HEAD:CG2kadai.vcxproj
       <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Application;$(ProjectDir)DirectXGame\Engine;$(ProjectDir)DirectXGame\Re;$(ProjectDir)External;$(ProjectDir)External\DirectXTex;$(ProjectDir)External\Imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-========
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
->>>>>>>> Proto:External/Imgui/Imgui.vcxproj
     </ClCompile>
     <Link>
       <SubSystem>
@@ -166,7 +163,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-<<<<<<<< HEAD:CG2kadai.vcxproj
   <ItemGroup>
     <ClCompile Include="DirectXGame\Application\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\CircleParticle.cpp" />
@@ -273,8 +269,6 @@
       <Project>{3e04acd9-84a3-4175-9cf5-d47b3875059a}</Project>
     </ProjectReference>
   </ItemGroup>
-========
->>>>>>>> Proto:External/Imgui/Imgui.vcxproj
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

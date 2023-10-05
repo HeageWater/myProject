@@ -212,7 +212,7 @@
     <ClCompile Include="DirectXGame\Application\Particle\Emitter.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\PlayScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp" />
-    <ClCompile Include="ParticleManager.cpp" />
+    <ClCompile Include="DirectXGame\Application\Particle\ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -311,7 +311,7 @@
     <ClInclude Include="DirectXGame\Application\Particle\Emitter.h" />
     <ClInclude Include="DirectXGame\Application\Scene\PlayScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Warp.h" />
-    <ClInclude Include="ParticleManager.h" />
+    <ClInclude Include="DirectXGame\Application\Particle\ParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shader\Geometry.hlsli" />
