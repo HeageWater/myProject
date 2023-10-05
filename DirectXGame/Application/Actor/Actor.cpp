@@ -1,6 +1,7 @@
 #include "Actor.h"
 
-void Actor::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+//void Actor::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Actor::Initialize()
 {
 	/*actor.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
@@ -11,12 +12,13 @@ void Actor::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	actor.mat.trans.z = 0;*/
 }
 
-void Actor::Draw(size_t tex)
+void Actor::Draw()
 {
 	//actor.Draw(tex);
 }
 
-void Actor::Update(Matrix matView, Matrix matProjection)
+//void Actor::Update(Matrix matView, Matrix matProjection)
+void Actor::Update()
 {
 	//actor.MatUpdate(matView, matProjection);
 }

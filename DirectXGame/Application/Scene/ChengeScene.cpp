@@ -19,10 +19,10 @@ void ChengeScene::Initialize(GPipeline* pipeline_, Matrix matProjection)
 
 	tex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
 
-	//scale—p
+	//scaleç”¨
 	float size = 2.5f;
 
-	//pos—p
+	//posç”¨
 	float width = 1.5f;
 
 	sprite_->scale.x = Window::window_width * size;
@@ -34,7 +34,7 @@ void ChengeScene::Initialize(GPipeline* pipeline_, Matrix matProjection)
 
 void ChengeScene::Draw(size_t tex)
 {
-	//‚±‚±‚©‚ç‰æ‘œ•`‰æ(yŽ²‚Í-‚É)
+	//ã“ã“ã‹ã‚‰ç”»åƒæç”»(yè»¸ã¯-ã«)
 	sprite_->PreDraw();
 
 	sprite_->Draw(tex);
@@ -42,7 +42,7 @@ void ChengeScene::Draw(size_t tex)
 
 void ChengeScene::Draw()
 {
-	//‚±‚±‚©‚ç‰æ‘œ•`‰æ(yŽ²‚Í-‚É)
+	//ã“ã“ã‹ã‚‰ç”»åƒæç”»(yè»¸ã¯-ã«)
 	sprite_->PreDraw();
 
 	sprite_->Draw(tex);
@@ -52,8 +52,6 @@ void ChengeScene::Update(Matrix matView, Matrix matProjection)
 {
 	if (isPlayFlag)
 	{
-		float width = 1.5f;
-
 		time++;
 
 		float maxTime = 15;

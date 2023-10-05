@@ -23,8 +23,8 @@ public:
 	void Update(Matrix matView, Matrix matProjection);
 
 	void SetUpdate();
-	void SetPos(Vector3D pos) { playerAttack_.mat.trans = pos; };
-	void SetVec(Vector2D vec) { this->vec = vec; };
+	void SetPos(Vector3D pos_) { playerAttack_.mat.trans = pos_; };
+	void SetVec(Vector2D vec_) { this->vec = vec_; };
 	bool GetIsDead() { return isDead; };
 
 	Vector3D GetPos() { return playerAttack_.mat.trans; };

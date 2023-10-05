@@ -65,7 +65,7 @@ bool Enemy::BoxCollision(Model model)
 
 		float c = model.mat.scale.x * enemy_.mat.scale.x;
 
-		//‚ ‚½‚è”»’è
+		//ã‚ãŸã‚Šåˆ¤å®š
 		if (a + b < c)
 		{
 			float spd = 1.5f;
@@ -91,7 +91,7 @@ void Enemy::SertchPlayer(Model model)
 	float c = model.mat.scale.x * sertchScale;
 	//float c = model.mat.scale.x * enemy_.mat.scale.x;
 
-	//‚ ‚½‚è”»’è
+	//ã‚ãŸã‚Šåˆ¤å®š
 	if (a + b < c)
 	{
 		sertchFlag = true;

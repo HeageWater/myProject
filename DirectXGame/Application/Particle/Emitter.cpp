@@ -12,12 +12,12 @@ void Emitter::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 void Emitter::Update(Matrix matView, Matrix matProjection)
 {
-	//ƒp[ƒeƒBƒNƒ‹
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
 		particles_[i]->Update(matView, matProjection);
 
-		//íœ
+		//å‰Šé™¤
 		if (particles_[i]->IsDead() == true)
 		{
 			particles_.erase(particles_.begin() + i);
@@ -27,7 +27,7 @@ void Emitter::Update(Matrix matView, Matrix matProjection)
 
 void Emitter::Draw(size_t tex)
 {
-	//ƒp[ƒeƒBƒNƒ‹
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
 		particles_[i]->Draw(tex);

@@ -38,7 +38,7 @@ bool Goal::BoxCollision(Model model)
 
 	float c = model.mat.scale.x * goal_.mat.scale.x;
 
-	//‚ ‚½‚è”»’è
+	//ã‚ãŸã‚Šåˆ¤å®š
 	if (a + b < c)
 	{
 		return true;
