@@ -24,6 +24,7 @@ private:
 	Vector3D rightVec;
 	Vector3D downVec;
 public:
+	MyDebugCamera();
 	MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up);
 	void Update(Input& input);
 	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);

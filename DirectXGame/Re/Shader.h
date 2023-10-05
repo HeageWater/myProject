@@ -4,9 +4,12 @@
 #include <d3dcompiler.h>
 #include <wrl.h>
 
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
+//enum Kind
+//{
+//	Normal,
+//	Bill,
+//	Sprite,
+//};
 
 class Shader
 {
@@ -25,8 +28,9 @@ private:
 private:
 	void Error();
 public:
+	Shader();
 	Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint = "main", LPCWSTR GSFileName = nullptr, LPCWSTR DSFileName = nullptr, LPCWSTR HSFileName = nullptr);
-
+	void Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint = "main", LPCWSTR GSFileName = nullptr, LPCWSTR DSFileName = nullptr, LPCWSTR HSFileName = nullptr);
 	//	Getter
 	ID3DBlob* VSBlob() { return vsBlob.Get(); }
 	ID3DBlob* HSBlob() { return hsBlob.Get(); }

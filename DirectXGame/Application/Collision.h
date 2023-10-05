@@ -1,8 +1,6 @@
 #pragma once
-#include "Vector2D.h"
-#include "Vector3D.h"
-#include "Vector4D.h"
-
+#include "MyMath.h"
+#include "Model.h"
 #include <DirectXMath.h>
 
 struct Sphere
@@ -34,5 +32,13 @@ public:
 	static bool CheckSphereToPlane(const Sphere& sphere, const Plane& plane, Vector3D* inter = { 0 });
 	static bool CheckSphereToTriangle(const Sphere& sphere, const Triangle& triangle, Vector3D* inter = { 0 });
 	static void ClosestPtPoint2Triangle(const Vector3D& point, const Triangle& triangle, Vector3D* closest);
+	static bool BoxCollision3D(Model model1, Model model2);
+	static bool BoxCollision2D(Model model1, Model model2);
+
+	static Collision* Get()
+	{
+		static Collision collision;
+		return &collision;
+	}
 
 };

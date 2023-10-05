@@ -1,14 +1,21 @@
 #include "Window.h"
 #pragma comment(lib,"winmm.lib")
+#include <imgui_impl_win32.h>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPram);
 
 LRESULT Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-{{}
+{ {}
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+	{
+		return true;
+	}
 	switch (msg) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
 	}
-
+	
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
@@ -39,16 +46,16 @@ void Window::Initialize()
 
 	hwnd = CreateWindow(w.lpszClassName,
 		L"DirectXGame",
-		WS_OVERLAPPEDWINDOW,		
-		CW_USEDEFAULT,		
-		CW_USEDEFAULT,		
-		wrc.right - wrc.left,		
-		wrc.bottom - wrc.top,		
-		nullptr,		
-		nullptr,		
-		w.hInstance,					
-		nullptr);						
-	
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		wrc.right - wrc.left,
+		wrc.bottom - wrc.top,
+		nullptr,
+		nullptr,
+		w.hInstance,
+		nullptr);
+
 	ShowWindow(hwnd, SW_SHOW);
 
 	timeBeginPeriod(1);

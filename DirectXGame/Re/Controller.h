@@ -4,7 +4,6 @@
 #include<wrl.h>
 #include "myMath.h"
 #include <xinput.h>
-#pragma comment (lib, "xinput.lib")
 
 enum ControllerButton
 {
@@ -84,7 +83,7 @@ public:
 	/// <param name="deadRange">デッドゾーンの範囲初期値0.3f</param>
 	/// <param name="deadRate">デッドゾーン判定の度合い初期値1.0f</param>
 	/// <returns></returns>
-	bool StickTriggerPush(ControllerStick stick, const float& deadRange = 0.3f,Vector2D deadRate = { 1.0f,1.0f });
+	bool StickTriggerPush(ControllerStick stick, const float& deadRange = 0.3f, Vector2D deadRate = { 1.0f,1.0f });
 
 	/// <summary>
 	/// stickで指定した方向に倒している間
@@ -137,12 +136,12 @@ public:
 	//シングルトン
 	static Controller* GetInstance();
 
-	private:
+private:
 
-		Controller() = default;
-		~Controller() = default;
+	Controller() = default;
+	~Controller() = default;
 
-		//コピーコンストラクタ・代入演算子削除
-		Controller& operator=(const Controller&) = delete;
-		Controller(const Controller&) = delete;
+	//コピーコンストラクタ・代入演算子削除
+	Controller& operator=(const Controller&) = delete;
+	Controller(const Controller&) = delete;
 };

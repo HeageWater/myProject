@@ -1,12 +1,8 @@
 #pragma once
-#define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <cassert>
 #include "Vector2D.h"
 #include "Window.h"
-
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 class Input
 {
@@ -30,6 +26,7 @@ private:
 	IDirectInputDevice8* mouse = nullptr;
 	POINT cursor;
 public:
+
 	Input(Window* win_);
 	~Input();
 	void Initialize(Window* win_);

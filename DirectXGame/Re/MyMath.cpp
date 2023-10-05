@@ -1,5 +1,6 @@
 #include "MyMath.h"
 #include <cassert>
+#include <random>
 
 Matrix MyMath::LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up)
 {
@@ -131,6 +132,44 @@ void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyMath::MatView::MatUpdate()
 {
+	float back = 50;
+
+	if (eye.x < back)
+	{
+		if (eye.z > -back)
+		{
+			eye.z--;
+		}
+	}
+	else if (eye.x > 33 && eye.x < 114)
+	{
+		if (eye.z > -150)
+		{
+			eye.z--;
+		}
+		else if(eye.z < -150)
+		{
+			eye.z++;
+		}
+		else
+		{
+			eye.z = -150;
+		}
+	}
+	/*else if (eye.x > 119)
+	{
+		if (eye.z > -250)
+		{
+			eye.z--;
+		}
+	}*/
+
+	if (eye.x < 30)
+	{
+		if (eye.z > -100)
+			eye.z--;
+	}
+
 	mat = LookAtLH(eye, target, up);
 }
 
@@ -208,4 +247,13 @@ void MyMath::ObjMatrix::Update(Matrix billboard)
 	//	ïΩçsà⁄ìÆ
 	SetMatTransform();
 	matWorld *= matTrans;
+}
+
+size_t MyMath::GetRandom(size_t min, size_t max)
+{
+	std::random_device rd;
+	std::default_random_engine eng(rd());
+	std::uniform_int_distribution<> distr((int32_t)min, (int32_t)max);
+	return (size_t)distr(eng);
+	return 0;
 }

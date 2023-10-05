@@ -11,9 +11,6 @@
 #include <chrono>
 #include <thread>
 
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
-
 class MyDirectX
 {
 private:
@@ -56,7 +53,7 @@ private:
 	D3D12_RESOURCE_BARRIER screenBarrierDesc;
 	ComPtr<ID3D12DescriptorHeap> screenRTVHeap;
 	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap;
-	
+
 	//	ビューポート
 	ViewPort viewPort;
 	// シザー矩形
@@ -75,22 +72,26 @@ private:
 
 	void ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
 	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
-	
+
 	void SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource = nullptr);
 	void CmdListDrawAble(D3D12_RESOURCE_BARRIER& barrierDesc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter,
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor = nullptr);
 public:
-	MyDirectX(Window* win_);
+	//MyDirectX(Window* win_);
+	//MyDirectX();
+	//MyDirectX() = default;
 	void Initialize(Window* win_);
-	void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	//void PrevDrawScreen(FLOAT* clearColor = nullptr);
+	void PrevDrawScreen();
 	void PostDrawScreen();
 	void PrevDraw(FLOAT* clearColor = nullptr);
 	void PostDraw();
+	void ClearDepthBuff();
 
 	int LoadTextureGraph(const wchar_t* textureName);
 
 	//	Getter
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(int handle);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureHandle(size_t handle);
 	ID3D12Device* GetDev() { return device.Get(); }
 	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
 	Matrix GetViewportMat() { return viewPort.Mat(); }
@@ -99,5 +100,7 @@ public:
 	Window GetWindow() { return *win; };
 	//バックバッファの数を取得
 	size_t GetBackByfferCount() const { return backBuffers.size(); };
+
+	static MyDirectX* GetInstance();
 };
 

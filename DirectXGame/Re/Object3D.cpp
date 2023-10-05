@@ -3,6 +3,8 @@
 #include "MyMath.h"
 #include <cassert>
 
+#pragma comment(lib, "d3d12.lib")
+
 void Object3D::Initialize(Shader shader)
 {
 	HRESULT result;

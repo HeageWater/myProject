@@ -43,6 +43,12 @@ void Model::Initialize(Shader shader, const char* filename)
 	mat.Initialize();
 }
 
+void Model::Initialize(MyDirectX* dx_, GPipeline* pipeline_)
+{
+	dx = dx_;
+	pipeline = pipeline_;
+}
+
 void Model::Initialize(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_)
 {
 	dx = dx_;

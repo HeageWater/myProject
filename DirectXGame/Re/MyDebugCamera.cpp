@@ -1,5 +1,10 @@
 #include "MyDebugCamera.h"
 
+MyDebugCamera::MyDebugCamera()
+{
+
+}
+
 MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 {
 	Init(_eye, _target, _up);

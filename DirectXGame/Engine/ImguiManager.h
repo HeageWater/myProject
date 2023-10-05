@@ -4,11 +4,12 @@
 class ImguiManager
 {
 public:
-	ImguiManager();
-	~ImguiManager();
+	/*ImguiManager();
+	~ImguiManager();*/
 
 	//初期化(DirectXCommonに依存)
-	void Initialize(MyDirectX* dxCommon);
+	//void Initialize(Window* win_);
+	void Initialize();
 
 	//解放
 	void Finalize();
@@ -20,7 +21,18 @@ public:
 	void End();
 
 	//描画
-	void Draw(MyDirectX* dxCommon);
+	void Draw();
+
+	static ImguiManager* GetInstance();
+
+private:
+
+	ImguiManager() = default;
+	~ImguiManager() = default;
+
+	//コピーコンストラクタ・代入演算子削除
+	ImguiManager& operator=(const ImguiManager&) = delete;
+	ImguiManager(const ImguiManager&) = delete;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;

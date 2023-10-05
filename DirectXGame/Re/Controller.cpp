@@ -1,4 +1,5 @@
 #include "Controller.h"
+#pragma comment (lib, "xinput.lib")
 
 bool Controller::StickInDeadZone(Vector2D thumb, const Vector2D deadRate)
 {

@@ -27,6 +27,7 @@ public:
 	MyMath::ObjMatrix mat;
 
 	void Initialize(Shader shader, const char* filename);
+	void Initialize(MyDirectX* dx_, GPipeline* pipeline_);
 	void Initialize(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
 public:
 	Model();

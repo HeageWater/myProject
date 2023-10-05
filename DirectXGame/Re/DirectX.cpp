@@ -4,6 +4,9 @@
 #include <DirectXTex.h>
 using namespace DirectX;
 
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
+
 // 対応レベルの配列
 D3D_FEATURE_LEVEL levels[] = {
 	D3D_FEATURE_LEVEL_12_1,
@@ -46,10 +49,10 @@ void MyDirectX::UpdateFPS()
 	reference_ = std::chrono::steady_clock::now();
 }
 
-MyDirectX::MyDirectX(Window* win_)
-{
-	Initialize(win_);
-}
+//MyDirectX::MyDirectX(Window* win_)
+//{
+//	Initialize(win_);
+//}
 
 void MyDirectX::Initialize(Window* win_)
 {
@@ -349,14 +352,14 @@ void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_
 	cmdList->ResourceBarrier(1, &desc);
 }
 
-void MyDirectX::PrevDraw(FLOAT* clearColor)
+void MyDirectX::PrevDraw(FLOAT* clearColor_)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
 	// バックバッファの番号を取得(2つなので0番か1番)
 	UINT64 bbIndex = swapChain->GetCurrentBackBufferIndex();		//	現在のバックバッファ設定
 #pragma endregion ReleaseBarrier
-	
+
 	// 2.描画先の変更
 #pragma region Change
 	// レンダーターゲットビューのハンドルを取得
@@ -366,10 +369,10 @@ void MyDirectX::PrevDraw(FLOAT* clearColor)
 #pragma endregion Change
 
 	CmdListDrawAble(barrierDesc, backBuffers[bbIndex].Get(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor);
+		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET, rtvHandle, dsvHandle, clearColor_);
 }
 
-void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle, FLOAT* clearColor)
+void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pResource, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_, D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_, FLOAT* clearColor_)
 {
 	// 1.リソースバリアで書き込み可能に変更
 #pragma region ReleaseBarrier
@@ -377,17 +380,17 @@ void MyDirectX::CmdListDrawAble(D3D12_RESOURCE_BARRIER& desc, ID3D12Resource* pR
 #pragma endregion ReleaseBarrier
 	// 2.描画先の変更
 #pragma region Change
-	cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+	cmdList->OMSetRenderTargets(1, &rtvHandle_, false, &dsvHandle_);
 #pragma endregion Change
 	// 3.画面クリア
 #pragma region ScreenClear
-	if (clearColor == nullptr) {
+	if (clearColor_ == nullptr) {
 		ScreenClear(rtvHandle);
 	}
 	else {
-		ScreenClear(clearColor, rtvHandle);
+		ScreenClear(clearColor_, rtvHandle_);
 	}
-	cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	cmdList->ClearDepthStencilView(dsvHandle_, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 #pragma endregion
 }
 
@@ -403,7 +406,7 @@ void MyDirectX::PostDraw()
 	result = cmdList->Close();
 	assert(SUCCEEDED(result));
 	// 溜めていたコマンドリストの実行(close必須)
-	ID3D12CommandList* commandLists[] = { cmdList.Get()};
+	ID3D12CommandList* commandLists[] = { cmdList.Get() };
 	cmdQueue->ExecuteCommandLists(1, commandLists);
 	// 画面に表示するバッファをフリップ(裏表の入替え)
 	result = swapChain->Present(1, 0);
@@ -431,7 +434,8 @@ void MyDirectX::PostDraw()
 #pragma endregion ChangeScreen
 }
 
-void MyDirectX::PrevDrawScreen(FLOAT* clearColor)
+//void MyDirectX::PrevDrawScreen(FLOAT* clearColor_)
+void MyDirectX::PrevDrawScreen()
 {
 	rtvHandle = screenRTVHeap->GetCPUDescriptorHandleForHeapStart();
 	dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -458,18 +462,18 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result = LoadFromWICFile(
+	HRESULT result_ = LoadFromWICFile(
 		textureName,
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
 	//	ミニマップ生成
 	ScratchImage mipChain{};
-	result = GenerateMipMaps(
+	result_ = GenerateMipMaps(
 		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
 		TEX_FILTER_DEFAULT, 0, mipChain);
 
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result_)) {
 		scratchImg = std::move(mipChain);
 		metadata = scratchImg.GetMetadata();
 	}
@@ -493,7 +497,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 
 	int buffIndex = textureNum - 1;
 	//	テクスチャバッファ生成
-	result = device->CreateCommittedResource(
+	result_ = device->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&tectureResourceDesc,
@@ -505,14 +509,14 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	{
 		const Image* img = scratchImg.GetImage(i, 0, 0);
 
-		result = texBuff[buffIndex]->WriteToSubresource(
+		result_ = texBuff[buffIndex]->WriteToSubresource(
 			(UINT)i,
 			nullptr,
 			img->pixels,
 			(UINT)img->rowPitch,
 			(UINT)img->slicePitch
 		);
-		assert(SUCCEEDED(result));
+		assert(SUCCEEDED(result_));
 	}
 
 #pragma region SetSRV
@@ -532,20 +536,34 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	return textureNum;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(int handle)
+D3D12_GPU_DESCRIPTOR_HANDLE MyDirectX::GetTextureHandle(size_t handle)
 {
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = screenSRVHeap[0]->GetGPUDescriptorHandleForHeapStart();
 	srvGpuHandle.ptr += incrementSize * handle;
 	return srvGpuHandle;
 }
 
-void MyDirectX::ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
+MyDirectX* MyDirectX::GetInstance()
 {
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-}
-void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
-{
-	FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f };
-	cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	static MyDirectX dirextX;
+	return &dirextX;
 }
 
+void MyDirectX::ScreenClear(FLOAT* clearColor_, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
+{
+	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
+}
+
+void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_)
+{
+	FLOAT clearColor_[] = { 0.1f,0.25f, 0.5f,0.0f };
+	cmdList->ClearRenderTargetView(rtvHandle_, clearColor_, 0, nullptr);
+}
+
+void MyDirectX::ClearDepthBuff()
+{
+	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	// 深度バッファのクリア
+	cmdList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+}

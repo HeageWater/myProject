@@ -90,22 +90,28 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	//äiî[óp
 	Vector3D vec;
 
+	float size = 1.0f;
+	//float size = 10.0f;
+
 	// ïΩçsà⁄ìÆ
-	vec.x = (float)transform["translation"][1];
-	vec.y = (float)transform["translation"][2];
-	vec.z = -(float)transform["translation"][0];
+	vec.x = -(float)transform["translation"][1] * size;
+	vec.y = (float)transform["translation"][2] * size;
+	vec.z = (float)transform["translation"][0] * size;
 	objectData.translation.SetVector3(vec);
 
+	//float pi = 3.14;
+	float angle = 60;
+
 	// âÒì]äp
-	vec.x = -(float)transform["rotation"][1];
-	vec.y = -(float)transform["rotation"][2];
-	vec.z = (float)transform["rotation"][0];
+	vec.x = -(float)transform["rotation"][1] / (angle);
+	vec.y = -(float)transform["rotation"][2] / (angle);
+	vec.z = -(float)transform["rotation"][0] / (angle);
 	objectData.rotation.SetVector3(vec);
 
 	// ÉXÉPÅ[ÉäÉìÉO
-	vec.x = (float)transform["scaling"][1];
-	vec.y = (float)transform["scaling"][2];
-	vec.z = (float)transform["scaling"][0];
+	vec.x = (float)transform["scaling"][1] * size;
+	vec.y = (float)transform["scaling"][2] * size;
+	vec.z = (float)transform["scaling"][0] * size;
 	objectData.scaling.SetVector3(vec);
 }
 

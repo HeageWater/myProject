@@ -30,6 +30,8 @@ float ConvertToRad(float angle);
 
 bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
 
+size_t GetRandom(size_t min, size_t max);
+
 class MatView{
 public:
 	Matrix mat;
