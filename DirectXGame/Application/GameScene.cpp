@@ -343,7 +343,7 @@ void GameScene::Initilize()
 	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
-
+	
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
