@@ -156,19 +156,19 @@
     <ClCompile Include="DirectXGame\Engine\ImguiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\CircleParticle.cpp">
+    <ClCompile Include="DirectXGame\Application\Particle\CircleParticle.cpp">
       <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Particle.cpp">
+    <ClCompile Include="DirectXGame\Application\Particle\Particle.cpp">
       <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Skydome.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\GameScene.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\GameScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\TitleScene.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\TitleScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\GameCamera.cpp">
@@ -183,28 +183,28 @@
     <ClCompile Include="DirectXGame\Application\Collision.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Emitter.cpp">
+    <ClCompile Include="DirectXGame\Application\Particle\Emitter.cpp">
       <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\PlayScene.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\PlayScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Scene.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\Scene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\SceneManager.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\SceneManager.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\SceneFactory.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\SceneFactory.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\BoxParticle.cpp">
+    <ClCompile Include="DirectXGame\Application\Particle\BoxParticle.cpp">
       <Filter>ソース ファイル\Game\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\ChengeScene.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\ChengeScene.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Engine\Sprite.cpp">
@@ -334,7 +334,7 @@
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Scene.h">
+    <ClInclude Include="DirectXGame\Application\Scene\Scene.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\Goal.h">
@@ -352,19 +352,19 @@
     <ClInclude Include="DirectXGame\Engine\ImguiManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\CircleParticle.h">
+    <ClInclude Include="DirectXGame\Application\Particle\CircleParticle.h">
       <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Particle.h">
+    <ClInclude Include="DirectXGame\Application\Particle\Particle.h">
       <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Skydome.h">
+    <ClInclude Include="DirectXGame\Application\Actor\Skydome.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\GameScene.h">
+    <ClInclude Include="DirectXGame\Application\Scene\GameScene.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\TitleScene.h">
+    <ClInclude Include="DirectXGame\Application\Scene\TitleScene.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\GameCamera.h">
@@ -376,28 +376,28 @@
     <ClInclude Include="DirectXGame\Application\HitStop.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Emitter.h">
+    <ClInclude Include="DirectXGame\Application\Particle\Emitter.h">
       <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\PlayScene.h">
+    <ClInclude Include="DirectXGame\Application\Scene\PlayScene.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\Warp.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\BaseScene.h">
+    <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\SceneManager.h">
+    <ClInclude Include="DirectXGame\Application\Scene\SceneManager.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\SceneFactory.h">
+    <ClInclude Include="DirectXGame\Application\Scene\SceneFactory.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\BoxParticle.h">
+    <ClInclude Include="DirectXGame\Application\Particle\BoxParticle.h">
       <Filter>ヘッダー ファイル\Game\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\ChengeScene.h">
+    <ClInclude Include="DirectXGame\Application\Scene\ChengeScene.h">
       <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Sprite.h">
