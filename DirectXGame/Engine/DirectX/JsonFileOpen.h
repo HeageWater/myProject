@@ -9,43 +9,43 @@
 #include "json.hpp"
 #pragma warning (pop)
 
-// ƒŒƒxƒ‹ƒf[ƒ^
+// ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿
 struct LevelData {
 
 	struct ObjectData {
-		// ƒtƒ@ƒCƒ‹–¼
+		// ãƒ•ã‚¡ã‚¤ãƒ«å
 		std::string fileName;
 
 		//Matrix
 		Matrix matrix;
 
-		// •½sˆÚ“®
+		// å¹³è¡Œç§»å‹•
 		Vector3D translation;
-		// ‰ñ“]Šp
+		// å›è»¢è§’
 		Vector3D rotation;
-		// ƒXƒP[ƒŠƒ“ƒO
+		// ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
 		Vector3D scaling;
 	};
 
-	// ƒIƒuƒWƒFƒNƒg”z—ñ
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé…åˆ—
 	std::vector<ObjectData> objects;
 };
 
 class JsonFileOpen
 {
 public:
-	// ƒfƒtƒHƒ‹ƒg‚Ì“Ç‚İ‚İƒfƒBƒŒƒNƒgƒŠ
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®èª­ã¿è¾¼ã¿ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	static const std::string kDefaultBaseDirectory;
 
-	// ƒtƒ@ƒCƒ‹Šg’£q
+	// ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­
 	static const std::string kExtension;
 public:
-	//jsonƒtƒ@ƒCƒ‹Open
+	//jsonãƒ•ã‚¡ã‚¤ãƒ«Open
 	static LevelData* FileOpen(const std::string& fileName);
 
-	//transformŠi”[
+	//transformæ ¼ç´
 	static void SetMatrix(nlohmann::json& transform, LevelData::ObjectData& objectData);
 
-	//Ä‹AŠÖ”
+	//å†å¸°é–¢æ•°
 	static LevelData* CheckObjects(nlohmann::json deserialised, LevelData* levelData);
 };

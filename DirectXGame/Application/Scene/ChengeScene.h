@@ -6,10 +6,10 @@ class ChengeScene
 public:
 	ChengeScene();
 	~ChengeScene();
-	void Initialize(GPipeline* pipeline_, Matrix matProjection);
+	void Initialize(Matrix matProjection);
 	void Draw(size_t tex);
 	void Draw();
-	void Update(Matrix matView, Matrix matProjection);
+	void Update();
 	void Reset();
 
 	void SetPlayFlag();
@@ -18,7 +18,7 @@ public:
 	float GetTime() { return time; };
 private:
 
-	//‚±‚ê‚ğON‚É‚·‚é‚ÆƒV[ƒ“ƒ`ƒFƒ“ƒW‚ªŠJn‚·‚é
+	//ã“ã‚Œã‚’ONã«ã™ã‚‹ã¨ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸ãŒé–‹å§‹ã™ã‚‹
 	bool isPlayFlag = false;
 
 	//sprite

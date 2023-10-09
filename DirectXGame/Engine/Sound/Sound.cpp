@@ -68,26 +68,26 @@ size_t MyXAudio::SoundLoadWave(const char* filename)
 	return handle++;
 }
 
-void MyXAudio::SoundUnload(SoundData* soundData)
+void MyXAudio::SoundUnload(SoundData* soundData_)
 {
-	delete[] soundData->pBuffer;
+	delete[] soundData_->pBuffer;
 
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
+	soundData_->pBuffer = 0;
+	soundData_->bufferSize = 0;
+	soundData_->wfex = {};
 }
 
-void MyXAudio::SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData)
+void MyXAudio::SoundPlayWave(IXAudio2* xAudio2_, const SoundData& soundData_)
 {
 	HRESULT result;
 
 	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
+	result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData_.wfex);
 	assert(SUCCEEDED(result));
 
 	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData.pBuffer;
-	buf.AudioBytes = (int32_t)soundData.bufferSize;
+	buf.pAudioData = soundData_.pBuffer;
+	buf.AudioBytes = (int32_t)soundData_.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
 	result = pSourceVoice->SubmitSourceBuffer(&buf);

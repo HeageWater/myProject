@@ -4,7 +4,7 @@
 
 #pragma comment(lib, "d3d12.lib")
 
-ConstBuff::ConstBuff(ID3D12Device* dev, const float winwidth, const float winheight)
+ConstBuff::ConstBuff(ID3D12Device* dev)
 {
 	//	ヒープ設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用

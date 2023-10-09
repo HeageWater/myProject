@@ -97,7 +97,7 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 	return Vector2D(move.x, move.z);
 }
 
-void Player::Update(Matrix matView, Matrix matProjection, Shader shader, GPipeline* pipeline_)
+void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 {
 	//コントローラーUpdate
 	controller->Update();
@@ -118,7 +118,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader, GPipeli
 		//player_.mat.trans += colVec;
 
 		//攻撃
-		Attack(MyDirectX::GetInstance(), shader, pipeline_);
+		Attack(shader);
 
 		for (size_t i = 0; i < attack.size(); i++)
 		{
@@ -161,7 +161,6 @@ void Player::Jump()
 {
 	float gravity = 0.2f;
 	float maxGravity = 3;
-	float nowY = 11;
 	float jump = 1.0f;
 	float maxJunp = 8;
 
@@ -190,7 +189,7 @@ void Player::Jump()
 	player_.mat.trans.y -= gravirtPower;
 }
 
-void Player::Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Player::Attack(Shader shader)
 {
 	//playreの座標
 	playerAttack_.mat.trans = player_.mat.trans;

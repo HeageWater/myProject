@@ -255,5 +255,4 @@ size_t MyMath::GetRandom(size_t min, size_t max)
 	std::default_random_engine eng(rd());
 	std::uniform_int_distribution<> distr((int32_t)min, (int32_t)max);
 	return (size_t)distr(eng);
-	return 0;
 }

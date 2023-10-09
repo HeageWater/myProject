@@ -41,8 +41,6 @@ void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 		isDead = true;
 	}
 
-	float spd = 3.0f;
-
 	//playerAttack_.mat.trans += Vector3D{ -vec.x * spd,vec.y * spd,0 };
 	//playerAttack_.mat.trans.x += controller->GetLeftStickVec().x;
 	//playerAttack_.mat.trans.y += controller->GetLeftStickVec().y;

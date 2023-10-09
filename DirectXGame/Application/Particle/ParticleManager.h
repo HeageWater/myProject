@@ -10,7 +10,7 @@ public:
 	void Draw();
 	void Finalize();
 
-	//ŽlŠp‚Ìƒp[ƒeƒBƒNƒ‹‚ðì‚é
+	//å››è§’ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’ä½œã‚‹
 	void CreateBoxParticle(Vector3D pos);
 
 	//

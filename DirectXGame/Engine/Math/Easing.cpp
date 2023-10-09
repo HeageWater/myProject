@@ -23,7 +23,7 @@ double Easing::EaseInBack(const double startpos, const double endpos, float time
 	return lerp(startpos, endpos, pow((c3 * time * time * time - c1 * time * time), num));
 }
 
-double Easing::EaseOutBack(const double startpos, const double endpos, float time, float num, double p1)
+double Easing::EaseOutBack(const double startpos, const double endpos, float time, float num)
 {
 	if (time < 0.5)
 	{

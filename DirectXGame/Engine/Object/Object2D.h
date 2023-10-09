@@ -26,7 +26,7 @@ private:
 	D3D12_RESOURCE_DESC cbResourceDesc{};
 
 	GPipeline pipeline;
-	UINT vertexSize;
+	uint32_t vertexSize;
 	std::vector<VertexObj> vertices;
 	UINT indexSize;
 	std::vector<unsigned short> indices;

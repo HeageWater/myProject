@@ -10,15 +10,15 @@ public:
 	void Initialize(Shader shader, GPipeline* pipeline_);
 	void Draw(size_t tex, size_t tex2);
 	Vector2D MoveCamera(Matrix matView, Matrix matProjection, Input* input);
-	void Update(Matrix matView, Matrix matProjection,Shader shader, GPipeline* pipeline_);
+	void Update(Matrix matView, Matrix matProjection, Shader shader);
 	void Reset();
 	void Jump();
-	void Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+	void Attack(Shader shader);
 
-	//UŒ‚¶¬—p
+	//æ”»æ’ƒç”Ÿæˆç”¨
 	void PopPlayerAttack();
 
-	//¶ƒXƒeƒBƒbƒN‚Ì’l‚ð•Ô‚·
+	//å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å€¤ã‚’è¿”ã™
 	Vector2D GetController() { return controller->GetLeftStickVec(); };
 
 	Vector3D GetPos() { return player_.mat.trans; };
@@ -41,22 +41,22 @@ public:
 	bool StageCollsionX(Model stage, Matrix matView, Matrix matProjection);
 	bool StageCollsionY(Model stage, Matrix matView, Matrix matProjection);
 	bool GetA()
-	{ //ƒRƒ“ƒgƒ[ƒ‰[Update
+	{ //ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼Update
 		controller->Update();
 		return controller->ButtonTriggerPush(A);
 	};
 
 	bool PlayerCollision(Model enemy);
 
-	//ƒ[ƒv‚·‚éƒAƒNƒVƒ‡ƒ“
+	//ãƒ¯ãƒ¼ãƒ—ã™ã‚‹ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
 	bool WarpAction();
 
-	//ƒ[ƒv‚Ì“üŒû‚ÉG‚ê‚½Žž
+	//ãƒ¯ãƒ¼ãƒ—ã®å…¥å£ã«è§¦ã‚ŒãŸæ™‚
 	bool warpActionFlag = false;
 
 	uint32_t warpMord = 0;
 
-	//warp‚Ì“üŒû‚ÆoŒû‚Ìpos
+	//warpã®å…¥å£ã¨å‡ºå£ã®pos
 	Vector3D warpPos[2];
 
 	void SetWarpPos(Vector3D pos1, Vector3D pos2) { warpPos[0] = pos1; warpPos[1] = pos2; };
@@ -85,25 +85,25 @@ private:
 
 	Controller* controller = nullptr;
 
-	//ˆÚ“®—p•Ï”
+	//ç§»å‹•ç”¨å¤‰æ•°
 	Vector3D colVec = { 0,0,0 };
 
 	//HP
 	float Life;
 
-	//“_–ÅƒJƒEƒ“ƒg
+	//ç‚¹æ»…ã‚«ã‚¦ãƒ³ãƒˆ
 	uint32_t lesFlag;
 
-	//ƒmƒbƒNƒoƒbƒN‚ÌŒü‚«
+	//ãƒŽãƒƒã‚¯ãƒãƒƒã‚¯ã®å‘ã
 	float knockBackVec = 0;
 
-	//ƒmƒbƒNƒoƒbƒN‚Ìƒtƒ‰ƒO
+	//ãƒŽãƒƒã‚¯ãƒãƒƒã‚¯ã®ãƒ•ãƒ©ã‚°
 	bool knockBackFlag;
 
-	//“G‚Æ“–‚½‚Á‚½Žž‚ÉHPŒ¸‚ç‚µ‚ÄƒmƒbƒNƒoƒbƒN‚Ìƒtƒ‰ƒO‚ðON‚É
-	//“_–Åƒtƒ‰ƒO‚àON‚É
+	//æ•µã¨å½“ãŸã£ãŸæ™‚ã«HPæ¸›ã‚‰ã—ã¦ãƒŽãƒƒã‚¯ãƒãƒƒã‚¯ã®ãƒ•ãƒ©ã‚°ã‚’ONã«
+	//ç‚¹æ»…ãƒ•ãƒ©ã‚°ã‚‚ONã«
 	void LesLife();
 
-	//“G‚Æ“–‚½‚Á‚½Žž‚ÌƒmƒbƒNƒoƒbƒN
+	//æ•µã¨å½“ãŸã£ãŸæ™‚ã®ãƒŽãƒƒã‚¯ãƒãƒƒã‚¯
 	void KnockBack();
 };

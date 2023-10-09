@@ -23,8 +23,8 @@ void HitStop::Update()
 	}
 }
 
-void HitStop::SetTime(float time)
+void HitStop::SetTime(float time_)
 {
-	this->time = time;
+	this->time = time_;
 	countFlag = true;
 };

@@ -11,7 +11,7 @@ ChengeScene::~ChengeScene()
 {
 }
 
-void ChengeScene::Initialize(GPipeline* pipeline_, Matrix matProjection)
+void ChengeScene::Initialize(Matrix matProjection)
 {
 	spriteCommon->Inilialize(MyDirectX::GetInstance(), false);
 
@@ -32,12 +32,12 @@ void ChengeScene::Initialize(GPipeline* pipeline_, Matrix matProjection)
 	sprite_->position.y = -Window::window_height;
 }
 
-void ChengeScene::Draw(size_t tex)
+void ChengeScene::Draw(size_t tex_)
 {
 	//ここから画像描画(y軸は-に)
 	sprite_->PreDraw();
 
-	sprite_->Draw(tex);
+	sprite_->Draw(tex_);
 }
 
 void ChengeScene::Draw()
@@ -48,7 +48,8 @@ void ChengeScene::Draw()
 	sprite_->Draw(tex);
 }
 
-void ChengeScene::Update(Matrix matView, Matrix matProjection)
+//void ChengeScene::Update(Matrix matView, Matrix matProjection)
+void ChengeScene::Update()
 {
 	if (isPlayFlag)
 	{

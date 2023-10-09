@@ -4,15 +4,15 @@
 class TitleScene :public BaseScene
 {
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initilize()override;
 
-	//XV
+	//æ›´æ–°
 	void Update()override;
 
-	//•`‰æ
+	//æç”»
 	void Draw()override;
 
-	//”jŠü
+	//ç ´æ£„
 	void Finalize()override;
 };

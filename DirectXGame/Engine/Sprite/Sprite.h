@@ -18,17 +18,15 @@ public:
 	void Draw();
 	void LoadFile(const wchar_t* textureName);
 
-	void TransferSpriteVertex(Vector2D size_);
-
 	SpriteCommon* spriteCommon_ = nullptr;
 	//Microsoft::WRL::ComPtr<SpriteCommon> spriteCommon_;
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 
 	D3D12_RESOURCE_DESC resDesc{};
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ID3D12Resource* constBuffTransform = nullptr;
 
 	struct ConstBufferDataMaterial
@@ -37,35 +35,35 @@ public:
 		Matrix mat;
 	};
 
-	//’è”ƒoƒbƒtƒ@ƒ}ƒbƒv(s—ñ—p)
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒãƒƒãƒ—(è¡Œåˆ—ç”¨)
 	ConstBufferDataMaterial* constMapTransform = nullptr;
 
 public:
-	//ƒAƒtƒBƒ“•ÏŠ·î•ñ
+	//ã‚¢ãƒ•ã‚£ãƒ³å¤‰æ›æƒ…å ±
 	Vector3D scale = { 600,300,1 };
 	Vector3D rotation = { 0,0,0 };
 	Vector3D position = { 10,10,0 };
-	//ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	Matrix matWorld;
 	Matrix matProjection_;
 public:
-	//’¸“_ƒf[ƒ^
+	//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 	Vertex vertices[4] =
 	{
 		//	x,		y,		z,		u,	 v
-		//‘O
-		{{   0.0f,   0.0f, -5.0f},{},{0.0f,1.0f}},//¶‰º
-		{{   0.0f, 250.0f, -5.0f},{},{0.0f,0.0f}},//¶ã
-		{{ 250.0f,   0.0f, -5.0f},{},{1.0f,1.0f}},//‰E‰º
-		{{ 250.0f, 250.0f, -5.0f},{},{1.0f,0.0f}},//‰Eã 
+		//å‰
+		{{   0.0f,   0.0f, -5.0f},{},{0.0f,1.0f}},//å·¦ä¸‹
+		{{   0.0f, 250.0f, -5.0f},{},{0.0f,0.0f}},//å·¦ä¸Š
+		{{ 250.0f,   0.0f, -5.0f},{},{1.0f,1.0f}},//å³ä¸‹
+		{{ 250.0f, 250.0f, -5.0f},{},{1.0f,0.0f}},//å³ä¸Š 
 	};
 
 	//Vector3D vertices[4] =
 	//{
-	//	{+2.5f,+2.5f,0.0f},//¶‰º
-	//	{+4.5f,+2.5f,0.0f},//‰E‰º
-	//	{+2.5f,+4.5f,0.0f},//¶ã
-	//	{+4.5f,+4.5f,0.0f},//‰Eã
+	//	{+2.5f,+2.5f,0.0f},//å·¦ä¸‹
+	//	{+4.5f,+2.5f,0.0f},//å³ä¸‹
+	//	{+2.5f,+4.5f,0.0f},//å·¦ä¸Š
+	//	{+4.5f,+4.5f,0.0f},//å³ä¸Š
 	//};
 
 	uint16_t indices[6] =

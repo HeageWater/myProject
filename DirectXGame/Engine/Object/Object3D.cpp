@@ -7,9 +7,9 @@
 
 void Object3D::Initialize(Shader shader)
 {
-	HRESULT result;
+	HRESULT result_;
 
-	D3D12_HEAP_PROPERTIES heapProp{};
+	//D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 
 	//	ヒープ設定
@@ -25,18 +25,18 @@ void Object3D::Initialize(Shader shader)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
+	result_ = dx->GetDev()->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&transform));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	assert(SUCCEEDED(result_));
 
 	vertexSize = 24;
 	vertices.resize(vertexSize);
@@ -131,8 +131,8 @@ void Object3D::MatUpdate(Matrix matView, Matrix matProjection)
 void Object3D::SetVertices()
 {
 	Vertex* vertMap = nullptr;
-	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
+	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result_));
 
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {

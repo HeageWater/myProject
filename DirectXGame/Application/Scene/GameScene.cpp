@@ -56,7 +56,7 @@ void GameScene::Update()
 		if (hitStop->GetTime() < 1 && Time == t)
 		{
 			//player更新
-			player->Update(matView.mat, matProjection, shader, pipeline.get());
+			player->Update(matView.mat, matProjection, shader);
 
 			//enemy更新
 			enemy->Update(matView.mat, matProjection);
@@ -316,7 +316,7 @@ void GameScene::Update()
 
 	lifePng->Update();
 
-	chengeScene->Update(matView.mat, spriteProjection);
+	chengeScene->Update();
 
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
@@ -343,7 +343,7 @@ void GameScene::Initilize()
 	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
-	
+
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
@@ -505,7 +505,7 @@ void GameScene::Initilize()
 	//StageLoad("stage4");
 	StageLoad("TitleStage");
 
-	chengeScene->Initialize(pipeline.get(), matProjection);
+	chengeScene->Initialize(matProjection);
 
 	//音を鳴らす
 	//sound_->SoundPlayLoopWave(bgm);

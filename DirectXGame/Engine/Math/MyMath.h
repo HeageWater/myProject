@@ -20,7 +20,7 @@ namespace MyMath {
 const float PI = 3.14159265358979f;
 const float PIx2 = 6.2831853071f;
 
-//	‹“_À•WA’‹“_À•WAã•ûŒüƒxƒNƒgƒ‹
+//	è¦–ç‚¹åº§æ¨™ã€æ³¨è¦–ç‚¹åº§æ¨™ã€ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
 
 Matrix PerspectiveFovLH(const float winwidth, const float winheight, float fovY, float nearZ, float farZ);
@@ -35,9 +35,9 @@ size_t GetRandom(size_t min, size_t max);
 class MatView{
 public:
 	Matrix mat;
-	Vector3D eye;		//	‹“_À•W
-	Vector3D target;	//	’‹“_À•W
-	Vector3D up;		//	ã•ûŒüƒxƒNƒgƒ‹
+	Vector3D eye;		//	è¦–ç‚¹åº§æ¨™
+	Vector3D target;	//	æ³¨è¦–ç‚¹åº§æ¨™
+	Vector3D up;		//	ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 public:
 	MatView();
 	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);

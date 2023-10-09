@@ -1,5 +1,5 @@
 #pragma once
-//‘S‚Ä‚ÌƒV[ƒ“‚Å•K—v‚È‚à‚Ì‚ğIncude
+//å…¨ã¦ã®ã‚·ãƒ¼ãƒ³ã§å¿…è¦ãªã‚‚ã®ã‚’Incude
 #include "Sprite.h"
 #include "Input.h"
 #include "Object3D.h"
@@ -15,16 +15,16 @@
 class BaseScene
 {
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual void Initilize() = 0;
 
-	//XV
+	//æ›´æ–°
 	virtual void Update() = 0;
 
-	//•`‰æ
+	//æç”»
 	virtual void Draw() = 0;
 
-	//”jŠü
+	//ç ´æ£„
 	virtual void Finalize() = 0;
 
 	virtual ~BaseScene() = default;

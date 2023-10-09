@@ -5,9 +5,9 @@ class MyDebugCamera
 {
 public:
 	Matrix mat;
-	Vector3D eye;		//	‹“_À•W
-	Vector3D target;	//	’‹“_À•W
-	Vector3D up;		//	ã•ûŒüƒxƒNƒgƒ‹
+	Vector3D eye;		//	è¦–ç‚¹åº§æ¨™
+	Vector3D target;	//	æ³¨è¦–ç‚¹åº§æ¨™
+	Vector3D up;		//	ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	Matrix billboard;
 private:
 	float disEyeTarget;

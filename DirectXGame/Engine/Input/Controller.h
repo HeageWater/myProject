@@ -33,108 +33,108 @@ private:
 	Microsoft::WRL::ComPtr<IDirectInputDevice8> controller = nullptr;
 	XINPUT_STATE controllerState{};
 	XINPUT_STATE oldControllerState{};
-	//ƒRƒ“ƒgƒ[ƒ‰[U“®‹­‚³
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æŒ¯å‹•å¼·ã•
 	float shakePower = 0.0f;
-	//ƒRƒ“ƒgƒ[ƒ‰[U“®’·‚³(ƒtƒŒ[ƒ€”)
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æŒ¯å‹•é•·ã•(ãƒ•ãƒ¬ãƒ¼ãƒ æ•°)
 	float shakeTimer = 0;
 
-	//ƒfƒbƒhƒ][ƒ“‚É“ü‚Á‚Ä‚¢‚é‚©(DeadRate : ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢A1.0f‚¾‚ÆƒfƒtƒHƒ‹ƒg)
+	//ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã«å…¥ã£ã¦ã„ã‚‹ã‹(DeadRate : ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„ã€1.0fã ã¨ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ)
 	bool StickInDeadZone(Vector2D thumb, const Vector2D deadRate);
 
-	//Å‚“ü—Í‹­“x
+	//æœ€é«˜å…¥åŠ›å¼·åº¦
 	const float STICK_INPUT_MAX = 32768.0f;
 
 public:
 
-	//XVˆ—(•’ig‚í‚È‚¢)
+	//æ›´æ–°å‡¦ç†(æ™®æ®µä½¿ã‚ãªã„)
 	void Update();
 
 	/// <summary>
-	/// button‚Åw’è‚µ‚½ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½uŠÔ
+	/// buttonã§æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸç¬é–“
 	/// </summary>
-	/// <param name="button">A‚âLB“™</param>
+	/// <param name="button">Aã‚„LBç­‰</param>
 	/// <returns></returns>
 	bool ButtonTriggerPush(ControllerButton button);
 
 	/// <summary>
-	/// button‚Åw’è‚µ‚½ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éŠÔ
+	/// buttonã§æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã„ã‚‹é–“
 	/// </summary>
-	/// <param name="button">A‚âLB“™</param>
+	/// <param name="button">Aã‚„LBç­‰</param>
 	/// <returns></returns>
 	bool ButtonKeepPush(ControllerButton button);
 
 	/// <summary>
-	/// button‚Åw’è‚µ‚½ƒ{ƒ^ƒ“‚ğ—£‚µ‚½uŠÔ
+	/// buttonã§æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã‚’é›¢ã—ãŸç¬é–“
 	/// </summary>
-	/// <param name="button">A‚âLB“™</param>
+	/// <param name="button">Aã‚„LBç­‰</param>
 	/// <returns></returns>
 	bool ButtonTriggerRelease(ControllerButton button);
 
 	/// <summary>
-	/// button‚Åw’è‚µ‚½ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚È‚¢ŠÔ
+	/// buttonã§æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã„ãªã„é–“
 	/// </summary>
-	/// <param name="button">A‚âLB“™</param>
+	/// <param name="button">Aã‚„LBç­‰</param>
 	/// <returns></returns>
 	bool ButtonKeepRelease(ControllerButton button);
 
 	/// <summary>
-	/// stick‚Åw’è‚µ‚½•ûŒü‚É“|‚µ‚½uŠÔ
+	/// stickã§æŒ‡å®šã—ãŸæ–¹å‘ã«å€’ã—ãŸç¬é–“
 	/// </summary>
-	/// <param name="stick">¶ƒXƒeƒBƒbƒN‚È‚çL_ZZ,‰EƒXƒeƒBƒbƒN‚È‚çR_ZZ</param>
-	/// <param name="deadRange">ƒfƒbƒhƒ][ƒ“‚Ì”ÍˆÍ‰Šú’l0.3f</param>
-	/// <param name="deadRate">ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢‰Šú’l1.0f</param>
+	/// <param name="stick">å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰L_ã€‡ã€‡,å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰R_ã€‡ã€‡</param>
+	/// <param name="deadRange">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®ç¯„å›²åˆæœŸå€¤0.3f</param>
+	/// <param name="deadRate">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„åˆæœŸå€¤1.0f</param>
 	/// <returns></returns>
 	bool StickTriggerPush(ControllerStick stick, const float& deadRange = 0.3f, Vector2D deadRate = { 1.0f,1.0f });
 
 	/// <summary>
-	/// stick‚Åw’è‚µ‚½•ûŒü‚É“|‚µ‚Ä‚¢‚éŠÔ
+	/// stickã§æŒ‡å®šã—ãŸæ–¹å‘ã«å€’ã—ã¦ã„ã‚‹é–“
 	/// </summary>
-	/// <param name="stick">¶ƒXƒeƒBƒbƒN‚È‚çL_ZZ,‰EƒXƒeƒBƒbƒN‚È‚çR_ZZ</param>
-	/// <param name="deadRange">ƒfƒbƒhƒ][ƒ“‚Ì”ÍˆÍ‰Šú’l0.3f</param>
-	/// <param name="deadRate">ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢‰Šú’l1.0f</param>
+	/// <param name="stick">å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰L_ã€‡ã€‡,å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰R_ã€‡ã€‡</param>
+	/// <param name="deadRange">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®ç¯„å›²åˆæœŸå€¤0.3f</param>
+	/// <param name="deadRate">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„åˆæœŸå€¤1.0f</param>
 	/// <returns></returns>
 	bool StickKeepPush(ControllerStick stick, const float& deadRange = 0.3f, Vector2D deadRate = { 1.0f,1.0f });
 
 	/// <summary>
-	/// stick‚Åw’è‚µ‚½•ûŒü‚©‚ç–ß‚µ‚½uŠÔ
+	/// stickã§æŒ‡å®šã—ãŸæ–¹å‘ã‹ã‚‰æˆ»ã—ãŸç¬é–“
 	/// </summary>
-	/// <param name="stick">¶ƒXƒeƒBƒbƒN‚È‚çL_ZZ,‰EƒXƒeƒBƒbƒN‚È‚çR_ZZ</param>
-	/// <param name="deadRange">ƒfƒbƒhƒ][ƒ“‚Ì”ÍˆÍ‰Šú’l0.3f</param>
-	/// <param name="deadRate">ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢‰Šú’l1.0f</param>
+	/// <param name="stick">å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰L_ã€‡ã€‡,å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰R_ã€‡ã€‡</param>
+	/// <param name="deadRange">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®ç¯„å›²åˆæœŸå€¤0.3f</param>
+	/// <param name="deadRate">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„åˆæœŸå€¤1.0f</param>
 	/// <returns></returns>
 	bool StickTriggerRelease(ControllerStick stick, const float& deadRange = 0.3f, Vector2D deadRate = { 1.0f,1.0f });
 
 	/// <summary>
-	/// stick‚Åw’è‚µ‚½•ûŒü‚É“|‚µ‚Ä‚¢‚È‚¢ŠÔ
+	/// stickã§æŒ‡å®šã—ãŸæ–¹å‘ã«å€’ã—ã¦ã„ãªã„é–“
 	/// </summary>
-	/// <param name="stick">¶ƒXƒeƒBƒbƒN‚È‚çL_ZZ,‰EƒXƒeƒBƒbƒN‚È‚çR_ZZ</param>
-	/// <param name="deadRange">ƒfƒbƒhƒ][ƒ“‚Ì”ÍˆÍ‰Šú’l0.3f</param>
-	/// <param name="deadRate">ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢‰Šú’l1.0f</param>
+	/// <param name="stick">å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰L_ã€‡ã€‡,å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãªã‚‰R_ã€‡ã€‡</param>
+	/// <param name="deadRange">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®ç¯„å›²åˆæœŸå€¤0.3f</param>
+	/// <param name="deadRate">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„åˆæœŸå€¤1.0f</param>
 	/// <returns></returns>
 	bool StickKeepRelease(ControllerStick stick, const float& deadRange = 0.3f, Vector2D deadRate = { 1.0f,1.0f });
 
 	/// <summary>
-	/// ƒQ[ƒ€ƒpƒbƒh‚ÌU“®
+	/// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®æŒ¯å‹•
 	/// </summary>
-	/// <param name="power">U“®‚Ì‹­‚³0.0f`1.0f</param>
-	/// <param name="span">U“®‚ÌŠÔƒtƒŒ[ƒ€</param>
+	/// <param name="power">æŒ¯å‹•ã®å¼·ã•0.0fï½1.0f</param>
+	/// <param name="span">æŒ¯å‹•ã®æ™‚é–“ãƒ•ãƒ¬ãƒ¼ãƒ </param>
 	void ShakeController(const float& power, const float& span);
 
 	/// <summary>
-	/// LƒXƒeƒBƒbƒN‚ÌŒX‚«‚Ìæ“¾
+	/// Lã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å‚¾ãã®å–å¾—
 	/// </summary>
-	/// <param name="deadRate">ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢‰Šú’l1.0f</param>
+	/// <param name="deadRate">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„åˆæœŸå€¤1.0f</param>
 	/// <returns></returns>
 	Vector2D GetLeftStickVec(Vector2D deadRate = { 1.0f,1.0f });
 
 	/// <summary>
-	/// RƒXƒeƒBƒbƒN‚ÌŒX‚«‚Ìæ“¾
+	/// Rã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å‚¾ãã®å–å¾—
 	/// </summary>
-	/// <param name="deadRate">ƒfƒbƒhƒ][ƒ“”»’è‚Ì“x‡‚¢‰Šú’l1.0f</param>
+	/// <param name="deadRate">ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³åˆ¤å®šã®åº¦åˆã„åˆæœŸå€¤1.0f</param>
 	/// <returns></returns>
 	Vector2D GetRightStickVec(Vector2D deadRate = { 1.0f,1.0f });
 
-	//ƒVƒ“ƒOƒ‹ƒgƒ“
+	//ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³
 	static Controller* GetInstance();
 
 private:
@@ -142,7 +142,7 @@ private:
 	Controller() = default;
 	~Controller() = default;
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^E‘ã“ü‰‰Zqíœ
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ä»£å…¥æ¼”ç®—å­å‰Šé™¤
 	Controller& operator=(const Controller&) = delete;
 	Controller(const Controller&) = delete;
 };

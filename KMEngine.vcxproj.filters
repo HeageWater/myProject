@@ -468,5 +468,6 @@
     <None Include="Resources\shader\Geometry.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
+    <None Include=".editorconfig" />
   </ItemGroup>
 </Project>

@@ -249,6 +249,7 @@
     <ClInclude Include="DirectXGame\Application\Particle\ParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="Resources\shader\Geometry.hlsli" />
     <None Include="Resources\shader\Basic.hlsli" />
     <None Include="Resources\shader\SpriteHeader.hlsli" />

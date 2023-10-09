@@ -10,11 +10,11 @@ Sprite::~Sprite()
 	//delete spriteCommon_;
 }
 
-void Sprite::Inilialize(SpriteCommon* spriteCommon, Matrix* matProjection_)
+void Sprite::Inilialize(SpriteCommon* spriteCommon, Matrix* matProjection)
 {
 	//spriteCommon_ = new SpriteCommon;
 	this->spriteCommon_ = spriteCommon;
-	this->matProjection_ = *matProjection_;
+	this->matProjection_ = *matProjection;
 
 	//頂点データサイズ　= 頂点データサイズ一つ分 * 要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
@@ -267,32 +267,4 @@ void Sprite::Draw()
 void Sprite::LoadFile(const wchar_t* textureName)
 {
 	tex = spriteCommon_->dxCommon_->LoadTextureGraph(textureName);
-}
-
-void Sprite::TransferSpriteVertex(Vector2D size_)
-{
-	//size = size_;
-
-	//// 左下、左上、右下、右上
-	//enum { LB, LT, RB, RT };
-
-	//float left = 0.0f * size.x;
-	//float right = 1.0f * size.x;
-	//float top = 0.0f * size.y;
-	//float bottom = 1.0f * size.y;
-
-	//pv[LB].pos = { left,	bottom,	0.0f }; // 左下
-	//pv[LT].pos = { left,	top,	0.0f }; // 左上
-	//pv[RB].pos = { right,	bottom,	0.0f }; // 右下
-	//pv[RT].pos = { right,	top,	0.0f }; // 右上
-
-	//float tex_left = 0.0f;
-	//float tex_right = 1.0f;
-	//float tex_top = 0.0f;
-	//float tex_bottom = 1.0f;
-
-	//pv[LB].uv = { tex_left,	tex_bottom }; // 左下
-	//pv[LT].uv = { tex_left,	tex_top }; // 左上
-	//pv[RB].uv = { tex_right,	tex_bottom }; // 右下
-	//pv[RT].uv = { tex_right,	tex_top }; // 右上
 }

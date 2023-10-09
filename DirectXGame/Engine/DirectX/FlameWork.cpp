@@ -21,7 +21,7 @@ void FlameWork::Initilize()
 	ImguiManager::GetInstance()->Initialize();
 
 	//buff
-	cBuff = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev(), (float)win->window_width, (float)win->window_height);
+	cBuff = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev());
 
 	//shader
 	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");

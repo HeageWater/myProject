@@ -4,7 +4,7 @@
 
 #include "FlameWork.h"
 
-//flamework‚ÉˆÚ“®
+//flameworkã«ç§»å‹•
 
 enum Scene
 {
@@ -33,10 +33,10 @@ public:
 private:
 	void CreatePatricle(Vector3D pos);
 
-	//ƒXƒe[ƒW“Ç‚İ‚İ
+	//ã‚¹ãƒ†ãƒ¼ã‚¸èª­ã¿è¾¼ã¿
 	void StageLoad(const std::string& filePath);
 
-	//I—¹ƒtƒ‰ƒO
+	//çµ‚äº†ãƒ•ãƒ©ã‚°
 	bool endRequest_ = false;
 
 	//camera
@@ -54,7 +54,7 @@ private:
 	//std::unique_ptr<Controller> controller;
 	Controller* controller = nullptr;
 
-	//•`‰æ—ps—ñ
+	//æç”»ç”¨è¡Œåˆ—
 	MyMath::MatView matView;
 	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
@@ -74,7 +74,7 @@ private:
 	//Warp
 	Warp* warp = new Warp();
 
-	//‰¼enemy’u‚«
+	//ä»®enemyç½®ã
 	Enemy* enemy = new Enemy();
 	Enemy* enemy2 = new Enemy();
 	Enemy* enemy3 = new Enemy();
@@ -135,19 +135,19 @@ private:
 	Sprite* UIPress = new Sprite();
 
 
-	//ƒp[ƒeƒBƒNƒ‹Ši”[—p
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ ¼ç´ç”¨
 	std::vector<Particle*> particles_;
 	std::vector<BoxParticle*> boxParticles_;
 	//Emitter* emitter_ = new Emitter();
 
-	//ƒXƒe[ƒW“Ç‚İ‚İ
+	//ã‚¹ãƒ†ãƒ¼ã‚¸èª­ã¿è¾¼ã¿
 	LevelData* levelData_ = nullptr;
 
-	//ƒXƒe[ƒWŠi”[—p
+	//ã‚¹ãƒ†ãƒ¼ã‚¸æ ¼ç´ç”¨
 	std::map<std::string, Stage*> stages_;
 	std::vector<Stage*> objects_;
 
-	//ƒV[ƒ“ƒ`ƒFƒ“ƒW
+	//ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸
 	ChengeScene* chengeScene = new ChengeScene();
 
 	bool imguiDrawFlag = true;

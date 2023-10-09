@@ -7,20 +7,20 @@ public:
 	/*ImguiManager();
 	~ImguiManager();*/
 
-	//‰Šú‰»(DirectXCommon‚ÉˆË‘¶)
+	//åˆæœŸåŒ–(DirectXCommonã«ä¾å­˜)
 	//void Initialize(Window* win_);
 	void Initialize();
 
-	//‰ğ•ú
+	//è§£æ”¾
 	void Finalize();
 
-	//ŠJn
+	//é–‹å§‹
 	void Begin();
 
-	//I—¹
+	//çµ‚äº†
 	void End();
 
-	//•`‰æ
+	//æç”»
 	void Draw();
 
 	static ImguiManager* GetInstance();
@@ -30,7 +30,7 @@ private:
 	ImguiManager() = default;
 	~ImguiManager() = default;
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^E‘ã“ü‰‰Zqíœ
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ä»£å…¥æ¼”ç®—å­å‰Šé™¤
 	ImguiManager& operator=(const ImguiManager&) = delete;
 	ImguiManager(const ImguiManager&) = delete;
 

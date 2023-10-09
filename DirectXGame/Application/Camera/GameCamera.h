@@ -2,38 +2,39 @@
 #include "MyMath.h"
 #include "Input.h"
 
-//ƒJƒƒ‰‚ğƒvƒŒƒCƒ„[‚Ì‘«ê‚Æ‚»‚Ì“Vˆä‚Ì•‚É‡‚í‚¹‚é(ãŒÀ‚Í‚½‚¹‚é)
-//ƒJƒƒ‰’[‚©‚ç‚¿‚å‚Á‚Æ‚¾‚¯è‘O‚ÌêŠ‚ğŠm”F‚µ‚Ä‘«ê‚ª‚È‚©‚Á‚½‚ç‚¿‚å‚Á‚ÆƒJƒƒ‰‚ğˆø‚­
+//ã‚«ãƒ¡ãƒ©ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¶³å ´ã¨ãã®å¤©äº•ã®å¹…ã«åˆã‚ã›ã‚‹(ä¸Šé™ã¯æŒãŸã›ã‚‹)
+//ã‚«ãƒ¡ãƒ©ç«¯ã‹ã‚‰ã¡ã‚‡ã£ã¨ã ã‘æ‰‹å‰ã®å ´æ‰€ã‚’ç¢ºèªã—ã¦è¶³å ´ãŒãªã‹ã£ãŸã‚‰ã¡ã‚‡ã£ã¨ã‚«ãƒ¡ãƒ©ã‚’å¼•ã
 
 class GameCamera
 {
-public:
-	Matrix mat;
-	Vector3D eye;		//	‹“_À•W
-	Vector3D target;	//	’‹“_À•W
-	Vector3D up;		//	ã•ûŒüƒxƒNƒgƒ‹
-	Matrix billboard;
-private:
-	float disEyeTarget;
-	Vector3D frontVec;
-	Vector2D cursor;
-	Vector2D prevCursor;
-	Vector2D moveCursor;
-	Vector2D cursorSpd;
-
-	Vector2D rotAngle;
-	Vector2D prevRotAngle;
-	Vector2D endRotAngle;
-
-	Vector3D rightVec;
-	Vector3D downVec;
-public:
-	GameCamera();
-	GameCamera(Vector3D _eye, Vector3D _target, Vector3D _up);
-	void Update(Input& input);
-	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
-	void MatUpdate();
-	Vector3D Transfrom() { return eye; }
-	Vector3D FrontVec() { return frontVec; }
-	void Move(float camerapos);
+//public:
+//	Matrix mat;
+//	Vector3D eye;		//	è¦–ç‚¹åº§æ¨™
+//	Vector3D target;	//	æ³¨è¦–ç‚¹åº§æ¨™
+//	Vector3D up;		//	ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+//	Matrix billboard;
+//private:
+//	/*float disEyeTarget;
+//	Vector3D frontVec;
+//	Vector2D cursor;
+//	Vector2D prevCursor;
+//	Vector2D moveCursor;
+//	Vector2D cursorSpd;
+//
+//	Vector2D rotAngle;
+//	Vector2D prevRotAngle;
+//	Vector2D endRotAngle;
+//
+//	Vector3D rightVec;
+//	Vector3D downVec;*/
+//public:
+//	//GameCamera();
+//	GameCamera(Vector3D _eye, Vector3D _target, Vector3D _up);
+//	void Update();
+//	//void Update(Input& input);
+//	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
+//	void MatUpdate();
+//	Vector3D Transfrom() { return eye; }
+//	Vector3D FrontVec() { return frontVec; }
+//	void Move(float camerapos);
 };

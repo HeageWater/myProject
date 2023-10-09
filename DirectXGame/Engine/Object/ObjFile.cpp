@@ -15,7 +15,7 @@ bool ObjFile::ReadFile()
 	{
 		char lineHeader[128] = { 0 };
 
-		// s‚ÌÅ‰‚Ì•¶š—ñ‚ğ“Ç‚İ‚İ‚Ü‚·B
+		// è¡Œã®æœ€åˆã®æ–‡å­—åˆ—ã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚
 		uint32_t res = fscanf_s(file, "%s", &lineHeader, static_cast<uint32_t>(_countof(lineHeader)));
 
 		if (res == EOF)
@@ -45,15 +45,15 @@ bool ObjFile::ReadFile()
 			if (matches != 9) {
 				return false;
 			}
-			vertexIndices.push_back(vertexIndex[0]);
-			vertexIndices.push_back(vertexIndex[1]);
-			vertexIndices.push_back(vertexIndex[2]);
-			uvIndices.push_back(uvIndex[0]);
-			uvIndices.push_back(uvIndex[1]);
-			uvIndices.push_back(uvIndex[2]);
-			normalIndices.push_back(normalIndex[0]);
-			normalIndices.push_back(normalIndex[1]);
-			normalIndices.push_back(normalIndex[2]);
+			vertexIndices.push_back((unsigned short)vertexIndex[0]);
+			vertexIndices.push_back((unsigned short)vertexIndex[1]);
+			vertexIndices.push_back((unsigned short)vertexIndex[2]);
+			uvIndices.push_back((unsigned short)uvIndex[0]);
+			uvIndices.push_back((unsigned short)uvIndex[1]);
+			uvIndices.push_back((unsigned short)uvIndex[2]);
+			normalIndices.push_back((unsigned short)normalIndex[0]);
+			normalIndices.push_back((unsigned short)normalIndex[1]);
+			normalIndices.push_back((unsigned short)normalIndex[2]);
 		}
 	}
 	return true;

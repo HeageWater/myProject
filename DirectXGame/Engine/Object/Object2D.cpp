@@ -6,8 +6,8 @@ void Object2D::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	VertexObj* vertMap = nullptr;
-	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
+	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
@@ -60,10 +60,10 @@ void Object2D::SetMatTransform()
 
 Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 {
-	HRESULT result;
+	HRESULT result_;
 
 #pragma region  ConstBuffer
-	D3D12_HEAP_PROPERTIES heapProp{};
+	//D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//	ヒープ設定
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
@@ -78,18 +78,18 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&transform));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	assert(SUCCEEDED(result_));
 #pragma endregion
 
 	vertexSize = vertexNum;
@@ -103,12 +103,12 @@ Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 
 	int32_t num = vertexNum;
 
-	for (auto i = 0; i < num; i++)
+	for (int16_t i = 0; i < num; i++)
 	{
 		int32_t n = i * 3;
-		indices[n + 2] = vertexSize;
+		indices[n + 2] = (unsigned short)vertexSize;
 		indices[n] = i;
-		if (i == vertexNum - 1) {
+		if (i == (int32_t)vertexNum - 1) {
 			indices[n + 1] = 0;
 		}
 		else {

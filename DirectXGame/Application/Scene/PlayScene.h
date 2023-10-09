@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 
-//‚±‚ÌƒV[ƒ“‚É‚Ì‚İ’Ç‰Á‚·‚é‚à‚Ì
+//ã“ã®ã‚·ãƒ¼ãƒ³ã«ã®ã¿è¿½åŠ ã™ã‚‹ã‚‚ã®
 #include "Player.h"
 #include "Stage.h"
 #include "Enemy.h"
@@ -16,15 +16,15 @@
 class PlayScene : public BaseScene
 {
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initilize()override;
 
-	//XV
+	//æ›´æ–°
 	void Update()override;
 
-	//•`‰æ
+	//æç”»
 	void Draw()override;
 
-	//”jŠü
+	//ç ´æ£„
 	void Finalize()override;
 };

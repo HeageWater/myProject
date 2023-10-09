@@ -26,8 +26,8 @@ void UISquare::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	ScreenVertex* vertMap = nullptr;
-	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
+	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = pv[i]; // 座標をコピー
@@ -51,7 +51,7 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, siz
 	dx = dx_;
 	pipeline = pipeline_;
 
-	HRESULT result;
+	HRESULT result_;
 
 #pragma region  ConstBuffer
 	//	ヒープ設定
@@ -67,18 +67,18 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, siz
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
+	result_ = dx->GetDev()->CreateCommittedResource(
 		&cbHeapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&transform));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	assert(SUCCEEDED(result_));
 
 	//	ヒープ設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
@@ -93,18 +93,18 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, siz
 
 	resourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
 	//	生成
-	result = dx->GetDev()->CreateCommittedResource(
+	result_ = dx->GetDev()->CreateCommittedResource(
 		&heapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&material));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
+	assert(SUCCEEDED(result_));
 #pragma endregion
 	pv[0] = { {-1.0f,-1.0f,0.0f},{},{0,1} };
 	pv[1] = { {-1.0f, 1.0f,0.0f},{},{0,0} };
@@ -181,8 +181,8 @@ void Square::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	HRESULT result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
+	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {
 		vertMap[i] = pv[i]; // 座標をコピー

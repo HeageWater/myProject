@@ -32,7 +32,7 @@ private:
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	ComPtr<ID3D12DescriptorHeap> rtvHeap;
 
-	// ƒoƒbƒNƒoƒbƒtƒ@
+	// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle;
 
@@ -54,9 +54,9 @@ private:
 	ComPtr<ID3D12DescriptorHeap> screenRTVHeap;
 	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap;
 
-	//	ƒrƒ…[ƒ|[ƒg
+	//	ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆ
 	ViewPort viewPort;
-	// ƒVƒU[‹éŒ`
+	// ã‚·ã‚¶ãƒ¼çŸ©å½¢
 	ScissorRect scissorRect;
 
 	int textureNum;
@@ -98,7 +98,7 @@ public:
 	UINT GetIncrementSize() { return incrementSize; }
 
 	Window GetWindow() { return *win; };
-	//ƒoƒbƒNƒoƒbƒtƒ@‚Ì”‚ğæ“¾
+	//ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®æ•°ã‚’å–å¾—
 	size_t GetBackByfferCount() const { return backBuffers.size(); };
 
 	static MyDirectX* GetInstance();

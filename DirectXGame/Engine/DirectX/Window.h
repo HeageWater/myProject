@@ -4,23 +4,23 @@
 class Window
 {
 public:
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
-	static const int window_width = 1280; // ‰¡•
-	static const int window_height = 720; // c•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	static const int window_width = 1280; // æ¨ªå¹…
+	static const int window_height = 720; // ç¸¦å¹…
 private:
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ìİ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	WNDCLASSEX w{};
-	// ƒEƒBƒ“ƒhƒEƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	HWND hwnd;
-	// ƒƒbƒZ[ƒW
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	MSG msg{};
-	// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	//Window() = default;
 	//~Window() = default;
 
-	////ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^E‘ã“ü‰‰Zqíœ
+	////ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ä»£å…¥æ¼”ç®—å­å‰Šé™¤
 	//Window& operator=(const Window&) = delete;
 	//Window(const Window&) = delete;
 public:

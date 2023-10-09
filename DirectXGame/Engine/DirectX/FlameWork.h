@@ -30,7 +30,7 @@ public:
 	virtual~FlameWork() = default;
 
 protected:
-	//I—¹ƒtƒ‰ƒO
+	//çµ‚äº†ãƒ•ãƒ©ã‚°
 	bool endRequest_ = false;
 
 	//windowApi
@@ -42,7 +42,7 @@ protected:
 	//pipeline
 	std::unique_ptr<GPipeline> pipeline;
 
-	//•`‰æ‰Šú‰»
+	//æç”»åˆæœŸåŒ–
 	std::unique_ptr<GPipeline> multipathPipeline;
 
 	//gpipeline
