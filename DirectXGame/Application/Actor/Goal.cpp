@@ -51,5 +51,5 @@ void Goal::Reset()
 {
 	goal_.mat.Initialize();
 	goal_.mat.scale = { 5,5,3 };
-	goal_.mat.trans = { 1000,15,0 };
+	goal_.mat.trans = { 380,-160,0 };
 }

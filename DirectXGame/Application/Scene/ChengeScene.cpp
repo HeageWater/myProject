@@ -61,8 +61,6 @@ void ChengeScene::Update()
 	}
 
 	bool widthOut = sprite_->position.x > Window::window_width;
-	//bool widthOut = sprite_->position.x < 0 || sprite_->position.x > Window::window_width;
-	//bool heightOut = sprite_->position.y < 0 || sprite_->position.y > Window::window_height;
 
 	if (widthOut)
 	{

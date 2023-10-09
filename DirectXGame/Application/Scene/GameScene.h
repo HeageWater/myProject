@@ -71,6 +71,9 @@ private:
 	//player
 	Player* player = new Player();
 
+	//3Dタイトル
+	TitleObj* titleObject = new TitleObj();
+
 	//Warp
 	Warp* warp = new Warp();
 

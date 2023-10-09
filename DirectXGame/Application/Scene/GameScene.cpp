@@ -11,7 +11,18 @@ void GameScene::Update()
 
 	//ImGui受付開始
 	ImguiManager::GetInstance()->Begin();
-	ImGui::Text("player pos");
+	ImGui::SliderFloat("Title posX", &titleObject->titleObj.mat.trans.x, -400, 400);
+	ImGui::SliderFloat("Title posY", &titleObject->titleObj.mat.trans.y, -400, 400);
+	ImGui::SliderFloat("Title posZ", &titleObject->titleObj.mat.trans.z, -400, 400);
+
+	ImGui::SliderFloat("Title rotX", &titleObject->titleObj.mat.rotAngle.x, -400, 400);
+	ImGui::SliderFloat("Title rotY", &titleObject->titleObj.mat.rotAngle.y, -400, 400);
+	ImGui::SliderFloat("Title rotZ", &titleObject->titleObj.mat.rotAngle.z, -400, 400);
+
+	ImGui::SliderFloat("playcamera posX", &playcamera.eye.x, -400, 400);
+	ImGui::SliderFloat("playcamera posY", &playcamera.eye.y, -400, 400);
+	ImGui::SliderFloat("playcamera posZ", &playcamera.eye.z, -400, 400);
+
 	//ImGui受付終了
 	ImguiManager::GetInstance()->End();
 
@@ -37,10 +48,73 @@ void GameScene::Update()
 			scene = Play;
 		}
 
-		if (player->GetA())
+		//if (player->GetA())
+		if (titleObject->BoxCollision(player->GetAttackModel()) && !titleObject->IsMovie)
 		{
-			chengeScene->SetPlayFlag();
+			titleObject->Movie();
+
+			//この下の処理まとめろ
+			float setStopTime = 7.0f;
+
+			hitStop->SetTime(setStopTime);
+			sound_->SoundPlayWave(enemyHit);
 		}
+
+		if (titleObject->EndMovie)
+		{
+			if (hitStop->GetTime() < 1)
+			{
+				if (chengeScene->GetTime() < 1)
+				{
+					titleObject->EndMovie = false;
+
+					chengeScene->SetPlayFlag();
+				}
+			}
+		}
+
+		//player更新
+		player->Update(matView.mat, matProjection, shader);
+		titleObject->Update(matView.mat, matProjection);
+
+		//
+		player->MoveY();
+		//stageUpdate
+		for (auto& object : objects_)
+		{
+			object->SetFlag(true);
+
+			object->Update(matView.mat, matProjection);
+
+
+			if (player->StageCollsionY(object->stage_, matView.mat, matProjection))
+			{
+				//object->SetFlag(false);
+			}
+		}
+
+		//
+		player->MoveX();
+		for (auto& object : objects_)
+		{
+			if (player->StageCollsionX(object->stage_, matView.mat, matProjection))
+			{
+				//object->SetFlag(false);
+			}
+		}
+
+		//スクリーン更新
+		screen.MatUpdate(matView.mat, matProjection, 0);
+
+		//matView.mat = playcamera.mat;
+
+		////座標更新
+		//playcamera.Update(*input);
+		//debugcamera.Update(*input);
+
+		//カメラ更新
+		matView.MatUpdate();
+
 		break;
 
 	case Select:
@@ -167,18 +241,6 @@ void GameScene::Update()
 			goal->Update(matView.mat, matProjection);
 			warp->Update(matView.mat, matProjection);
 
-			//パーティクル
-			for (size_t i = 0; i < boxParticles_.size(); i++)
-			{
-				boxParticles_[i]->Update(matView.mat, matProjection);
-
-				//削除
-				if (boxParticles_[i]->IsDead() == true)
-				{
-					boxParticles_.erase(boxParticles_.begin() + i);
-				}
-			}
-
 			//スクリーン更新
 			screen.MatUpdate(matView.mat, matProjection, 0);
 
@@ -261,7 +323,11 @@ void GameScene::Update()
 				overFlag = false;
 			}
 		}
-
+		else if (Time == 1)
+		{
+			Reset();
+			StageLoad("stage4");
+		}
 		break;
 
 	case Pause:
@@ -318,6 +384,18 @@ void GameScene::Update()
 
 	chengeScene->Update();
 
+	//パーティクル
+	for (size_t i = 0; i < boxParticles_.size(); i++)
+	{
+		boxParticles_[i]->Update(matView.mat, matProjection);
+
+		//削除
+		if (boxParticles_[i]->IsDead() == true)
+		{
+			boxParticles_.erase(boxParticles_.begin() + i);
+		}
+	}
+
 	//Escapeで抜ける
 	if (input->GetTrigger(DIK_ESCAPE))
 	{
@@ -365,6 +443,9 @@ void GameScene::Initilize()
 
 	//player
 	player->Initialize(shader, pipeline.get());
+
+	//
+	titleObject->Initialize(shader, pipeline.get());
 
 	//warp
 	warp->Initialize(shader, pipeline.get());
@@ -508,7 +589,7 @@ void GameScene::Initilize()
 	chengeScene->Initialize(matProjection);
 
 	//音を鳴らす
-	//sound_->SoundPlayLoopWave(bgm);
+	sound_->SoundPlayLoopWave(bgm);
 }
 
 void GameScene::Draw()
@@ -534,6 +615,16 @@ void GameScene::Draw()
 	switch (scene)
 	{
 	case Title:
+		//Actor描画
+		player->Draw(playerTex, white);
+
+		titleObject->Draw(white);
+
+		//ステージ
+		for (auto& object : objects_) {
+			//object->Draw(texP);
+			object->Draw(texCount);
+		}
 		break;
 
 	case Select:
@@ -595,7 +686,7 @@ void GameScene::Draw()
 		//ボックスパーティクル
 		for (size_t i = 0; i < boxParticles_.size(); i++)
 		{
-			boxParticles_[i]->Draw(blackTex);
+			boxParticles_[i]->Draw(white);
 		}
 
 		break;
@@ -629,14 +720,21 @@ void GameScene::Draw()
 	{
 	case Title:
 		//タイトル
-		titlePng->Draw(titleTex);
+		//titlePng->Draw(titleTex);
 		//sprite_->Draw();
 
-		UIAButton->Draw(AbuttonTex);
-		UIAButton->Update();
+		//UIAButton->Draw(AbuttonTex);
+		//UIAButton->Update();
 
-		UIPress->Draw(PressTex);
-		UIPress->Update();
+		//UIPress->Draw(PressTex);
+		//UIPress->Update();
+
+		//操作(UI描画一つにまとめる)
+		UILStick->Draw(LTex);
+		UILStick->Update();
+
+		UIRStick->Draw(RTex);
+		UIRStick->Update();
 		break;
 
 	case Select:
@@ -947,6 +1045,15 @@ void GameScene::StageLoad(const std::string& filePath)
 {
 	//stageファイル
 	levelData_ = JsonFileOpen::FileOpen(filePath);
+
+	//
+	size_t count = objects_.size();
+
+	//今あるステージを削除
+	for (size_t i = 0; i < count; i++)
+	{
+		objects_.erase(objects_.begin());
+	}
 
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置

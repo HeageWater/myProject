@@ -264,6 +264,9 @@
     <ClCompile Include="DirectXGame\Application\MyGame.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp">
+      <Filter>ソース ファイル\Game\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\PShader.hlsl">
@@ -456,6 +459,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\MyGame.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h">
+      <Filter>ヘッダー ファイル\Game\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -156,6 +156,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\PlayScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\ParticleManager.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -247,6 +248,7 @@
     <ClInclude Include="DirectXGame\Application\Scene\PlayScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Warp.h" />
     <ClInclude Include="DirectXGame\Application\Particle\ParticleManager.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

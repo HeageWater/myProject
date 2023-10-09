@@ -12,6 +12,7 @@
 #include "Emitter.h"
 #include "ChengeScene.h"
 #include "Warp.h"
+#include "TitleObj.h"
 
 class PlayScene : public BaseScene
 {
