@@ -35,10 +35,5 @@ public:
 	HWND GetHwnd() const { return hwnd; }
 	WNDCLASSEX GetWND() const { return w; }
 
-	/*Window* GetInstance()
-	{
-		static Window window_;
-		return &window_;
-	}*/
 };
 

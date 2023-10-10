@@ -16,7 +16,7 @@ class BaseScene
 {
 public:
 	//初期化
-	virtual void Initilize() = 0;
+	virtual void Initialize() = 0;
 
 	//更新
 	virtual void Update() = 0;

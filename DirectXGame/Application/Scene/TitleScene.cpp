@@ -4,7 +4,7 @@ void TitleScene::Update()
 {
 }
 
-void TitleScene::Initilize()
+void TitleScene::Initialize()
 {
 }
 

@@ -3,7 +3,8 @@
 #include"PlayScene.h"
 #include"GameScene.h"
 
-std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
+//
+std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName)
 {
 	//次のシーンを生成
 	BaseScene* newScene = nullptr;
@@ -17,7 +18,7 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneNam
 		//newScene = new GameScene();
 		newScene = new PlayScene();
 	}
-	else if(sceneName == "")
+	else if (sceneName == "")
 	{
 
 	}

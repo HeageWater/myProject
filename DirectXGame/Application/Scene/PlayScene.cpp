@@ -4,7 +4,7 @@ void PlayScene::Update()
 {
 }
 
-void PlayScene::Initilize()
+void PlayScene::Initialize()
 {
 }
 

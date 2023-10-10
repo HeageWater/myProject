@@ -1,4 +1,5 @@
 #include "FlameWork.h"
+#include "SceneManager.h"
 
 void FlameWork::Update()
 {
@@ -39,6 +40,26 @@ void FlameWork::Initilize()
 	//gpipeline
 	uiPipeline = std::make_unique<GPipeline>();
 	uiPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
+
+	{
+		//input sound
+		/*Camera::StaticInitialize(windowsApp_.get());
+
+		TextureManager::GetInstance()->StaticInitialize();
+
+		SpriteCommon::StaticInitialize();
+		Sprite2D::StaticInitialize(windowsApp_.get());
+
+		Model::StaticInitialize();
+
+		ParticleManager::StaticInitialize();
+
+		LightManager::StaticInitialize(DirectXBase::GetInstance()->GetDevice().Get())*/
+	}
+
+	//
+	SceneFactory* sceneFactory = new SceneCreate();
+	SceneManager::GetInstance()->SetSceneFactory(sceneFactory);
 }
 
 void FlameWork::Finalize()

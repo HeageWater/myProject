@@ -18,7 +18,7 @@ class PlayScene : public BaseScene
 {
 public:
 	//初期化
-	void Initilize()override;
+	void Initialize()override;
 
 	//更新
 	void Update()override;
