@@ -21,7 +21,7 @@ private:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12PipelineState> state;
-
+	HRESULT result_;
 private:
 	void SetShader(Shader shader);
 	void Blend(D3D12_RENDER_TARGET_BLEND_DESC& blenddesc, const int mord = NONE_BLEND);

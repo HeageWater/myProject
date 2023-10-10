@@ -66,8 +66,8 @@ void MyDirectX::Initialize(Window* win_)
 #pragma region Adapter
 	ComPtr<IDXGIFactory7> dxgiFactory;
 	// DXGIファクトリーの生成
-	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
-	assert(SUCCEEDED(result));
+	result_ = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
+	assert(SUCCEEDED(result_));
 	// アダプターの列挙用
 	std::vector<ComPtr<IDXGIAdapter4>> adapters;
 	// ここに特定の名前を持つアダプターオブジェクトが入る
@@ -102,9 +102,9 @@ void MyDirectX::Initialize(Window* win_)
 	D3D_FEATURE_LEVEL featureLevel;
 	for (size_t i = 0; i < _countof(levels); i++) {
 		// 採用したアダプターでデバイスを生成
-		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
+		result_ = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
 			IID_PPV_ARGS(&device));
-		if (result == S_OK) {
+		if (result_ == S_OK) {
 			// デバイスを生成できた時点でループを抜ける
 			featureLevel = levels[i];
 			break;
@@ -140,24 +140,24 @@ void MyDirectX::Initialize(Window* win_)
 
 #pragma region CmdList
 	// コマンドアロケータを生成
-	result = device->CreateCommandAllocator(
+	result_ = device->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(&cmdAllocator));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 	// コマンドリストを生成
-	result = device->CreateCommandList(0,
+	result_ = device->CreateCommandList(0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		cmdAllocator.Get(), nullptr,
 		IID_PPV_ARGS(&cmdList));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 #pragma endregion CmdList
 
 #pragma region CmdQueue
 	//コマンドキューの設定
 	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
 	//コマンドキューを生成
-	result = device->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&cmdQueue));
-	assert(SUCCEEDED(result));
+	result_ = device->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&cmdQueue));
+	assert(SUCCEEDED(result_));
 #pragma endregion CmdQueue
 
 #pragma region DoubleBuffering
@@ -174,12 +174,12 @@ void MyDirectX::Initialize(Window* win_)
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;		// フリップ後は破棄
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	// スワップチェーンの生成
-	result = dxgiFactory->CreateSwapChainForHwnd(
+	result_ = dxgiFactory->CreateSwapChainForHwnd(
 		cmdQueue.Get(), win->GetHwnd(), &swapChainDesc, nullptr, nullptr,
 		&swapChain1);
 
 	swapChain1.As(&swapChain);		//	1→4に変換
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 #pragma endregion swapChain
 
 #pragma region DesHeap
@@ -234,7 +234,7 @@ void MyDirectX::Initialize(Window* win_)
 		clearValue.Color[i] = clsClr[i];
 	}
 
-	result = device->CreateCommittedResource(
+	result_ = device->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,
@@ -246,7 +246,7 @@ void MyDirectX::Initialize(Window* win_)
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = rtvHeap->GetDesc();
 	//	heap
 	heapDesc.NumDescriptors = 1;
-	result = device->CreateDescriptorHeap(
+	result_ = device->CreateDescriptorHeap(
 		&heapDesc,
 		IID_PPV_ARGS(screenRTVHeap.ReleaseAndGetAddressOf()));
 
@@ -273,10 +273,10 @@ void MyDirectX::Initialize(Window* win_)
 	screenSRVHeap.resize(heapDesc.NumDescriptors);
 	texBuff.resize(heapDesc.NumDescriptors);
 
-	result = device->CreateDescriptorHeap(
+	result_ = device->CreateDescriptorHeap(
 		&heapDesc,
 		IID_PPV_ARGS(screenSRVHeap[0].ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC _srvDesc = {};
 	_srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
@@ -309,7 +309,7 @@ void MyDirectX::Initialize(Window* win_)
 	depthClearValue.DepthStencil.Depth = 1.0f;
 	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;
 	//	Resource生成
-	result = device->CreateCommittedResource(
+	result_ = device->CreateCommittedResource(
 		&depthHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&depthResourceDesc,
@@ -320,7 +320,7 @@ void MyDirectX::Initialize(Window* win_)
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+	result_ = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
 	//	view
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
@@ -333,7 +333,7 @@ void MyDirectX::Initialize(Window* win_)
 
 #pragma region fence
 	// フェンスの生成
-	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	result_ = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 #pragma endregion fence
 
 	//	ビューポート
@@ -403,14 +403,14 @@ void MyDirectX::PostDraw()
 
 	// 命令のクローズ
 #pragma region CmdClose
-	result = cmdList->Close();
-	assert(SUCCEEDED(result));
+	result_ = cmdList->Close();
+	assert(SUCCEEDED(result_));
 	// 溜めていたコマンドリストの実行(close必須)
 	ID3D12CommandList* commandLists[] = { cmdList.Get() };
 	cmdQueue->ExecuteCommandLists(1, commandLists);
 	// 画面に表示するバッファをフリップ(裏表の入替え)
-	result = swapChain->Present(1, 0);
-	assert(SUCCEEDED(result));
+	result_ = swapChain->Present(1, 0);
+	assert(SUCCEEDED(result_));
 #pragma endregion CmdClose
 
 #pragma region ChangeScreen
@@ -426,11 +426,11 @@ void MyDirectX::PostDraw()
 		}
 	}
 	// キューをクリア
-	result = cmdAllocator->Reset();
-	assert(SUCCEEDED(result));
+	result_ = cmdAllocator->Reset();
+	assert(SUCCEEDED(result_));
 	// 再びコマンドリストを貯める準備
-	result = cmdList->Reset(cmdAllocator.Get(), nullptr);
-	assert(SUCCEEDED(result));
+	result_ = cmdList->Reset(cmdAllocator.Get(), nullptr);
+	assert(SUCCEEDED(result_));
 #pragma endregion ChangeScreen
 }
 
@@ -462,7 +462,7 @@ int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result_ = LoadFromWICFile(
+	result_ = LoadFromWICFile(
 		textureName,
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);

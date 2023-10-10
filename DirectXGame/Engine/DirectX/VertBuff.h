@@ -32,8 +32,6 @@ class VertBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	HRESULT result;
 protected:
 	//	vertex
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
@@ -46,6 +44,8 @@ protected:
 
 	D3D12_RESOURCE_DESC resDesc{};
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
+
+	HRESULT result_;
 
 private:
 	void SetResDesc(UINT size);

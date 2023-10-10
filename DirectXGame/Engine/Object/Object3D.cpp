@@ -7,8 +7,6 @@
 
 void Object3D::Initialize(Shader shader)
 {
-	HRESULT result_;
-
 	//D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 
@@ -131,7 +129,7 @@ void Object3D::MatUpdate(Matrix matView, Matrix matProjection)
 void Object3D::SetVertices()
 {
 	Vertex* vertMap = nullptr;
-	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 
 	// 全頂点に対して

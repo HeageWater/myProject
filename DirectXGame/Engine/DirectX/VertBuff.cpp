@@ -60,14 +60,14 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT sizeIB, uint16_
 	SetResDesc(sizeVB);
 
 	//	GPU側にメモリ確保
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&heapProp,							// ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,							// リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	// 頂点バッファビューの作成(GPUで利用するため)
 	// GPU仮想アドレス
@@ -83,18 +83,18 @@ void VertBuff::VBInitialize(ID3D12Device* dev, UINT sizeVB, UINT sizeIB, uint16_
 		ibExist = true;
 
 		SetResDesc(sizeIB);
-		result = dev->CreateCommittedResource(
+		result_ = dev->CreateCommittedResource(
 			&heapProp, // ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&resDesc, // リソース設定
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
 			IID_PPV_ARGS(&indexBuff));
-		assert(SUCCEEDED(result));
+		assert(SUCCEEDED(result_));
 		//	インデックスバッファマッピング
 		uint16_t* indexMap = nullptr;
-		result = indexBuff->Map(0, nullptr, (void**)&indexMap);
-		assert(SUCCEEDED(result));
+		result_ = indexBuff->Map(0, nullptr, (void**)&indexMap);
+		assert(SUCCEEDED(result_));
 		// 全頂点に対して
 		for (size_t i = 0; i < indicesSize; i++) {
 			indexMap[i] = indices[i]; // 座標をコピー
@@ -123,13 +123,13 @@ void VertBuff::SetResDesc(UINT size)
 void VertBuff::BuffTransferGPU(ID3D12Resource* buff, ID3D12Device* dev)
 {
 #pragma region バッファの生成
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&buff));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 #pragma endregion
 }

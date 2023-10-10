@@ -6,7 +6,7 @@ void Object2D::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	VertexObj* vertMap = nullptr;
-	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {
@@ -60,8 +60,6 @@ void Object2D::SetMatTransform()
 
 Object2D::Object2D(ID3D12Device* dev, Shader shader, UINT vertexNum, float rad)
 {
-	HRESULT result_;
-
 #pragma region  ConstBuffer
 	//D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};

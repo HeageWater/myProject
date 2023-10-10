@@ -19,18 +19,18 @@ ConstBuff::ConstBuff(ID3D12Device* dev)
 
 	resourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
 	//	生成
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&heapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&material));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
+	assert(SUCCEEDED(result_));
 
 
 	//	GPUのメモリにデータ転送
@@ -38,18 +38,18 @@ ConstBuff::ConstBuff(ID3D12Device* dev)
 
 	resourceDesc.Width = (sizeof(ConstBufferTimeMaterial) + 0xFF) & ~0xFF;
 	//	生成
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&heapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&timeMaterial));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = timeMaterial->Map(0, nullptr, (void**)&timeMapMaterial);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = timeMaterial->Map(0, nullptr, (void**)&timeMapMaterial);	//	マッピング
+	assert(SUCCEEDED(result_));
 
 
 	//	GPUのメモリにデータ転送
@@ -76,18 +76,18 @@ void ConstBuff::Initialize(ID3D12Device* dev)
 
 	resourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xFF) & ~0xFF;
 	//	生成
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&heapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&material));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = material->Map(0, nullptr, (void**)&mapMaterial);	//	マッピング
+	assert(SUCCEEDED(result_));
 
 
 	//	GPUのメモリにデータ転送
@@ -95,18 +95,18 @@ void ConstBuff::Initialize(ID3D12Device* dev)
 
 	resourceDesc.Width = (sizeof(ConstBufferTimeMaterial) + 0xFF) & ~0xFF;
 	//	生成
-	result = dev->CreateCommittedResource(
+	result_ = dev->CreateCommittedResource(
 		&heapProp,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&timeMaterial));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result = timeMaterial->Map(0, nullptr, (void**)&timeMapMaterial);	//	マッピング
-	assert(SUCCEEDED(result));
+	result_ = timeMaterial->Map(0, nullptr, (void**)&timeMapMaterial);	//	マッピング
+	assert(SUCCEEDED(result_));
 
 
 	//	GPUのメモリにデータ転送

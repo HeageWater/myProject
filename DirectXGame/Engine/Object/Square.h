@@ -25,6 +25,8 @@ private:
 	MyDirectX* dx = nullptr;
 	GPipeline* pipeline = nullptr;
 
+	HRESULT result_;
+
 	struct ConstBufferDataTransform {
 		Matrix mat;
 	};

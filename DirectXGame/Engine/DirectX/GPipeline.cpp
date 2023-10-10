@@ -4,7 +4,6 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-
 GPipeline::GPipeline(ID3D12Device* dev, Shader shader)
 //GPipeline::GPipeline(D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, ID3D12Device* dev, Shader shader)
 {
@@ -46,13 +45,13 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader)
 	ComPtr<ID3DBlob> rsBlob;
 	ComPtr<ID3DBlob> errBlob;
 
-	HRESULT result = D3D12SerializeRootSignature(
+	result_ = D3D12SerializeRootSignature(
 		&rsDesc,
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		rsBlob.ReleaseAndGetAddressOf(),
 		errBlob.ReleaseAndGetAddressOf());
 
-	result = dev->CreateRootSignature(
+	result_ = dev->CreateRootSignature(
 		0,
 		rsBlob.Get()->GetBufferPointer(),
 		rsBlob.Get()->GetBufferSize(),
@@ -88,9 +87,8 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader)
 	pipelineDesc.SampleDesc.Quality = 0;
 	pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
 
-
 	pipelineDesc.pRootSignature = rootSignature.Get();
-	result = dev->CreateGraphicsPipelineState(&pipelineDesc,
+	result_ = dev->CreateGraphicsPipelineState(&pipelineDesc,
 		IID_PPV_ARGS(state.ReleaseAndGetAddressOf()));
 }
 
@@ -115,7 +113,6 @@ void GPipeline::Setting(ID3D12GraphicsCommandList* cmdList)
 void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize,
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
 {
-	HRESULT result;
 	// シェーダーの設定
 	SetShader(shader);
 
@@ -159,8 +156,8 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
 	// パイプランステートの生成
-	result = dev->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&state));
-	assert(SUCCEEDED(result));
+	result_ = dev->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&state));
+	assert(SUCCEEDED(result_));
 }
 
 void GPipeline::Blend(D3D12_RENDER_TARGET_BLEND_DESC& blenddesc, const int mord)
@@ -257,19 +254,19 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();						//	ルートパラメータ数
+	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();				//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
-	ComPtr<ID3DBlob> rootSigBlob;
-	ComPtr<ID3DBlob> errorBlob;
-	HRESULT result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
+	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		rootSigBlob.ReleaseAndGetAddressOf(),
 		errorBlob.ReleaseAndGetAddressOf());
-	assert(SUCCEEDED(result));
-	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	assert(SUCCEEDED(result_));
+	result_ = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(rootSignature.ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 #pragma endregion
 }
 
@@ -308,19 +305,19 @@ void GPipeline::SetScreenRootSignature(ID3D12Device* dev)
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();						//	ルートパラメータ数
+	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();				//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
 	ComPtr<ID3DBlob> rootSigBlob;
 	ComPtr<ID3DBlob> errorBlob;
-	HRESULT result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		rootSigBlob.ReleaseAndGetAddressOf(),
 		errorBlob.ReleaseAndGetAddressOf());
-	assert(SUCCEEDED(result));
-	result = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	assert(SUCCEEDED(result_));
+	result_ = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(rootSignature.ReleaseAndGetAddressOf()));
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
 #pragma endregion
@@ -357,8 +354,8 @@ void GPipeline::SetBlend(ID3D12Device* dev, int mord)
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	Blend(blenddesc, mord);
-	HRESULT result = dev->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&state));
-	assert(SUCCEEDED(result));
+	result_ = dev->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&state));
+	assert(SUCCEEDED(result_));
 }
 
 void GPipeline::SetShader(Shader shader)

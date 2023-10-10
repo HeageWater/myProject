@@ -83,15 +83,17 @@
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\DirectXGame\Application\Scene;$(ProjectDir)\DirectXGame\Application\Particle;$(ProjectDir)\DirectXGame\Application\Collision;$(ProjectDir)\DirectXGame\Application\Camera;$(ProjectDir)\DirectXGame\Engine\Sound;$(ProjectDir)\DirectXGame\Engine\Math;$(ProjectDir)\DirectXGame\Engine\DirectX;$(ProjectDir)\DirectXGame\Engine\Input;$(ProjectDir)\DirectXGame\Engine\Object;$(ProjectDir)\DirectXGame\Engine\Shader;$(ProjectDir)\DirectXGame\Engine\Sprite;$(ProjectDir)\DirectXGame\Engine\Camera</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>/NODEFAULTLIB:[libcmt.lib,msvcrtd.lib,libcmtd.lib];%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

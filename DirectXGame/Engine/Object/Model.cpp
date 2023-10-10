@@ -3,8 +3,6 @@
 
 void Model::Initialize(Shader shader, const char* filename)
 {
-	HRESULT result_;
-
 	D3D12_HEAP_PROPERTIES heapProp_{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//	ヒープ設定
@@ -93,7 +91,7 @@ void Model::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {

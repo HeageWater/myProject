@@ -9,7 +9,7 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
-	HRESULT result;
+	HRESULT result_;
 	D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 

@@ -26,7 +26,7 @@ void UISquare::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	ScreenVertex* vertMap = nullptr;
-	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {
@@ -50,8 +50,6 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, siz
 {
 	dx = dx_;
 	pipeline = pipeline_;
-
-	HRESULT result_;
 
 #pragma region  ConstBuffer
 	//	ヒープ設定
@@ -181,7 +179,7 @@ void Square::SetVertices()
 	//	GPUメモリの値書き換えよう
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	HRESULT result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for (size_t i = 0; i < vertexSize; i++) {

@@ -34,7 +34,7 @@ void Window::Initialize()
 {
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;
-	w.lpszClassName = L"DirectXGame";
+	w.lpszClassName = L"Blade";
 	w.hInstance = GetModuleHandle(nullptr);
 	w.hCursor = LoadCursor(NULL, IDC_ARROW);
 
@@ -45,7 +45,7 @@ void Window::Initialize()
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	hwnd = CreateWindow(w.lpszClassName,
-		L"DirectXGame",
+		L"Blade",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
