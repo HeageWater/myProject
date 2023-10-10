@@ -20,7 +20,7 @@ class FlameWork
 {
 public:
 	virtual void Update();
-	virtual void Initilize();
+	virtual void Initialize();
 	virtual void Draw() = 0;
 	virtual void Finalize();
 	virtual void Run();

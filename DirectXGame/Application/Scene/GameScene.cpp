@@ -403,9 +403,9 @@ void GameScene::Update()
 	}
 }
 
-void GameScene::Initilize()
+void GameScene::Initialize()
 {
-	FlameWork::Initilize();
+	FlameWork::Initialize();
 
 	//input
 	input = std::make_unique<Input>(win.get());
@@ -848,7 +848,7 @@ void GameScene::Finalize()
 void GameScene::Run()
 {
 	//初期化
-	Initilize();
+	Initialize();
 
 	//ゲームループ
 	while (true)

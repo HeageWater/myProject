@@ -1,9 +1,8 @@
 #include "MyGame.h"
-
-void MyGame::Initalize()
+void MyGame::Initialize()
 {
 	//
-	FlameWork::Initilize();
+	FlameWork::Initialize();
 
 
 	//シーンマネージャーに最初のシーンをセット
@@ -18,17 +17,17 @@ void MyGame::Update()
 	//SceneChangeAnimation::GetInstance()->Update();
 
 	//シーンマネージャーの更新処理
-	SceneManager::GetInstance()->Update();
+	//SceneManager::GetInstance()->Update();
 }
 
 void MyGame::Draw()
 {
-	SceneManager::GetInstance()->Draw();
+	//SceneManager::GetInstance()->Draw();
 }
 
 void MyGame::Finalize()
 {
-	sceneManager->GetInstance()->Finalize();
+	SceneManager::GetInstance()->Finalize();
 
 	FlameWork::Finalize();
 }

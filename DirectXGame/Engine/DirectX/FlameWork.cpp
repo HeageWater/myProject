@@ -10,7 +10,7 @@ void FlameWork::Update()
 	}
 }
 
-void FlameWork::Initilize()
+void FlameWork::Initialize()
 {
 	//windowApi
 	win = std::make_unique<Window>();
@@ -70,7 +70,7 @@ void FlameWork::Finalize()
 void FlameWork::Run()
 {
 	//初期化
-	Initilize();
+	Initialize();
 
 	//ゲームループ
 	while (true)

@@ -21,7 +21,7 @@ class GameScene :public FlameWork
 {
 public:
 	void Update() override;
-	void Initilize()override;
+	void Initialize()override;
 	void Draw()override;
 	void Finalize()override;
 	void Run()override;
