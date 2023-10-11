@@ -6,17 +6,17 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 LRESULT Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 { {}
-	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
-	{
-		return true;
-	}
-	switch (msg) {
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
-	}
-	
-	return DefWindowProc(hwnd, msg, wparam, lparam);
+if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+{
+	return true;
+}
+switch (msg) {
+case WM_DESTROY:
+	PostQuitMessage(0);
+	return 0;
+}
+
+return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
 Window::Window()
@@ -72,6 +72,9 @@ void Window::MsgUpdate()
 
 bool Window::EndLoop()
 {
-	if (msg.message == WM_QUIT) return true;
+	if (msg.message == WM_QUIT)
+	{
+		return true;
+	}
 	return false;
 }

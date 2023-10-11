@@ -1,15 +1,6 @@
 #include "ChengeScene.h"
 #include "Easing.h"
-
-ChengeScene::ChengeScene()
-{
-	tex = 0;
-	time = 0;
-}
-
-ChengeScene::~ChengeScene()
-{
-}
+#include"SceneManager.h"
 
 void ChengeScene::Initialize(Matrix matProjection)
 {
@@ -48,24 +39,31 @@ void ChengeScene::Draw()
 	sprite_->Draw(tex);
 }
 
-//void ChengeScene::Update(Matrix matView, Matrix matProjection)
 void ChengeScene::Update()
 {
+	float maxTime = 60;
+
 	if (isPlayFlag)
 	{
 		time++;
 
-		float maxTime = 15;
-		sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time / 100, maxTime);
+		if (time > 30.0f)
+		{
+			sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time, maxTime);
+		}
+		else if (time == 31.0f)
+		{
+			SceneManager::GetInstance()->ChangeScene("PLAY");
+		}
+		else
+		{
 
-	}
+		}
 
-	bool widthOut = sprite_->position.x > Window::window_width;
-
-	if (widthOut)
-	{
-		isPlayFlag = false;
-		time = 0;
+		if (time > maxTime)
+		{
+			Reset();
+		}
 	}
 
 	sprite_->Update();
@@ -73,6 +71,8 @@ void ChengeScene::Update()
 
 void ChengeScene::Reset()
 {
+	isPlayFlag = false;
+	time = 0;
 }
 
 void ChengeScene::SetPlayFlag()
@@ -92,4 +92,10 @@ void ChengeScene::SetPlayFlag()
 
 		time = 0;
 	}
+}
+
+ChengeScene* ChengeScene::GetInstance()
+{
+	static ChengeScene chengeScene_;
+	return &chengeScene_;
 }

@@ -1,10 +1,13 @@
 #include "FlameWork.h"
 #include "SceneManager.h"
+#include "ChengeScene.h"
 
 void FlameWork::Update()
 {
+	//下の処理まとめよう
+	//Escapeで抜けるかどうかは後で消す
 	win->MsgUpdate();
-	if (win->EndLoop())
+	if (win->EndLoop() || Input::GetInstance()->GetTrigger(DIK_ESCAPE))
 	{
 		SetEndRwqust(true);
 	}
@@ -49,6 +52,11 @@ void FlameWork::Initialize()
 	//sound
 	MyXAudio::GetInstance()->Initialize();
 
+	//仮置き
+	Matrix matProjection = MyMath::PerspectiveFovLH(
+		Window::window_width, Window::window_height,
+		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
+
 	{
 		/*Camera::StaticInitialize(windowsApp_.get());
 
@@ -63,6 +71,9 @@ void FlameWork::Initialize()
 
 		LightManager::StaticInitialize(DirectXBase::GetInstance()->GetDevice().Get())*/
 	}
+
+	//シーンチェンジ用クラス
+	ChengeScene::GetInstance()->Initialize(matProjection);
 
 	//
 	SceneFactory* sceneFactory = new SceneCreate();
@@ -85,18 +96,22 @@ void FlameWork::Run()
 	while (true)
 	{
 		////ImGui受付開始
-		//ImguiManager::GetInstance()->Begin();
+		ImguiManager::GetInstance()->Begin();
 
 		//更新
 		Update();
 
 		////ImGui受付終了
-		//ImguiManager::GetInstance()->End();
+		ImguiManager::GetInstance()->End();
 
 		//描画
 		Draw();
 
-		/*ImguiManager::GetInstance()->Draw();*/
+#ifdef _DEBUG
+
+		ImguiManager::GetInstance()->Draw();
+
+#endif _DEBUG
 
 		//もしエンドフラグがTrueなら抜ける
 		if (IsEndRequst())

@@ -41,13 +41,6 @@ private:
 	//shader
 	Shader shader;
 	Shader bilShader;
-
-	bool IsEndRequst() { return endRequest_; };
-	void SetEndRwqust(bool flag) { endRequest_ = flag; };
-
-	//終了フラグ
-	bool endRequest_ = false;
-
 public:
 	//初期化
 	void Initialize()override;

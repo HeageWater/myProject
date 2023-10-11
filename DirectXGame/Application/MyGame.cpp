@@ -1,10 +1,14 @@
 #include "MyGame.h"
+//#include "ChengeScene.h"
+
 void MyGame::Initialize()
 {
 	//
 	FlameWork::Initialize();
 
-
+	//
+	//ChengeScene::GetInstance()->Initialize();
+	
 	//シーンマネージャーに最初のシーンをセット
 	SceneManager::GetInstance()->ChangeScene("TITLE");
 }

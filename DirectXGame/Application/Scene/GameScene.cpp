@@ -44,6 +44,7 @@ void GameScene::Update()
 	case Title:
 
 		if (chengeScene->GetTime() > chengeTime)
+		if (chengeScene->GetTime() > chengeTime)
 		{
 			scene = Play;
 		}

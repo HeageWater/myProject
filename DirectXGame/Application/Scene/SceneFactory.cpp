@@ -13,7 +13,7 @@ std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName
 	{
 		newScene = new TitleScene();
 	}
-	else if (sceneName == "GAME")
+	else if (sceneName == "PLAY")
 	{
 		//newScene = new GameScene();
 		newScene = new PlayScene();

@@ -4,8 +4,8 @@
 class ChengeScene
 {
 public:
-	ChengeScene();
-	~ChengeScene();
+	//ChengeScene();
+	//~ChengeScene();
 	void Initialize(Matrix matProjection);
 	void Draw(size_t tex);
 	void Draw();
@@ -16,6 +16,8 @@ public:
 	bool GetPlayFlag() { return isPlayFlag; };
 
 	float GetTime() { return time; };
+
+	static ChengeScene* GetInstance();
 private:
 
 	//これをONにするとシーンチェンジが開始する
@@ -26,7 +28,15 @@ private:
 	SpriteCommon* spriteCommon = new SpriteCommon();
 	Sprite* sprite_ = new Sprite();
 
-	size_t tex;
+	size_t tex = 0;
 
-	float time;
+	float time = 0;
+private:
+
+	ChengeScene() = default;
+	~ChengeScene() = default;
+
+	//コピーコンストラクタ・代入演算子削除
+	ChengeScene& operator=(const ChengeScene&) = delete;
+	ChengeScene(const ChengeScene&) = delete;
 };

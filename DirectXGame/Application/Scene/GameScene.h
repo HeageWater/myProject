@@ -151,7 +151,7 @@ private:
 	std::vector<Stage*> objects_;
 
 	//シーンチェンジ
-	ChengeScene* chengeScene = new ChengeScene();
+	ChengeScene* chengeScene = ChengeScene::GetInstance();
 
 	bool imguiDrawFlag = true;
 	bool goalFlag = false;

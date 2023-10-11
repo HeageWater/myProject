@@ -1,7 +1,19 @@
 #include "TitleScene.h"
+#include "imgui.h"
+#include "ChengeScene.h"
 
 void TitleScene::Update()
 {
+	//ImGui受付開始
+	ImGui::Begin("player Pos");
+
+	float a = player->GetPos().x;
+
+	ImGui::SliderFloat("player pos", &a, -400, 400);
+	
+	//ImGui受付終了
+	ImGui::End();
+
 	//player更新
 	player->Update(matView.mat, matProjection, shader);
 
@@ -11,17 +23,13 @@ void TitleScene::Update()
 	//スクリーン更新
 	screen.MatUpdate(matView.mat, matProjection, 0);
 
-	//Escapeで抜ける
-	if (input_->GetTrigger(DIK_ESCAPE))
-	{
-		SetEndRwqust(true);
-	}
-
-	//Escapeで抜ける
+	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
-		
+		ChengeScene::GetInstance()->SetPlayFlag();
 	}
+
+	ChengeScene::GetInstance()->Update();
 }
 
 void TitleScene::Initialize()
@@ -29,7 +37,7 @@ void TitleScene::Initialize()
 	//描画用行列
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 
 	//shader
 	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -67,6 +75,8 @@ void TitleScene::Draw()
 
 	//Actor描画
 	player->Draw(white, white);
+
+	ChengeScene::GetInstance()->Draw();
 
 	MyDirectX::GetInstance()->PostDraw();
 }
