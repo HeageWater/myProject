@@ -4,24 +4,6 @@
 
 #pragma comment(lib,"xaudio2.lib")
 
-MyXAudio::MyXAudio()
-{
-	handle = 0;
-	soundData.resize(handle);
-
-	HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-
-	result = xAudio2->CreateMasteringVoice(&masterVoice);
-}
-
-MyXAudio::~MyXAudio()
-{
-	xAudio2.Reset();
-	for (size_t i = 0; i < soundData.size(); i++)
-	{
-		SoundUnload(&soundData[i]);
-	}
-}
 
 size_t MyXAudio::SoundLoadWave(const char* filename)
 {
@@ -141,4 +123,23 @@ void MyXAudio::StopAllLoopSound()
 		soundPtr[i]->Stop();
 	}
 	soundPtr.resize(0);
+}
+
+void MyXAudio::Initialize()
+{
+	handle = 0;
+	soundData.resize(handle);
+
+	HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+
+	result = xAudio2->CreateMasteringVoice(&masterVoice);
+}
+
+void MyXAudio::Finalize()
+{
+	xAudio2.Reset();
+	for (size_t i = 0; i < soundData.size(); i++)
+	{
+		SoundUnload(&soundData[i]);
+	}
 }

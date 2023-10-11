@@ -31,11 +31,17 @@ private:
 	size_t handle;
 	void SoundUnload(SoundData* soundData);
 
-	MyXAudio();
-	~MyXAudio();
+private:
+
+	MyXAudio() = default;
+	~MyXAudio() = default;
+
+	//コピーコンストラクタ・代入演算子削除
+	MyXAudio& operator=(const MyXAudio&) = delete;
+	MyXAudio(const MyXAudio&) = delete;
 public:
 
-	static MyXAudio* Get()
+	static MyXAudio* GetInstance()
 	{
 		static MyXAudio xaudio;
 		return &xaudio;
@@ -48,5 +54,8 @@ public:
 	void SoundPlayWave(size_t handle, bool stop = false);
 	void SoundPlayLoopWave(size_t handle);
 	void StopAllLoopSound();
+
+	void Initialize();
+	void Finalize();
 };
 

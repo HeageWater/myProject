@@ -7,7 +7,7 @@ void GameScene::Update()
 	FlameWork::Update();
 
 	//Update
-	input->Update();
+	//input->Update();
 
 	//ImGui受付開始
 	ImguiManager::GetInstance()->Begin();
@@ -285,8 +285,8 @@ void GameScene::Update()
 			matView.mat = playcamera.mat;
 
 			//座標更新
-			playcamera.Update(*input);
-			debugcamera.Update(*input);
+			//playcamera.Update(*input);
+			//debugcamera.Update(*input);
 
 			//カメラ更新
 			matView.MatUpdate();
@@ -408,7 +408,7 @@ void GameScene::Initialize()
 	FlameWork::Initialize();
 
 	//input
-	input = std::make_unique<Input>(win.get());
+	//input = std::make_unique<Input>(win.get());
 
 	controller = Controller::GetInstance();
 
@@ -435,7 +435,7 @@ void GameScene::Initialize()
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//sound
-	sound_ = MyXAudio::Get();
+	sound_ = MyXAudio::GetInstance();
 	bgm = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 	fanfare = sound_->SoundLoadWave("Resources/sound/fanfare.wav");
 	playerHit = sound_->SoundLoadWave("Resources/sound/se_hit_005.wav");

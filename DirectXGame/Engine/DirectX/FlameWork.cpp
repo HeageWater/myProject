@@ -8,6 +8,8 @@ void FlameWork::Update()
 	{
 		SetEndRwqust(true);
 	}
+
+	Input::GetInstance()->Update();
 }
 
 void FlameWork::Initialize()
@@ -41,8 +43,13 @@ void FlameWork::Initialize()
 	uiPipeline = std::make_unique<GPipeline>();
 	uiPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
 
+	//キーボード
+	Input::GetInstance()->Initialize(win.get());
+
+	//sound
+	MyXAudio::GetInstance()->Initialize();
+
 	{
-		//input sound
 		/*Camera::StaticInitialize(windowsApp_.get());
 
 		TextureManager::GetInstance()->StaticInitialize();
@@ -65,6 +72,8 @@ void FlameWork::Initialize()
 void FlameWork::Finalize()
 {
 	ImguiManager::GetInstance()->Finalize();
+	Input::GetInstance()->Finalize();
+	MyXAudio::GetInstance()->Finalize();
 }
 
 void FlameWork::Run()

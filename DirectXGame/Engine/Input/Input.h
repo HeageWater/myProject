@@ -27,11 +27,9 @@ private:
 	IDirectInputDevice8* mouse = nullptr;
 	POINT cursor;
 public:
-
-	Input(Window* win_);
-	~Input();
 	void Initialize(Window* win_);
 	void Update();
+	void Finalize();
 
 	bool GetKey(size_t _key);
 	bool GetTrigger(size_t _key);
@@ -43,5 +41,17 @@ public:
 	POINT CursorPos();
 	void CursorPos(Vector2D& pos);
 	LONG Wheel();
+
+	//シングルトン
+	static Input* GetInstance();
+
+private:
+
+	Input() = default;
+	~Input() = default;
+
+	//コピーコンストラクタ・代入演算子削除
+	Input& operator=(const Input&) = delete;
+	Input(const Input&) = delete;
 };
 

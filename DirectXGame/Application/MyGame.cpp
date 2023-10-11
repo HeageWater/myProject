@@ -17,12 +17,12 @@ void MyGame::Update()
 	//SceneChangeAnimation::GetInstance()->Update();
 
 	//シーンマネージャーの更新処理
-	//SceneManager::GetInstance()->Update();
+	SceneManager::GetInstance()->Update();
 }
 
 void MyGame::Draw()
 {
-	//SceneManager::GetInstance()->Draw();
+	SceneManager::GetInstance()->Draw();
 }
 
 void MyGame::Finalize()

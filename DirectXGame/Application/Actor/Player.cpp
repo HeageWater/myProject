@@ -54,7 +54,7 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 
 	warpMord = 0;
 
-	sound_ = MyXAudio::Get();
+	sound_ = MyXAudio::GetInstance();
 	jumpSE = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
 }
 

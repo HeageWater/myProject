@@ -20,7 +20,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 	controller = Controller::GetInstance();
 	attackF = false;
 
-	sound_ = MyXAudio::Get();
+	sound_ = MyXAudio::GetInstance();
 	//volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 
 	time = 20;

@@ -3,20 +3,6 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-Input::Input(Window* win_)
-{
-	Initialize(win_);
-}
-
-Input::~Input()
-{
-	keyboard->Unacquire();
-	keyboard->Release();
-	mouse->Unacquire();
-	mouse->Release();
-	directInput->Release();
-}
-
 void Input::Initialize(Window* win_)
 {
 	win = win_;
@@ -74,6 +60,15 @@ void Input::Update()
 	ScreenToClient(win->GetHwnd(), &cursor);
 }
 
+void Input::Finalize()
+{
+	keyboard->Unacquire();
+	keyboard->Release();
+	mouse->Unacquire();
+	mouse->Release();
+	directInput->Release();
+}
+
 bool Input::GetKey(size_t _key)
 {
 	return key[_key];
@@ -115,4 +110,10 @@ void Input::CursorPos(Vector2D& pos)
 LONG Input::Wheel()
 {
 	return click.lZ;
+}
+
+Input* Input::GetInstance()
+{
+	static Input input;
+	return &input;
 }

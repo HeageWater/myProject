@@ -15,6 +15,7 @@
 #include "imgui.h"
 #include <wrl.h>
 #include "ImguiManager.h"
+#include "Controller.h"
 
 class FlameWork
 {
