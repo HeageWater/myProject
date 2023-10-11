@@ -19,6 +19,8 @@ void ImguiManager::Initialize()
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+	//ここが違いそう
 	//デスクリプタヒープ生成(クラス化)
 	HRESULT result;
 	result = MyDirectX::GetInstance()->GetDev()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
