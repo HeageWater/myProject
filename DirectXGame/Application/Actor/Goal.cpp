@@ -38,7 +38,7 @@ bool Goal::BoxCollision(Model model)
 
 	float c = model.mat.scale.x * goal_.mat.scale.x;
 
-	//‚ ‚½‚è”»’è
+	//ã‚ãŸã‚Šåˆ¤å®š
 	if (a + b < c)
 	{
 		return true;
@@ -51,5 +51,5 @@ void Goal::Reset()
 {
 	goal_.mat.Initialize();
 	goal_.mat.scale = { 5,5,3 };
-	goal_.mat.trans = { 1000,15,0 };
+	goal_.mat.trans = { 380,-160,0 };
 }

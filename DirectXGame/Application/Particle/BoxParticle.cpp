@@ -2,7 +2,7 @@
 
 BoxParticle::BoxParticle()
 {
-	float vel[3];
+	float vel[3] = { 0,0,0 };
 
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -11,7 +11,7 @@ BoxParticle::BoxParticle()
 		vel[i] /= 100;
 	}
 
-	//•ûŒü,ƒ^ƒCƒ€,‘‚³‚ðƒ‰ƒ“ƒ_ƒ€‚Å
+	//æ–¹å‘,ã‚¿ã‚¤ãƒ ,æ—©ã•ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã§
 	velocity = { vel[0],vel[1],vel[2] };
 
 	//tine
@@ -36,7 +36,7 @@ void BoxParticle::Initialize(Shader shader, GPipeline* pipeline_)
 	float setScale = 3.0f;
 	box.mat.scale = { setScale,setScale,setScale };
 
-	////•ûŒü,ƒ^ƒCƒ€,‘‚³‚ðƒ‰ƒ“ƒ_ƒ€‚Å
+	////æ–¹å‘,ã‚¿ã‚¤ãƒ ,æ—©ã•ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã§
 	//velocity = { 0.1f,0.1f, 0 };
 
 	//time = 50.0f;

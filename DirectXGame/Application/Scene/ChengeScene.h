@@ -4,21 +4,23 @@
 class ChengeScene
 {
 public:
-	ChengeScene();
-	~ChengeScene();
-	void Initialize(GPipeline* pipeline_, Matrix matProjection);
+	//ChengeScene();
+	//~ChengeScene();
+	void Initialize(Matrix matProjection);
 	void Draw(size_t tex);
 	void Draw();
-	void Update(Matrix matView, Matrix matProjection);
+	void Update();
 	void Reset();
 
 	void SetPlayFlag();
 	bool GetPlayFlag() { return isPlayFlag; };
 
 	float GetTime() { return time; };
+
+	static ChengeScene* GetInstance();
 private:
 
-	//‚±‚ê‚ğON‚É‚·‚é‚ÆƒV[ƒ“ƒ`ƒFƒ“ƒW‚ªŠJn‚·‚é
+	//ã“ã‚Œã‚’ONã«ã™ã‚‹ã¨ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸ãŒé–‹å§‹ã™ã‚‹
 	bool isPlayFlag = false;
 
 	//sprite
@@ -26,7 +28,15 @@ private:
 	SpriteCommon* spriteCommon = new SpriteCommon();
 	Sprite* sprite_ = new Sprite();
 
-	size_t tex;
+	size_t tex = 0;
 
-	float time;
+	float time = 0;
+private:
+
+	ChengeScene() = default;
+	~ChengeScene() = default;
+
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ»ä»£å…¥æ¼”ç®—å­å‰Šé™¤
+	ChengeScene& operator=(const ChengeScene&) = delete;
+	ChengeScene(const ChengeScene&) = delete;
 };

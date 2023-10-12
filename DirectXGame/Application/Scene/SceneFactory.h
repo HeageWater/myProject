@@ -9,6 +9,19 @@ public:
 
 	virtual ~SceneFactory() = default;
 
-	//�V�[������
+	//シーン生成
 	virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
+};
+
+//このゲーム用のシーン工場
+class SceneCreate :public SceneFactory
+{
+public:
+
+	/// <summary>
+	/// シーン生成
+	/// </summary>
+	/// <param name="sceneName">シーン名</param>
+	/// <returns>生成したシーン</returns>
+	std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName)override;
 };

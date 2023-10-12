@@ -3,13 +3,14 @@
 #include "SceneManager.h"
 //#include "PostEffect.h"
 
-class MyGame
+class MyGame :public FlameWork
 {
 public:
-	void Initalize();
-	void Update();
-	void Draw();
-	void Finalize();
+	void Initialize()override;
+	void Update()override;
+	void Draw()override;
+	void Finalize()override;
 private:
-
+	//シーンファクトリー
+	std::unique_ptr<SceneFactory>sceneManager;
 };

@@ -11,7 +11,7 @@ Particle::Particle()
 		vel[i] /= 100;
 	}
 
-	//•ûŒü,ƒ^ƒCƒ€,‘‚³‚ğƒ‰ƒ“ƒ_ƒ€‚Å
+	//æ–¹å‘,ã‚¿ã‚¤ãƒ ,æ—©ã•ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã§
 	velocity = { vel[0],vel[1],vel[2] };
 
 	//tine
@@ -34,7 +34,7 @@ void Particle::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	particle_.mat.Initialize();
 	particle_.mat.scale = { 5,5,5 };
 
-	//•ûŒü,ƒ^ƒCƒ€,‘‚³‚ğƒ‰ƒ“ƒ_ƒ€‚Å
+	//æ–¹å‘,ã‚¿ã‚¤ãƒ ,æ—©ã•ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã§
 	velocity = { 0.1f,0.1f, 0 };
 
 	time = 50.0f;
@@ -56,7 +56,7 @@ void Particle::Initialize(Vector3D pos)
 	particle_.mat.trans.y = pos.y;
 	particle_.mat.trans.z = pos.z;
 
-	//•ûŒü,ƒ^ƒCƒ€,‘‚³‚ğƒ‰ƒ“ƒ_ƒ€‚Å
+	//æ–¹å‘,ã‚¿ã‚¤ãƒ ,æ—©ã•ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã§
 	float vel[3];
 
 	for (size_t i = 0; i < 3; i++)

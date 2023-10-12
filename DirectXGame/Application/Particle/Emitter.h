@@ -1,8 +1,8 @@
 #pragma once
 #include "Particle.h"
 #include "BoxParticle.h"
-//field �̒��Ƀp�[�e�B�N������������̏������G�~�b�^�[�ɏ���
-//�p�[�e�B�N���ɂȂ�ׂ�if���Ȃǂ������Ȃ�
+//field の中にパーティクルが入ったらの処理をエミッターに書く
+//パーティクルになるべくif文などを書かない
 
 class Emitter
 {

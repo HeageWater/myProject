@@ -46,7 +46,7 @@ private:
 //
 //	std::unique_ptr<GPipeline> pipeline(new GPipeline(dx->GetDev(), shader));
 //
-//	//•`‰æ‰Šú‰»
+//	//æç”»åˆæœŸåŒ–
 //	std::unique_ptr<GPipeline> multipathPipeline(new GPipeline(dx->GetDev(), bilShader));
 //
 //	Square screen(dx.get(), multipathPipeline.get(), bilShader);
@@ -62,7 +62,7 @@ private:
 //	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
 //	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 //
-//	//•`‰æ—ps—ñ
+//	//æç”»ç”¨è¡Œåˆ—
 //	MyMath::MatView matView;
 //	matView.Init(Vector3D(0.0f, 60.0f, -150.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 //	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);

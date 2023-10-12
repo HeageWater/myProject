@@ -41,7 +41,7 @@ void Scene::Initialize()
 
 void Scene::Run()
 {
-	////	ƒQ[ƒ€ƒ‹[ƒv
+	////	ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	//while (true)
 	//{
 	//	//WinMsg
@@ -51,44 +51,44 @@ void Scene::Run()
 	//	//Update
 	//	input->Update();
 
-	//	//À•WXV
+	//	//åº§æ¨™æ›´æ–°
 	//	matView.MatUpdate();
 
 	//	if (scene == false)
 	//	{
-	//		//playerXV
+	//		//playeræ›´æ–°
 	//		player->Update(matView.mat, matProjection);
 
-	//		//enemyXV
+	//		//enemyæ›´æ–°
 	//		enemy->Update(matView.mat, matProjection);
 	//		bool sheikF = enemy->BoxCollision(player->playerAttack_);
 
-	//		//enemyXV
+	//		//enemyæ›´æ–°
 	//		enemy2->Update(matView.mat, matProjection);
 	//		sheikF = enemy2->BoxCollision(player->playerAttack_);
 
-	//		//enemyXV
+	//		//enemyæ›´æ–°
 	//		enemy3->Update(matView.mat, matProjection);
 	//		sheikF = enemy3->BoxCollision(player->playerAttack_);
 
-	//		//enemyXV
+	//		//enemyæ›´æ–°
 	//		enemy4->Update(matView.mat, matProjection);
 	//		sheikF = enemy4->BoxCollision(player->playerAttack_);
 
-	//		//ƒXƒe[ƒWXV
+	//		//ã‚¹ãƒ†ãƒ¼ã‚¸æ›´æ–°
 	//		stage->Update(matView.mat, matProjection, input.get());
 	//		goal->Update(matView.mat, matProjection);
 
 	//		//debugcamera.Update(*input);
 
-	//		//ƒXƒNƒŠ[ƒ“XV
+	//		//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æ›´æ–°
 	//		screen.MatUpdate(matView.mat, matProjection, 0);
 
 	//		Vector2D moveCamera = { 0,0 };
 
 	//		moveCamera = player->GetController();
 
-	//		//target‚ðplayer‚É
+	//		//targetã‚’playerã«
 	//		matView.eye.x += moveCamera.x;
 	//		matView.target.x = player->player_.mat.trans.x;
 
@@ -103,9 +103,9 @@ void Scene::Run()
 	//			scene = true;
 	//		}
 	//	}
-	//	//‚±‚±‚Ü‚Å
+	//	//ã“ã“ã¾ã§
 
-	//	//Escape‚Å”²‚¯‚é
+	//	//Escapeã§æŠœã‘ã‚‹
 	//	if (input->GetTrigger(DIK_ESCAPE))
 	//	{
 	//		break;
@@ -114,17 +114,17 @@ void Scene::Run()
 	//	//Draw
 	//	dx->PrevDrawScreen();
 
-	//	//// •`‰æƒRƒ}ƒ“ƒh
+	//	//// æç”»ã‚³ãƒžãƒ³ãƒ‰
 
 	//	dx->PostDrawScreen();
 
 	//	//UIDraw
 	//	dx->PrevDraw();
 
-	//	//ƒXƒNƒŠ[ƒ“•`‰æ
+	//	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æç”»
 	//	screen.Draw(texP);
 
-	//	//Actor•`‰æ
+	//	//Actoræç”»
 	//	player->Draw(texP, white);
 	//	enemy->Draw(enemyPng);
 	//	enemy2->Draw(enemyPng);

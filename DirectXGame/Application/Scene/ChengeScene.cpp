@@ -1,83 +1,91 @@
 #include "ChengeScene.h"
 #include "Easing.h"
+#include"SceneManager.h"
 
-ChengeScene::ChengeScene()
+void ChengeScene::Initialize(Matrix matProjection)
 {
-	tex = 0;
-	time = 0;
-}
-
-ChengeScene::~ChengeScene()
-{
-}
-
-void ChengeScene::Initialize(GPipeline* pipeline_, Matrix matProjection)
-{
+	//画像関係
 	spriteCommon->Inilialize(MyDirectX::GetInstance(), false);
-
 	sprite_->Inilialize(spriteCommon, &matProjection);
-
 	tex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
 
-	//scale�p
+	//scale用
 	float size = 2.5f;
 
-	//pos�p
+	//pos用
 	float width = 1.5f;
 
+	//サイズ
 	sprite_->scale.x = Window::window_width * size;
 	sprite_->scale.y = Window::window_height * size;
 
+	//位置
 	sprite_->position.x = -Window::window_width * width;
 	sprite_->position.y = -Window::window_height;
 }
 
-void ChengeScene::Draw(size_t tex)
+void ChengeScene::Draw(size_t tex_)
 {
-	//��������摜�`��(y����-��)
+	//ここから画像描画(y軸は-に)
 	sprite_->PreDraw();
 
-	sprite_->Draw(tex);
+	//描画
+	sprite_->Draw(tex_);
 }
 
 void ChengeScene::Draw()
 {
-	//��������摜�`��(y����-��)
+	//ここから画像描画(y軸は-に)
 	sprite_->PreDraw();
 
+	//描画
 	sprite_->Draw(tex);
 }
 
-void ChengeScene::Update(Matrix matView, Matrix matProjection)
+void ChengeScene::Update()
 {
+	//移動時の最高フレーム
+	float maxTime = 60;
+
+	//プレイフラグがたっているか
 	if (isPlayFlag)
 	{
-		float width = 1.5f;
-
+		//加算
 		time++;
 
-		float maxTime = 15;
-		sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time / 100, maxTime);
-
+		////こんな感じで組むこと
+		//if (time > 30.0f)
+		//{
+		//	sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time, maxTime);
+		//}
+		//else if (time == 31.0f)
+		//{
+		//	SceneManager::GetInstance()->ChangeScene("PLAY");
+		//}
+		//else
+		//{
+		//	sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time - 30, maxTime);
+		//}
 	}
 
-	bool widthOut = sprite_->position.x > Window::window_width;
-	//bool widthOut = sprite_->position.x < 0 || sprite_->position.x > Window::window_width;
-	//bool heightOut = sprite_->position.y < 0 || sprite_->position.y > Window::window_height;
-
-	if (widthOut)
+	//maxTimeを超えたらリセット
+	if (time > maxTime)
 	{
-		isPlayFlag = false;
-		time = 0;
+		Reset();
 	}
 
+	//更新
 	sprite_->Update();
 }
 
+//リセット
 void ChengeScene::Reset()
 {
+	isPlayFlag = false;
+	time = 0;
 }
 
+//プレイフラグを外部からOnにする
 void ChengeScene::SetPlayFlag()
 {
 	if (!isPlayFlag)
@@ -95,4 +103,11 @@ void ChengeScene::SetPlayFlag()
 
 		time = 0;
 	}
+}
+
+//インスタンス化
+ChengeScene* ChengeScene::GetInstance()
+{
+	static ChengeScene chengeScene_;
+	return &chengeScene_;
 }

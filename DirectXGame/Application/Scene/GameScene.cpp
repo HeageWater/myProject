@@ -7,24 +7,35 @@ void GameScene::Update()
 	FlameWork::Update();
 
 	//Update
-	input->Update();
+	//input->Update();
 
-	//ImGuió•tŠJn
+	//ImGuiå—ä»˜é–‹å§‹
 	ImguiManager::GetInstance()->Begin();
-	ImGui::Text("player pos");
-	//ImGuió•tI—¹
+	ImGui::SliderFloat("Title posX", &titleObject->titleObj.mat.trans.x, -400, 400);
+	ImGui::SliderFloat("Title posY", &titleObject->titleObj.mat.trans.y, -400, 400);
+	ImGui::SliderFloat("Title posZ", &titleObject->titleObj.mat.trans.z, -400, 400);
+
+	ImGui::SliderFloat("Title rotX", &titleObject->titleObj.mat.rotAngle.x, -400, 400);
+	ImGui::SliderFloat("Title rotY", &titleObject->titleObj.mat.rotAngle.y, -400, 400);
+	ImGui::SliderFloat("Title rotZ", &titleObject->titleObj.mat.rotAngle.z, -400, 400);
+
+	ImGui::SliderFloat("playcamera posX", &playcamera.eye.x, -400, 400);
+	ImGui::SliderFloat("playcamera posY", &playcamera.eye.y, -400, 400);
+	ImGui::SliderFloat("playcamera posZ", &playcamera.eye.z, -400, 400);
+
+	//ImGuiå—ä»˜çµ‚äº†
 	ImguiManager::GetInstance()->End();
 
-	//scene‚É‰ü‘¢
-	//‚±‚±‚©‚çScene‚Ìˆ—
+	//sceneã«æ”¹é€ 
+	//ã“ã“ã‹ã‚‰Sceneã®å‡¦ç†
 
-	//switch“à‚Åg‚¤ŠÖ”‚ğ‚±‚±‚Å’è‹`
+	//switchå†…ã§ä½¿ã†é–¢æ•°ã‚’ã“ã“ã§å®šç¾©
 	float chengeTime = 50;
 
-	//ƒXƒe[ƒWƒzƒbƒgƒŠƒ[ƒh
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰
 	StageReload();
 
-	//switch—p•Ï”
+	//switchç”¨å¤‰æ•°
 
 	float t = 85;
 	float stopTime = 100;
@@ -33,14 +44,78 @@ void GameScene::Update()
 	case Title:
 
 		if (chengeScene->GetTime() > chengeTime)
+		if (chengeScene->GetTime() > chengeTime)
 		{
 			scene = Play;
 		}
 
-		if (player->GetA())
+		//if (player->GetA())
+		if (titleObject->BoxCollision(player->GetAttackModel()) && !titleObject->IsMovie)
 		{
-			chengeScene->SetPlayFlag();
+			titleObject->Movie();
+
+			//ã“ã®ä¸‹ã®å‡¦ç†ã¾ã¨ã‚ã‚
+			float setStopTime = 7.0f;
+
+			hitStop->SetTime(setStopTime);
+			sound_->SoundPlayWave(enemyHit);
 		}
+
+		if (titleObject->EndMovie)
+		{
+			if (hitStop->GetTime() < 1)
+			{
+				if (chengeScene->GetTime() < 1)
+				{
+					titleObject->EndMovie = false;
+
+					chengeScene->SetPlayFlag();
+				}
+			}
+		}
+
+		//playeræ›´æ–°
+		player->Update(matView.mat, matProjection, shader);
+		titleObject->Update(matView.mat, matProjection);
+
+		//
+		player->MoveY();
+		//stageUpdate
+		for (auto& object : objects_)
+		{
+			object->SetFlag(true);
+
+			object->Update(matView.mat, matProjection);
+
+
+			if (player->StageCollsionY(object->stage_, matView.mat, matProjection))
+			{
+				//object->SetFlag(false);
+			}
+		}
+
+		//
+		player->MoveX();
+		for (auto& object : objects_)
+		{
+			if (player->StageCollsionX(object->stage_, matView.mat, matProjection))
+			{
+				//object->SetFlag(false);
+			}
+		}
+
+		//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æ›´æ–°
+		screen.MatUpdate(matView.mat, matProjection, 0);
+
+		//matView.mat = playcamera.mat;
+
+		////åº§æ¨™æ›´æ–°
+		//playcamera.Update(*input);
+		//debugcamera.Update(*input);
+
+		//ã‚«ãƒ¡ãƒ©æ›´æ–°
+		matView.MatUpdate();
+
 		break;
 
 	case Select:
@@ -55,10 +130,10 @@ void GameScene::Update()
 
 		if (hitStop->GetTime() < 1 && Time == t)
 		{
-			//playerXV
-			player->Update(matView.mat, matProjection, shader, pipeline.get());
+			//playeræ›´æ–°
+			player->Update(matView.mat, matProjection, shader);
 
-			//enemyXV
+			//enemyæ›´æ–°
 			enemy->Update(matView.mat, matProjection);
 			enemy->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy->enemy_))
@@ -69,7 +144,7 @@ void GameScene::Update()
 			}
 			bool sheikF = enemy->BoxCollision(player->GetAttackModel());
 
-			//‚±‚Ì‰º‚Ìˆ—‚Ü‚Æ‚ß‚ë
+			//ã“ã®ä¸‹ã®å‡¦ç†ã¾ã¨ã‚ã‚
 			float setStopTime = 7.0f;
 
 			if (sheikF)
@@ -79,7 +154,7 @@ void GameScene::Update()
 				CreatePatricle(enemy->GetPos());
 			}
 
-			//enemyXV
+			//enemyæ›´æ–°
 			enemy2->Update(matView.mat, matProjection);
 			enemy2->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy2->enemy_))
@@ -97,7 +172,7 @@ void GameScene::Update()
 				CreatePatricle(enemy2->GetPos());
 			}
 
-			//enemyXV
+			//enemyæ›´æ–°
 			enemy3->Update(matView.mat, matProjection);
 			enemy3->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy3->enemy_))
@@ -115,7 +190,7 @@ void GameScene::Update()
 				CreatePatricle(enemy3->GetPos());
 			}
 
-			//enemyXV
+			//enemyæ›´æ–°
 			enemy4->Update(matView.mat, matProjection);
 			enemy4->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy4->enemy_))
@@ -133,7 +208,7 @@ void GameScene::Update()
 				CreatePatricle(enemy4->GetPos());
 			}
 
-			//warp‚Æplayer‚Ìcollision
+			//warpã¨playerã®collision
 			if (warp->BoxCollision(player->GetModel()))
 			{
 				/*player->knockBackVec = -2;
@@ -160,26 +235,14 @@ void GameScene::Update()
 
 			warp->CheckMode(player->GetWarpMode());
 
-			//‚±‚±‚Ü‚Å
+			//ã“ã“ã¾ã§
 
-			//ƒXƒe[ƒWXV
+			//ã‚¹ãƒ†ãƒ¼ã‚¸æ›´æ–°
 			stage->Update(matView.mat, matProjection);
 			goal->Update(matView.mat, matProjection);
 			warp->Update(matView.mat, matProjection);
 
-			//ƒp[ƒeƒBƒNƒ‹
-			for (size_t i = 0; i < boxParticles_.size(); i++)
-			{
-				boxParticles_[i]->Update(matView.mat, matProjection);
-
-				//íœ
-				if (boxParticles_[i]->IsDead() == true)
-				{
-					boxParticles_.erase(boxParticles_.begin() + i);
-				}
-			}
-
-			//ƒXƒNƒŠ[ƒ“XV
+			//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æ›´æ–°
 			screen.MatUpdate(matView.mat, matProjection, 0);
 
 			//Vector2D moveCamera = { 0,0 };
@@ -213,7 +276,7 @@ void GameScene::Update()
 			}
 
 
-			//target‚ğplayer‚É
+			//targetã‚’playerã«
 			matView.eye.x = player->GetPos().x;
 			matView.target.x = player->GetPos().x;
 
@@ -222,11 +285,11 @@ void GameScene::Update()
 
 			matView.mat = playcamera.mat;
 
-			//À•WXV
-			playcamera.Update(*input);
-			debugcamera.Update(*input);
+			//åº§æ¨™æ›´æ–°
+			//playcamera.Update(*input);
+			//debugcamera.Update(*input);
 
-			//ƒJƒƒ‰XV
+			//ã‚«ãƒ¡ãƒ©æ›´æ–°
 			matView.MatUpdate();
 
 			//stage->stage_.mat.trans.x = max(stage->stage_.mat.trans.x, minMapX);
@@ -261,7 +324,11 @@ void GameScene::Update()
 				overFlag = false;
 			}
 		}
-
+		else if (Time == 1)
+		{
+			Reset();
+			StageLoad("stage4");
+		}
 		break;
 
 	case Pause:
@@ -297,9 +364,9 @@ void GameScene::Update()
 		break;
 	}
 
-	//‚±‚±‚Ü‚ÅScene‚Ìˆ—
+	//ã“ã“ã¾ã§Sceneã®å‡¦ç†
 
-	//Scene‹¤’Ê‚Ìˆ—
+	//Sceneå…±é€šã®å‡¦ç†
 	pressText.MatUpdate(Matrix(), spriteProjection);
 
 	hitStop->Update();
@@ -316,21 +383,33 @@ void GameScene::Update()
 
 	lifePng->Update();
 
-	chengeScene->Update(matView.mat, spriteProjection);
+	chengeScene->Update();
 
-	//Escape‚Å”²‚¯‚é
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	for (size_t i = 0; i < boxParticles_.size(); i++)
+	{
+		boxParticles_[i]->Update(matView.mat, matProjection);
+
+		//å‰Šé™¤
+		if (boxParticles_[i]->IsDead() == true)
+		{
+			boxParticles_.erase(boxParticles_.begin() + i);
+		}
+	}
+
+	//Escapeã§æŠœã‘ã‚‹
 	if (input->GetTrigger(DIK_ESCAPE))
 	{
 		SetEndRwqust(true);
 	}
 }
 
-void GameScene::Initilize()
+void GameScene::Initialize()
 {
-	FlameWork::Initilize();
+	FlameWork::Initialize();
 
 	//input
-	input = std::make_unique<Input>(win.get());
+	//input = std::make_unique<Input>(win.get());
 
 	controller = Controller::GetInstance();
 
@@ -343,7 +422,7 @@ void GameScene::Initilize()
 	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
-	
+
 	//sprite
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
@@ -353,11 +432,11 @@ void GameScene::Initilize()
 	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 
-	//•`‰æ—ps—ñ
+	//æç”»ç”¨è¡Œåˆ—
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//sound
-	sound_ = MyXAudio::Get();
+	sound_ = MyXAudio::GetInstance();
 	bgm = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 	fanfare = sound_->SoundLoadWave("Resources/sound/fanfare.wav");
 	playerHit = sound_->SoundLoadWave("Resources/sound/se_hit_005.wav");
@@ -366,12 +445,15 @@ void GameScene::Initilize()
 	//player
 	player->Initialize(shader, pipeline.get());
 
+	//
+	titleObject->Initialize(shader, pipeline.get());
+
 	//warp
 	warp->Initialize(shader, pipeline.get());
 
 	float size = 3.0f;
 
-	//‰¼enemy’u‚«
+	//ä»®enemyç½®ã
 	enemy->Initialize(shader, pipeline.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ size,size,size });
@@ -389,7 +471,7 @@ void GameScene::Initilize()
 	enemy4->SetScale(Vector3D{ size,size,size });
 
 	//stage
-	//ƒXƒe[ƒW‰Šú‰»
+	//ã‚¹ãƒ†ãƒ¼ã‚¸åˆæœŸåŒ–
 	stage->Initialize(shader, pipeline.get());
 	float minMapX = stage->stage_.mat.scale.x - 200;
 	stage->stage_.mat.trans.x = minMapX;
@@ -399,12 +481,12 @@ void GameScene::Initilize()
 	stageWhite->stage_.mat.scale.z = 10;
 	stageWhite->Update(matView.mat, matProjection);
 
-	//ƒS[ƒ‹‰Šú‰»
+	//ã‚´ãƒ¼ãƒ«åˆæœŸåŒ–
 	goal->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
-	//ƒV[ƒ“ƒtƒ‰ƒO
+	//ã‚·ãƒ¼ãƒ³ãƒ•ãƒ©ã‚°
 	scene = Title;
 
-	//‰æ‘œ“Ç‚İ‚İ
+	//ç”»åƒèª­ã¿è¾¼ã¿
 	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
 	texP = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/cube.jpg");
 	brPng = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/br.png");
@@ -424,50 +506,50 @@ void GameScene::Initilize()
 	PressTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/press.png");
 	LTTex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/LT.png");
 
-	//“§‰ß‚·‚é‚©‚Ç‚¤‚©
+	//é€éã™ã‚‹ã‹ã©ã†ã‹
 	semiArphaSpriteCommon->Inilialize(MyDirectX::GetInstance(), true);
 	normalSpriteCommon->Inilialize(MyDirectX::GetInstance(), false);
 
 	{
-		//Šî‘b
+		//åŸºç¤
 		sprite_->Inilialize(semiArphaSpriteCommon, &matProjection);
 
-		//ƒ^ƒCƒgƒ‹
+		//ã‚¿ã‚¤ãƒˆãƒ«
 		titlePng->Inilialize(normalSpriteCommon, &matProjection);
 		titlePng->position = { -680,-420,0 };
 		titlePng->scale = { 3600,1440,1 };
 
-		//ƒ‰ƒCƒt‰pŒê
+		//ãƒ©ã‚¤ãƒ•è‹±èª
 		lifePng->Inilialize(normalSpriteCommon, &matProjection);
 		lifePng->position = { -590,240,0 };
 		lifePng->scale = { 360,144,1 };
 
-		//ƒ‰ƒCƒt1
+		//ãƒ©ã‚¤ãƒ•1
 		lesPng->Inilialize(normalSpriteCommon, &matProjection);
 		lesPng->position = { -200,200,0 };
 		lesPng->scale = { 256,144,1 };
 
-		//ƒ‰ƒCƒt2
+		//ãƒ©ã‚¤ãƒ•2
 		lesPng2->Inilialize(normalSpriteCommon, &matProjection);
 		lesPng2->position = { -200,200,0 };
 		lesPng2->scale = { 256,144,1 };
 
-		//ƒ‰ƒCƒt3
+		//ãƒ©ã‚¤ãƒ•3
 		lesPng3->Inilialize(normalSpriteCommon, &matProjection);
 		lesPng3->position = { -200,200,0 };
 		lesPng3->scale = { 256,144,1 };
 
-		//ƒ‰ƒCƒt1
+		//ãƒ©ã‚¤ãƒ•1
 		havePng->Inilialize(normalSpriteCommon, &matProjection);
 		havePng->position = { -680,-420,0 };
 		havePng->scale = { 256,144,1 };
 
-		//ƒ‰ƒCƒt2
+		//ãƒ©ã‚¤ãƒ•2
 		havePng2->Inilialize(normalSpriteCommon, &matProjection);
 		havePng2->position = { -680,-420,0 };
 		havePng2->scale = { 256,144,1 };
 
-		//ƒ‰ƒCƒt3
+		//ãƒ©ã‚¤ãƒ•3
 		havePng3->Inilialize(normalSpriteCommon, &matProjection);
 		havePng3->position = { -680,-420,0 };
 		havePng3->scale = { 256,144,1 };
@@ -501,14 +583,14 @@ void GameScene::Initilize()
 
 	goalFlag = false;
 
-	//ƒXƒe[ƒW“Ç‚İ‚İ
+	//ã‚¹ãƒ†ãƒ¼ã‚¸èª­ã¿è¾¼ã¿
 	//StageLoad("stage4");
 	StageLoad("TitleStage");
 
-	chengeScene->Initialize(pipeline.get(), matProjection);
+	chengeScene->Initialize(matProjection);
 
-	//‰¹‚ğ–Â‚ç‚·
-	//sound_->SoundPlayLoopWave(bgm);
+	//éŸ³ã‚’é³´ã‚‰ã™
+	sound_->SoundPlayLoopWave(bgm);
 }
 
 void GameScene::Draw()
@@ -516,24 +598,34 @@ void GameScene::Draw()
 	//Draw
 	MyDirectX::GetInstance()->PrevDrawScreen();
 
-	//// •`‰æƒRƒ}ƒ“ƒh
+	//// æç”»ã‚³ãƒãƒ³ãƒ‰
 
 	MyDirectX::GetInstance()->PostDrawScreen();
 
 	//UIDraw
 	MyDirectX::GetInstance()->PrevDraw();
 
-	//‚±‚±‚©‚ç‹¤’Êæ•`‰æ
+	//ã“ã“ã‹ã‚‰å…±é€šå…ˆæç”»
 
-	//ƒXƒNƒŠ[ƒ“•`‰æ
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æç”»
 	screen.Draw(backTex);
 	size_t texCount = 19;
-	//‚±‚±‚Ü‚Å‹¤’Êæ•`‰æ
+	//ã“ã“ã¾ã§å…±é€šå…ˆæç”»
 
-	//‚±‚±‚©‚ç3D•`‰æ
+	//ã“ã“ã‹ã‚‰3Dæç”»
 	switch (scene)
 	{
 	case Title:
+		//Actoræç”»
+		player->Draw(playerTex, white);
+
+		titleObject->Draw(white);
+
+		//ã‚¹ãƒ†ãƒ¼ã‚¸
+		for (auto& object : objects_) {
+			//object->Draw(texP);
+			object->Draw(texCount);
+		}
 		break;
 
 	case Select:
@@ -541,7 +633,7 @@ void GameScene::Draw()
 
 	case Play:
 
-		//Actor•`‰æ
+		//Actoræç”»
 		player->Draw(playerTex, white);
 
 		if (enemy->Time == 0)
@@ -586,16 +678,16 @@ void GameScene::Draw()
 		//stageWhite->Draw(white);
 		goal->Draw(white);
 
-		//ƒXƒe[ƒW
+		//ã‚¹ãƒ†ãƒ¼ã‚¸
 		for (auto& object : objects_) {
 			//object->Draw(texP);
 			object->Draw(texCount);
 		}
 
-		//ƒ{ƒbƒNƒXƒp[ƒeƒBƒNƒ‹
+		//ãƒœãƒƒã‚¯ã‚¹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 		for (size_t i = 0; i < boxParticles_.size(); i++)
 		{
-			boxParticles_[i]->Draw(blackTex);
+			boxParticles_[i]->Draw(white);
 		}
 
 		break;
@@ -615,28 +707,35 @@ void GameScene::Draw()
 	default:
 		break;
 	}
-	//‚±‚±‚Ü‚Å3D•`‰æ
+	//ã“ã“ã¾ã§3Dæç”»
 
-	//‚±‚±‚©‚ç2D•`‰æ
+	//ã“ã“ã‹ã‚‰2Dæç”»
 
-	//ƒXƒvƒ‰ƒCƒg‚ÌƒvƒŒƒhƒ[
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ãƒ—ãƒ¬ãƒ‰ãƒ­ãƒ¼
 	sprite_->PreDraw();
 
-	//•`‰æ—p‚ÌÅ‘åHP(HitPoint—p‚ÌƒNƒ‰ƒX‚ğì‚é)
+	//æç”»ç”¨ã®æœ€å¤§HP(HitPointç”¨ã®ã‚¯ãƒ©ã‚¹ã‚’ä½œã‚‹)
 	float maxHP = 3;
 
 	switch (scene)
 	{
 	case Title:
-		//ƒ^ƒCƒgƒ‹
-		titlePng->Draw(titleTex);
+		//ã‚¿ã‚¤ãƒˆãƒ«
+		//titlePng->Draw(titleTex);
 		//sprite_->Draw();
 
-		UIAButton->Draw(AbuttonTex);
-		UIAButton->Update();
+		//UIAButton->Draw(AbuttonTex);
+		//UIAButton->Update();
 
-		UIPress->Draw(PressTex);
-		UIPress->Update();
+		//UIPress->Draw(PressTex);
+		//UIPress->Update();
+
+		//æ“ä½œ(UIæç”»ä¸€ã¤ã«ã¾ã¨ã‚ã‚‹)
+		UILStick->Draw(LTex);
+		UILStick->Update();
+
+		UIRStick->Draw(RTex);
+		UIRStick->Update();
 		break;
 
 	case Select:
@@ -644,7 +743,7 @@ void GameScene::Draw()
 
 	case Play:
 
-		//‘€ì(UI•`‰æˆê‚Â‚É‚Ü‚Æ‚ß‚é)
+		//æ“ä½œ(UIæç”»ä¸€ã¤ã«ã¾ã¨ã‚ã‚‹)
 		UILStick->Draw(LTex);
 		UILStick->Update();
 
@@ -654,11 +753,11 @@ void GameScene::Draw()
 		UILT->Draw(LTTex);
 		UILT->Update();
 
-		//HP•\¦
+		//HPè¡¨ç¤º
 		lifePng->Draw(lifeTex);
 
-		//HP•\¦(3‚Â‚Ü‚Å)
-		//(ƒ}ƒWƒbƒNƒiƒ“ƒo[’¼‚·)
+		//HPè¡¨ç¤º(3ã¤ã¾ã§)
+		//(ãƒã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ç›´ã™)
 		for (size_t i = 0; i < maxHP; i++)
 		{
 			if (i < (player->GetLife()))
@@ -726,10 +825,10 @@ void GameScene::Draw()
 		break;
 	}
 
-	//ƒV[ƒ“ƒ`ƒFƒ“ƒW—p•`‰æ
+	//ã‚·ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸ç”¨æç”»
 	chengeScene->Draw();
 
-	//‚±‚±‚Ü‚Å2D•`‰æ
+	//ã“ã“ã¾ã§2Dæç”»
 	ImguiManager::GetInstance()->Draw();
 
 	MyDirectX::GetInstance()->PostDraw();
@@ -746,33 +845,33 @@ void GameScene::Finalize()
 	FlameWork::Finalize();
 }
 
-//ˆê˜A‚Ì—¬‚ê
+//ä¸€é€£ã®æµã‚Œ
 void GameScene::Run()
 {
-	//‰Šú‰»
-	Initilize();
+	//åˆæœŸåŒ–
+	Initialize();
 
-	//ƒQ[ƒ€ƒ‹[ƒv
+	//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (true)
 	{
-		//XV
+		//æ›´æ–°
 		Update();
 
-		//•`‰æ
+		//æç”»
 		Draw();
 
-		//‚à‚µƒGƒ“ƒhƒtƒ‰ƒO‚ªTrue‚È‚ç”²‚¯‚é
+		//ã‚‚ã—ã‚¨ãƒ³ãƒ‰ãƒ•ãƒ©ã‚°ãŒTrueãªã‚‰æŠœã‘ã‚‹
 		if (IsEndRequst())
 		{
 			break;
 		}
 	}
 
-	//I—¹ˆ—
+	//çµ‚äº†å‡¦ç†
 	Finalize();
 }
 
-//ƒŠƒZƒbƒg
+//ãƒªã‚»ãƒƒãƒˆ
 void GameScene::Reset()
 {
 	screen.obj.trans.z = 100.1f;
@@ -784,15 +883,15 @@ void GameScene::Reset()
 	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 
-	//•`‰æ—ps—ñ
+	//æç”»ç”¨è¡Œåˆ—
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//player
 	player->Reset();
 
-	//‰¼enemy’u‚«
-	//¡‚ÍŒˆ‚ß‘Å‚¿
-	//Bkender‚Åİ’è‚Å‚«‚é‚æ‚¤‚É
+	//ä»®enemyç½®ã
+	//ä»Šã¯æ±ºã‚æ‰“ã¡
+	//Bkenderã§è¨­å®šã§ãã‚‹ã‚ˆã†ã«
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ 1,1,1 });
 	enemy->isDead = false;
@@ -809,7 +908,7 @@ void GameScene::Reset()
 	enemy4->SetScale(Vector3D{ 1,1,1 });
 	enemy4->isDead = false;
 	//stage
-	//ƒXƒe[ƒW‰Šú‰»
+	//ã‚¹ãƒ†ãƒ¼ã‚¸åˆæœŸåŒ–
 	float minMapX = stage->stage_.mat.scale.x - 200;
 	stage->stage_.mat.trans.x = minMapX;
 
@@ -817,17 +916,17 @@ void GameScene::Reset()
 	stageWhite->stage_.mat.scale.z = 10;
 	stageWhite->Update(matView.mat, matProjection);
 
-	//ƒS[ƒ‹‰Šú‰»
+	//ã‚´ãƒ¼ãƒ«åˆæœŸåŒ–
 	goal->Reset();
 
-	//ƒV[ƒ“ƒtƒ‰ƒO
+	//ã‚·ãƒ¼ãƒ³ãƒ•ãƒ©ã‚°
 	scene = Title;
 }
 
-//ƒzƒbƒgƒŠƒ[ƒh
+//ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰
 void GameScene::StageReload()
 {
-	//ƒfƒoƒbƒO—p
+	//ãƒ‡ãƒãƒƒã‚°ç”¨
 	bool plessZero = input->GetTrigger(DIK_0);
 	bool plessNine = input->GetTrigger(DIK_9);
 	bool plessEight = input->GetTrigger(DIK_8);
@@ -841,67 +940,67 @@ void GameScene::StageReload()
 	{
 		size_t count = objects_.size();
 
-		//¡‚ ‚éƒXƒe[ƒW‚ğíœ
+		//ä»Šã‚ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’å‰Šé™¤
 		for (size_t i = 0; i < count; i++)
 		{
 			objects_.erase(objects_.begin());
 		}
 
-		//0‚È‚çuntitled
+		//0ãªã‚‰untitled
 		if (plessZero)
 		{
 			levelData_ = JsonFileOpen::FileOpen("untitled");
 		}
 
-		//9‚È‚çTest01
+		//9ãªã‚‰Test01
 		if (plessNine)
 		{
 			levelData_ = JsonFileOpen::FileOpen("Test01");
 		}
 
-		//8‚È‚çstage2
+		//8ãªã‚‰stage2
 		if (plessEight)
 		{
 			levelData_ = JsonFileOpen::FileOpen("stage2");
 		}
 
-		//7‚È‚çstage2test
+		//7ãªã‚‰stage2test
 		if (plessSeven)
 		{
 			levelData_ = JsonFileOpen::FileOpen("stage2Test");
 		}
 
-		//6‚È‚çstage3
+		//6ãªã‚‰stage3
 		if (plessSix)
 		{
 			levelData_ = JsonFileOpen::FileOpen("stage3");
 		}
 
-		//5‚È‚çstage4
+		//5ãªã‚‰stage4
 		if (plessFive)
 		{
 			levelData_ = JsonFileOpen::FileOpen("stage4");
 		}
 
-		//ƒzƒbƒgƒŠƒ[ƒh‚ÅStageSelect‚²‚Æ‚É“Ç‚İ‚Ş‚æ‚¤‚É‚·‚é
-		//ƒŒƒxƒ‹ƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚É¶¬A”z’u
+		//ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ã§StageSelectã”ã¨ã«èª­ã¿è¾¼ã‚€ã‚ˆã†ã«ã™ã‚‹
+		//ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ç”Ÿæˆã€é…ç½®
 		for (auto& objectdata : levelData_->objects)
 		{
-			//ƒtƒ@ƒCƒ‹–¼‚©‚ç“o˜^Ï‚İƒ‚ƒfƒ‹‚ğŒŸõ
+			//ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ç™»éŒ²æ¸ˆã¿ãƒ¢ãƒ‡ãƒ«ã‚’æ¤œç´¢
 			Stage* model_ = nullptr;
 			decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
 
-			//I‚í‚è‚©
+			//çµ‚ã‚ã‚Šã‹
 			if (it != stages_.end())
 			{
 				model_ = it->second;
 			}
 
-			//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+			//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 			Stage* newModel_ = new Stage();
 			newModel_->Initialize(shader, pipeline.get());
 
-			//’²®
+			//èª¿æ•´
 			float scale = 10.0f;
 
 			//trans
@@ -916,13 +1015,13 @@ void GameScene::StageReload()
 			//Update
 			newModel_->Update(matView.mat, matProjection);
 
-			//Ši”[
+			//æ ¼ç´
 			objects_.push_back(newModel_);
 		}
 	}
 }
 
-//ƒ‰ƒ“ƒ_ƒ€‚Ì”ƒp[ƒeƒBƒNƒ‹‚ğo‚·
+//ãƒ©ãƒ³ãƒ€ãƒ ã®æ•°ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’å‡ºã™
 void GameScene::CreatePatricle(Vector3D pos)
 {
 	size_t minRange = 10;
@@ -942,31 +1041,40 @@ void GameScene::CreatePatricle(Vector3D pos)
 	}
 }
 
-//ƒtƒ@ƒCƒ‹–¼‚ğ“ü‚ê‚é‚Æ‚»‚ê‚ğ“Ç‚İ‚Ş
+//ãƒ•ã‚¡ã‚¤ãƒ«åã‚’å…¥ã‚Œã‚‹ã¨ãã‚Œã‚’èª­ã¿è¾¼ã‚€
 void GameScene::StageLoad(const std::string& filePath)
 {
-	//stageƒtƒ@ƒCƒ‹
+	//stageãƒ•ã‚¡ã‚¤ãƒ«
 	levelData_ = JsonFileOpen::FileOpen(filePath);
 
-	//ƒzƒbƒgƒŠƒ[ƒh‚ÅStageSelect‚²‚Æ‚É“Ç‚İ‚Ş‚æ‚¤‚É‚·‚é
-	//ƒŒƒxƒ‹ƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚É¶¬A”z’u
+	//
+	size_t count = objects_.size();
+
+	//ä»Šã‚ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’å‰Šé™¤
+	for (size_t i = 0; i < count; i++)
+	{
+		objects_.erase(objects_.begin());
+	}
+
+	//ãƒ›ãƒƒãƒˆãƒªãƒ­ãƒ¼ãƒ‰ã§StageSelectã”ã¨ã«èª­ã¿è¾¼ã‚€ã‚ˆã†ã«ã™ã‚‹
+	//ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ç”Ÿæˆã€é…ç½®
 	for (auto& objectdata : levelData_->objects)
 	{
-		//ƒtƒ@ƒCƒ‹–¼‚©‚ç“o˜^Ï‚İƒ‚ƒfƒ‹‚ğŒŸõ
+		//ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ç™»éŒ²æ¸ˆã¿ãƒ¢ãƒ‡ãƒ«ã‚’æ¤œç´¢
 		Stage* model_ = nullptr;
 		decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
 
-		//I‚í‚è‚©
+		//çµ‚ã‚ã‚Šã‹
 		if (it != stages_.end())
 		{
 			model_ = it->second;
 		}
 
-		//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+		//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 		Stage* newModel_ = new Stage();
 		newModel_->Initialize(shader, pipeline.get());
 
-		//’²®
+		//èª¿æ•´
 		float scale = 10.0f;
 
 		//trans
@@ -981,7 +1089,7 @@ void GameScene::StageLoad(const std::string& filePath)
 		//Update
 		newModel_->Update(matView.mat, matProjection);
 
-		//Ši”[
+		//æ ¼ç´
 		objects_.push_back(newModel_);
 	}
 }

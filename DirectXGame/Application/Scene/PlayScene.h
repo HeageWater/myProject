@@ -1,8 +1,12 @@
 #pragma once
 #include "BaseScene.h"
-
-//‚±‚ÌƒV[ƒ“‚É‚Ì‚İ’Ç‰Á‚·‚é‚à‚Ì
+#include "Input.h"
+#include "Controller.h"
+#include "Sound.h"
 #include "Player.h"
+
+//ã“ã®ã‚·ãƒ¼ãƒ³ã«ã®ã¿è¿½åŠ ã™ã‚‹ã‚‚ã®
+//#include "Player.h"
 #include "Stage.h"
 #include "Enemy.h"
 #include "Goal.h"
@@ -12,19 +16,54 @@
 #include "Emitter.h"
 #include "ChengeScene.h"
 #include "Warp.h"
+#include "TitleObj.h"
 
 class PlayScene : public BaseScene
 {
-public:
-	//‰Šú‰»
-	void Initilize()override;
+private:
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
+	Input* input_ = Input::GetInstance();
 
-	//XV
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
+	Controller* controller_ = Controller::GetInstance();
+
+	//sound
+	MyXAudio* sound_ = MyXAudio::GetInstance();
+
+	//screen
+	Square screen;
+
+	//player
+	Player* player = new Player();
+
+	//æç”»ç”¨è¡Œåˆ—
+	MyMath::MatView matView;
+	Matrix matProjection = MyMath::PerspectiveFovLH(
+		Window::window_width, Window::window_height,
+		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
+
+	//pipeline
+	std::unique_ptr<GPipeline> pipeline;
+
+	//æç”»åˆæœŸåŒ–
+	std::unique_ptr<GPipeline> multipathPipeline;
+
+	//tex
+	size_t white = 0;
+
+	//shader
+	Shader shader;
+	Shader bilShader;
+public:
+	//åˆæœŸåŒ–
+	void Initialize()override;
+
+	//æ›´æ–°
 	void Update()override;
 
-	//•`‰æ
+	//æç”»
 	void Draw()override;
 
-	//”jŠü
+	//ç ´æ£„
 	void Finalize()override;
 };

@@ -20,7 +20,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 	controller = Controller::GetInstance();
 	attackF = false;
 
-	sound_ = MyXAudio::Get();
+	sound_ = MyXAudio::GetInstance();
 	//volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 
 	time = 20;
@@ -40,8 +40,6 @@ void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 	{
 		isDead = true;
 	}
-
-	float spd = 3.0f;
 
 	//playerAttack_.mat.trans += Vector3D{ -vec.x * spd,vec.y * spd,0 };
 	//playerAttack_.mat.trans.x += controller->GetLeftStickVec().x;

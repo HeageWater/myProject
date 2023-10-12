@@ -54,7 +54,7 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 
 	warpMord = 0;
 
-	sound_ = MyXAudio::Get();
+	sound_ = MyXAudio::GetInstance();
 	jumpSE = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
 }
 
@@ -97,28 +97,28 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 	return Vector2D(move.x, move.z);
 }
 
-void Player::Update(Matrix matView, Matrix matProjection, Shader shader, GPipeline* pipeline_)
+void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 {
-	//ƒRƒ“ƒgƒ[ƒ‰[Update
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼Update
 	controller->Update();
 
-	//¶ƒXƒeƒBƒbƒN‚ÌŠp“x‘ã“ü
+	//å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®è§’åº¦ä»£å…¥
 	colVec = { controller->GetLeftStickVec().x, 0,0 };
 
-	//ƒ[ƒv‚µ‚Ä‚¢‚é‚©
+	//ãƒ¯ãƒ¼ãƒ—ã—ã¦ã„ã‚‹ã‹
 	if (!WarpAction())
 	{
-		//ƒWƒƒƒ“ƒv
+		//ã‚¸ãƒ£ãƒ³ãƒ—
 		Jump();
 
-		//ƒmƒbƒNƒoƒbƒN
+		//ãƒãƒƒã‚¯ãƒãƒƒã‚¯
 		KnockBack();
 
-		//À•W‚É‰‰Z
+		//åº§æ¨™ã«æ¼”ç®—
 		//player_.mat.trans += colVec;
 
-		//UŒ‚
-		Attack(MyDirectX::GetInstance(), shader, pipeline_);
+		//æ”»æ’ƒ
+		Attack(shader);
 
 		for (size_t i = 0; i < attack.size(); i++)
 		{
@@ -131,7 +131,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader, GPipeli
 		}
 	}
 
-	//À•WUpdate
+	//åº§æ¨™Update
 	player_.MatUpdate(matView, matProjection);
 	playerAttack_.MatUpdate(matView, matProjection);
 }
@@ -161,7 +161,6 @@ void Player::Jump()
 {
 	float gravity = 0.2f;
 	float maxGravity = 3;
-	float nowY = 11;
 	float jump = 1.0f;
 	float maxJunp = 8;
 
@@ -190,26 +189,26 @@ void Player::Jump()
 	player_.mat.trans.y -= gravirtPower;
 }
 
-void Player::Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Player::Attack(Shader shader)
 {
-	//playre‚ÌÀ•W
+	//playreã®åº§æ¨™
 	playerAttack_.mat.trans = player_.mat.trans;
 	playerAttack_.mat.trans.x += 1000;
 
-	//•`‰æ‚µ‚È‚¢
+	//æç”»ã—ãªã„
 	attackF = false;
 
-	//‰EƒXƒeƒBƒbƒN‚Ì’l
+	//å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å€¤
 	Vector2D Rstick = controller->GetRightStickVec();
 
-	//Å’áƒ‰ƒCƒ“
+	//æœ€ä½ãƒ©ã‚¤ãƒ³
 	Vector2D minLine = { 0.2f,0.2f };
 
-	//ƒfƒbƒhƒ]|ƒ“’´‚¦‚Ä‚é‚©
+	//ãƒ‡ãƒƒãƒ‰ã‚¾ï¼ãƒ³è¶…ãˆã¦ã‚‹ã‹
 	bool moreLineX = minLine.x < Rstick.x || -minLine.x > Rstick.x;
 	bool moreLineY = minLine.y < Rstick.y || -minLine.y > Rstick.y;
 
-	//ƒfƒbƒhƒ]|ƒ“’´‚¦‚Ä‚é‚©
+	//ãƒ‡ãƒƒãƒ‰ã‚¾ï¼ãƒ³è¶…ãˆã¦ã‚‹ã‹
 	if (moreLineX || moreLineY)
 	{
 		playerAttack_.mat.trans.x -= 1000;
@@ -217,18 +216,18 @@ void Player::Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 		//normalize
 		Rstick.normalize();
 
-		//ˆÚ“®’l
+		//ç§»å‹•å€¤
 		float move = 30;
 		Vector3D movePos = { move * Rstick.x, -(move * Rstick.y),0 };
 
-		//ˆÚ‘—
+		//ç§»é€
 		playerAttack_.mat.trans += movePos;
 		playerAttack_.mat.rotAngle.z = movePos.normalize().x;
 
-		//•`‰æ‚·‚é
+		//æç”»ã™ã‚‹
 		attackF = true;
 
-		////attackModel¶¬
+		////attackModelç”Ÿæˆ
 		//if (createAttackFlag)
 		//{
 		//	PlayerAttack* newAttack = new PlayerAttack(dx_, shader, pipeline_);
@@ -249,7 +248,7 @@ void Player::Attack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 	}
 	else if (!createAttackFlag)
 	{
-		//attackModel¶¬
+		//attackModelç”Ÿæˆ
 		createAttackFlag = true;
 	}
 }
@@ -270,7 +269,7 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 
 		float c = enemy.mat.scale.x * nowScale.x;
 
-		//‚ ‚½‚è”»’è
+		//ã‚ãŸã‚Šåˆ¤å®š
 		if (a + b < c)
 		{
 			attack.erase(attack.begin() + i);
@@ -570,7 +569,7 @@ bool Player::PlayerCollision(Model enemy)
 
 	float c = enemy.mat.scale.x * nowScale.x;
 
-	//‚ ‚½‚è”»’è
+	//ã‚ãŸã‚Šåˆ¤å®š
 	if (a + b < c)
 	{
 		if (lesFlag == 0)

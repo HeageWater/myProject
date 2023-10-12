@@ -3,21 +3,22 @@
 #include"PlayScene.h"
 #include"GameScene.h"
 
-std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
+//
+std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName)
 {
-	//Ÿ‚ÌƒV[ƒ“‚ğ¶¬
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆ
 	BaseScene* newScene = nullptr;
 
 	if (sceneName == "TITLE")
 	{
 		newScene = new TitleScene();
 	}
-	else if (sceneName == "GAME")
+	else if (sceneName == "PLAY")
 	{
 		//newScene = new GameScene();
 		newScene = new PlayScene();
 	}
-	else if(sceneName == "")
+	else if (sceneName == "")
 	{
 
 	}
