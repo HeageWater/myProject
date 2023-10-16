@@ -50,7 +50,7 @@ private:
 	Square pressText;
 
 	//input
-	std::unique_ptr<Input> input;
+	Input* input;
 	//std::unique_ptr<Controller> controller;
 	Controller* controller = nullptr;
 

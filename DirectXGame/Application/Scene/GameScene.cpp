@@ -409,7 +409,7 @@ void GameScene::Initialize()
 	FlameWork::Initialize();
 
 	//input
-	//input = std::make_unique<Input>(win.get());
+	input = Input::GetInstance();
 
 	controller = Controller::GetInstance();
 
@@ -829,7 +829,7 @@ void GameScene::Draw()
 	chengeScene->Draw();
 
 	//ここまで2D描画
-	ImguiManager::GetInstance()->Draw();
+	//ImguiManager::GetInstance()->Draw();
 
 	MyDirectX::GetInstance()->PostDraw();
 }

@@ -66,6 +66,10 @@ void ChengeScene::Update()
 		//{
 		//	sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time - 30, maxTime);
 		//}
+
+
+		sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time / 100, maxTime);
+
 	}
 
 	//maxTimeを超えたらリセット
