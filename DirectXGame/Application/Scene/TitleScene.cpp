@@ -10,7 +10,7 @@ void TitleScene::Update()
 	float a = player->GetPos().x;
 
 	ImGui::SliderFloat("player pos", &a, -400, 400);
-	
+
 	//ImGui受付終了
 	ImGui::End();
 
@@ -71,7 +71,7 @@ void TitleScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen.Draw(white);
+	//screen.Draw(white);
 
 	//Actor描画
 	player->Draw(white, white);
