@@ -76,6 +76,7 @@ void ChengeScene::Update()
 	if (time > maxTime)
 	{
 		Reset();
+		SceneManager::GetInstance()->ChangeScene("PLAY");
 	}
 
 	//更新
@@ -85,6 +86,15 @@ void ChengeScene::Update()
 //リセット
 void ChengeScene::Reset()
 {
+	float size = 3.0f;
+	float width = 1.5f;
+
+	sprite_->scale.x = 1;
+	sprite_->scale.y = 1;
+
+	sprite_->position.x = -Window::window_width * width;
+	sprite_->position.y = -Window::window_height;
+
 	isPlayFlag = false;
 	time = 0;
 }

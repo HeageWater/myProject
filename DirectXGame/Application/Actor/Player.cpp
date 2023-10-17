@@ -31,7 +31,6 @@ Player::~Player()
 void Player::Initialize(Shader shader, GPipeline* pipeline_)
 {
 	player_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
-	//player_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	player_.mat.Initialize();
 	player_.mat.scale = { 3,3,3 };
@@ -60,11 +59,6 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 
 void Player::Draw(size_t tex, size_t tex2)
 {
-	if (lesFlag > 0)
-	{
-		lesFlag--;
-	}
-
 	if (lesFlag % 2 == 0)
 	{
 		player_.Draw(tex);
@@ -131,6 +125,11 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		}
 	}
 
+	if (lesFlag > 0)
+	{
+		lesFlag--;
+	}
+
 	//座標Update
 	player_.MatUpdate(matView, matProjection);
 	playerAttack_.MatUpdate(matView, matProjection);
@@ -176,13 +175,10 @@ void Player::Jump()
 
 	if (controller->ButtonTriggerPush(LT))
 	{
-		/*if (player_.mat.trans.y == nowY)
-		{*/
 		jumpPower = maxJunp;
 		gravirtPower = 0;
 
 		sound_->SoundPlayWave(jumpSE);
-		///}
 	}
 
 	player_.mat.trans.y += jumpPower;
