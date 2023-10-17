@@ -10,5 +10,5 @@ protected:
 	static void Update();
 	//static void Update(Matrix matView, Matrix matProjection);
 
-	Model actor;
+	//Model actor;
 };

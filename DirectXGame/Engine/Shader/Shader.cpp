@@ -8,12 +8,12 @@
 
 Shader::Shader()
 {
-	
+	result = {};
 }
 
-Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint,LPCWSTR GSFileName, LPCWSTR DSFileName, LPCWSTR HSFileName)
+Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWSTR GSFileName, LPCWSTR DSFileName, LPCWSTR HSFileName)
 {
-	HRESULT result = S_OK;
+	result = S_OK;
 
 #pragma region VertexShader
 	//	頂点シェーダファイル読み込み＆コンパイル
@@ -29,7 +29,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint,LPCWST
 	// エラーなら
 	Error();
 #pragma endregion
-	
+
 #pragma region HS
 	if (HSFileName != nullptr) {
 		//	頂点シェーダファイル読み込み＆コンパイル
@@ -99,7 +99,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint,LPCWST
 
 void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWSTR GSFileName, LPCWSTR DSFileName, LPCWSTR HSFileName)
 {
-	HRESULT result = S_OK;
+	result = S_OK;
 
 #pragma region VertexShader
 	//	頂点シェーダファイル読み込み＆コンパイル
@@ -185,7 +185,7 @@ void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 
 void Shader::Error()
 {
-	HRESULT result = S_OK;
+	result = S_OK;
 
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
