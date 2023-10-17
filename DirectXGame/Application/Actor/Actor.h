@@ -12,12 +12,13 @@
 class Actor {
 
 protected:
-	static void Initialize();
-	//static void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+	static void Initialize(Shader shader, GPipeline* pipeline_);
 	static void Draw();
-	//static void Draw(size_t tex);
-	static void Update();
-	//static void Update(Matrix matView, Matrix matProjection);
+	static void Update(Matrix matView, Matrix matProjection);
+	// virtual
+	static void SetTag(std::string tag);
 
-	Model actor;
+	Model* model_;
+	size_t tex_;
+	std::string tag_;
 };

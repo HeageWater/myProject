@@ -51,8 +51,8 @@ public:
 	MyMath::ObjMatrix obj;
 
 public:
-	void Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord = GPipeline::NONE_BLEND);
-	Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord = GPipeline::NONE_BLEND);
+	void Initialize(GPipeline* pipeline_, Shader shader, size_t blendMord = GPipeline::NONE_BLEND);
+	Square(GPipeline* pipeline_, Shader shader, size_t blendMord = GPipeline::NONE_BLEND);
 	Square();
 	void MatUpdate(Matrix matView, Matrix matProjection, Matrix billboard = Matrix());
 	void MatUpdate(Matrix matView, Matrix matProjection, float a, Matrix billboard = Matrix());

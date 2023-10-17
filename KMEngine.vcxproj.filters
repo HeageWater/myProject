@@ -267,6 +267,9 @@
     <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Collision\CollisionManager.cpp">
+      <Filter>ソース ファイル\Engine\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\PShader.hlsl">
@@ -462,6 +465,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h">
       <Filter>ヘッダー ファイル\Game\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Collision\CollisionManager.h">
+      <Filter>ヘッダー ファイル\Engine\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

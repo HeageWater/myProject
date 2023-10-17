@@ -49,11 +49,6 @@ void MyDirectX::UpdateFPS()
 	reference_ = std::chrono::steady_clock::now();
 }
 
-//MyDirectX::MyDirectX(Window* win_)
-//{
-//	Initialize(win_);
-//}
-
 void MyDirectX::Initialize(Window* win_)
 {
 	win = win_;

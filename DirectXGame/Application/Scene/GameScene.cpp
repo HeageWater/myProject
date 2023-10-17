@@ -69,7 +69,7 @@ void GameScene::Update()
 				{
 					titleObject->EndMovie = false;
 
-					chengeScene->SetPlayFlag();
+					//chengeScene->SetPlayFlag();
 				}
 			}
 		}
@@ -297,7 +297,7 @@ void GameScene::Update()
 
 			if (checkGoal)
 			{
-				chengeScene->SetPlayFlag();
+				//chengeScene->SetPlayFlag();
 				goalFlag = true;
 			}
 
@@ -310,7 +310,7 @@ void GameScene::Update()
 
 			if (player->GetLife() < 1)
 			{
-				chengeScene->SetPlayFlag();
+				//chengeScene->SetPlayFlag();
 				overFlag = true;
 
 				Reset();
@@ -340,7 +340,7 @@ void GameScene::Update()
 	case GameClear:
 		if (player->GetA())
 		{
-			chengeScene->SetPlayFlag();
+			//chengeScene->SetPlayFlag();
 
 			scene = Title;
 
@@ -352,7 +352,7 @@ void GameScene::Update()
 
 		if (player->GetA())
 		{
-			chengeScene->SetPlayFlag();
+			//chengeScene->SetPlayFlag();
 
 			scene = Title;
 
@@ -419,7 +419,7 @@ void GameScene::Initialize()
 
 	//screen
 	//screen.Initialize(dx.get(), multipathPipeline.get(), bilShader);
-	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
+	screen.Initialize(multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
 
@@ -427,7 +427,7 @@ void GameScene::Initialize()
 	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
 
 	//tex
-	pressText.Initialize(MyDirectX::GetInstance(), uiPipeline.get(), spriteShader);
+	pressText.Initialize(uiPipeline.get(), spriteShader);
 	pressText.obj.trans.y = -200;
 	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);

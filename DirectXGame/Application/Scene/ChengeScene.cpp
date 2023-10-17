@@ -76,7 +76,7 @@ void ChengeScene::Update()
 	if (time > maxTime)
 	{
 		Reset();
-		SceneManager::GetInstance()->ChangeScene("PLAY");
+		SceneManager::GetInstance()->ChangeScene(next_);
 	}
 
 	//更新
@@ -99,7 +99,7 @@ void ChengeScene::Reset()
 }
 
 //プレイフラグを外部からOnにする
-void ChengeScene::SetPlayFlag()
+void ChengeScene::SetPlayFlag(std::string next)
 {
 	if (!isPlayFlag)
 	{
@@ -115,6 +115,8 @@ void ChengeScene::SetPlayFlag()
 		sprite_->position.y = -Window::window_height;
 
 		time = 0;
+
+		next_ = next;
 	}
 }
 

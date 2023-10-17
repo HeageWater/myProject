@@ -5,6 +5,9 @@
 #include "Sound.h"
 #include "Player.h"
 
+/// <summary>
+/// ゲームのタイトルシーン
+/// </summary>
 class TitleScene :public BaseScene
 {
 private:
@@ -41,16 +44,26 @@ private:
 	//shader
 	Shader shader;
 	Shader bilShader;
+
 public:
-	//初期化
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize()override;
 
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update()override;
 
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw()override;
 
-	//破棄
+	/// <summary>
+	/// 破棄
+	/// </summary>
 	void Finalize()override;
 };

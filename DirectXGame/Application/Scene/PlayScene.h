@@ -3,10 +3,9 @@
 #include "Input.h"
 #include "Controller.h"
 #include "Sound.h"
-#include "Player.h"
 
 //このシーンにのみ追加するもの
-//#include "Player.h"
+#include "Player.h"
 #include "Stage.h"
 #include "Enemy.h"
 #include "Goal.h"
@@ -18,6 +17,9 @@
 #include "Warp.h"
 #include "TitleObj.h"
 
+/// <summary>
+/// 基本的なゲーム用シーン
+/// </summary>
 class PlayScene : public BaseScene
 {
 private:
@@ -54,16 +56,26 @@ private:
 	//shader
 	Shader shader;
 	Shader bilShader;
+
 public:
-	//初期化
+	
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize()override;
 
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update()override;
 
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw()override;
 
-	//破棄
+	/// <summary>
+	/// 破棄
+	/// </summary>
 	void Finalize()override;
 };

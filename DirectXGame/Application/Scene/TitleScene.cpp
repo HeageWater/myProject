@@ -4,15 +4,15 @@
 
 void TitleScene::Update()
 {
-	//ImGui受付開始
-	ImGui::Begin("player Pos");
+	////ImGui受付開始
+	//ImGui::Begin("player Pos");
 
-	float a = player->GetPos().x;
+	//float a = player->GetPos().x;
 
-	ImGui::SliderFloat("player pos", &a, -400, 400);
+	//ImGui::SliderFloat("player pos", &a, -400, 400);
 
-	//ImGui受付終了
-	ImGui::End();
+	////ImGui受付終了
+	//ImGui::End();
 
 	//player更新
 	player->Update(matView.mat, matProjection, shader);
@@ -26,9 +26,10 @@ void TitleScene::Update()
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag();
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
 	}
 
+	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
 }
 
@@ -37,6 +38,7 @@ void TitleScene::Initialize()
 	//描画用行列
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
+	//白画像
 	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 
 	//shader
@@ -51,7 +53,8 @@ void TitleScene::Initialize()
 	multipathPipeline = std::make_unique<GPipeline>();
 	multipathPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
 
-	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
+	//背景のスクリーン(これが必要なので依存しないようにしたい)
+	screen.Initialize(multipathPipeline.get(), bilShader);
 	screen.obj.trans.z = 100.1f;
 	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
 
@@ -76,8 +79,10 @@ void TitleScene::Draw()
 	//Actor描画
 	player->Draw(white, white);
 
+	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
 
+	//描画受付終了
 	MyDirectX::GetInstance()->PostDraw();
 }
 
