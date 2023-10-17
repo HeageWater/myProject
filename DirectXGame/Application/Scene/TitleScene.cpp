@@ -71,7 +71,7 @@ void TitleScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	//screen.Draw(white);
+	screen.Draw(white);
 
 	//Actor描画
 	player->Draw(white, white);
