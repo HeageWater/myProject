@@ -4,7 +4,6 @@
 
 #pragma comment(lib,"xaudio2.lib")
 
-
 size_t MyXAudio::SoundLoadWave(const char* filename)
 {
 	std::ifstream file;
@@ -142,4 +141,10 @@ void MyXAudio::Finalize()
 	{
 		SoundUnload(&soundData[i]);
 	}
+}
+
+MyXAudio* MyXAudio::GetInstance()
+{
+	static MyXAudio xaudio;
+	return &xaudio;
 }

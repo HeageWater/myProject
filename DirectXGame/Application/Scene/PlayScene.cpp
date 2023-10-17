@@ -37,7 +37,7 @@ void PlayScene::Initialize()
 	//描画用行列
 	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/cube.jpg");
 
 	//shader
 	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");

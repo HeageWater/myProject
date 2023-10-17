@@ -28,7 +28,7 @@ private:
 	IXAudio2MasteringVoice* masterVoice;
 	std::vector<SoundData> soundData;
 	std::vector<IXAudio2SourceVoice*> soundPtr;
-	size_t handle;
+	size_t handle = 0;
 	void SoundUnload(SoundData* soundData);
 
 private:
@@ -41,11 +41,7 @@ private:
 	MyXAudio(const MyXAudio&) = delete;
 public:
 
-	static MyXAudio* GetInstance()
-	{
-		static MyXAudio xaudio;
-		return &xaudio;
-	}
+	static MyXAudio* GetInstance();
 
 	ComPtr<IXAudio2> xAudio2;
 

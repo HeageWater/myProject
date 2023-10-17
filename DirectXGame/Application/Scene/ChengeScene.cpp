@@ -86,7 +86,6 @@ void ChengeScene::Update()
 //リセット
 void ChengeScene::Reset()
 {
-	float size = 3.0f;
 	float width = 1.5f;
 
 	sprite_->scale.x = 1;
