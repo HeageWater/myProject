@@ -98,6 +98,7 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			model_ = it->second;
 		}
 
+		//Enemyだったら
 		if (objectdata.fileName == "Enemy")
 		{
 			//モデルを指定して3Dオブジェクトを生成
@@ -126,33 +127,34 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			continue;
 		}
 
-		//if (objectdata.fileName == "Stage")
-		//{
+		//Stageだったら
+		if (objectdata.fileName == "Stage")
+		{
 			//モデルを指定して3Dオブジェクトを生成
-		Stage* newModel_ = new Stage();
-		newModel_->Initialize(shader_, pipeline_);
+			Stage* newModel_ = new Stage();
+			newModel_->Initialize(shader_, pipeline_);
 
-		//調整
-		float scale = 10.0f;
+			//調整
+			float scale = 10.0f;
 
-		//trans
-		newModel_->stage_.mat.trans = objectdata.translation * scale;
+			//trans
+			newModel_->stage_.mat.trans = objectdata.translation * scale;
 
-		//rotation
-		newModel_->stage_.mat.rotAngle = objectdata.rotation;
+			//rotation
+			newModel_->stage_.mat.rotAngle = objectdata.rotation;
 
-		//scale;
-		newModel_->stage_.mat.scale = objectdata.scaling * scale;
+			//scale;
+			newModel_->stage_.mat.scale = objectdata.scaling * scale;
 
-		//Update
-		newModel_->Update(view_, prodaction_);
+			//Update
+			newModel_->Update(view_, prodaction_);
 
-		//格納
-		stages_.push_back(newModel_);
+			//格納
+			stages_.push_back(newModel_);
 
-		//次へ
-		//continue;
-		//}
+			//次へ
+			continue;
+		}
 	}
 }
 
