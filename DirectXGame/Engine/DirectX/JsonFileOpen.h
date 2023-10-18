@@ -16,6 +16,9 @@ struct LevelData {
 		// ファイル名
 		std::string fileName;
 
+		//追加要素
+		std::string otherName;
+
 		//Matrix
 		Matrix matrix;
 

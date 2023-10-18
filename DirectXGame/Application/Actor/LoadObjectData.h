@@ -19,6 +19,10 @@
 #include "Enemy.h"
 #include "Stage.h"
 
+//warp
+//cameraPos
+//playerInitPos
+
 /// <summary>
 /// jsonファイルから読み込んだものを反映する
 /// </summary>
@@ -44,8 +48,6 @@ private:
 
 	Shader shader_;
 	GPipeline* pipeline_;
-	//pipeline
-	//std::unique_ptr<GPipeline> pipeline_;
 public:
 
 	/// <summary>

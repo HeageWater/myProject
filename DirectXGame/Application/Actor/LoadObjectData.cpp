@@ -155,6 +155,54 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			//次へ
 			continue;
 		}
+
+		//Cameraだったら
+		if (objectdata.fileName == "Camera")
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			//CameraPos
+			//Stage* newModel_ = new Stage();
+			//newModel_->Initialize(shader_, pipeline_);
+
+			////調整
+			//float scale = 10.0f;
+
+			////trans
+			//newModel_->stage_.mat.trans = objectdata.translation * scale;
+
+			////番号などをセット
+			////setNum(objectdata.otherName);
+
+			////格納
+			//stages_.push_back(newModel_);
+
+			////次へ
+			//continue;
+		}
+
+		//Warpだったら
+		if (objectdata.fileName == "Warp")
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			//CameraPos
+			//Stage* newModel_ = new Stage();
+			//newModel_->Initialize(shader_, pipeline_);
+
+			////調整
+			//float scale = 10.0f;
+
+			////trans
+			//newModel_->stage_.mat.trans = objectdata.translation * scale;
+
+			////番号などをセット
+			////setNum(objectdata.otherName);
+
+			////格納
+			//stages_.push_back(newModel_);
+
+			////次へ
+			//continue;
+		}
 	}
 }
 
