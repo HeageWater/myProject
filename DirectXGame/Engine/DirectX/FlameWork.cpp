@@ -25,7 +25,7 @@ void FlameWork::Initialize()
 	MyDirectX::GetInstance()->Initialize(win.get());
 
 	//ImGuiの初期化
-	ImguiManager::GetInstance()->Initialize();
+	ImguiManager::GetInstance()->Initialize(win.get());
 
 	//buff
 	cBuff = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev());

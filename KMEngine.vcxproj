@@ -97,6 +97,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Engine\DirectX\DescriptorHeap.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\BoxParticle.cpp" />
@@ -196,6 +197,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Engine\DirectX\DescriptorHeap.h" />
     <ClInclude Include="DirectXGame\Application\Collision\CollisionManager.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h" />

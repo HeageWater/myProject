@@ -74,6 +74,15 @@ void Model::MatUpdate(Matrix matView, Matrix matProjection)
 	constMapTransform->mat *= matProjection;
 }
 
+void Model::Update()
+{
+	mat.Update();
+
+	constMapTransform->mat = mat.matWorld;
+	constMapTransform->mat *= View_;
+	constMapTransform->mat *= Prodaction_;
+}
+
 void Model::Draw(size_t handle)
 {
 	pipeline->Setting(dx->GetCmdList());
@@ -84,6 +93,12 @@ void Model::Draw(size_t handle)
 	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
 
 	dx->GetCmdList()->DrawInstanced(vertexSize, 1, 0, 0);
+}
+
+void Model::SetCamera(Matrix View, Matrix Projection)
+{
+	View_ = View;
+	Prodaction_ = Projection;
 }
 
 void Model::SetVertices()

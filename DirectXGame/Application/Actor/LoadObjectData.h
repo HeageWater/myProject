@@ -15,7 +15,93 @@
 #include "GPipeline.h"
 #include "Shader.h"
 
+//ファイルを読み込んで反映するもの
+#include "Enemy.h"
+#include "Stage.h"
+
+/// <summary>
+/// jsonファイルから読み込んだものを反映する
+/// </summary>
 class LoadObjectData
 {
+private:
+	//ステージ読み込み
+	LevelData* levelData_ = nullptr;
 
+	//ステージ格納用
+	std::map<std::string, Stage*> newStage_;
+	std::map<std::string, Enemy*> newEnemy_;
+
+	//制作時に使用
+	std::vector<Stage*> stages_;
+	std::vector<Enemy*> enemies_;
+
+	Matrix view_;
+	Matrix prodaction_;
+
+	size_t enemyTex_;
+	size_t stageTex_;
+
+	Shader shader_;
+	GPipeline* pipeline_;
+	//pipeline
+	//std::unique_ptr<GPipeline> pipeline_;
+public:
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw();
+
+	/// <summary>
+	/// 破棄
+	/// </summary>
+	void Finalize();
+
+	/// <summary>
+	///  ステージ読み込み
+	/// </summary>
+	/// <param name="filePath">読み込むファイル名(拡張子なし)</param>
+	void StageLoad(const std::string& filePath);
+
+	/// <summary>
+	/// カメラセット
+	/// </summary>
+	/// <param name="view"></param>
+	/// <param name="prodaction"></param>
+	void SetCamera(Matrix view,Matrix prodaction);
+
+	/// <summary>
+	/// シェーダーとパイプラインをセット
+	/// </summary>
+	/// <param name="shader"></param>
+	/// <param name="pipeline"></param>
+	void SetModel(Shader shader, GPipeline* pipeline);
+
+private:
+
+	LoadObjectData() = default;
+	~LoadObjectData() = default;
+
+	//コピーコンストラクタ・代入演算子削除
+	LoadObjectData& operator=(const LoadObjectData&) = delete;
+	LoadObjectData(const LoadObjectData&) = delete;
+
+public:
+
+	/// <summary>
+	/// シングルトン
+	/// </summary>
+	/// <returns></returns>
+	static LoadObjectData* GetInstance();
 };

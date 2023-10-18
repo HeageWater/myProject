@@ -4,19 +4,23 @@
 
 void TitleScene::Update()
 {
-	////ImGui受付開始
-	//ImGui::Begin("player Pos");
-
-	//float a = player->GetPos().x;
-
-	//ImGui::SliderFloat("player pos", &a, -400, 400);
-
-	////ImGui受付終了
-	//ImGui::End();
-
 	//player更新
 	player->Update(matView.mat, matProjection, shader);
 
+	Vector3D pos = { (float)(input_->GetKey(DIK_D) - input_->GetKey(DIK_A)),(float)(input_->GetKey(DIK_S) - input_->GetKey(DIK_W)),0 };
+	pos += player->GetPos();
+	player->SetPos(pos);
+
+	//targetをplayerに
+	matView.eye.x = player->GetPos().x;
+	matView.target.x = player->GetPos().x;
+
+	matView.eye.y = player->GetPos().y;
+	matView.target.y = player->GetPos().y;
+
+	//jsonファイルから読み込んだものの更新
+	LoadObjectData::GetInstance()->SetCamera(matView.mat, matProjection);
+	LoadObjectData::GetInstance()->Update();
 	//カメラ更新
 	matView.MatUpdate();
 
@@ -60,6 +64,10 @@ void TitleScene::Initialize()
 
 	//player
 	player->Initialize(shader, pipeline.get());
+
+	//jsonファイルから読み込んだものの初期化
+	LoadObjectData::GetInstance()->SetModel(shader, pipeline.get());
+	LoadObjectData::GetInstance()->Initialize();
 }
 
 void TitleScene::Draw()
@@ -78,6 +86,9 @@ void TitleScene::Draw()
 
 	//Actor描画
 	player->Draw(white, white);
+
+	//jsonファイルから読み込んだものの描画
+	LoadObjectData::GetInstance()->Draw();
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();

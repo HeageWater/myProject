@@ -87,8 +87,8 @@ void GameScene::Update()
 
 			object->Update(matView.mat, matProjection);
 
-
-			if (player->StageCollsionY(object->stage_, matView.mat, matProjection))
+//
+			//if (player->StageCollsionY(object->stage_, matView.mat, matProjection))
 			{
 				//object->SetFlag(false);
 			}
@@ -98,7 +98,11 @@ void GameScene::Update()
 		player->MoveX();
 		for (auto& object : objects_)
 		{
-			if (player->StageCollsionX(object->stage_, matView.mat, matProjection))
+			object->SetFlag(true);
+
+			object->Update(matView.mat, matProjection);
+
+		//	if (player->StageCollsionX(object->stage_, matView.mat, matProjection))
 			{
 				//object->SetFlag(false);
 			}
@@ -259,7 +263,7 @@ void GameScene::Update()
 				object->Update(matView.mat, matProjection);
 
 
-				if (player->StageCollsionY(object->stage_, matView.mat, matProjection))
+				if (player->StageCollsionY(object->stage_))
 				{
 					//object->SetFlag(false);
 				}
@@ -269,7 +273,7 @@ void GameScene::Update()
 			player->MoveX();
 			for (auto& object : objects_)
 			{
-				if (player->StageCollsionX(object->stage_, matView.mat, matProjection))
+				if (player->StageCollsionX(object->stage_))
 				{
 					//object->SetFlag(false);
 				}

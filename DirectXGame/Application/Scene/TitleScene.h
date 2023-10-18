@@ -5,6 +5,8 @@
 #include "Sound.h"
 #include "Player.h"
 
+#include "LoadObjectData.h"
+
 /// <summary>
 /// ゲームのタイトルシーン
 /// </summary>

@@ -35,13 +35,6 @@ void BoxParticle::Initialize(Shader shader, GPipeline* pipeline_)
 
 	float setScale = 3.0f;
 	box.mat.scale = { setScale,setScale,setScale };
-
-	////方向,タイム,早さをランダムで
-	//velocity = { 0.1f,0.1f, 0 };
-
-	//time = 50.0f;
-
-	//spd = 0.01f;
 }
 
 void BoxParticle::Draw(size_t tex)

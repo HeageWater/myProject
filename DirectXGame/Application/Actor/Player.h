@@ -38,13 +38,15 @@ public:
 	float GetLife() { return Life; };
 	void SetLife(float x) { Life = x; };
 	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);
-	bool StageCollsionX(Model stage, Matrix matView, Matrix matProjection);
-	bool StageCollsionY(Model stage, Matrix matView, Matrix matProjection);
+	bool StageCollsionX(Model stage);
+	bool StageCollsionY(Model stage);
 	bool GetA()
 	{ //コントローラーUpdate
 		controller->Update();
 		return controller->ButtonTriggerPush(A);
 	};
+
+	bool StageCollision(Model stage);
 
 	bool PlayerCollision(Model enemy);
 

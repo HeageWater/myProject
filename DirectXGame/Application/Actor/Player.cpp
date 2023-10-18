@@ -103,7 +103,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	if (!WarpAction())
 	{
 		//ジャンプ
-		Jump();
+		//Jump();
 
 		//ノックバック
 		KnockBack();
@@ -424,7 +424,7 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 	return false;
 }
 
-bool Player::StageCollsionX(Model stage, Matrix matView, Matrix matProjection)
+bool Player::StageCollsionX(Model stage)
 {
 	if (player_.mat.scale.x == 0)
 	{
@@ -479,17 +479,13 @@ bool Player::StageCollsionX(Model stage, Matrix matView, Matrix matProjection)
 			}
 		}
 
-		player_.MatUpdate(matView, matProjection);
-
 		return true;
 	}
-
-	player_.MatUpdate(matView, matProjection);
 
 	return false;
 }
 
-bool Player::StageCollsionY(Model stage, Matrix matView, Matrix matProjection)
+bool Player::StageCollsionY(Model stage)
 {
 	if (player_.mat.scale.x == 0)
 	{
@@ -545,14 +541,21 @@ bool Player::StageCollsionY(Model stage, Matrix matView, Matrix matProjection)
 			}
 		}
 
-		player_.MatUpdate(matView, matProjection);
-
 		return true;
 	}
 
-	player_.MatUpdate(matView, matProjection);
-
 	return false;
+}
+
+bool Player::StageCollision(Model stage)
+{
+	MoveX();
+	bool X = StageCollsionX(stage);
+
+	MoveY();
+	bool Y = StageCollsionY(stage);
+
+	return X || Y;
 }
 
 bool Player::PlayerCollision(Model enemy)

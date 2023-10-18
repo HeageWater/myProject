@@ -26,6 +26,9 @@ private:
 public:
 	MyMath::ObjMatrix mat;
 
+	Matrix View_;
+	Matrix Prodaction_;
+
 	void Initialize(Shader shader, const char* filename);
 	void Initialize(MyDirectX* dx_, GPipeline* pipeline_);
 	void Initialize(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
@@ -33,7 +36,9 @@ public:
 	Model();
 	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
 	void MatUpdate(Matrix matView, Matrix matProjection);
+	void Update();
 	void Draw(size_t handle);
+	void SetCamera(Matrix View, Matrix Projection);
 private:
 	void SetVertices() override;
 };
