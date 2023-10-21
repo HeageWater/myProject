@@ -342,26 +342,26 @@ void GameScene::Update()
 		break;
 
 	case GameClear:
-		if (player->GetA())
-		{
-			//chengeScene->SetPlayFlag();
+		//if (player->GetA())
+		//{
+		//	//chengeScene->SetPlayFlag();
 
-			scene = Title;
+		//	scene = Title;
 
-			Reset();
-		}
+		//	Reset();
+		//}
 		break;
 
 	case GameOver:
 
-		if (player->GetA())
-		{
-			//chengeScene->SetPlayFlag();
+		//if (player->GetA())
+		//{
+		//	//chengeScene->SetPlayFlag();
 
-			scene = Title;
+		//	scene = Title;
 
-			Reset();
-		}
+		//	Reset();
+		//}
 		break;
 
 	default:

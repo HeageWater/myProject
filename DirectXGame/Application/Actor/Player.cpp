@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-	knockBackFlag = false;
+	knockBackFlag_ = false;
 
 	player_.mat.Initialize();
 	player_.mat.scale = { 3,3,3 };
@@ -16,8 +16,8 @@ Player::Player()
 	sound_ = nullptr;
 	jumpSE = 0;
 
-	Life = 3;
-	lesFlag = 0;
+	life_ = 3;
+	lesFlag_ = 0;
 }
 
 Player::~Player()
@@ -48,7 +48,7 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 	controller = Controller::GetInstance();
 	attackF = false;
 	createAttackFlag = false;
-	knockBackFlag = false;
+	knockBackFlag_ = false;
 	warpActionFlag = false;
 
 	warpMord = 0;
@@ -59,7 +59,7 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 
 void Player::Draw(size_t tex, size_t tex2)
 {
-	if (lesFlag % 2 == 0)
+	if (lesFlag_ % 2 == 0)
 	{
 		player_.Draw(tex);
 	}
@@ -97,7 +97,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	controller->Update();
 
 	//左スティックの角度代入
-	colVec = { controller->GetLeftStickVec().x, 0,0 };
+	colVec_ = { controller->GetLeftStickVec().x, 0,0 };
 
 	//ワープしているか
 	if (!WarpAction())
@@ -125,9 +125,9 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		}
 	}
 
-	if (lesFlag > 0)
+	if (lesFlag_ > 0)
 	{
-		lesFlag--;
+		lesFlag_--;
 	}
 
 	//座標Update
@@ -150,10 +150,10 @@ void Player::Reset()
 	attackF = false;
 	createAttackFlag = false;
 
-	knockBackFlag = false;
+	knockBackFlag_ = false;
 
-	Life = 3;
-	lesFlag = 0;
+	life_ = 3;
+	lesFlag_ = 0;
 }
 
 void Player::Jump()
@@ -277,42 +277,42 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 
 void Player::LesLife()
 {
-	Life--;
-	lesFlag = 50;
-	knockBackFlag = true;
+	life_--;
+	lesFlag_ = 50;
+	knockBackFlag_ = true;
 }
 
 void Player::KnockBack()
 {
-	if (knockBackFlag)
+	if (knockBackFlag_)
 	{
-		float n = knockBackVec / 10;
+		float n = knockBackVec_ / 10;
 
-		player_.mat.trans.x += knockBackVec;
+		player_.mat.trans.x += knockBackVec_;
 		player_.mat.trans.y += n;
 
-		if (knockBackVec > 0)
+		if (knockBackVec_ > 0)
 		{
-			knockBackVec -= 0.1f;
+			knockBackVec_ -= 0.1f;
 
-			if (knockBackVec < 0)
+			if (knockBackVec_ < 0)
 			{
-				knockBackVec = 0;
+				knockBackVec_ = 0;
 			}
 		}
 		else
 		{
-			knockBackVec += 0.1f;
+			knockBackVec_ += 0.1f;
 
-			if (knockBackVec > 0)
+			if (knockBackVec_ > 0)
 			{
-				knockBackVec = 0;
+				knockBackVec_ = 0;
 			}
 		}
 
-		if (knockBackVec == 0)
+		if (knockBackVec_ == 0)
 		{
-			knockBackFlag = false;
+			knockBackFlag_ = false;
 		}
 	}
 }
@@ -373,7 +373,7 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 			}
 		}
 
-		if (colVec.x > 0)
+		if (colVec_.x > 0)
 		{
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
@@ -440,7 +440,7 @@ bool Player::StageCollsionX(Model stage)
 	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
 		DisY <= player_.mat.scale.y + stage.mat.scale.y)
 	{
-		if (colVec.x > 0)
+		if (colVec_.x > 0)
 		{
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
@@ -571,10 +571,10 @@ bool Player::PlayerCollision(Model enemy)
 	//あたり判定
 	if (a + b < c)
 	{
-		if (lesFlag == 0)
+		if (lesFlag_ == 0)
 		{
 			LesLife();
-			knockBackVec = nowPos.x - enemy.mat.trans.x;
+			knockBackVec_ = nowPos.x - enemy.mat.trans.x;
 			return true;
 		}
 	}
@@ -585,7 +585,7 @@ bool Player::WarpAction()
 {
 	if (warpActionFlag)
 	{
-		colVec = { 0,0,0 };
+		colVec_ = { 0,0,0 };
 
 		float spd = 0.3f;
 		float Ten = 10;
