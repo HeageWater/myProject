@@ -450,7 +450,7 @@ void MyDirectX::PostDrawScreen()
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
+size_t MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 {
 	textureNum++;
 

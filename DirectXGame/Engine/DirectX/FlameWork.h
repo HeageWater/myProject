@@ -17,15 +17,48 @@
 #include "ImguiManager.h"
 #include "Controller.h"
 
+/// <summary>
+/// フレームワーク
+/// </summary>
 class FlameWork
 {
 public:
+
+	/// <summary>
+	/// 更新
+	/// </summary>
 	virtual void Update();
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	virtual void Initialize();
+
+	/// <summary>
+	/// 描画(無し)
+	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	/// 破棄
+	/// </summary>
 	virtual void Finalize();
+
+	/// <summary>
+	/// ゲームループ
+	/// </summary>
 	virtual void Run();
+
+	/// <summary>
+	/// 終了条件が達成しているか
+	/// </summary>
+	/// <returns></returns>
 	bool& IsEndRequst() { return endRequest_; };
+
+	/// <summary>
+	/// 終了フラグをセット
+	/// </summary>
+	/// <param name="flag"></param>
 	void SetEndRwqust(bool flag) { endRequest_ = flag; };
 
 	virtual~FlameWork() = default;

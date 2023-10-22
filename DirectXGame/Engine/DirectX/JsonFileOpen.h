@@ -12,7 +12,8 @@
 // レベルデータ
 struct LevelData {
 
-	struct ObjectData {
+	struct ObjectData 
+	{
 		// ファイル名
 		std::string fileName;
 
@@ -34,6 +35,9 @@ struct LevelData {
 	std::vector<ObjectData> objects;
 };
 
+/// <summary>
+/// jsonファイルを開くクラス
+/// </summary>
 class JsonFileOpen
 {
 public:
@@ -43,12 +47,26 @@ public:
 	// ファイル拡張子
 	static const std::string kExtension;
 public:
-	//jsonファイルOpen
+
+	/// <summary>
+	/// jsonファイルOpen
+	/// </summary>
+	/// <param name="fileName"></param>
+	/// <returns></returns>
 	static LevelData* FileOpen(const std::string& fileName);
 
-	//transform格納
+	/// <summary>
+	/// transform格納
+	/// </summary>
+	/// <param name="transform"></param>
+	/// <param name="objectData"></param>
 	static void SetMatrix(nlohmann::json& transform, LevelData::ObjectData& objectData);
 
-	//再帰関数
+	/// <summary>
+	/// 再帰関数
+	/// </summary>
+	/// <param name="deserialised"></param>
+	/// <param name="levelData"></param>
+	/// <returns></returns>
 	static LevelData* CheckObjects(nlohmann::json deserialised, LevelData* levelData);
 };
