@@ -25,7 +25,8 @@ public:
 	//コンストバッファデータマテリアル
 	struct ConstBufferDataMaterial 
 	{
-		Vector4D color;	//	RGBA
+		//RGBA
+		Vector4D color;
 	};
 
 	//コンストバッファデータマテリアル
