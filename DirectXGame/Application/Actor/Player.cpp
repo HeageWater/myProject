@@ -5,11 +5,11 @@ Player::Player()
 {
 	knockBackFlag_ = false;
 
-	player_.mat.Initialize();
-	player_.mat.scale = { 3,3,3 };
+	player_.mat_.Initialize();
+	player_.mat_.scale_ = { 3,3,3 };
 
-	playerAttack_.mat.Initialize();
-	playerAttack_.mat.scale = { 3,3,3 };
+	playerAttack_.mat_.Initialize();
+	playerAttack_.mat_.scale_ = { 3,3,3 };
 
 	attackF_ = false;
 
@@ -32,18 +32,18 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 {
 	player_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
 
-	player_.mat.Initialize();
-	player_.mat.scale = { 3,3,3 };
-	player_.mat.rotAngle = { 0,0,0 };
-	player_.mat.trans.x = 0;// 950;
-	player_.mat.trans.y = 11;
-	player_.mat.trans.z = 0;
+	player_.mat_.Initialize();
+	player_.mat_.scale_ = { 3,3,3 };
+	player_.mat_.rotAngle_ = { 0,0,0 };
+	player_.mat_.trans_.x_ = 0;// 950;
+	player_.mat_.trans_.y_ = 11;
+	player_.mat_.trans_.z_ = 0;
 
 	playerAttack_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\box.obj", pipeline_);
 
-	playerAttack_.mat.Initialize();
-	playerAttack_.mat.scale = { 5,5,5 };
-	playerAttack_.mat.trans = player_.mat.trans;
+	playerAttack_.mat_.Initialize();
+	playerAttack_.mat_.scale_ = { 5,5,5 };
+	playerAttack_.mat_.trans_ = player_.mat_.trans_;
 
 	controller_ = Controller::GetInstance();
 	attackF_ = false;
@@ -81,14 +81,14 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 
 	Vector3D move = { 0 ,0 ,0 };
 
-	move.x += input->GetKey(DIK_D) - input->GetKey(DIK_A);
-	move.z += input->GetKey(DIK_W) - input->GetKey(DIK_S);
+	move.x_ += input->GetKey(DIK_D) - input->GetKey(DIK_A);
+	move.z_ += input->GetKey(DIK_W) - input->GetKey(DIK_S);
 
-	player_.mat.trans += move;
+	player_.mat_.trans_ += move;
 
 	player_.MatUpdate(matView, matProjection);
 
-	return Vector2D(move.x, move.z);
+	return Vector2D(move.x_, move.z_);
 }
 
 void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
@@ -97,7 +97,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	controller_->Update();
 
 	//左スティックの角度代入
-	colVec_ = { controller_->GetLeftStickVec().x, 0,0 };
+	colVec_ = { controller_->GetLeftStickVec().x_, 0,0 };
 
 	//ワープしているか
 	if (!WarpAction())
@@ -137,15 +137,15 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 
 void Player::Reset()
 {
-	player_.mat.Initialize();
-	player_.mat.scale = { 3,3,3 };
-	player_.mat.trans.x = 0;// 950;
-	player_.mat.trans.y = 11;
-	player_.mat.trans.z = 0;
+	player_.mat_.Initialize();
+	player_.mat_.scale_ = { 3,3,3 };
+	player_.mat_.trans_.x_ = 0;// 950;
+	player_.mat_.trans_.y_ = 11;
+	player_.mat_.trans_.z_ = 0;
 
-	playerAttack_.mat.Initialize();
-	playerAttack_.mat.scale = { 5,5,5 };
-	playerAttack_.mat.trans = player_.mat.trans;
+	playerAttack_.mat_.Initialize();
+	playerAttack_.mat_.scale_ = { 5,5,5 };
+	playerAttack_.mat_.trans_ = player_.mat_.trans_;
 
 	attackF_ = false;
 	createAttackFlag_ = false;
@@ -181,15 +181,15 @@ void Player::Jump()
 		sound_->SoundPlayWave(jumpSE_);
 	}
 
-	player_.mat.trans.y += jumpPower_;
-	player_.mat.trans.y -= gravirtPower_;
+	player_.mat_.trans_.y_ += jumpPower_;
+	player_.mat_.trans_.y_ -= gravirtPower_;
 }
 
 void Player::Attack(Shader shader)
 {
 	//playreの座標
-	playerAttack_.mat.trans = player_.mat.trans;
-	playerAttack_.mat.trans.x += 1000;
+	playerAttack_.mat_.trans_ = player_.mat_.trans_;
+	playerAttack_.mat_.trans_.x_ += 1000;
 
 	//描画しない
 	attackF_ = false;
@@ -201,24 +201,24 @@ void Player::Attack(Shader shader)
 	Vector2D minLine = { 0.2f,0.2f };
 
 	//デッドゾ－ン超えてるか
-	bool moreLineX = minLine.x < Rstick.x || -minLine.x > Rstick.x;
-	bool moreLineY = minLine.y < Rstick.y || -minLine.y > Rstick.y;
+	bool moreLineX = minLine.x_ < Rstick.x_ || -minLine.x_ > Rstick.x_;
+	bool moreLineY = minLine.y_ < Rstick.y_ || -minLine.y_ > Rstick.y_;
 
 	//デッドゾ－ン超えてるか
 	if (moreLineX || moreLineY)
 	{
-		playerAttack_.mat.trans.x -= 1000;
+		playerAttack_.mat_.trans_.x_ -= 1000;
 
 		//normalize
 		Rstick.normalize();
 
 		//移動値
 		float move = 30;
-		Vector3D movePos = { move * Rstick.x, -(move * Rstick.y),0 };
+		Vector3D movePos = { move * Rstick.x_, -(move * Rstick.y_),0 };
 
 		//移送
-		playerAttack_.mat.trans += movePos;
-		playerAttack_.mat.rotAngle.z = movePos.normalize().x;
+		playerAttack_.mat_.trans_ += movePos;
+		playerAttack_.mat_.rotAngle_.z_ = movePos.normalize().x_;
 
 		//描画する
 		attackF_ = true;
@@ -260,10 +260,10 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 		Vector3D nowPos = attack_[i]->GetPos();
 		Vector3D nowScale = attack_[i]->GetScale();
 
-		float a = (enemy.mat.trans.x - nowPos.x) * (enemy.mat.trans.x - nowPos.x);
-		float b = (enemy.mat.trans.y - nowPos.y) * (enemy.mat.trans.y - nowPos.y);
+		float a = (enemy.mat_.trans_.x_ - nowPos.x_) * (enemy.mat_.trans_.x_ - nowPos.x_);
+		float b = (enemy.mat_.trans_.y_ - nowPos.y_) * (enemy.mat_.trans_.y_ - nowPos.y_);
 
-		float c = enemy.mat.scale.x * nowScale.x;
+		float c = enemy.mat_.scale_.x_ * nowScale.x_;
 
 		//あたり判定
 		if (a + b < c)
@@ -288,8 +288,8 @@ void Player::KnockBack()
 	{
 		float n = knockBackVec_ / 10;
 
-		player_.mat.trans.x += knockBackVec_;
-		player_.mat.trans.y += n;
+		player_.mat_.trans_.x_ += knockBackVec_;
+		player_.mat_.trans_.y_ += n;
 
 		if (knockBackVec_ > 0)
 		{
@@ -319,98 +319,98 @@ void Player::KnockBack()
 
 bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 {
-	if (player_.mat.scale.x == 0)
+	if (player_.mat_.scale_.x_ == 0)
 	{
 		return false;
 	}
 
-	float DisX = player_.mat.trans.x - stage.mat.trans.x;
-	float DisY = player_.mat.trans.y - stage.mat.trans.y;
+	float DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+	float DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 	DisX = abs(DisX);
 	DisY = abs(DisY);
 
-	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
-		DisY <= player_.mat.scale.y + stage.mat.scale.y)
+	if (DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_ &&
+		DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_)
 	{
 		if (jumpPower_ > 0)
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.y -= 1;
+				player_.mat_.trans_.y_ -= 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 
 		if (gravirtPower_ > 0)
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.y += 1;
+				player_.mat_.trans_.y_ += 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 
-		if (colVec_.x > 0)
+		if (colVec_.x_ > 0)
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.x -= 1;
+				player_.mat_.trans_.x_ -= 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 		else
 		{
 			//player_.mat.trans += colVec;
 
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.x += 1;
+				player_.mat_.trans_.x_ += 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 
@@ -426,56 +426,56 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 
 bool Player::StageCollsionX(Model stage)
 {
-	if (player_.mat.scale.x == 0)
+	if (player_.mat_.scale_.x_ == 0)
 	{
 		return false;
 	}
 
-	float DisX = player_.mat.trans.x - stage.mat.trans.x;
-	float DisY = player_.mat.trans.y - stage.mat.trans.y;
+	float DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+	float DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 	DisX = abs(DisX);
 	DisY = abs(DisY);
 
-	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
-		DisY <= player_.mat.scale.y + stage.mat.scale.y)
+	if (DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_ &&
+		DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_)
 	{
-		if (colVec_.x > 0)
+		if (colVec_.x_ > 0)
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.x -= 1;
+				player_.mat_.trans_.x_ -= 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 		else
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.x += 1;
+				player_.mat_.trans_.x_ += 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 
@@ -487,57 +487,57 @@ bool Player::StageCollsionX(Model stage)
 
 bool Player::StageCollsionY(Model stage)
 {
-	if (player_.mat.scale.x == 0)
+	if (player_.mat_.scale_.x_ == 0)
 	{
 		return false;
 	}
 
-	float DisX = player_.mat.trans.x - stage.mat.trans.x;
-	float DisY = player_.mat.trans.y - stage.mat.trans.y;
+	float DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+	float DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 	DisX = abs(DisX);
 	DisY = abs(DisY);
 
-	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
-		DisY <= player_.mat.scale.y + stage.mat.scale.y)
+	if (DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_ &&
+		DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_)
 	{
 		if (jumpPower_ > 0)
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.y -= 1;
+				player_.mat_.trans_.y_ -= 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 
 		if (gravirtPower_ > 0)
 		{
-			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 
 			while (colX && colY)
 			{
-				player_.mat.trans.y += 1;
+				player_.mat_.trans_.y_ += 1;
 
-				DisX = player_.mat.trans.x - stage.mat.trans.x;
-				DisY = player_.mat.trans.y - stage.mat.trans.y;
+				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
+				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
-				colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
+				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
+				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
 			}
 		}
 
@@ -563,10 +563,10 @@ bool Player::PlayerCollision(Model enemy)
 	Vector3D nowPos = GetPos();
 	Vector3D nowScale = GetScale();
 
-	float a = (enemy.mat.trans.x - nowPos.x) * (enemy.mat.trans.x - nowPos.x);
-	float b = (enemy.mat.trans.y - nowPos.y) * (enemy.mat.trans.y - nowPos.y);
+	float a = (enemy.mat_.trans_.x_ - nowPos.x_) * (enemy.mat_.trans_.x_ - nowPos.x_);
+	float b = (enemy.mat_.trans_.y_ - nowPos.y_) * (enemy.mat_.trans_.y_ - nowPos.y_);
 
-	float c = enemy.mat.scale.x * nowScale.x;
+	float c = enemy.mat_.scale_.x_ * nowScale.x_;
 
 	//あたり判定
 	if (a + b < c)
@@ -574,7 +574,7 @@ bool Player::PlayerCollision(Model enemy)
 		if (lesFlag_ == 0)
 		{
 			LesLife();
-			knockBackVec_ = nowPos.x - enemy.mat.trans.x;
+			knockBackVec_ = nowPos.x_ - enemy.mat_.trans_.x_;
 			return true;
 		}
 	}
@@ -596,13 +596,13 @@ bool Player::WarpAction()
 		float distance = 0.7f;
 		float scale = 0.1f;
 
-		player_.mat.rotAngle.z += spd;
+		player_.mat_.rotAngle_.z_ += spd;
 
 		if (warpMord_ == (uint32_t)Zero)
 		{
-			if (player_.mat.trans.x > warpPos_[(uint32_t)Zero].x - Ten)
+			if (player_.mat_.trans_.x_ > warpPos_[(uint32_t)Zero].x_ - Ten)
 			{
-				player_.mat.trans.x -= distance;
+				player_.mat_.trans_.x_ -= distance;
 			}
 			else
 			{
@@ -611,11 +611,11 @@ bool Player::WarpAction()
 		}
 		else if (warpMord_ == (uint32_t)One)
 		{
-			player_.mat.scale -= {scale, scale, scale};
+			player_.mat_.scale_ -= {scale, scale, scale};
 
-			if (player_.mat.trans.x < warpPos_[(uint32_t)Zero].x)
+			if (player_.mat_.trans_.x_ < warpPos_[(uint32_t)Zero].x_)
 			{
-				player_.mat.trans.x += distance;
+				player_.mat_.trans_.x_ += distance;
 			}
 			else
 			{
@@ -624,21 +624,21 @@ bool Player::WarpAction()
 		}
 		else if (warpMord_ == (uint32_t)Two)
 		{
-			player_.mat.scale = { Zero,Zero,Zero };
+			player_.mat_.scale_ = { Zero,Zero,Zero };
 
-			player_.mat.trans.x += Two;
+			player_.mat_.trans_.x_ += Two;
 		}
 		else if (warpMord_ == (uint32_t)Three)
 		{
-			player_.mat.rotAngle.z = Zero;
+			player_.mat_.rotAngle_.z_ = Zero;
 
-			if (player_.mat.scale.x < Three)
+			if (player_.mat_.scale_.x_ < Three)
 			{
-				player_.mat.scale += {scale, scale, scale};
+				player_.mat_.scale_ += {scale, scale, scale};
 			}
 			else
 			{
-				player_.mat.scale = { Three,Three,Three };
+				player_.mat_.scale_ = { Three,Three,Three };
 				warpMord_ = (uint32_t)Zero;
 				warpActionFlag_ = false;
 			}

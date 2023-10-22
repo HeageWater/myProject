@@ -156,28 +156,28 @@ void Sprite::Update()
 
 	//scale
 	matScale.Identity();
-	matScale.m[0][0] = scale_.x;
-	matScale.m[1][1] = scale_.y;
-	matScale.m[2][2] = scale_.z;
+	matScale.m_[0][0] = scale_.x_;
+	matScale.m_[1][1] = scale_.y_;
+	matScale.m_[2][2] = scale_.z_;
 
 	//rot
 	matTrans.Identity();
 	Matrix matRotX;
 	matRotX.Identity();
-	matRotX.m[1][1] = cos(rotation_.x);
-	matRotX.m[1][2] = sin(rotation_.x);
-	matRotX.m[2][1] = -sin(rotation_.x);
-	matRotX.m[2][2] = cos(rotation_.x);
+	matRotX.m_[1][1] = cos(rotation_.x_);
+	matRotX.m_[1][2] = sin(rotation_.x_);
+	matRotX.m_[2][1] = -sin(rotation_.x_);
+	matRotX.m_[2][2] = cos(rotation_.x_);
 	Matrix matRotY;
-	matRotY.m[0][0] = cos(rotation_.y);
-	matRotY.m[2][0] = sin(rotation_.y);
-	matRotY.m[0][2] = -sin(rotation_.y);
-	matRotY.m[2][2] = cos(rotation_.y);
+	matRotY.m_[0][0] = cos(rotation_.y_);
+	matRotY.m_[2][0] = sin(rotation_.y_);
+	matRotY.m_[0][2] = -sin(rotation_.y_);
+	matRotY.m_[2][2] = cos(rotation_.y_);
 	Matrix matRotZ;
-	matRotZ.m[0][0] = cos(rotation_.z);
-	matRotZ.m[0][1] = sin(rotation_.z);
-	matRotZ.m[1][0] = -sin(rotation_.z);
-	matRotZ.m[1][1] = cos(rotation_.z);
+	matRotZ.m_[0][0] = cos(rotation_.z_);
+	matRotZ.m_[0][1] = sin(rotation_.z_);
+	matRotZ.m_[1][0] = -sin(rotation_.z_);
+	matRotZ.m_[1][1] = cos(rotation_.z_);
 
 	matRot = matRotZ;
 	matRot *= matRotX;
@@ -185,9 +185,9 @@ void Sprite::Update()
 
 	//trans
 	matTrans.Identity();
-	matTrans.m[3][0] = position_.x;
-	matTrans.m[3][1] = position_.y;
-	matTrans.m[3][2] = position_.z;
+	matTrans.m_[3][0] = position_.x_;
+	matTrans.m_[3][1] = position_.y_;
+	matTrans.m_[3][2] = position_.z_;
 
 	//合体
 	this->matWorld_ = matScale;
@@ -196,20 +196,20 @@ void Sprite::Update()
 
 	//////射影変換行列
 	matProjection__ = MyMath::OrthoLH
-	(Window::window_width,
-		Window::window_height,
+	(Window::window_width_,
+		Window::window_height_,
 		0.0f,
 		1.0f);
 
 	//constMapTransform->color = color;
 
-	constMapTransform_->mat_.m[0][0] = 2.0f / Window::window_width;
-	constMapTransform_->mat_.m[1][1] = -2.0f / Window::window_height;
+	constMapTransform_->mat_.m_[0][0] = 2.0f / Window::window_width_;
+	constMapTransform_->mat_.m_[1][1] = -2.0f / Window::window_height_;
 
 	constMapTransform_->mat_ *= matWorld_;
 	constMapTransform_->mat_ *= matProjection__;
 
-	constMapTransform_->mat_.m[1][1] = -constMapTransform_->mat_.m[1][1];
+	constMapTransform_->mat_.m_[1][1] = -constMapTransform_->mat_.m_[1][1];
 
 	result_ = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);
 	assert(SUCCEEDED(result_));

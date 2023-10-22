@@ -17,57 +17,6 @@
 class MyDirectX
 {
 private:
-	Window* win = nullptr;
-
-	HRESULT result_;
-
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	ComPtr<ID3D12Device> device;
-
-	ComPtr<ID3D12CommandAllocator> cmdAllocator;
-	ComPtr<ID3D12GraphicsCommandList> cmdList;
-
-	ComPtr<ID3D12CommandQueue> cmdQueue;
-
-	ComPtr<IDXGISwapChain4> swapChain;
-
-	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
-	ComPtr<ID3D12DescriptorHeap> rtvHeap;
-
-	// バックバッファ
-	std::vector<ComPtr<ID3D12Resource>> backBuffers;
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle;
-
-	ComPtr<ID3D12Fence> fence;
-	UINT64 fenceVal = 0;
-
-	D3D12_RESOURCE_BARRIER barrierDesc{};
-
-	FLOAT clearColor[4] = {};
-
-	ComPtr<ID3D12DescriptorHeap> dsvHeap;
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
-
-	ComPtr<ID3D12Resource> depthBuff;
-
-	// screenTexture
-	ComPtr<ID3D12Resource> screenResource;
-	D3D12_RESOURCE_BARRIER screenBarrierDesc;
-	ComPtr<ID3D12DescriptorHeap> screenRTVHeap;
-	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap;
-
-	//	ビューポート
-	ViewPort viewPort;
-	// シザー矩形
-	ScissorRect scissorRect;
-
-	int textureNum;
-	std::vector<ComPtr<ID3D12Resource>> texBuff;
-	UINT incrementSize;
-
-	std::chrono::steady_clock::time_point reference_;
-private:
 
 	/// <summary>
 	/// デバッグレイヤー
@@ -163,39 +112,91 @@ public:
 	/// デバイスを返す
 	/// </summary>
 	/// <returns></returns>
-	ID3D12Device* GetDev() { return device.Get(); }
+	ID3D12Device* GetDev() { return device_.Get(); }
 
 	/// <summary>
 	/// コマンドリスト
 	/// </summary>
 	/// <returns></returns>
-	ID3D12GraphicsCommandList* GetCmdList() { return cmdList.Get(); }
+	ID3D12GraphicsCommandList* GetCmdList() { return cmdList_.Get(); }
 
 	/// <summary>
 	/// viewPortを返す
 	/// </summary>
 	/// <returns></returns>
-	Matrix GetViewportMat() { return viewPort.Mat(); }
+	Matrix GetViewportMat() { return viewPort_.Mat(); }
 
 	/// <summary>
 	/// インクリメントサイズを返す
 	/// </summary>
 	/// <returns></returns>
-	UINT GetIncrementSize() { return incrementSize; }
+	UINT GetIncrementSize() { return incrementSize_; }
 
 	/// <summary>
 	/// windowを返す
 	/// </summary>
 	/// <returns></returns>
-	Window GetWindow() { return *win; };
+	Window GetWindow() { return *win_; };
 
 	/// <summary>
 	/// バックバッファの数を取得
 	/// </summary>
 	/// <returns></returns>
-	size_t GetBackByfferCount() const { return backBuffers.size(); };
+	size_t GetBackByfferCount() const { return backBuffers_.size(); };
 
 	//シングルトン
 	static MyDirectX* GetInstance();
+
+	private:
+		Window* win_ = nullptr;
+
+		HRESULT result_;
+
+		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+		ComPtr<ID3D12Device> device_;
+
+		ComPtr<ID3D12CommandAllocator> cmdAllocator_;
+		ComPtr<ID3D12GraphicsCommandList> cmdList_;
+
+		ComPtr<ID3D12CommandQueue> cmdQueue_;
+
+		ComPtr<IDXGISwapChain4> swapChain_;
+
+		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
+		ComPtr<ID3D12DescriptorHeap> rtvHeap_;
+
+		// バックバッファ
+		std::vector<ComPtr<ID3D12Resource>> backBuffers_;
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_;
+
+		ComPtr<ID3D12Fence> fence_;
+		UINT64 fenceVal_ = 0;
+
+		D3D12_RESOURCE_BARRIER barrierDesc_{};
+
+		FLOAT clearColor_[4] = {};
+
+		ComPtr<ID3D12DescriptorHeap> dsvHeap_;
+		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_;
+
+		ComPtr<ID3D12Resource> depthBuff_;
+
+		// screenTexture
+		ComPtr<ID3D12Resource> screenResource_;
+		D3D12_RESOURCE_BARRIER screenBarrierDesc_;
+		ComPtr<ID3D12DescriptorHeap> screenRTVHeap_;
+		std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap_;
+
+		//	ビューポート
+		ViewPort viewPort_;
+		// シザー矩形
+		ScissorRect scissorRect_;
+
+		int textureNum_;
+		std::vector<ComPtr<ID3D12Resource>> texBuff_;
+		UINT incrementSize_;
+
+		std::chrono::steady_clock::time_point reference_;
 };
 

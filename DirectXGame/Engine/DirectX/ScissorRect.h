@@ -7,7 +7,7 @@
 class ScissorRect
 {
 private:
-	D3D12_RECT scissorRect{};
+	D3D12_RECT scissorRect_{};
 public:
 	ScissorRect();
 

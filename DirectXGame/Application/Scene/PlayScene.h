@@ -41,7 +41,7 @@ private:
 	//描画用行列
 	MyMath::MatView matView_;
 	Matrix matProjection = MyMath::PerspectiveFovLH(
-		Window::window_width, Window::window_height,
+		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
 	//pipeline

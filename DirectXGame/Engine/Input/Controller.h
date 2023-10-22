@@ -39,13 +39,13 @@ class Controller
 {
 private:
 
-	Microsoft::WRL::ComPtr<IDirectInputDevice8> controller = nullptr;
-	XINPUT_STATE controllerState{};
-	XINPUT_STATE oldControllerState{};
+	Microsoft::WRL::ComPtr<IDirectInputDevice8> controller_ = nullptr;
+	XINPUT_STATE controllerState_{};
+	XINPUT_STATE oldControllerState_{};
 	//コントローラー振動強さ
-	float shakePower = 0.0f;
+	float shakePower_ = 0.0f;
 	//コントローラー振動長さ(フレーム数)
-	float shakeTimer = 0;
+	float shakeTimer_ = 0;
 
 	//デッドゾーンに入っているか(DeadRate : デッドゾーン判定の度合い、1.0fだとデフォルト)
 	bool StickInDeadZone(Vector2D thumb, const Vector2D deadRate);

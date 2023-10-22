@@ -9,23 +9,23 @@
 
 struct Vertex
 {
-	Vector3D pos;
-	Vector3D normal;
-	Vector2D uv;
+	Vector3D pos_;
+	Vector3D normal_;
+	Vector2D uv_;
 };
 
 struct VertexObj
 {
-	Vector3D pos;
-	Vector3D normal;
-	Vector2D uv;
-	Vector4D color;
+	Vector3D pos_;
+	Vector3D normal_;
+	Vector2D uv_;
+	Vector4D color_;
 };
 
 struct ScreenVertex
 {
-	Vector3D pos;
-	Vector2D uv;
+	Vector3D pos_;
+	Vector2D uv_;
 };
 
 /// <summary>
@@ -40,25 +40,25 @@ private:
 protected:
 
 	//vertex
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 
 	//Buffer
-	ComPtr<ID3D12Resource> vertBuff;
+	ComPtr<ID3D12Resource> vertBuff_;
 
 	//index
-	bool ibExist = false;
+	bool ibExist_ = false;
 
 	//インデックスビュー
-	D3D12_INDEX_BUFFER_VIEW ibView{};
+	D3D12_INDEX_BUFFER_VIEW ibView_{};
 
 	//インデックスバッファ
-	ComPtr<ID3D12Resource> indexBuff;
+	ComPtr<ID3D12Resource> indexBuff_;
 
 	//デスクリプタヒープ
-	D3D12_RESOURCE_DESC resDesc{};
+	D3D12_RESOURCE_DESC resDesc_{};
 
 	//ヒーププロップ
-	D3D12_HEAP_PROPERTIES heapProp{};
+	D3D12_HEAP_PROPERTIES heapProp_{};
 
 	//結果
 	HRESULT result_;
@@ -109,6 +109,6 @@ public:
 	virtual void SetVertices();
 
 	//	Getter
-	D3D12_RESOURCE_DESC ResDesc() { return resDesc; }
+	D3D12_RESOURCE_DESC ResDesc() { return resDesc_; }
 };
 

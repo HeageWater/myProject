@@ -45,25 +45,25 @@ public:
 	/// 場所セット
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(Vector3D pos) { box_.mat.trans = pos; };
+	void SetPos(Vector3D pos) { box_.mat_.trans_ = pos; };
 
 	/// <summary>
 	/// 向きセット
 	/// </summary>
 	/// <param name="vec"></param>
-	void SetVec(Vector3D vec) { velocity = vec; };
+	void SetVec(Vector3D vec) { velocity_ = vec; };
 
 	/// <summary>
 	/// 場所ゲット
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return box_.mat.trans; };
+	Vector3D GetPos() { return box_.mat_.trans_; };
 
 	/// <summary>
 	/// 向きゲット
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetVec() { return velocity; };
+	Vector3D GetVec() { return velocity_; };
 private:
 
 	//Square box;
@@ -79,5 +79,5 @@ private:
 	float time_ = 0;
 
 	//向き
-	Vector3D velocity = { 0,0,0 };
+	Vector3D velocity_ = { 0,0,0 };
 };

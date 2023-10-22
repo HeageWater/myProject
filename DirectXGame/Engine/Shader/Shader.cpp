@@ -24,7 +24,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWS
 		pEntryPoint, "vs_5_0",									// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 		0,
-		&vsBlob, &errorBlob);
+		&vsBlob_, &errorBlob_);
 
 	// エラーなら
 	Error();
@@ -40,7 +40,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWS
 			pEntryPoint, "hs_5_0",									// エントリーポイント名、シェーダーモデル指定
 			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 			0,
-			&hsBlob, &errorBlob);
+			&hsBlob_, &errorBlob_);
 
 		// エラーなら
 		Error();
@@ -57,7 +57,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWS
 			pEntryPoint, "ds_5_0",									// エントリーポイント名、シェーダーモデル指定
 			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 			0,
-			&dsBlob, &errorBlob);
+			&dsBlob_, &errorBlob_);
 
 		// エラーなら
 		Error();
@@ -74,7 +74,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWS
 			pEntryPoint, "gs_5_0",									// エントリーポイント名、シェーダーモデル指定
 			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 			0,
-			&gsBlob, &errorBlob);
+			&gsBlob_, &errorBlob_);
 
 		// エラーなら
 		Error();
@@ -90,7 +90,7 @@ Shader::Shader(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoint, LPCWS
 		pEntryPoint, "ps_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&psBlob, &errorBlob);
+		&psBlob_, &errorBlob_);
 
 	// エラーなら
 	Error();
@@ -110,7 +110,7 @@ void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 		pEntryPoint, "vs_5_0",									// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 		0,
-		&vsBlob, &errorBlob);
+		&vsBlob_, &errorBlob_);
 
 	// エラーなら
 	Error();
@@ -126,7 +126,7 @@ void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 			pEntryPoint, "hs_5_0",									// エントリーポイント名、シェーダーモデル指定
 			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 			0,
-			&hsBlob, &errorBlob);
+			&hsBlob_, &errorBlob_);
 
 		// エラーなら
 		Error();
@@ -143,7 +143,7 @@ void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 			pEntryPoint, "ds_5_0",									// エントリーポイント名、シェーダーモデル指定
 			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 			0,
-			&dsBlob, &errorBlob);
+			&dsBlob_, &errorBlob_);
 
 		// エラーなら
 		Error();
@@ -160,7 +160,7 @@ void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 			pEntryPoint, "gs_5_0",									// エントリーポイント名、シェーダーモデル指定
 			D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	// デバッグ用設定
 			0,
-			&gsBlob, &errorBlob);
+			&gsBlob_, &errorBlob_);
 
 		// エラーなら
 		Error();
@@ -176,7 +176,7 @@ void Shader::Initizlize(LPCWSTR VSFileName, LPCWSTR PSFileName, LPCSTR pEntryPoi
 		pEntryPoint, "ps_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&psBlob, &errorBlob);
+		&psBlob_, &errorBlob_);
 
 	// エラーなら
 	Error();
@@ -190,9 +190,9 @@ void Shader::Error()
 	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
-		error.resize(errorBlob->GetBufferSize());
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
+		error.resize(errorBlob_->GetBufferSize());
+		std::copy_n((char*)errorBlob_->GetBufferPointer(),
+			errorBlob_->GetBufferSize(),
 			error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示

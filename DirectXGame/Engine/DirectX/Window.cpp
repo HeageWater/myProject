@@ -27,24 +27,24 @@ Window::Window()
 Window::~Window()
 {
 	// ウィンドウクラスを登録解除
-	UnregisterClass(w.lpszClassName, w.hInstance);
+	UnregisterClass(w_.lpszClassName, w_.hInstance);
 }
 
 void Window::Initialize()
 {
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc;
-	w.lpszClassName = L"Blade";
-	w.hInstance = GetModuleHandle(nullptr);
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);
+	w_.cbSize = sizeof(WNDCLASSEX);
+	w_.lpfnWndProc = (WNDPROC)WindowProc;
+	w_.lpszClassName = L"Blade";
+	w_.hInstance = GetModuleHandle(nullptr);
+	w_.hCursor = LoadCursor(NULL, IDC_ARROW);
 
-	RegisterClassEx(&w);
+	RegisterClassEx(&w_);
 
-	RECT wrc = { 0, 0, window_width, window_height };
+	RECT wrc = { 0, 0, window_width_, window_height_ };
 
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
-	hwnd = CreateWindow(w.lpszClassName,
+	hwnd_ = CreateWindow(w_.lpszClassName,
 		L"Blade",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
@@ -53,26 +53,26 @@ void Window::Initialize()
 		wrc.bottom - wrc.top,
 		nullptr,
 		nullptr,
-		w.hInstance,
+		w_.hInstance,
 		nullptr);
 
-	ShowWindow(hwnd, SW_SHOW);
+	ShowWindow(hwnd_, SW_SHOW);
 
 	timeBeginPeriod(1);
 }
 
 void Window::MsgUpdate()
 {
-	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	if (PeekMessage(&msg_, nullptr, 0, 0, PM_REMOVE))
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		TranslateMessage(&msg_);
+		DispatchMessage(&msg_);
 	}
 }
 
 bool Window::EndLoop()
 {
-	if (msg.message == WM_QUIT)
+	if (msg_.message == WM_QUIT)
 	{
 		return true;
 	}

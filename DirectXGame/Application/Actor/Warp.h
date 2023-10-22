@@ -59,13 +59,13 @@ public:
 	/// 入った場所
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetInPos() { return warp_[0].mat.trans; };
+	Vector3D GetInPos() { return warp_[0].mat_.trans_; };
 
 	/// <summary>
 	/// 出る場所
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetOutPos() { return warp_[1].mat.trans; };
+	Vector3D GetOutPos() { return warp_[1].mat_.trans_; };
 
 	/// <summary>
 	/// 今どのフェーズか

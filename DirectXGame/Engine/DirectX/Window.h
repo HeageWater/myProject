@@ -9,19 +9,19 @@ class Window
 public:
 
 	// ウィンドウサイズ
-	static const int window_width = 1280; // 横幅
-	static const int window_height = 720; // 縦幅
+	static const int window_width_ = 1280; // 横幅
+	static const int window_height_ = 720; // 縦幅
 
 private:
 
 	// ウィンドウクラスの設定
-	WNDCLASSEX w{};
+	WNDCLASSEX w_{};
 
 	// ウィンドウオブジェクトの生成
-	HWND hwnd;
+	HWND hwnd_;
 
 	// メッセージ
-	MSG msg{};
+	MSG msg_{};
 
 	// ウィンドウプロシージャ
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
@@ -59,13 +59,13 @@ public:
 	/// Hwndを取得
 	/// </summary>
 	/// <returns></returns>
-	HWND GetHwnd() const { return hwnd; }
+	HWND GetHwnd() const { return hwnd_; }
 
 	/// <summary>
 	/// Wを取得
 	/// </summary>
 	/// <returns></returns>
-	WNDCLASSEX GetWND() const { return w; }
+	WNDCLASSEX GetWND() const { return w_; }
 
 };
 

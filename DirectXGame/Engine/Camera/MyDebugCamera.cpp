@@ -8,17 +8,17 @@ MyDebugCamera::MyDebugCamera()
 MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 {
 	Init(_eye, _target, _up);
-	frontVec = target - eye;
-	disEyeTarget = frontVec.length();
+	frontVec_ = target_ - eye_;
+	disEyeTarget_ = frontVec_.length();
 }
 
 void MyDebugCamera::Update()
 {
 	input_ = Input::GetInstance();
 
-	eye.x += input_->GetKey(DIK_RIGHT) - input_->GetKey(DIK_LEFT);
-	eye.y += input_->GetKey(DIK_UP) - input_->GetKey(DIK_DOWN);
-	eye.z += input_->GetKey(DIK_O) - input_->GetKey(DIK_P);/*
+	eye_.x_ += input_->GetKey(DIK_RIGHT) - input_->GetKey(DIK_LEFT);
+	eye_.y_ += input_->GetKey(DIK_UP) - input_->GetKey(DIK_DOWN);
+	eye_.z_ += input_->GetKey(DIK_O) - input_->GetKey(DIK_P);/*
 
 	if (input.Click(Input::LeftClick))
 	{
@@ -31,22 +31,22 @@ void MyDebugCamera::Update()
 
 void MyDebugCamera::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 {
-	eye = _eye;
-	target = _target;
-	up = _up;
+	eye_ = _eye;
+	target_ = _target;
+	up_ = _up;
 
 	MatUpdate();
 }
 
 void MyDebugCamera::MatUpdate()
 {
-	mat = MyMath::LookAtLH(eye, target, up);
+	mat_ = MyMath::LookAtLH(eye_, target_, up_);
 }
 
 void MyDebugCamera::Move(float camerapos)
 {
-	eye.x = camerapos;
-	target.x = camerapos;
+	eye_.x_ = camerapos;
+	target_.x_ = camerapos;
 
 	MatUpdate();
 }

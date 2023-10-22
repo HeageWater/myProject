@@ -5,9 +5,7 @@
 /// </summary>
 class HitStop
 {
-private:
-	float time = 0;
-	bool countFlag;
+
 public:
 
 	/// <summary>
@@ -35,5 +33,9 @@ public:
 	/// あと何フレームかを取得する
 	/// </summary>
 	/// <returns></returns>
-	float GetTime() { return time; };
+	float GetTime() { return time_; };
+
+private:
+	float time_ = 0;
+	bool countFlag_;
 };

@@ -3,9 +3,9 @@
 Shake::Shake()
 {
 	time_ = 0;
-	countFlag = false;
+	countFlag_ = false;
 
-	shake = { 0,0,0 };
+	shake_ = { 0,0,0 };
 }
 
 Shake::~Shake()

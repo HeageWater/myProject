@@ -6,10 +6,6 @@
 /// </summary>
 class Shake
 {
-private:
-	float time_ = 0;
-	bool countFlag;
-	Vector3D shake;
 public:
 
 	/// <summary>
@@ -38,4 +34,9 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	float GetTime() { return time_; };
+
+private:
+	float time_ = 0;
+	bool countFlag_;
+	Vector3D shake_;
 };

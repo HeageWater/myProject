@@ -8,10 +8,10 @@
 class Vector4D
 {
 public:
-	float x;
-	float y;
-	float z;
-	float w;
+	float x_;
+	float y_;
+	float z_;
+	float w_;
 public:
 	Vector4D();
 	Vector4D(float x, float y, float z, float w);

@@ -86,11 +86,11 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData_->objects)
+	for (auto& objectdata : levelData_->objects_)
 	{
 		//ファイル名から登録済みモデルを検索
 		Stage* model_ = nullptr;
-		decltype(newStage_)::iterator it = newStage_.find(objectdata.fileName);
+		decltype(newStage_)::iterator it = newStage_.find(objectdata.fileName_);
 
 		//終わりか
 		if (it != newStage_.end())
@@ -99,7 +99,7 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		}
 
 		//Enemyだったら
-		if (objectdata.fileName == "Enemy")
+		if (objectdata.fileName_ == "Enemy")
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			Enemy* newModel_ = new Enemy();
@@ -109,13 +109,13 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			float scale = 10.0f;
 
 			//trans
-			newModel_->enemy_.mat.trans = objectdata.translation * scale;
+			newModel_->enemy_.mat_.trans_ = objectdata.translation_ * scale;
 
 			//rotation
-			newModel_->enemy_.mat.rotAngle = objectdata.rotation;
+			newModel_->enemy_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->enemy_.mat.scale = objectdata.scaling * scale;
+			newModel_->enemy_.mat_.scale_ = objectdata.scaling_ * scale;
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -128,7 +128,7 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		}
 
 		//Stageだったら
-		if (objectdata.fileName == "Stage")
+		if (objectdata.fileName_ == "Stage")
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			Stage* newModel_ = new Stage();
@@ -138,13 +138,13 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			float scale = 10.0f;
 
 			//trans
-			newModel_->stage_.mat.trans = objectdata.translation * scale;
+			newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
 
 			//rotation
-			newModel_->stage_.mat.rotAngle = objectdata.rotation;
+			newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->stage_.mat.scale = objectdata.scaling * scale;
+			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -157,7 +157,7 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		}
 
 		//Cameraだったら
-		if (objectdata.fileName == "Camera")
+		if (objectdata.fileName_ == "Camera")
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			//CameraPos
@@ -181,7 +181,7 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		}
 
 		//Warpだったら
-		if (objectdata.fileName == "Warp")
+		if (objectdata.fileName_ == "Warp")
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			//CameraPos

@@ -2,8 +2,8 @@
 
 Enemy::Enemy()
 {
-	enemy_.mat.Initialize();
-	enemy_.mat.scale = { 3,3,3 };
+	enemy_.mat_.Initialize();
+	enemy_.mat_.scale_ = { 3,3,3 };
 }
 
 Enemy::~Enemy()
@@ -15,8 +15,8 @@ void Enemy::Initialize(Shader shader, GPipeline* pipeline_)
 {
 	enemy_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\ene\\ene.obj", pipeline_);
 
-	enemy_.mat.Initialize();
-	enemy_.mat.scale = { 1,1,1 };
+	enemy_.mat_.Initialize();
+	enemy_.mat_.scale_ = { 1,1,1 };
 	isDead_ = false;
 	deadVec_ = false;
 	Vec_ = { 0,0,0 };
@@ -40,7 +40,7 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 		spd = 1.2f;
 	}
 
-	enemy_.mat.rotAngle.y += spd;
+	enemy_.mat_.rotAngle_.y_ += spd;
 
 	if (Time_ > 0)
 	{
@@ -49,7 +49,7 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 		move_ = { 0,0,0 };
 	}
 
-	enemy_.mat.trans -= move_;
+	enemy_.mat_.trans_ -= move_;
 
 	DeadVec();
 
@@ -60,16 +60,16 @@ bool Enemy::BoxCollision(Model model)
 {
 	if (deadVec_ == false)
 	{
-		float a = (model.mat.trans.x - enemy_.mat.trans.x) * (model.mat.trans.x - enemy_.mat.trans.x);
-		float b = (model.mat.trans.y - enemy_.mat.trans.y) * (model.mat.trans.y - enemy_.mat.trans.y);
+		float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
+		float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
 
-		float c = model.mat.scale.x * enemy_.mat.scale.x;
+		float c = model.mat_.scale_.x_ * enemy_.mat_.scale_.x_;
 
 		//あたり判定
 		if (a + b < c)
 		{
 			float spd = 1.5f;
-			Vec_ = model.mat.trans - enemy_.mat.trans;
+			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
@@ -85,22 +85,22 @@ void Enemy::SertchPlayer(Model model)
 	float sertchScale = 500;
 	//Vector3D sertchScale = {10,10,10};
 
-	float a = (model.mat.trans.x - enemy_.mat.trans.x) * (model.mat.trans.x - enemy_.mat.trans.x);
-	float b = (model.mat.trans.y - enemy_.mat.trans.y) * (model.mat.trans.y - enemy_.mat.trans.y);
+	float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
+	float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
 
-	float c = model.mat.scale.x * sertchScale;
+	float c = model.mat_.scale_.x_ * sertchScale;
 	//float c = model.mat.scale.x * enemy_.mat.scale.x;
 
 	//あたり判定
 	if (a + b < c)
 	{
 		sertchFlag_ = true;
-		move_ = enemy_.mat.trans - model.mat.trans;
+		move_ = enemy_.mat_.trans_ - model.mat_.trans_;
 		move_.normalize();
 
-		move_.x /= 2;
-		move_.y /= 2;
-		move_.z /= 2;
+		move_.x_ /= 2;
+		move_.y_ /= 2;
+		move_.z_ /= 2;
 	}
 	else
 	{
@@ -112,10 +112,10 @@ void Enemy::DeadVec()
 {
 	if (deadVec_)
 	{
-		enemy_.mat.trans -= Vec_;
+		enemy_.mat_.trans_ -= Vec_;
 
-		bool Y = -15 > enemy_.mat.trans.y || 1000 < enemy_.mat.trans.y;
-		bool X = 0 > enemy_.mat.trans.x || 1000 < enemy_.mat.trans.x;
+		bool Y = -15 > enemy_.mat_.trans_.y_ || 1000 < enemy_.mat_.trans_.y_;
+		bool X = 0 > enemy_.mat_.trans_.x_ || 1000 < enemy_.mat_.trans_.x_;
 
 		if (Y || X)
 		{

@@ -6,8 +6,8 @@ void FlameWork::Update()
 {
 	//下の処理まとめよう
 	//Escapeで抜けるかどうかは後で消す
-	win->MsgUpdate();
-	if (win->EndLoop() || Input::GetInstance()->GetTrigger(DIK_ESCAPE))
+	win_->MsgUpdate();
+	if (win_->EndLoop() || Input::GetInstance()->GetTrigger(DIK_ESCAPE))
 	{
 		SetEndRwqust(true);
 	}
@@ -19,43 +19,43 @@ void FlameWork::Update()
 void FlameWork::Initialize()
 {
 	//windowApi
-	win = std::make_unique<Window>();
+	win_ = std::make_unique<Window>();
 
 	//DirextXの初期化
-	MyDirectX::GetInstance()->Initialize(win.get());
+	MyDirectX::GetInstance()->Initialize(win_.get());
 
 	//ImGuiの初期化
-	ImguiManager::GetInstance()->Initialize(win.get());
+	ImguiManager::GetInstance()->Initialize(win_.get());
 
 	//buff
-	cBuff = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev());
+	cBuff_ = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev());
 
 	//shader
-	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
-	bilShader.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
-	spriteShader.Initizlize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
+	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
+	bilShader_.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	spriteShader_.Initizlize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
 
 	//pipeline
-	pipeline = std::make_unique<GPipeline>();
-	pipeline->Initialize(MyDirectX::GetInstance()->GetDev(), shader);
+	pipeline_ = std::make_unique<GPipeline>();
+	pipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), shader_);
 
 	//描画初期化
-	multipathPipeline = std::make_unique<GPipeline>();
-	multipathPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
+	multipathPipeline_ = std::make_unique<GPipeline>();
+	multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
 	//gpipeline
-	uiPipeline = std::make_unique<GPipeline>();
-	uiPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
+	uiPipeline_ = std::make_unique<GPipeline>();
+	uiPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
 	//キーボード
-	Input::GetInstance()->Initialize(win.get());
+	Input::GetInstance()->Initialize(win_.get());
 
 	//sound
 	MyXAudio::GetInstance()->Initialize();
 
 	//仮置き
 	Matrix matProjection = MyMath::PerspectiveFovLH(
-		Window::window_width, Window::window_height,
+		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
 	//欲しい機能

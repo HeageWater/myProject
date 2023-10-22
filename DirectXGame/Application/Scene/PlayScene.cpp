@@ -15,13 +15,13 @@ void PlayScene::Update()
 	//ImGui::End();
 
 	//player更新
-	player_->Update(matView_.mat, matProjection, shader_);
+	player_->Update(matView_.mat_, matProjection, shader_);
 
 	//カメラ更新
 	matView_.MatUpdate();
 
 	//スクリーン更新
-	screen_.MatUpdate(matView_.mat, matProjection, 0);
+	screen_.MatUpdate(matView_.mat_, matProjection, 0);
 
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
@@ -55,8 +55,8 @@ void PlayScene::Initialize()
 
 	//背景のスクリーン(これが必要なので依存しないようにしたい)
 	screen_.Initialize(multipathPipeline_.get(), bilShader_);
-	screen_.obj.trans.z = 100.1f;
-	screen_.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
+	screen_.obj_.trans_.z_ = 100.1f;
+	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
 	//player
 	player_->Initialize(shader_, pipeline_.get());

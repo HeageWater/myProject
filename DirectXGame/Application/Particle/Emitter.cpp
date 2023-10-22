@@ -7,7 +7,7 @@ void Emitter::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 
 	sample_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
-	sample_.mat.Initialize();
+	sample_.mat_.Initialize();
 }
 
 void Emitter::Update(Matrix matView, Matrix matProjection)
