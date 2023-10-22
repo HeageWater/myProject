@@ -146,7 +146,6 @@
     <ClCompile Include="DirectXGame\Engine\DirectX\VertBuff.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\ViewPort.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\Window.cpp" />
-    <ClCompile Include="DirectXGame\Application\Scene\Scene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sound\Sound.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp" />
@@ -240,7 +239,6 @@
     <ClInclude Include="DirectXGame\Engine\DirectX\VertBuff.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\ViewPort.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\Window.h" />
-    <ClInclude Include="DirectXGame\Application\Scene\Scene.h" />
     <ClInclude Include="DirectXGame\Engine\Sound\Sound.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Skydome.h" />

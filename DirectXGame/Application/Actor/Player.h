@@ -65,7 +65,7 @@ public:
 	/// 左スティックの値を返す
 	/// </summary>
 	/// <returns></returns>
-	Vector2D GetController() { return controller->GetLeftStickVec(); };
+	Vector2D GetController() { return controller_->GetLeftStickVec(); };
 
 	/// <summary>
 	/// posを返す
@@ -178,35 +178,30 @@ public:
 	/// <returns></returns>
 	bool PlayerCollision(Model enemy);
 
-	//ワープするアクション
+	/// <summary>
+	/// ワープするアクション
+	/// </summary>
+	/// <returns></returns>
 	bool WarpAction();
-
-	//ワープの入口に触れた時
-	bool warpActionFlag = false;
-
-	uint32_t warpMord = 0;
-
-	//warpの入口と出口のpos
-	Vector3D warpPos[2];
 
 	/// <summary>
 	/// ワープするとき外からでもposを変えられるように
 	/// </summary>
 	/// <param name="pos1"></param>
 	/// <param name="pos2"></param>
-	void SetWarpPos(Vector3D pos1, Vector3D pos2) { warpPos[0] = pos1; warpPos[1] = pos2; };
+	void SetWarpPos(Vector3D pos1, Vector3D pos2) { warpPos_[0] = pos1; warpPos_[1] = pos2; };
 
 	/// <summary>
 	/// 今のワープ行動の種類を入手
 	/// </summary>
 	/// <returns></returns>
-	uint32_t GetWarpMode() { return warpMord; };
+	uint32_t GetWarpMode() { return warpMord_; };
 
 	/// <summary>
 	/// ワープの行動の種類をセット
 	/// </summary>
 	/// <param name="mode"></param>
-	void SetWarpMode(uint32_t mode) { warpMord = mode; };
+	void SetWarpMode(uint32_t mode) { warpMord_ = mode; };
 
 	/// <summary>
 	/// 横移動のみ
@@ -231,15 +226,16 @@ private:
 	/// <param name="shader"></param>
 	void Attack(Shader shader);
 
-
-	//変数
 public:
 
 	//ワープの入口に触れた時
-	bool warpActionFlag = false;
+	bool warpActionFlag_ = false;
 
 	//ワープの種類
-	uint32_t warpMord = 0;
+	uint32_t warpMord_ = 0;
+
+	//warpの入口と出口のpos
+	Vector3D warpPos_[2];
 
 private:
 
@@ -247,7 +243,7 @@ private:
 	MyXAudio* sound_ = nullptr;
 
 	//ジャンプ音
-	size_t jumpSE = 0;
+	size_t jumpSE_ = 0;
 
 	//モデルデータ
 	Model player_;
@@ -256,22 +252,22 @@ private:
 	Model playerAttack_;
 
 	//攻撃を何個も作成するための変数
-	std::vector<PlayerAttack*> attack;
+	std::vector<PlayerAttack*> attack_;
 
 	//攻撃フラグ
-	bool attackF = false;
+	bool attackF_ = false;
 
 	//攻撃を作成するフラグ
-	bool createAttackFlag = false;
+	bool createAttackFlag_ = false;
 
 	//ジャンプ力
-	float jumpPower = 0;
+	float jumpPower_ = 0;
 
 	//重力
-	float gravirtPower = 0;
+	float gravirtPower_ = 0;
 
 	//コントローラー
-	Controller* controller = nullptr;
+	Controller* controller_ = nullptr;
 
 	//移動用変数
 	Vector3D colVec_ = { 0,0,0 };

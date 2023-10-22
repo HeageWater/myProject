@@ -3,6 +3,9 @@
 #include<string>
 #include"BaseScene.h"
 
+/// <summary>
+///	主にシーンを生成する
+/// </summary>
 class SceneFactory
 {
 public:

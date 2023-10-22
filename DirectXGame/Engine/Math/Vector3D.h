@@ -1,4 +1,8 @@
 #pragma once
+
+/// <summary>
+/// 要素数三つの物
+/// </summary>
 class Vector3D
 {
 public:

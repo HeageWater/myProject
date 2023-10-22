@@ -1,4 +1,8 @@
 #pragma once
+
+/// <summary>
+/// 要素数二つの物
+/// </summary>
 class Vector2D
 {
 public:

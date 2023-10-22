@@ -13,33 +13,99 @@
 #include "GPipeline.h"
 #include "Shader.h"
 
+/// <summary>
+/// 攻撃生成用モデル
+/// </summary>
 class PlayerAttack
 {
 public:
-	PlayerAttack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+	PlayerAttack(MyDirectX* dx, Shader shader, GPipeline* pipeline);
 	~PlayerAttack();
-	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="dx_"></param>
+	/// <param name="shader"></param>
+	/// <param name="pipeline_"></param>
+	void Initialize(MyDirectX* dx, Shader shader, GPipeline* pipeline);
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="matView"></param>
+	/// <param name="matProjection"></param>
 	void Update(Matrix matView, Matrix matProjection);
 
+	/// <summary>
+	/// 
+	/// </summary>
 	void SetUpdate();
-	void SetPos(Vector3D pos_) { playerAttack_.mat.trans = pos_; };
-	void SetVec(Vector2D vec_) { this->vec = vec_; };
-	bool GetIsDead() { return isDead; };
 
+	/// <summary>
+	/// posセット
+	/// </summary>
+	/// <param name="pos_"></param>
+	void SetPos(Vector3D pos) { playerAttack_.mat.trans = pos; };
+
+	/// <summary>
+	/// 向きセット
+	/// </summary>
+	/// <param name="vec_"></param>
+	void SetVec(Vector2D vec) { this->vec_ = vec; };
+
+	/// <summary>
+	/// 死んでいるか
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsDead() { return isDead_; };
+
+	/// <summary>
+	/// pos取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetPos() { return playerAttack_.mat.trans; };
+
+	/// <summary>
+	/// scale取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetScale() { return playerAttack_.mat.scale; };
+
+	/// <summary>
+	///rot取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetRot() { return playerAttack_.mat.rotAngle; };
+
 private:
+
+	//サウンド
 	MyXAudio* sound_ = nullptr;
-	//size_t volcano = 0;
-	size_t tex = 0;
+
+	//画像
+	size_t tex_ = 0;
+
+	//攻撃用モデル
 	Model playerAttack_;
 
-	bool attackF = false;
-	Vector2D vec;
-	uint32_t time;
-	bool isDead = false;
+	//攻撃しているかフラグ
+	bool attackF_ = false;
 
-	Controller* controller = nullptr;
+	//向き
+	Vector2D vec_;
+
+	//どのくらいたったか
+	uint32_t time_;
+
+	//死んでいるか
+	bool isDead_ = false;
+
+	//コントローラー
+	Controller* controller_ = nullptr;
 };

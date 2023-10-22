@@ -2,6 +2,9 @@
 #include"BaseScene.h"
 #include"SceneFactory.h"
 
+/// <summary>
+/// シーンをまとめる処理
+/// </summary>
 class SceneManager
 {
 private:
@@ -16,22 +19,38 @@ private:
 	std::string nextSceneName_;
 
 public:
-	//更新
-	void Update();
 
-	//描画
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+	
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
-	//終了
+	/// <summary>
+	/// 終了
+	/// </summary>
 	void Finalize();
 
-	//次シーン
+	/// <summary>
+	/// 次のシーンへ
+	/// </summary>
+	/// <param name="sceneName">次のシーンの名前</param>
 	void ChangeScene(const std::string& sceneName);
 
-	//
+	/// <summary>
+	/// シーンファクトリーにセット
+	/// </summary>
+	/// <param name="sceneFactory"></param>
 	void SetSceneFactory(SceneFactory* sceneFactory);
 
-	//
+	/// <summary>
+	/// 今のシーンの名前を返す
+	/// </summary>
+	/// <returns></returns>
 	std::string GetSceneName();
 
 	//シングルトン

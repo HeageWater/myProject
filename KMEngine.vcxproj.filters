@@ -144,9 +144,6 @@
     <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp">
       <Filter>ソース ファイル\Game\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Scene\Scene.cpp">
-      <Filter>ソース ファイル\Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Scene\SceneManager.cpp">
       <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
@@ -381,9 +378,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Math\Easing.h">
       <Filter>ヘッダー ファイル\Engine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Scene\Scene.h">
-      <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Sound\Sound.h">
       <Filter>ヘッダー ファイル\Engine\Sound</Filter>

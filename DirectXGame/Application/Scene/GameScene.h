@@ -6,6 +6,10 @@
 
 //flameworkに移動
 
+/// <summary>
+/// 前まで使っていたシーンクラス,移行後削除
+/// </summary>
+
 enum Scene
 {
 	Title = 0,

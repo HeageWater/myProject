@@ -11,10 +11,10 @@ Player::Player()
 	playerAttack_.mat.Initialize();
 	playerAttack_.mat.scale = { 3,3,3 };
 
-	attackF = false;
+	attackF_ = false;
 
 	sound_ = nullptr;
-	jumpSE = 0;
+	jumpSE_ = 0;
 
 	life_ = 3;
 	lesFlag_ = 0;
@@ -22,9 +22,9 @@ Player::Player()
 
 Player::~Player()
 {
-	for (size_t i = 0; i < attack.size(); i++)
+	for (size_t i = 0; i < attack_.size(); i++)
 	{
-		delete attack[i];
+		delete attack_[i];
 	}
 }
 
@@ -45,16 +45,16 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 	playerAttack_.mat.scale = { 5,5,5 };
 	playerAttack_.mat.trans = player_.mat.trans;
 
-	controller = Controller::GetInstance();
-	attackF = false;
-	createAttackFlag = false;
+	controller_ = Controller::GetInstance();
+	attackF_ = false;
+	createAttackFlag_ = false;
 	knockBackFlag_ = false;
-	warpActionFlag = false;
+	warpActionFlag_ = false;
 
-	warpMord = 0;
+	warpMord_ = 0;
 
 	sound_ = MyXAudio::GetInstance();
-	jumpSE = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
+	jumpSE_ = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
 }
 
 void Player::Draw(size_t tex, size_t tex2)
@@ -64,20 +64,20 @@ void Player::Draw(size_t tex, size_t tex2)
 		player_.Draw(tex);
 	}
 
-	if (attackF)
+	if (attackF_)
 	{
 		playerAttack_.Draw(tex2);
 	}
 
-	for (size_t i = 0; i < attack.size(); i++)
+	for (size_t i = 0; i < attack_.size(); i++)
 	{
-		attack[i]->Draw();
+		attack_[i]->Draw();
 	}
 }
 
 Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 {
-	controller->Update();
+	controller_->Update();
 
 	Vector3D move = { 0 ,0 ,0 };
 
@@ -94,10 +94,10 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 {
 	//コントローラーUpdate
-	controller->Update();
+	controller_->Update();
 
 	//左スティックの角度代入
-	colVec_ = { controller->GetLeftStickVec().x, 0,0 };
+	colVec_ = { controller_->GetLeftStickVec().x, 0,0 };
 
 	//ワープしているか
 	if (!WarpAction())
@@ -114,13 +114,13 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		//攻撃
 		Attack(shader);
 
-		for (size_t i = 0; i < attack.size(); i++)
+		for (size_t i = 0; i < attack_.size(); i++)
 		{
-			attack[i]->Update(matView, matProjection);
+			attack_[i]->Update(matView, matProjection);
 
-			if (attack[i]->GetIsDead())
+			if (attack_[i]->GetIsDead())
 			{
-				attack.erase(attack.begin() + i);
+				attack_.erase(attack_.begin() + i);
 			}
 		}
 	}
@@ -147,8 +147,8 @@ void Player::Reset()
 	playerAttack_.mat.scale = { 5,5,5 };
 	playerAttack_.mat.trans = player_.mat.trans;
 
-	attackF = false;
-	createAttackFlag = false;
+	attackF_ = false;
+	createAttackFlag_ = false;
 
 	knockBackFlag_ = false;
 
@@ -163,26 +163,26 @@ void Player::Jump()
 	float jump = 1.0f;
 	float maxJunp = 8;
 
-	if (jumpPower > 0)
+	if (jumpPower_ > 0)
 	{
-		jumpPower -= jump;
+		jumpPower_ -= jump;
 	}
 
-	if (gravirtPower < maxGravity)
+	if (gravirtPower_ < maxGravity)
 	{
-		gravirtPower += gravity;
+		gravirtPower_ += gravity;
 	}
 
-	if (controller->ButtonTriggerPush(LT))
+	if (controller_->ButtonTriggerPush(LT))
 	{
-		jumpPower = maxJunp;
-		gravirtPower = 0;
+		jumpPower_ = maxJunp;
+		gravirtPower_ = 0;
 
-		sound_->SoundPlayWave(jumpSE);
+		sound_->SoundPlayWave(jumpSE_);
 	}
 
-	player_.mat.trans.y += jumpPower;
-	player_.mat.trans.y -= gravirtPower;
+	player_.mat.trans.y += jumpPower_;
+	player_.mat.trans.y -= gravirtPower_;
 }
 
 void Player::Attack(Shader shader)
@@ -192,10 +192,10 @@ void Player::Attack(Shader shader)
 	playerAttack_.mat.trans.x += 1000;
 
 	//描画しない
-	attackF = false;
+	attackF_ = false;
 
 	//右スティックの値
-	Vector2D Rstick = controller->GetRightStickVec();
+	Vector2D Rstick = controller_->GetRightStickVec();
 
 	//最低ライン
 	Vector2D minLine = { 0.2f,0.2f };
@@ -221,7 +221,7 @@ void Player::Attack(Shader shader)
 		playerAttack_.mat.rotAngle.z = movePos.normalize().x;
 
 		//描画する
-		attackF = true;
+		attackF_ = true;
 
 		////attackModel生成
 		//if (createAttackFlag)
@@ -242,10 +242,10 @@ void Player::Attack(Shader shader)
 		//	createAttackFlag = false;
 		//}
 	}
-	else if (!createAttackFlag)
+	else if (!createAttackFlag_)
 	{
 		//attackModel生成
-		createAttackFlag = true;
+		createAttackFlag_ = true;
 	}
 }
 
@@ -255,10 +255,10 @@ void Player::PopPlayerAttack()
 
 bool Player::CollisionAttackToEnemy(Model enemy)
 {
-	for (size_t i = 0; i < attack.size(); i++)
+	for (size_t i = 0; i < attack_.size(); i++)
 	{
-		Vector3D nowPos = attack[i]->GetPos();
-		Vector3D nowScale = attack[i]->GetScale();
+		Vector3D nowPos = attack_[i]->GetPos();
+		Vector3D nowScale = attack_[i]->GetScale();
 
 		float a = (enemy.mat.trans.x - nowPos.x) * (enemy.mat.trans.x - nowPos.x);
 		float b = (enemy.mat.trans.y - nowPos.y) * (enemy.mat.trans.y - nowPos.y);
@@ -268,7 +268,7 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 		//あたり判定
 		if (a + b < c)
 		{
-			attack.erase(attack.begin() + i);
+			attack_.erase(attack_.begin() + i);
 			return true;
 		}
 	}
@@ -333,7 +333,7 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
 		DisY <= player_.mat.scale.y + stage.mat.scale.y)
 	{
-		if (jumpPower > 0)
+		if (jumpPower_ > 0)
 		{
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
@@ -353,7 +353,7 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 			}
 		}
 
-		if (gravirtPower > 0)
+		if (gravirtPower_ > 0)
 		{
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
@@ -501,7 +501,7 @@ bool Player::StageCollsionY(Model stage)
 	if (DisX <= player_.mat.scale.x + stage.mat.scale.x &&
 		DisY <= player_.mat.scale.y + stage.mat.scale.y)
 	{
-		if (jumpPower > 0)
+		if (jumpPower_ > 0)
 		{
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
@@ -521,7 +521,7 @@ bool Player::StageCollsionY(Model stage)
 			}
 		}
 
-		if (gravirtPower > 0)
+		if (gravirtPower_ > 0)
 		{
 			bool colX = DisX <= player_.mat.scale.x + stage.mat.scale.x;
 			bool colY = DisY <= player_.mat.scale.y + stage.mat.scale.y;
@@ -583,7 +583,7 @@ bool Player::PlayerCollision(Model enemy)
 
 bool Player::WarpAction()
 {
-	if (warpActionFlag)
+	if (warpActionFlag_)
 	{
 		colVec_ = { 0,0,0 };
 
@@ -598,37 +598,37 @@ bool Player::WarpAction()
 
 		player_.mat.rotAngle.z += spd;
 
-		if (warpMord == (uint32_t)Zero)
+		if (warpMord_ == (uint32_t)Zero)
 		{
-			if (player_.mat.trans.x > warpPos[(uint32_t)Zero].x - Ten)
+			if (player_.mat.trans.x > warpPos_[(uint32_t)Zero].x - Ten)
 			{
 				player_.mat.trans.x -= distance;
 			}
 			else
 			{
-				warpMord = (uint32_t)One;
+				warpMord_ = (uint32_t)One;
 			}
 		}
-		else if (warpMord == (uint32_t)One)
+		else if (warpMord_ == (uint32_t)One)
 		{
 			player_.mat.scale -= {scale, scale, scale};
 
-			if (player_.mat.trans.x < warpPos[(uint32_t)Zero].x)
+			if (player_.mat.trans.x < warpPos_[(uint32_t)Zero].x)
 			{
 				player_.mat.trans.x += distance;
 			}
 			else
 			{
-				warpMord = (uint32_t)Two;
+				warpMord_ = (uint32_t)Two;
 			}
 		}
-		else if (warpMord == (uint32_t)Two)
+		else if (warpMord_ == (uint32_t)Two)
 		{
 			player_.mat.scale = { Zero,Zero,Zero };
 
 			player_.mat.trans.x += Two;
 		}
-		else if (warpMord == (uint32_t)Three)
+		else if (warpMord_ == (uint32_t)Three)
 		{
 			player_.mat.rotAngle.z = Zero;
 
@@ -639,8 +639,8 @@ bool Player::WarpAction()
 			else
 			{
 				player_.mat.scale = { Three,Three,Three };
-				warpMord = (uint32_t)Zero;
-				warpActionFlag = false;
+				warpMord_ = (uint32_t)Zero;
+				warpActionFlag_ = false;
 			}
 		}
 

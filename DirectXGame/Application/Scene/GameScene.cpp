@@ -11,13 +11,13 @@ void GameScene::Update()
 
 	//ImGui受付開始
 	ImguiManager::GetInstance()->Begin();
-	ImGui::SliderFloat("Title posX", &titleObject->titleObj.mat.trans.x, -400, 400);
-	ImGui::SliderFloat("Title posY", &titleObject->titleObj.mat.trans.y, -400, 400);
-	ImGui::SliderFloat("Title posZ", &titleObject->titleObj.mat.trans.z, -400, 400);
+	ImGui::SliderFloat("Title posX", &titleObject->titleObj_.mat.trans.x, -400, 400);
+	ImGui::SliderFloat("Title posY", &titleObject->titleObj_.mat.trans.y, -400, 400);
+	ImGui::SliderFloat("Title posZ", &titleObject->titleObj_.mat.trans.z, -400, 400);
 
-	ImGui::SliderFloat("Title rotX", &titleObject->titleObj.mat.rotAngle.x, -400, 400);
-	ImGui::SliderFloat("Title rotY", &titleObject->titleObj.mat.rotAngle.y, -400, 400);
-	ImGui::SliderFloat("Title rotZ", &titleObject->titleObj.mat.rotAngle.z, -400, 400);
+	ImGui::SliderFloat("Title rotX", &titleObject->titleObj_.mat.rotAngle.x, -400, 400);
+	ImGui::SliderFloat("Title rotY", &titleObject->titleObj_.mat.rotAngle.y, -400, 400);
+	ImGui::SliderFloat("Title rotZ", &titleObject->titleObj_.mat.rotAngle.z, -400, 400);
 
 	ImGui::SliderFloat("playcamera posX", &playcamera.eye.x, -400, 400);
 	ImGui::SliderFloat("playcamera posY", &playcamera.eye.y, -400, 400);
@@ -50,7 +50,7 @@ void GameScene::Update()
 		}
 
 		//if (player->GetA())
-		if (titleObject->BoxCollision(player->GetAttackModel()) && !titleObject->IsMovie)
+		if (titleObject->BoxCollision(player->GetAttackModel()) && !titleObject->IsMovie_)
 		{
 			titleObject->Movie();
 
@@ -61,13 +61,13 @@ void GameScene::Update()
 			sound_->SoundPlayWave(enemyHit);
 		}
 
-		if (titleObject->EndMovie)
+		if (titleObject->EndMovie_)
 		{
 			if (hitStop->GetTime() < 1)
 			{
 				if (chengeScene->GetTime() < 1)
 				{
-					titleObject->EndMovie = false;
+					titleObject->EndMovie_ = false;
 
 					//chengeScene->SetPlayFlag();
 				}
@@ -143,7 +143,7 @@ void GameScene::Update()
 			if (player->PlayerCollision(enemy->enemy_))
 			{
 				CreatePatricle(player->GetPos());
-				enemy->Time = stopTime;
+				enemy->Time_ = stopTime;
 				sound_->SoundPlayWave(playerHit);
 			}
 			bool sheikF = enemy->BoxCollision(player->GetAttackModel());
@@ -164,7 +164,7 @@ void GameScene::Update()
 			if (player->PlayerCollision(enemy2->enemy_))
 			{
 				CreatePatricle(player->GetPos());
-				enemy2->Time = stopTime;
+				enemy2->Time_ = stopTime;
 				sound_->SoundPlayWave(playerHit);
 			}
 			sheikF = enemy2->BoxCollision(player->GetAttackModel());
@@ -182,7 +182,7 @@ void GameScene::Update()
 			if (player->PlayerCollision(enemy3->enemy_))
 			{
 				CreatePatricle(player->GetPos());
-				enemy3->Time = stopTime;
+				enemy3->Time_ = stopTime;
 				sound_->SoundPlayWave(playerHit);
 			}
 			sheikF = enemy3->BoxCollision(player->GetAttackModel());
@@ -200,7 +200,7 @@ void GameScene::Update()
 			if (player->PlayerCollision(enemy4->enemy_))
 			{
 				CreatePatricle(player->GetPos());
-				enemy4->Time = stopTime;
+				enemy4->Time_ = stopTime;
 				sound_->SoundPlayWave(playerHit);
 			}
 			sheikF = enemy4->BoxCollision(player->GetAttackModel());
@@ -219,7 +219,7 @@ void GameScene::Update()
 				player->knockBackFlag = true;*/
 
 				//player->SetPos(warp->GetOutPos());
-				player->warpActionFlag = true;
+				player->warpActionFlag_ = true;
 				player->SetWarpPos(warp->GetInPos(), warp->GetOutPos());
 			}
 
@@ -520,68 +520,68 @@ void GameScene::Initialize()
 
 		//タイトル
 		titlePng->Inilialize(normalSpriteCommon, &matProjection);
-		titlePng->position = { -680,-420,0 };
-		titlePng->scale = { 3600,1440,1 };
+		titlePng->position_ = { -680,-420,0 };
+		titlePng->scale_ = { 3600,1440,1 };
 
 		//ライフ英語
 		lifePng->Inilialize(normalSpriteCommon, &matProjection);
-		lifePng->position = { -590,240,0 };
-		lifePng->scale = { 360,144,1 };
+		lifePng->position_ = { -590,240,0 };
+		lifePng->scale_ = { 360,144,1 };
 
 		//ライフ1
 		lesPng->Inilialize(normalSpriteCommon, &matProjection);
-		lesPng->position = { -200,200,0 };
-		lesPng->scale = { 256,144,1 };
+		lesPng->position_ = { -200,200,0 };
+		lesPng->scale_ = { 256,144,1 };
 
 		//ライフ2
 		lesPng2->Inilialize(normalSpriteCommon, &matProjection);
-		lesPng2->position = { -200,200,0 };
-		lesPng2->scale = { 256,144,1 };
+		lesPng2->position_ = { -200,200,0 };
+		lesPng2->scale_ = { 256,144,1 };
 
 		//ライフ3
 		lesPng3->Inilialize(normalSpriteCommon, &matProjection);
-		lesPng3->position = { -200,200,0 };
-		lesPng3->scale = { 256,144,1 };
+		lesPng3->position_ = { -200,200,0 };
+		lesPng3->scale_ = { 256,144,1 };
 
 		//ライフ1
 		havePng->Inilialize(normalSpriteCommon, &matProjection);
-		havePng->position = { -680,-420,0 };
-		havePng->scale = { 256,144,1 };
+		havePng->position_ = { -680,-420,0 };
+		havePng->scale_ = { 256,144,1 };
 
 		//ライフ2
 		havePng2->Inilialize(normalSpriteCommon, &matProjection);
-		havePng2->position = { -680,-420,0 };
-		havePng2->scale = { 256,144,1 };
+		havePng2->position_ = { -680,-420,0 };
+		havePng2->scale_ = { 256,144,1 };
 
 		//ライフ3
 		havePng3->Inilialize(normalSpriteCommon, &matProjection);
-		havePng3->position = { -680,-420,0 };
-		havePng3->scale = { 256,144,1 };
+		havePng3->position_ = { -680,-420,0 };
+		havePng3->scale_ = { 256,144,1 };
 
 		//LStick
 		UILStick->Inilialize(normalSpriteCommon, &matProjection);
-		UILStick->position = { -540,-280,0 };
-		UILStick->scale = { 240,120,1 };
+		UILStick->position_ = { -540,-280,0 };
+		UILStick->scale_ = { 240,120,1 };
 
 		//RStick
 		UIRStick->Inilialize(normalSpriteCommon, &matProjection);
-		UIRStick->position = { -460,-320,0 };
-		UIRStick->scale = { 240,120,1 };
+		UIRStick->position_ = { -460,-320,0 };
+		UIRStick->scale_ = { 240,120,1 };
 
 		//LT
 		UILT->Inilialize(normalSpriteCommon, &matProjection);
-		UILT->position = { -600,-230,0 };
-		UILT->scale = { 200,120,1 };
+		UILT->position_ = { -600,-230,0 };
+		UILT->scale_ = { 200,120,1 };
 
 		//Abutton
 		UIAButton->Inilialize(normalSpriteCommon, &matProjection);
-		UIAButton->position = { 180,-230,0 };
-		UIAButton->scale = { 480,240,1 };
+		UIAButton->position_ = { 180,-230,0 };
+		UIAButton->scale_ = { 480,240,1 };
 
 		//Press
 		UIPress->Inilialize(normalSpriteCommon, &matProjection);
-		UIPress->position = { -280,-230,0 };
-		UIPress->scale = { 600,240,1 };
+		UIPress->position_ = { -280,-230,0 };
+		UIPress->scale_ = { 600,240,1 };
 
 	};
 
@@ -640,7 +640,7 @@ void GameScene::Draw()
 		//Actor描画
 		player->Draw(playerTex, white);
 
-		if (enemy->Time == 0)
+		/*if (enemy->Time_ == 0)
 		{
 			enemy->Draw(enemyPng);
 		}
@@ -649,7 +649,7 @@ void GameScene::Draw()
 			enemy->Draw(white);
 		}
 
-		if (enemy2->Time == 0)
+		if (enemy2->Time_ == 0)
 		{
 			enemy2->Draw(enemyPng);
 		}
@@ -658,7 +658,7 @@ void GameScene::Draw()
 			enemy2->Draw(white);
 		}
 
-		if (enemy3->Time == 0)
+		if (enemy3->Time_ == 0)
 		{
 			enemy3->Draw(enemyPng);
 		}
@@ -667,14 +667,14 @@ void GameScene::Draw()
 			enemy3->Draw(white);
 		}
 
-		if (enemy4->Time == 0)
+		if (enemy4->Time_ == 0)
 		{
 			enemy4->Draw(enemyPng);
 		}
 		else
 		{
 			enemy4->Draw(white);
-		}
+		}*/
 
 		warp->Draw(texP);
 
@@ -768,19 +768,19 @@ void GameScene::Draw()
 			{
 				if (i == 0)
 				{
-					havePng->position = { -430.0f + (i * 128),230.0f,0.0f };
+					havePng->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 					havePng->Update();
 					havePng->Draw(heartHaveTex);
 				}
 				else if (i == 1)
 				{
-					havePng2->position = { -430.0f + (i * 128),230.0f,0.0f };
+					havePng2->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 					havePng2->Update();
 					havePng2->Draw(heartHaveTex);
 				}
 				else
 				{
-					havePng3->position = { -430.0f + (i * 128),230.0f,0.0f };
+					havePng3->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 					havePng3->Update();
 					havePng3->Draw(heartHaveTex);
 				}
@@ -789,19 +789,19 @@ void GameScene::Draw()
 			{
 				if (i == 0)
 				{
-					lesPng->position = { -430.0f + (i * 128),230.0f,0.0f };
+					lesPng->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 					lesPng->Update();
 					lesPng->Draw(heartLesTex);
 				}
 				else if (i == 1)
 				{
-					lesPng2->position = { -430.0f + (i * 128),230.0f,0.0f };
+					lesPng2->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 					lesPng2->Update();
 					lesPng2->Draw(heartLesTex);
 				}
 				else
 				{
-					lesPng3->position = { -430.0f + (i * 128),230.0f,0.0f };
+					lesPng3->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 					lesPng3->Update();
 					lesPng3->Draw(heartLesTex);
 				}
@@ -898,19 +898,19 @@ void GameScene::Reset()
 	//Bkenderで設定できるように
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ 1,1,1 });
-	enemy->isDead = false;
+	enemy->isDead_ = false;
 
 	enemy2->SetTrans(Vector3D{ 150,40,0 });
 	enemy2->SetScale(Vector3D{ 1,1,1 });
-	enemy2->isDead = false;
+	enemy2->isDead_ = false;
 
 	enemy3->SetTrans(Vector3D{ 200,30,0 });
 	enemy3->SetScale(Vector3D{ 1,1,1 });
-	enemy3->isDead = false;
+	enemy3->isDead_ = false;
 
 	enemy4->SetTrans(Vector3D{ 300,50,0 });
 	enemy4->SetScale(Vector3D{ 1,1,1 });
-	enemy4->isDead = false;
+	enemy4->isDead_ = false;
 	//stage
 	//ステージ初期化
 	float minMapX = stage->stage_.mat.scale.x - 200;

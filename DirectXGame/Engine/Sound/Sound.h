@@ -21,14 +21,28 @@ struct SoundData {
 	size_t bufferSize;
 };
 
+/// <summary>
+/// サウンド
+/// </summary>
 class MyXAudio
 {
 private:
+
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	IXAudio2MasteringVoice* masterVoice;
-	std::vector<SoundData> soundData;
-	std::vector<IXAudio2SourceVoice*> soundPtr;
-	size_t handle = 0;
+
+	//主音量
+	IXAudio2MasteringVoice* masterVoice_;
+
+	//音データ
+	std::vector<SoundData> soundData_;
+
+	//サウンドポインタ
+	std::vector<IXAudio2SourceVoice*> soundPtr_;
+
+	//何番目か
+	size_t handle_ = 0;
+
+	//サウンド破棄
 	void SoundUnload(SoundData* soundData);
 
 private:
@@ -41,9 +55,10 @@ private:
 	MyXAudio(const MyXAudio&) = delete;
 public:
 
+	//シングルトン
 	static MyXAudio* GetInstance();
 
-	ComPtr<IXAudio2> xAudio2;
+	ComPtr<IXAudio2> xAudio2_;
 
 	size_t SoundLoadWave(const char* filename);
 	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);

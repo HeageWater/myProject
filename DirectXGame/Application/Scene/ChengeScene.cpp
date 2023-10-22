@@ -16,12 +16,12 @@ void ChengeScene::Initialize(Matrix matProjection)
 	float width = 1.5f;
 
 	//サイズ
-	sprite_->scale.x = Window::window_width * size;
-	sprite_->scale.y = Window::window_height * size;
+	sprite_->scale_.x = Window::window_width * size;
+	sprite_->scale_.y = Window::window_height * size;
 
 	//位置
-	sprite_->position.x = -Window::window_width * width;
-	sprite_->position.y = -Window::window_height;
+	sprite_->position_.x = -Window::window_width * width;
+	sprite_->position_.y = -Window::window_height;
 }
 
 void ChengeScene::Draw(size_t tex_)
@@ -68,7 +68,7 @@ void ChengeScene::Update()
 		//}
 
 
-		sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time / 100, maxTime);
+		sprite_->position_.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time / 100, maxTime);
 
 	}
 
@@ -88,11 +88,11 @@ void ChengeScene::Reset()
 {
 	float width = 1.5f;
 
-	sprite_->scale.x = 1;
-	sprite_->scale.y = 1;
+	sprite_->scale_.x = 1;
+	sprite_->scale_.y = 1;
 
-	sprite_->position.x = -Window::window_width * width;
-	sprite_->position.y = -Window::window_height;
+	sprite_->position_.x = -Window::window_width * width;
+	sprite_->position_.y = -Window::window_height;
 
 	isPlayFlag = false;
 	time = 0;
@@ -108,11 +108,11 @@ void ChengeScene::SetPlayFlag(std::string next)
 
 		isPlayFlag = true;
 
-		sprite_->scale.x = Window::window_width * size;
-		sprite_->scale.y = Window::window_height * size;
+		sprite_->scale_.x = Window::window_width * size;
+		sprite_->scale_.y = Window::window_height * size;
 
-		sprite_->position.x = -Window::window_width * width;
-		sprite_->position.y = -Window::window_height;
+		sprite_->position_.x = -Window::window_width * width;
+		sprite_->position_.y = -Window::window_height;
 
 		time = 0;
 

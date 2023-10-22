@@ -33,29 +33,29 @@ private:
 	MyXAudio* sound_ = MyXAudio::GetInstance();
 
 	//screen
-	Square screen;
+	Square screen_;
 
 	//player
-	Player* player = new Player();
+	Player* player_ = new Player();
 
 	//描画用行列
-	MyMath::MatView matView;
+	MyMath::MatView matView_;
 	Matrix matProjection = MyMath::PerspectiveFovLH(
 		Window::window_width, Window::window_height,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
 	//pipeline
-	std::unique_ptr<GPipeline> pipeline;
+	std::unique_ptr<GPipeline> pipeline_;
 
 	//描画初期化
-	std::unique_ptr<GPipeline> multipathPipeline;
+	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//tex
-	size_t white = 0;
+	size_t white_ = 0;
 
 	//shader
-	Shader shader;
-	Shader bilShader;
+	Shader shader_;
+	Shader bilShader_;
 
 public:
 	

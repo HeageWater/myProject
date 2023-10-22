@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "DirectX.h"
 
 Particle::Particle()
 {
@@ -12,42 +13,37 @@ Particle::Particle()
 	}
 
 	//方向,タイム,早さをランダムで
-	velocity = { vel[0],vel[1],vel[2] };
+	velocity_ = { vel[0],vel[1],vel[2] };
 
 	//tine
-	time = (float)MyMath::GetRandom(30, 50);
+	time_ = (float)MyMath::GetRandom(30, 50);
 
 	//spd
-	spd = (float)MyMath::GetRandom(0, 15) - 15;
+	spd_ = (float)MyMath::GetRandom(0, 15) - 15;
 
-	spd /= 100;
+	spd_ /= 100;
 }
 
 Particle::~Particle()
 {
 }
 
-void Particle::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
+void Particle::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	particle_.Initialize(dx_, shader, "Resources\\kyu\\kyu.obj", pipeline_);
+	particle_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
 	particle_.mat.Initialize();
 	particle_.mat.scale = { 5,5,5 };
 
 	//方向,タイム,早さをランダムで
-	velocity = { 0.1f,0.1f, 0 };
+	velocity_ = { 0.1f,0.1f, 0 };
 
-	time = 50.0f;
+	time_ = 50.0f;
 
-	spd = 0.01f;
+	spd_ = 0.01f;
 }
 
-void Particle::Initialize(MyDirectX* dx_, GPipeline* pipeline_)
-{
-	particle_.Initialize(dx_,pipeline_);
-}
-
-void Particle::Initialize(Vector3D pos)
+void Particle::SetInitialize(Vector3D pos)
 {
 	particle_.mat.Initialize();
 	particle_.mat.scale = { 5,5,5 };
@@ -66,17 +62,17 @@ void Particle::Initialize(Vector3D pos)
 		vel[i] /= 100;
 	}
 
-	velocity = { vel[0],vel[1],vel[2] };
+	velocity_ = { vel[0],vel[1],vel[2] };
 
 	//tine
-	time = (float)MyMath::GetRandom(30, 50);
+	time_ = (float)MyMath::GetRandom(30, 50);
 
 	//spd
-	spd = (float)MyMath::GetRandom(0, 15) - 15;
+	spd_ = (float)MyMath::GetRandom(0, 15) - 15;
 
-	spd /= 100;
+	spd_ /= 100;
 
-	isDead = false;
+	isDead_ = false;
 }
 
 void Particle::Draw(size_t tex)
@@ -86,22 +82,22 @@ void Particle::Draw(size_t tex)
 
 void Particle::Update(Matrix matView, Matrix matProjection)
 {
-	particle_.mat.trans += velocity * spd;
+	particle_.mat.trans += velocity_ * spd_;
 
 	float minSpd = 0.05f;
 
 	particle_.mat.scale -= {minSpd, minSpd, minSpd};
 
-	time--;
+	time_--;
 
-	bool timeZero = time < 0;
+	bool timeZero = time_ < 0;
 	bool scaleZeroX = particle_.mat.scale.x < 0;
 	bool scaleZeroY = particle_.mat.scale.y < 0;
 	bool scaleZeroZ = particle_.mat.scale.z < 0;
 
 	if (timeZero || scaleZeroX || scaleZeroY || scaleZeroZ)
 	{
-		isDead = true;
+		isDead_ = true;
 	}
 
 	particle_.MatUpdate(matView, matProjection);

@@ -32,6 +32,6 @@ void ParticleManager::CreateBoxParticle(Vector3D pos)
 
 		newP->SetPos(pos);
 
-		boxs.push_back(newP);
+		boxs_.push_back(newP);
 	}
 }

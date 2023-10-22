@@ -15,12 +15,12 @@ BoxParticle::BoxParticle()
 	velocity = { vel[0],vel[1],vel[2] };
 
 	//tine
-	time = (float)MyMath::GetRandom(30, 50);
+	time_ = (float)MyMath::GetRandom(30, 50);
 
 	//spd
-	spd = (float)MyMath::GetRandom(0, 15) - 15;
+	spd_ = (float)MyMath::GetRandom(0, 15) - 15;
 
-	spd /= 10;
+	spd_ /= 10;
 }
 
 BoxParticle::~BoxParticle()
@@ -29,39 +29,39 @@ BoxParticle::~BoxParticle()
 
 void BoxParticle::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	box.Initialize(MyDirectX::GetInstance(), pipeline_, shader);
+	box_.Initialize(MyDirectX::GetInstance(), pipeline_, shader);
 
-	box.mat.Initialize();
+	box_.mat.Initialize();
 
 	float setScale = 3.0f;
-	box.mat.scale = { setScale,setScale,setScale };
+	box_.mat.scale = { setScale,setScale,setScale };
 }
 
 void BoxParticle::Draw(size_t tex)
 {
-	box.Draw(tex);
+	box_.Draw(tex);
 }
 
 void BoxParticle::Update(Matrix matView, Matrix matProjection)
 {
-	box.mat.trans += velocity * spd;
-	box.mat.rotAngle += velocity * spd;
+	box_.mat.trans += velocity * spd_;
+	box_.mat.rotAngle += velocity * spd_;
 
 	float minSpd = 0.05f;
 
-	box.mat.scale -= {minSpd, minSpd, minSpd};
+	box_.mat.scale -= {minSpd, minSpd, minSpd};
 
-	time--;
+	time_--;
 
-	bool timeZero = time < 0;
-	bool scaleZeroX = box.mat.scale.x < 0;
-	bool scaleZeroY = box.mat.scale.y < 0;
-	bool scaleZeroZ = box.mat.scale.z < 0;
+	bool timeZero = time_ < 0;
+	bool scaleZeroX = box_.mat.scale.x < 0;
+	bool scaleZeroY = box_.mat.scale.y < 0;
+	bool scaleZeroZ = box_.mat.scale.z < 0;
 
 	if (timeZero || scaleZeroX || scaleZeroY || scaleZeroZ)
 	{
-		isDead = true;
+		isDead_ = true;
 	}
 
-	box.MatUpdate(matView, matProjection);
+	box_.MatUpdate(matView, matProjection);
 }
