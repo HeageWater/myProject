@@ -49,11 +49,6 @@ void MyDirectX::UpdateFPS()
 	reference_ = std::chrono::steady_clock::now();
 }
 
-//MyDirectX::MyDirectX(Window* win_)
-//{
-//	Initialize(win_);
-//}
-
 void MyDirectX::Initialize(Window* win_)
 {
 	win = win_;
@@ -455,7 +450,7 @@ void MyDirectX::PostDrawScreen()
 	SetResourceBarrier(screenBarrierDesc, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-int MyDirectX::LoadTextureGraph(const wchar_t* textureName)
+size_t MyDirectX::LoadTextureGraph(const wchar_t* textureName)
 {
 	textureNum++;
 

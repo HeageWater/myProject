@@ -1,6 +1,10 @@
 #pragma once
 #include "Vector3D.h"
 #include "Matrix.h"
+
+/// <summary>
+/// 要素数四つの物
+/// </summary>
 class Vector4D
 {
 public:

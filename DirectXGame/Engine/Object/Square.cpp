@@ -46,9 +46,9 @@ void UISquare::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HAN
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
 
-void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord)
+void Square::Initialize(GPipeline* pipeline_, Shader shader, size_t blendMord)
 {
-	dx = dx_;
+	dx = MyDirectX::GetInstance();
 	pipeline = pipeline_;
 
 #pragma region  ConstBuffer
@@ -130,9 +130,9 @@ void Square::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, siz
 #pragma endregion
 }
 
-Square::Square(MyDirectX* dx_, GPipeline* pipeline_, Shader shader, size_t blendMord)
+Square::Square(GPipeline* pipeline_, Shader shader, size_t blendMord)
 {
-	Initialize(dx_, pipeline_, shader, blendMord);
+	Initialize(pipeline_, shader, blendMord);
 }
 
 Square::Square()

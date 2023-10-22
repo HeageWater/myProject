@@ -12,11 +12,13 @@ MyDebugCamera::MyDebugCamera(Vector3D _eye, Vector3D _target, Vector3D _up)
 	disEyeTarget = frontVec.length();
 }
 
-void MyDebugCamera::Update(Input& input)
+void MyDebugCamera::Update()
 {
-	eye.x += input.GetKey(DIK_RIGHT) - input.GetKey(DIK_LEFT);
-	eye.y += input.GetKey(DIK_UP) - input.GetKey(DIK_DOWN);
-	eye.z += input.GetKey(DIK_O) - input.GetKey(DIK_P);/*
+	input_ = Input::GetInstance();
+
+	eye.x += input_->GetKey(DIK_RIGHT) - input_->GetKey(DIK_LEFT);
+	eye.y += input_->GetKey(DIK_UP) - input_->GetKey(DIK_DOWN);
+	eye.z += input_->GetKey(DIK_O) - input_->GetKey(DIK_P);/*
 
 	if (input.Click(Input::LeftClick))
 	{

@@ -97,6 +97,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Engine\DirectX\DescriptorHeap.cpp" />
+    <ClCompile Include="DirectXGame\Application\Collision\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\BoxParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\ChengeScene.cpp" />
@@ -144,7 +146,6 @@
     <ClCompile Include="DirectXGame\Engine\DirectX\VertBuff.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\ViewPort.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\Window.cpp" />
-    <ClCompile Include="DirectXGame\Application\Scene\Scene.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sound\Sound.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp" />
@@ -195,6 +196,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Engine\DirectX\DescriptorHeap.h" />
+    <ClInclude Include="DirectXGame\Application\Collision\CollisionManager.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Particle\BoxParticle.h" />
@@ -236,7 +239,6 @@
     <ClInclude Include="DirectXGame\Engine\DirectX\VertBuff.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\ViewPort.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\Window.h" />
-    <ClInclude Include="DirectXGame\Application\Scene\Scene.h" />
     <ClInclude Include="DirectXGame\Engine\Sound\Sound.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Skydome.h" />

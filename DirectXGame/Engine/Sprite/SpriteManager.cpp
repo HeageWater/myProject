@@ -5,7 +5,7 @@ using namespace DirectX;
 
 SpriteCommon::SpriteCommon()
 {
-	result = {};
+	result_ = {};
 }
 
 SpriteCommon::~SpriteCommon()
@@ -29,7 +29,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 	ID3DBlob* errorBlob = nullptr;
 
 	//頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
+	result_ = D3DCompileFromFile(
 		L"Resources/shader/SpriteVS.hlsl",//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルードを可能にする
@@ -39,7 +39,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 		&vsBlob, &errorBlob);
 
 	//エラーなら
-	if (FAILED(result)) {
+	if (FAILED(result_)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
@@ -54,7 +54,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 	}
 
 	//ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
+	result_ = D3DCompileFromFile(
 		L"Resources/shader/SpritePS.hlsl",//シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルードを可能にする
@@ -64,7 +64,7 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 		&psBlob, &errorBlob);
 
 	//エラーなら
-	if (FAILED(result)) {
+	if (FAILED(result_)) {
 		//errorBlobからエラー内容をstring型にコピー
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
@@ -117,32 +117,32 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 	//D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc{};
 
 	//シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
+	pipelineDesc_.VS.pShaderBytecode = vsBlob->GetBufferPointer();
+	pipelineDesc_.VS.BytecodeLength = vsBlob->GetBufferSize();
+	pipelineDesc_.PS.pShaderBytecode = psBlob->GetBufferPointer();
+	pipelineDesc_.PS.BytecodeLength = psBlob->GetBufferSize();
 
 	//サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
+	pipelineDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
 
 	//ラスタライザの設定
 
 	//カリングしない
 	//pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+	pipelineDesc_.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
 	//ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+	pipelineDesc_.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 	//深度クリッピングを有効に
-	pipelineDesc.RasterizerState.DepthClipEnable = false;
+	pipelineDesc_.RasterizerState.DepthClipEnable = false;
 
 
 
 	//ブレンドステート
-	pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
+	pipelineDesc_.BlendState.RenderTarget[0].RenderTargetWriteMask
 		= D3D12_COLOR_WRITE_ENABLE_ALL;
 
 	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
@@ -194,19 +194,19 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 
 
 	//図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	pipelineDesc_.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	//頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	pipelineDesc_.InputLayout.pInputElementDescs = inputLayout;
+	pipelineDesc_.InputLayout.NumElements = _countof(inputLayout);
 
 	//その他の設定
 	//描画対象は一つ
-	pipelineDesc.NumRenderTargets = 1;
+	pipelineDesc_.NumRenderTargets = 1;
 	//0~255指定のRGBA
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	pipelineDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	//1ピクセルのつき1回サンプリング
-	pipelineDesc.SampleDesc.Count = 1;
+	pipelineDesc_.SampleDesc.Count = 1;
 
 
 
@@ -260,25 +260,25 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 
 	//ルートシグネチャのシリアライズ
 	ID3DBlob* rootSigBlob = nullptr;
-	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result));
+	assert(SUCCEEDED(result_));
 
 	//ルートシグネチャ
 	//ID3D12RootSignature* rootSignature;
 
-	result = dxCommon_->GetDev()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
-		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
-	assert(SUCCEEDED(result));
+	result_ = dxCommon_->GetDev()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(),
+		rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
+	assert(SUCCEEDED(result_));
 	rootSigBlob->Release();
 	//パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature;
+	pipelineDesc_.pRootSignature = rootSignature_;
 
 	//パイプランステートの生成
 	//ID3D12PipelineState* pipelineState = nullptr;
 
-	result = dxCommon_->GetDev()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result));
+	result_ = dxCommon_->GetDev()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	assert(SUCCEEDED(result_));
 
 	//verticesCount = _countof(vertices);
 }
@@ -286,17 +286,17 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 void SpriteCommon::Draw()
 {
 	//パイプラインステートとルートシグネチャの設定コマンド
-	dxCommon_->GetCmdList()->SetPipelineState(pipelineState);
-	dxCommon_->GetCmdList()->SetGraphicsRootSignature(rootSignature);
+	dxCommon_->GetCmdList()->SetPipelineState(pipelineState_);
+	dxCommon_->GetCmdList()->SetGraphicsRootSignature(rootSignature_);
 
 	//プリミティブ形状の設定コマンド
 	//三角形リスト
 	dxCommon_->GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//頂点バッファビューの設定コマンド
-	dxCommon_->GetCmdList()->IASetVertexBuffers(0, 1, &vbView);
+	dxCommon_->GetCmdList()->IASetVertexBuffers(0, 1, &vbView_);
 
 	//描画コマンド
-	dxCommon_->GetCmdList()->DrawInstanced(verticesCount, 1, 0, 0);
+	dxCommon_->GetCmdList()->DrawInstanced(verticesCount_, 1, 0, 0);
 	//dxCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
 }

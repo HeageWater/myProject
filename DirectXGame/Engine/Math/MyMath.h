@@ -5,7 +5,11 @@
 #include "Matrix.h"
 #include <cmath>
 
-namespace MyMath {
+/// <summary>
+/// カメラ関係の物をいろいろまとめたもの
+/// </summary>
+namespace MyMath
+{
 	struct float4
 	{
 		float x;
@@ -17,53 +21,124 @@ namespace MyMath {
 		float4(float x, float y, float z, float w);
 	};
 
-const float PI = 3.14159265358979f;
-const float PIx2 = 6.2831853071f;
+	const float PI = 3.14159265358979f;
+	const float PIx2 = 6.2831853071f;
 
-//	視点座標、注視点座標、上方向ベクトル
-Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
+	//	視点座標、注視点座標、上方向ベクトル
+	Matrix LookAtLH(const Vector3D& eye, const Vector3D& target, const Vector3D& up);
 
-Matrix PerspectiveFovLH(const float winwidth, const float winheight, float fovY, float nearZ, float farZ);
-Matrix OrthoLH(const float winwidth, const float winheight, float nearZ, float farZ);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="winwidth"></param>
+	/// <param name="winheight"></param>
+	/// <param name="fovY"></param>
+	/// <param name="nearZ"></param>
+	/// <param name="farZ"></param>
+	/// <returns></returns>
+	Matrix PerspectiveFovLH(const float winwidth, const float winheight, float fovY, float nearZ, float farZ);
 
-float ConvertToRad(float angle);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="winwidth"></param>
+	/// <param name="winheight"></param>
+	/// <param name="nearZ"></param>
+	/// <param name="farZ"></param>
+	/// <returns></returns>
+	Matrix OrthoLH(const float winwidth, const float winheight, float nearZ, float farZ);
 
-bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="angle"></param>
+	/// <returns></returns>
+	float ConvertToRad(float angle);
 
-size_t GetRandom(size_t min, size_t max);
+	/// <summary>
+	/// 視点の判定
+	/// </summary>
+	/// <param name="startL"></param>
+	/// <param name="endL"></param>
+	/// <param name="pos"></param>
+	/// <param name="rad"></param>
+	/// <returns></returns>
+	bool CollisionCircleLay(Vector3D startL, Vector3D endL, Vector3D pos, float rad);
 
-class MatView{
-public:
-	Matrix mat;
-	Vector3D eye;		//	視点座標
-	Vector3D target;	//	注視点座標
-	Vector3D up;		//	上方向ベクトル
-public:
-	MatView();
-	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
-	void MatUpdate();
-};
+	/// <summary>
+	/// ランダム関数
+	/// </summary>
+	/// <param name="min"></param>
+	/// <param name="max"></param>
+	/// <returns></returns>
+	size_t GetRandom(size_t min, size_t max);
 
-class ObjMatrix {
-public:
-	Matrix matWorld;
+	class MatView
+	{
+	public:
+		Matrix mat;
+		Vector3D eye;		//	視点座標
+		Vector3D target;	//	注視点座標
+		Vector3D up;		//	上方向ベクトル
+	public:
+		MatView();
 
-	Matrix matScale;
-	Vector3D scale;
+		/// <summary>
+		/// 初期化
+		/// </summary>
+		/// <param name="_eye"></param>
+		/// <param name="_target"></param>
+		/// <param name="_up"></param>
+		void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
 
-	Matrix matRot;
-	Vector3D rotAngle;
+		/// <summary>
+		/// 更新
+		/// </summary>
+		void MatUpdate();
+	};
 
-	Matrix matTrans;
-	Vector3D trans;
+	class ObjMatrix
+	{
+	public:
+		Matrix matWorld;
 
-private:
-	void SetMatScaling();
-	void SetMatRotation();
-	void SetMatTransform();
-public:
-	void Initialize();
-	void Update(Matrix billboard = Matrix());
-};
+		Matrix matScale;
+		Vector3D scale;
+
+		Matrix matRot;
+		Vector3D rotAngle;
+
+		Matrix matTrans;
+		Vector3D trans;
+
+	private:
+
+		/// <summary>
+		/// スケールセット
+		/// </summary>
+		void SetMatScaling();
+
+		/// <summary>
+		/// ローテーションセット
+		/// </summary>
+		void SetMatRotation();
+
+		/// <summary>
+		/// トランスフォームセット
+		/// </summary>
+		void SetMatTransform();
+	public:
+
+		/// <summary>
+		/// 初期化
+		/// </summary>
+		void Initialize();
+
+		/// <summary>
+		/// 更新
+		/// </summary>
+		/// <param name="billboard"></param>
+		void Update(Matrix billboard = Matrix());
+	};
 }
 

@@ -17,15 +17,15 @@ void Enemy::Initialize(Shader shader, GPipeline* pipeline_)
 
 	enemy_.mat.Initialize();
 	enemy_.mat.scale = { 1,1,1 };
-	isDead = false;
-	deadVec = false;
-	Vec = { 0,0,0 };
+	isDead_ = false;
+	deadVec_ = false;
+	Vec_ = { 0,0,0 };
 
 }
 
 void Enemy::Draw(size_t tex)
 {
-	if (isDead == false)
+	if (isDead_ == false)
 	{
 		enemy_.Draw(tex);
 	}
@@ -35,21 +35,21 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 {
 	float spd = 0.01f;
 
-	if (deadVec)
+	if (deadVec_)
 	{
 		spd = 1.2f;
 	}
 
 	enemy_.mat.rotAngle.y += spd;
 
-	if (Time > 0)
+	if (Time_ > 0)
 	{
-		Time--;
+		Time_--;
 
-		move = { 0,0,0 };
+		move_ = { 0,0,0 };
 	}
 
-	enemy_.mat.trans -= move;
+	enemy_.mat.trans -= move_;
 
 	DeadVec();
 
@@ -58,7 +58,7 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 
 bool Enemy::BoxCollision(Model model)
 {
-	if (deadVec == false)
+	if (deadVec_ == false)
 	{
 		float a = (model.mat.trans.x - enemy_.mat.trans.x) * (model.mat.trans.x - enemy_.mat.trans.x);
 		float b = (model.mat.trans.y - enemy_.mat.trans.y) * (model.mat.trans.y - enemy_.mat.trans.y);
@@ -69,9 +69,9 @@ bool Enemy::BoxCollision(Model model)
 		if (a + b < c)
 		{
 			float spd = 1.5f;
-			Vec = model.mat.trans - enemy_.mat.trans;
-			Vec *= spd;
-			deadVec = true;
+			Vec_ = model.mat.trans - enemy_.mat.trans;
+			Vec_ *= spd;
+			deadVec_ = true;
 
 			return true;
 		}
@@ -94,33 +94,33 @@ void Enemy::SertchPlayer(Model model)
 	//あたり判定
 	if (a + b < c)
 	{
-		sertchFlag = true;
-		move = enemy_.mat.trans - model.mat.trans;
-		move.normalize();
+		sertchFlag_ = true;
+		move_ = enemy_.mat.trans - model.mat.trans;
+		move_.normalize();
 
-		move.x /= 2;
-		move.y /= 2;
-		move.z /= 2;
+		move_.x /= 2;
+		move_.y /= 2;
+		move_.z /= 2;
 	}
 	else
 	{
-		move = { 0,0,0 };
+		move_ = { 0,0,0 };
 	}
 }
 
 void Enemy::DeadVec()
 {
-	if (deadVec)
+	if (deadVec_)
 	{
-		enemy_.mat.trans -= Vec;
+		enemy_.mat.trans -= Vec_;
 
 		bool Y = -15 > enemy_.mat.trans.y || 1000 < enemy_.mat.trans.y;
 		bool X = 0 > enemy_.mat.trans.x || 1000 < enemy_.mat.trans.x;
 
 		if (Y || X)
 		{
-			deadVec = false;
-			isDead = true;
+			deadVec_ = false;
+			isDead_ = true;
 		}
 	}
 }

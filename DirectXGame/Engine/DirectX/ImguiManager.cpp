@@ -1,9 +1,10 @@
 #include "ImguiManager.h"
 #include <imgui_impl_win32.h>
 #include<imgui_impl_dx12.h>
+#include "DirectX.h"
+#include "Window.h"
 
-//void ImguiManager::Initialize(Window* win_)
-void ImguiManager::Initialize()
+void ImguiManager::Initialize(Window* window)
 {
 	//ImGuiのコンテキストを生成
 	ImGui::CreateContext();
@@ -12,7 +13,7 @@ void ImguiManager::Initialize()
 	ImGui::StyleColorsDark();
 
 	//win32用初期化
-	ImGui_ImplWin32_Init(MyDirectX::GetInstance()->GetWindow().GetHwnd());// dxCommon->GetWindow().GetHwnd());
+	ImGui_ImplWin32_Init(window->GetHwnd());// dxCommon->GetWindow().GetHwnd());
 
 	//デスクリプタヒープ設定(クラス化)
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
@@ -26,7 +27,7 @@ void ImguiManager::Initialize()
 	result = MyDirectX::GetInstance()->GetDev()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
-
+	//この下のsrvHeapのところをシングルトンデスクリプタヒープにしないとImGuiを全部で使えない
 	ImGui_ImplDX12_Init(
 		MyDirectX::GetInstance()->GetDev(),
 		static_cast<int>(MyDirectX::GetInstance()->GetBackByfferCount()),

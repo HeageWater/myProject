@@ -6,27 +6,73 @@
 #include <memory>
 #include "Model.h"
 
+/// <summary>
+/// パーティクル用基盤
+/// </summary>
 class Particle
 {
 public:
 	Particle();
 	~Particle();
-	//void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
-	void Initialize(Vector3D pos);
-	void Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_);
-	void Initialize(MyDirectX* dx_,GPipeline* pipeline_);
+
+	/// <summary>
+	/// posをセットすることでその周りにパーティクルがb描画される
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetInitialize(Vector3D pos);
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="dx_"></param>
+	/// <param name="shader"></param>
+	/// <param name="pipeline_"></param>
+	void Initialize(Shader shader, GPipeline* pipeline_);
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="tex"></param>
 	void Draw(size_t tex);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="matView"></param>
+	/// <param name="matProjection"></param>
 	void Update(Matrix matView, Matrix matProjection);
-	bool IsDead() { return isDead; };
+
+	/// <summary>
+	/// 消えたか
+	/// </summary>
+	/// <returns></returns>
+	bool IsDead() { return isDead_; };
+
+	/// <summary>
+	/// モデルを返す
+	/// </summary>
+	/// <returns></returns>
 	Model GetModel() { return particle_; };
+
+	/// <summary>
+	/// モデルをセットする
+	/// </summary>
+	/// <param name="model"></param>
 	void SetModel(Model model) { particle_ = model; };
 
-	float time = 0;
+	//今どれくらいたったか
+	float time_ = 0;
 private:
+
+	//パーティクル一個
 	Model particle_;
 
-	bool isDead = false;
-	float spd;
-	//float time = 0;
-	Vector3D velocity = { 0,0,0 };
+	//死んでいるか
+	bool isDead_ = false;
+
+	//速さ
+	float spd_;
+
+	//向き
+	Vector3D velocity_ = { 0,0,0 };
 };

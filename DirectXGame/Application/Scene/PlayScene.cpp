@@ -5,58 +5,61 @@
 void PlayScene::Update()
 {
 	//ImGui受付開始
-	ImGui::Begin("player Pos");
+	//ImGui::Begin("player Pos");
 
-	float a = player->GetPos().x;
+	//float a = player->GetPos().x;
 
-	ImGui::SliderFloat("player pos", &a, -400, 400);
+	//ImGui::SliderFloat("player pos", &a, -400, 400);
 
-	//ImGui受付終了
-	ImGui::End();
+	////ImGui受付終了
+	//ImGui::End();
 
 	//player更新
-	player->Update(matView.mat, matProjection, shader);
+	player_->Update(matView_.mat, matProjection, shader_);
 
 	//カメラ更新
-	matView.MatUpdate();
+	matView_.MatUpdate();
 
 	//スクリーン更新
-	screen.MatUpdate(matView.mat, matProjection, 0);
+	screen_.MatUpdate(matView_.mat, matProjection, 0);
 
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag();
+		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
 	}
 
+	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
 }
 
 void PlayScene::Initialize()
 {
 	//描画用行列
-	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+	//箱画像
+	white_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/cube.jpg");
 
 	//shader
-	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
-	bilShader.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
+	bilShader_.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
 
 	//pipeline
-	pipeline = std::make_unique<GPipeline>();
-	pipeline->Initialize(MyDirectX::GetInstance()->GetDev(), shader);
+	pipeline_ = std::make_unique<GPipeline>();
+	pipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), shader_);
 
 	//描画初期化
-	multipathPipeline = std::make_unique<GPipeline>();
-	multipathPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
+	multipathPipeline_ = std::make_unique<GPipeline>();
+	multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
-	screen.Initialize(MyDirectX::GetInstance(), multipathPipeline.get(), bilShader);
-	screen.obj.trans.z = 100.1f;
-	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
+	//背景のスクリーン(これが必要なので依存しないようにしたい)
+	screen_.Initialize(multipathPipeline_.get(), bilShader_);
+	screen_.obj.trans.z = 100.1f;
+	screen_.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
 
 	//player
-	player->Initialize(shader, pipeline.get());
+	player_->Initialize(shader_, pipeline_.get());
 }
 
 void PlayScene::Draw()
@@ -71,13 +74,15 @@ void PlayScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen.Draw(white);
+	screen_.Draw(white_);
 
 	//Actor描画
-	player->Draw(white, white);
+	player_->Draw(white_, white_);
 
+	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
 
+	//描画受付終了
 	MyDirectX::GetInstance()->PostDraw();
 }
 

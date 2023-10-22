@@ -6,6 +6,9 @@
 #include "myMath.h"
 #include <xinput.h>
 
+/// <summary>
+/// コントローラーのボタン
+/// </summary>
 enum ControllerButton
 {
 	B = XINPUT_GAMEPAD_B,
@@ -20,12 +23,18 @@ enum ControllerButton
 	RT
 };
 
+/// <summary>
+/// スティック
+/// </summary>
 enum ControllerStick
 {
 	L_UP, L_DOWN, L_LEFT, L_RIGHT,
 	R_UP, R_DOWN, R_LEFT, R_RIGHT, XBOX_STICK_NUM
 };
 
+/// <summary>
+/// コントローラークラス
+/// </summary>
 class Controller
 {
 private:

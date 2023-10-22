@@ -2,103 +2,287 @@
 #include "PlayerAttack.h"
 #include "ImGuiManager.h"
 
-class Player {
-
+/// <summary>
+/// ゲーム中の自機
+/// </summary>
+class Player
+{
+	//関数
 public:
-	Player();
-	~Player();
-	void Initialize(Shader shader, GPipeline* pipeline_);
-	void Draw(size_t tex, size_t tex2);
-	Vector2D MoveCamera(Matrix matView, Matrix matProjection, Input* input);
-	void Update(Matrix matView, Matrix matProjection, Shader shader);
-	void Reset();
-	void Jump();
-	void Attack(Shader shader);
 
-	//攻撃生成用
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Player();
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Player();
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="shader"></param>
+	/// <param name="pipeline_"></param>
+	void Initialize(Shader shader, GPipeline* pipeline_);
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="tex"></param>
+	/// <param name="tex2"></param>
+	void Draw(size_t tex, size_t tex2);
+
+	/// <summary>
+	/// プレイヤー基準でカメラ動かす
+	/// </summary>
+	/// <param name="matView"></param>
+	/// <param name="matProjection"></param>
+	/// <param name="input"></param>
+	/// <returns></returns>
+	Vector2D MoveCamera(Matrix matView, Matrix matProjection, Input* input);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="matView"></param>
+	/// <param name="matProjection"></param>
+	/// <param name="shader"></param>
+	void Update(Matrix matView, Matrix matProjection, Shader shader);
+
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
+	/// <summary>
+	/// 攻撃生成用
+	/// </summary>
 	void PopPlayerAttack();
 
-	//左スティックの値を返す
-	Vector2D GetController() { return controller->GetLeftStickVec(); };
+	/// <summary>
+	/// 左スティックの値を返す
+	/// </summary>
+	/// <returns></returns>
+	Vector2D GetController() { return controller_->GetLeftStickVec(); };
 
+	/// <summary>
+	/// posを返す
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetPos() { return player_.mat.trans; };
+
+	/// <summary>
+	///posをセットする
+	/// </summary>
+	/// <param name="pos"></param>
 	void SetPos(Vector3D pos) { player_.mat.trans = pos; };
+
+	/// <summary>
+	/// rotaionを返す
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetRot() { return player_.mat.rotAngle; };
+
+	/// <summary>
+	/// scaleを返す
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetScale() { return player_.mat.scale; };
+
+	/// <summary>
+	/// modelを返す
+	/// </summary>
+	/// <returns></returns>
 	Model GetModel() { return player_; };
 
+	/// <summary>
+	/// 攻撃のposを返す
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetAttackPos() { return playerAttack_.mat.trans; };
+
+	/// <summary>
+	/// 攻撃のrotationを返す
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetAttackRot() { return playerAttack_.mat.rotAngle; };
+
+	/// <summary>
+	/// 攻撃のscaleを返す
+	/// </summary>
+	/// <returns></returns>
 	Vector3D GetAttackScale() { return playerAttack_.mat.scale; };
+
+	/// <summary>
+	/// 攻撃のmodelを返す
+	/// </summary>
+	/// <returns></returns>
 	Model GetAttackModel() { return playerAttack_; };
 
+	/// <summary>
+	/// 攻撃を敵の判定
+	/// </summary>
+	/// <param name="enemy"></param>
+	/// <returns></returns>
 	bool CollisionAttackToEnemy(Model enemy);
 	//bool CollisionPlayerToEnemy(Model enemy);
 
-	float GetLife() { return Life; };
-	void SetLife(float x) { Life = x; };
-	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);
-	bool StageCollsionX(Model stage, Matrix matView, Matrix matProjection);
-	bool StageCollsionY(Model stage, Matrix matView, Matrix matProjection);
-	bool GetA()
-	{ //コントローラーUpdate
-		controller->Update();
-		return controller->ButtonTriggerPush(A);
-	};
+	/// <summary>
+	/// HPを返す
+	/// </summary>
+	/// <returns></returns>
+	float GetLife() { return life_; };
 
+	/// <summary>
+	/// HPをセットする
+	/// </summary>
+	/// <param name="x"></param>
+	void SetLife(float x) { life_ = x; };
+
+	/// <summary>
+	/// ステージとの判定
+	/// </summary>
+	/// <param name="stage"></param>
+	/// <param name="matView"></param>
+	/// <param name="matProjection"></param>
+	/// <returns></returns>
+	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);
+
+	/// <summary>
+	/// ステージとの横判定
+	/// </summary>
+	/// <param name="stage"></param>
+	/// <returns></returns>
+	bool StageCollsionX(Model stage);
+
+	/// <summary>
+	/// ステージとの縦判定
+	/// </summary>
+	/// <param name="stage"></param>
+	/// <returns></returns>
+	bool StageCollsionY(Model stage);
+
+	/// <summary>
+	/// ステージとの判定(多分使わなくなるので消すこと)
+	/// </summary>
+	/// <param name="stage"></param>
+	/// <returns></returns>
+	bool StageCollision(Model stage);
+
+	/// <summary>
+	/// playerと敵との判定
+	/// </summary>
+	/// <param name="enemy"></param>
+	/// <returns></returns>
 	bool PlayerCollision(Model enemy);
 
-	//ワープするアクション
+	/// <summary>
+	/// ワープするアクション
+	/// </summary>
+	/// <returns></returns>
 	bool WarpAction();
 
-	//ワープの入口に触れた時
-	bool warpActionFlag = false;
+	/// <summary>
+	/// ワープするとき外からでもposを変えられるように
+	/// </summary>
+	/// <param name="pos1"></param>
+	/// <param name="pos2"></param>
+	void SetWarpPos(Vector3D pos1, Vector3D pos2) { warpPos_[0] = pos1; warpPos_[1] = pos2; };
 
-	uint32_t warpMord = 0;
+	/// <summary>
+	/// 今のワープ行動の種類を入手
+	/// </summary>
+	/// <returns></returns>
+	uint32_t GetWarpMode() { return warpMord_; };
 
-	//warpの入口と出口のpos
-	Vector3D warpPos[2];
+	/// <summary>
+	/// ワープの行動の種類をセット
+	/// </summary>
+	/// <param name="mode"></param>
+	void SetWarpMode(uint32_t mode) { warpMord_ = mode; };
 
-	void SetWarpPos(Vector3D pos1, Vector3D pos2) { warpPos[0] = pos1; warpPos[1] = pos2; };
+	/// <summary>
+	/// 横移動のみ
+	/// </summary>
+	void MoveX() { player_.mat.trans.x += colVec_.x; };
 
-	uint32_t GetWarpMode() { return warpMord; };
-	void SetWarpMode(uint32_t mode) { warpMord = mode; };
-
-	void MoveX() { player_.mat.trans.x += colVec.x; };
-	void MoveY() { player_.mat.trans.y += colVec.y; };
+	/// <summary>
+	/// 縦移動のみ
+	/// </summary>
+	void MoveY() { player_.mat.trans.y += colVec_.y; };
 
 private:
-	MyXAudio* sound_ = nullptr;
-	//size_t volcanoSE = 0;
-	size_t jumpSE = 0;
 
+	/// <summary>
+	/// ジャンプ
+	/// </summary>
+	void Jump();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	/// <param name="shader"></param>
+	void Attack(Shader shader);
+
+public:
+
+	//ワープの入口に触れた時
+	bool warpActionFlag_ = false;
+
+	//ワープの種類
+	uint32_t warpMord_ = 0;
+
+	//warpの入口と出口のpos
+	Vector3D warpPos_[2];
+
+private:
+
+	//音
+	MyXAudio* sound_ = nullptr;
+
+	//ジャンプ音
+	size_t jumpSE_ = 0;
+
+	//モデルデータ
 	Model player_;
+
+	//攻撃用モデルデータ
 	Model playerAttack_;
 
-	std::vector<PlayerAttack*> attack;
+	//攻撃を何個も作成するための変数
+	std::vector<PlayerAttack*> attack_;
 
-	bool attackF = false;
-	bool createAttackFlag = false;
+	//攻撃フラグ
+	bool attackF_ = false;
 
-	float jumpPower = 0;
-	float gravirtPower = 0;
+	//攻撃を作成するフラグ
+	bool createAttackFlag_ = false;
 
-	Controller* controller = nullptr;
+	//ジャンプ力
+	float jumpPower_ = 0;
+
+	//重力
+	float gravirtPower_ = 0;
+
+	//コントローラー
+	Controller* controller_ = nullptr;
 
 	//移動用変数
-	Vector3D colVec = { 0,0,0 };
+	Vector3D colVec_ = { 0,0,0 };
 
 	//HP
-	float Life;
+	float life_;
 
 	//点滅カウント
-	uint32_t lesFlag;
+	uint32_t lesFlag_;
 
 	//ノックバックの向き
-	float knockBackVec = 0;
+	float knockBackVec_ = 0;
 
 	//ノックバックのフラグ
-	bool knockBackFlag;
+	bool knockBackFlag_;
 
 	//敵と当たった時にHP減らしてノックバックのフラグをONに
 	//点滅フラグもONに

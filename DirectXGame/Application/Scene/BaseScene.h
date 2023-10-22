@@ -12,19 +12,31 @@
 #include "ImguiManager.h"
 #include "Shader.h"
 
+/// <summary>
+/// 継承専用のシーンの基盤クラス
+/// </summary>
 class BaseScene
 {
 public:
-	//初期化
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	virtual void Initialize() = 0;
 
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
 	virtual void Update() = 0;
 
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	virtual void Draw() = 0;
 
-	//破棄
+	/// <summary>
+	/// 破棄
+	/// </summary>
 	virtual void Finalize() = 0;
 
 	virtual ~BaseScene() = default;

@@ -6,6 +6,9 @@
 #include <vector>
 #include <fstream>
 
+/// <summary>
+/// スプライト管理用クラス
+/// </summary>
 class SpriteCommon
 {
 public:
@@ -18,31 +21,56 @@ public:
 	SpriteCommon();
 	~SpriteCommon();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="dxCommon"></param>
+	/// <param name="isSemiArpha"></param>
 	void Inilialize(MyDirectX* dxCommon, bool isSemiArpha);
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// コマンドリスト取得
+	/// </summary>
+	/// <returns></returns>
 	ID3D12GraphicsCommandList* GetCommandList() const { return dxCommon_->GetCmdList(); };
-	ID3D12PipelineState* GetPipleLine() const { return pipelineState; };
+
+	/// <summary>
+	/// パイプライン取得
+	/// </summary>
+	/// <returns></returns>
+	ID3D12PipelineState* GetPipleLine() const { return pipelineState_; };
+
+	/// <summary>
+	/// DirextX取得
+	/// </summary>
+	/// <returns></returns>
 	MyDirectX* GetDxCommon() const { return dxCommon_; };
 
 	//private:
 	MyDirectX* dxCommon_;
 
 	//パイプランステートの生成
-	ID3D12PipelineState* pipelineState = nullptr;
+	ID3D12PipelineState* pipelineState_ = nullptr;
 
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+	//パイプラインデスク
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
+
 	//ルートシグネチャ
-	ID3D12RootSignature* rootSignature;
-	// 頂点バッファビューの作成
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	ID3D12RootSignature* rootSignature_;
 
-	UINT verticesCount;
+	// 頂点バッファビューの作成
+	D3D12_VERTEX_BUFFER_VIEW vbView_{};
+
+	//点の数
+	UINT verticesCount_;
 
 private:
-	/*SpriteCommon();
-	~SpriteCommon();*/
 
-
-	HRESULT result;
+	//結果
+	HRESULT result_;
 };

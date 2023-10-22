@@ -17,28 +17,28 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 	playerAttack_.mat.Initialize();
 	playerAttack_.mat.scale = { 15,5,1 };
 
-	controller = Controller::GetInstance();
-	attackF = false;
+	controller_ = Controller::GetInstance();
+	attackF_ = false;
 
 	sound_ = MyXAudio::GetInstance();
 	//volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 
-	time = 20;
-	isDead = false;
+	time_ = 20;
+	isDead_ = false;
 }
 
 void PlayerAttack::Draw()
 {
-	playerAttack_.Draw(tex);
+	playerAttack_.Draw(tex_);
 }
 
 void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 {
-	time--;
+	time_--;
 
-	if (time <= 1)
+	if (time_ <= 1)
 	{
-		isDead = true;
+		isDead_ = true;
 	}
 
 	//playerAttack_.mat.trans += Vector3D{ -vec.x * spd,vec.y * spd,0 };
@@ -57,5 +57,5 @@ void PlayerAttack::SetUpdate()
 	//playerAttack_.mat.trans.x += range * vec.x;
 	//playerAttack_.mat.trans.y += range * vec.y;
 	//playerAttack_.mat.rotAngle.x = controller->GetRightStickVec().x * 2;
-	playerAttack_.mat.rotAngle.z = controller->GetRightStickVec().x * controller->GetRightStickVec().y;
+	playerAttack_.mat.rotAngle.z = controller_->GetRightStickVec().x * controller_->GetRightStickVec().y;
 }

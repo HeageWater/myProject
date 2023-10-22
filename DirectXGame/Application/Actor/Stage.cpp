@@ -20,12 +20,12 @@ void Stage::Initialize(Shader shader, GPipeline* pipeline_)
 	stage_.mat.trans.y = 0;
 	stage_.mat.trans.z = 0;
 
-	drawFlag = true;
+	drawFlag_ = true;
 }
 
 void Stage::Draw(size_t tex)
 {
-	if (drawFlag)
+	if (drawFlag_)
 	{
 		stage_.Draw(tex);
 	}

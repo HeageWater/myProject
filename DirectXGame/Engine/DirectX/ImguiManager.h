@@ -1,28 +1,42 @@
 #pragma once
 #include "DirectX.h"
 
+/// <summary>
+/// ImGuiを使うためのクラス
+/// </summary>
 class ImguiManager
 {
 public:
-	/*ImguiManager();
-	~ImguiManager();*/
 
-	//初期化(DirectXCommonに依存)
-	//void Initialize(Window* win_);
-	void Initialize();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize(Window* window);
 
-	//解放
+	/// <summary>
+	/// 破棄
+	/// </summary>
 	void Finalize();
 
-	//開始
+	/// <summary>
+	/// 開始
+	/// </summary>
 	void Begin();
 
-	//終了
+	/// <summary>
+	///	終了
+	/// </summary>
 	void End();
 
-	//描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// シングルトン
+	/// </summary>
+	/// <returns></returns>
 	static ImguiManager* GetInstance();
 
 private:

@@ -73,6 +73,13 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 				objectData.fileName = object["file_name"];
 			}
 
+			//他に要素があったら
+			if (object.contains("file_name"))
+			{
+				//ファイル名
+				objectData.otherName = object["file_name"];
+			}
+
 			//Transformのパラメータ読み込み
 			nlohmann::json& transform = object["transform"];
 

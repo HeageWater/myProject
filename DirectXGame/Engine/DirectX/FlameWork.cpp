@@ -12,6 +12,7 @@ void FlameWork::Update()
 		SetEndRwqust(true);
 	}
 
+	//キーボードの受付更新
 	Input::GetInstance()->Update();
 }
 
@@ -24,7 +25,7 @@ void FlameWork::Initialize()
 	MyDirectX::GetInstance()->Initialize(win.get());
 
 	//ImGuiの初期化
-	ImguiManager::GetInstance()->Initialize();
+	ImguiManager::GetInstance()->Initialize(win.get());
 
 	//buff
 	cBuff = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev());
@@ -57,6 +58,7 @@ void FlameWork::Initialize()
 		Window::window_width, Window::window_height,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
+	//欲しい機能
 	{
 		/*Camera::StaticInitialize(windowsApp_.get());
 
@@ -75,7 +77,7 @@ void FlameWork::Initialize()
 	//シーンチェンジ用クラス
 	ChengeScene::GetInstance()->Initialize(matProjection);
 
-	//
+	//シーンマネージャー
 	SceneFactory* sceneFactory = new SceneCreate();
 	SceneManager::GetInstance()->SetSceneFactory(sceneFactory);
 }
@@ -95,13 +97,13 @@ void FlameWork::Run()
 	//ゲームループ
 	while (true)
 	{
-		////ImGui受付開始
+		//ImGui受付開始
 		ImguiManager::GetInstance()->Begin();
 
 		//更新
 		Update();
 
-		////ImGui受付終了
+		//ImGui受付終了
 		ImguiManager::GetInstance()->End();
 
 		//描画
@@ -109,6 +111,7 @@ void FlameWork::Run()
 
 #ifdef _DEBUG
 
+		//ImGui描画
 		ImguiManager::GetInstance()->Draw();
 
 #endif _DEBUG
