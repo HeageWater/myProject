@@ -41,7 +41,7 @@ public:
 	/// pos格納
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(Vector3D pos) { sample_.mat.trans = pos; };
+	void SetPos(Vector3D pos) { sample_.mat_.trans_ = pos; };
 
 private:
 

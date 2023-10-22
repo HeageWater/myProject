@@ -10,29 +10,29 @@
 #pragma warning (pop)
 
 // レベルデータ
-struct LevelData {
-
+struct LevelData
+{
 	struct ObjectData 
 	{
 		// ファイル名
-		std::string fileName;
+		std::string fileName_;
 
 		//追加要素
-		std::string otherName;
+		std::string otherName_;
 
 		//Matrix
-		Matrix matrix;
+		Matrix matrix_;
 
 		// 平行移動
-		Vector3D translation;
+		Vector3D translation_;
 		// 回転角
-		Vector3D rotation;
+		Vector3D rotation_;
 		// スケーリング
-		Vector3D scaling;
+		Vector3D scaling_;
 	};
 
 	// オブジェクト配列
-	std::vector<ObjectData> objects;
+	std::vector<ObjectData> objects_;
 };
 
 /// <summary>
@@ -40,12 +40,6 @@ struct LevelData {
 /// </summary>
 class JsonFileOpen
 {
-public:
-	// デフォルトの読み込みディレクトリ
-	static const std::string kDefaultBaseDirectory;
-
-	// ファイル拡張子
-	static const std::string kExtension;
 public:
 
 	/// <summary>
@@ -69,4 +63,11 @@ public:
 	/// <param name="levelData"></param>
 	/// <returns></returns>
 	static LevelData* CheckObjects(nlohmann::json deserialised, LevelData* levelData);
+
+public:
+	// デフォルトの読み込みディレクトリ
+	static const std::string kDefaultBaseDirectory_;
+
+	// ファイル拡張子
+	static const std::string kExtension_;
 };

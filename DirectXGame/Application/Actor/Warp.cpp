@@ -4,8 +4,8 @@ Warp::Warp()
 {
 	for (size_t i = 0; i < size_; i++)
 	{
-		warp_[i].mat.Initialize();
-		warp_[i].mat.scale = { 3,3,3 };
+		warp_[i].mat_.Initialize();
+		warp_[i].mat_.scale_ = { 3,3,3 };
 	}
 }
 
@@ -19,10 +19,10 @@ void Warp::Initialize(Shader shader, GPipeline* pipeline_)
 	{
 		warp_[i].Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
 
-		warp_[i].mat.Initialize();
-		warp_[i].mat.scale = { 5,5,5 };
-		warp_[0].mat.trans = { 280,-160,0 };
-		warp_[1].mat.trans = { 350,-160,0 };
+		warp_[i].mat_.Initialize();
+		warp_[i].mat_.scale_ = { 5,5,5 };
+		warp_[0].mat_.trans_ = { 280,-160,0 };
+		warp_[1].mat_.trans_ = { 350,-160,0 };
 	}
 }
 
@@ -42,17 +42,17 @@ void Warp::Update(Matrix matView, Matrix matProjection)
 
 	for (size_t i = 0; i < size_; i++)
 	{
-		warp_[i].mat.rotAngle.y += spd;
+		warp_[i].mat_.rotAngle_.y_ += spd;
 		warp_[i].MatUpdate(matView, matProjection);
 	}
 }
 
 bool Warp::BoxCollision(Model model)
 {
-	float a = (model.mat.trans.x - warp_[0].mat.trans.x) * (model.mat.trans.x - warp_[0].mat.trans.x);
-	float b = (model.mat.trans.y - warp_[0].mat.trans.y) * (model.mat.trans.y - warp_[0].mat.trans.y);
+	float a = (model.mat_.trans_.x_ - warp_[0].mat_.trans_.x_) * (model.mat_.trans_.x_ - warp_[0].mat_.trans_.x_);
+	float b = (model.mat_.trans_.y_ - warp_[0].mat_.trans_.y_) * (model.mat_.trans_.y_ - warp_[0].mat_.trans_.y_);
 
-	float c = model.mat.scale.x * warp_[0].mat.scale.x;
+	float c = model.mat_.scale_.x_ * warp_[0].mat_.scale_.x_;
 
 	//あたり判定
 	if (a + b < c)
@@ -69,18 +69,18 @@ void Warp::CheckMode(uint32_t mode)
 
 	if (mode == 2)
 	{
-		warp_[0].mat.scale -= {spd, spd, spd};
-		if (warp_[0].mat.scale.x < 0)
+		warp_[0].mat_.scale_ -= {spd, spd, spd};
+		if (warp_[0].mat_.scale_.x_ < 0)
 		{
-			warp_[0].mat.scale = { 0,0,0 };
+			warp_[0].mat_.scale_ = { 0,0,0 };
 		}
 	}
 	else if (mode == 3)
 	{
-		warp_[1].mat.scale -= {spd, spd, spd};
-		if (warp_[1].mat.scale.x < 0)
+		warp_[1].mat_.scale_ -= {spd, spd, spd};
+		if (warp_[1].mat_.scale_.x_ < 0)
 		{
-			warp_[1].mat.scale = { 0,0,0 };
+			warp_[1].mat_.scale_ = { 0,0,0 };
 		}
 	}
 }
@@ -89,8 +89,8 @@ void Warp::Reset()
 {
 	for (size_t i = 0; i < size_; i++)
 	{
-		warp_[i].mat.Initialize();
-		warp_[i].mat.scale = { 5,5,3 };
-		warp_[i].mat.trans = { 1000,15,0 };
+		warp_[i].mat_.Initialize();
+		warp_[i].mat_.scale_ = { 5,5,3 };
+		warp_[i].mat_.trans_ = { 1000,15,0 };
 	}
 }

@@ -28,26 +28,6 @@
 /// </summary>
 class LoadObjectData
 {
-private:
-	//ステージ読み込み
-	LevelData* levelData_ = nullptr;
-
-	//ステージ格納用
-	std::map<std::string, Stage*> newStage_;
-	std::map<std::string, Enemy*> newEnemy_;
-
-	//制作時に使用
-	std::vector<Stage*> stages_;
-	std::vector<Enemy*> enemies_;
-
-	Matrix view_;
-	Matrix prodaction_;
-
-	size_t enemyTex_;
-	size_t stageTex_;
-
-	Shader shader_;
-	GPipeline* pipeline_;
 public:
 
 	/// <summary>
@@ -106,4 +86,25 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static LoadObjectData* GetInstance();
+
+private:
+	//ステージ読み込み
+	LevelData* levelData_ = nullptr;
+
+	//ステージ格納用
+	std::map<std::string, Stage*> newStage_;
+	std::map<std::string, Enemy*> newEnemy_;
+
+	//制作時に使用
+	std::vector<Stage*> stages_;
+	std::vector<Enemy*> enemies_;
+
+	Matrix view_;
+	Matrix prodaction_;
+
+	size_t enemyTex_;
+	size_t stageTex_;
+
+	Shader shader_;
+	GPipeline* pipeline_;
 };

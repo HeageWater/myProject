@@ -19,12 +19,7 @@ public:
 		INV_BLEND,
 		ALPHA_BLEND,
 	};
-private:
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-	ComPtr<ID3D12RootSignature> rootSignature;
-	ComPtr<ID3D12PipelineState> state;
-	HRESULT result_;
+
 private:
 
 	/// <summary>
@@ -49,7 +44,7 @@ private:
 	/// <param name="registerSpace"></param>
 	/// <param name="shaderVisibility"></param>
 	void SetRootParam(D3D12_ROOT_PARAMETER& rootParam, D3D12_ROOT_PARAMETER_TYPE type, UINT shaderRegister, UINT registerSpace, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL);
-	
+
 	/// <summary>
 	/// ルートパラメータセット
 	/// </summary>
@@ -59,14 +54,14 @@ private:
 	/// <param name="registerSpace"></param>
 	/// <param name="shaderVisibility"></param>
 	void SetRootParam(D3D12_ROOT_PARAMETER& rootParam, D3D12_ROOT_PARAMETER_TYPE type, D3D12_DESCRIPTOR_RANGE pDescriptorRange, UINT numDescriptorRanges, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY_ALL);
-	
+
 	/// <summary>
 	/// ルートシグネチャセット
 	/// </summary>
 	/// <param name="dev"></param>
 	/// <param name="rootParamNum"></param>
 	void SetRootSignature(ID3D12Device* dev, UINT rootParamNum = 1);
-	
+
 	/// <summary>
 	/// スクリーンルートシグネチャセット
 	/// </summary>
@@ -79,7 +74,7 @@ public:
 	GPipeline(ID3D12Device* dev, Shader shader);
 	//GPipeline(D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, ID3D12Device* dev, Shader shader);
 	GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE fillmord = D3D12_FILL_MODE_SOLID);
-	
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -89,7 +84,7 @@ public:
 	/// <param name="fillmord"></param>
 	/// <param name="cullmord"></param>
 	void Initialize(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE fillmord = D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE cullmord = D3D12_CULL_MODE_BACK);
-	
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -101,24 +96,31 @@ public:
 	/// <param name="fillmord"></param>
 	/// <param name="cullmord"></param>
 	void Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE, D3D12_FILL_MODE fillmord = D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE cullmord = D3D12_CULL_MODE_BACK);
-	
+
 	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="cmdList"></param>
 	/// <param name="primitive"></param>
 	void Update(ID3D12GraphicsCommandList* cmdList, D3D_PRIMITIVE_TOPOLOGY primitive = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	
+
 	/// <summary>
 	/// コマンドリストセット
 	/// </summary>
 	/// <param name="cmdList"></param>
 	void Setting(ID3D12GraphicsCommandList* cmdList);
-	
+
 	/// <summary>
 	/// ブレンドセット
 	/// </summary>
 	/// <param name="dev"></param>
 	/// <param name="mord"></param>
 	void SetBlend(ID3D12Device* dev, int mord);
+
+private:
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
+	ComPtr<ID3D12RootSignature> rootSignature_;
+	ComPtr<ID3D12PipelineState> state_;
+	HRESULT result_;
 };

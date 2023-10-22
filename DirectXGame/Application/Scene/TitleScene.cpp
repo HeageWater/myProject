@@ -5,27 +5,27 @@
 void TitleScene::Update()
 {
 	//player更新
-	player->Update(matView.mat, matProjection, shader);
+	player_->Update(matView_.mat_, matProjection_, shader_);
 
 	Vector3D pos = { (float)(input_->GetKey(DIK_D) - input_->GetKey(DIK_A)),(float)(input_->GetKey(DIK_S) - input_->GetKey(DIK_W)),0 };
-	pos += player->GetPos();
-	player->SetPos(pos);
+	pos += player_->GetPos();
+	player_->SetPos(pos);
 
 	//targetをplayerに
-	matView.eye.x = player->GetPos().x;
-	matView.target.x = player->GetPos().x;
+	matView_.eye_.x_ = player_->GetPos().x_;
+	matView_.target_.x_ = player_->GetPos().x_;
 
-	matView.eye.y = player->GetPos().y;
-	matView.target.y = player->GetPos().y;
+	matView_.eye_.y_ = player_->GetPos().y_;
+	matView_.target_.y_ = player_->GetPos().y_;
 
 	//jsonファイルから読み込んだものの更新
-	LoadObjectData::GetInstance()->SetCamera(matView.mat, matProjection);
+	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	LoadObjectData::GetInstance()->Update();
 	//カメラ更新
-	matView.MatUpdate();
+	matView_.MatUpdate();
 
 	//スクリーン更新
-	screen.MatUpdate(matView.mat, matProjection, 0);
+	screen_.MatUpdate(matView_.mat_, matProjection_, 0);
 
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
@@ -40,33 +40,33 @@ void TitleScene::Update()
 void TitleScene::Initialize()
 {
 	//描画用行列
-	matView.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
+	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//白画像
-	white = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	white_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 
 	//shader
-	shader.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
-	bilShader.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
+	bilShader_.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
 
 	//pipeline
-	pipeline = std::make_unique<GPipeline>();
-	pipeline->Initialize(MyDirectX::GetInstance()->GetDev(), shader);
+	pipeline_ = std::make_unique<GPipeline>();
+	pipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), shader_);
 
 	//描画初期化
-	multipathPipeline = std::make_unique<GPipeline>();
-	multipathPipeline->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader);
+	multipathPipeline_ = std::make_unique<GPipeline>();
+	multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
 	//背景のスクリーン(これが必要なので依存しないようにしたい)
-	screen.Initialize(multipathPipeline.get(), bilShader);
-	screen.obj.trans.z = 100.1f;
-	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
+	screen_.Initialize(multipathPipeline_.get(), bilShader_);
+	screen_.obj_.trans_.z_ = 100.1f;
+	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
 	//player
-	player->Initialize(shader, pipeline.get());
+	player_->Initialize(shader_, pipeline_.get());
 
 	//jsonファイルから読み込んだものの初期化
-	LoadObjectData::GetInstance()->SetModel(shader, pipeline.get());
+	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
 	LoadObjectData::GetInstance()->Initialize();
 }
 
@@ -82,10 +82,10 @@ void TitleScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen.Draw(white);
+	screen_.Draw(white_);
 
 	//Actor描画
-	player->Draw(white, white);
+	player_->Draw(white_, white_);
 
 	//jsonファイルから読み込んだものの描画
 	LoadObjectData::GetInstance()->Draw();

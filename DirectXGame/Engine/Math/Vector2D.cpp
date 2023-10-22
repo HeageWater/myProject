@@ -2,12 +2,12 @@
 #include <cmath>
 
 Vector2D::Vector2D() :
-	x(0), y(0)
+	x_(0), y_(0)
 {
 }
 
 Vector2D::Vector2D(float x, float y) :
-	x(x), y(y)
+	x_(x), y_(y)
 {
 }
 
@@ -18,21 +18,21 @@ Vector2D Vector2D::operator+() const
 
 Vector2D& Vector2D::operator+=(const Vector2D& v)
 {
-	x += v.x;
-	y += v.y;
+	x_ += v.x_;
+	y_ += v.y_;
 	return *this;
 }
 
 Vector2D& Vector2D::operator-=(const Vector2D& v)
 {
-	x -= v.x;
-	y -= v.y;
+	x_ -= v.x_;
+	y_ -= v.y_;
 	return *this;
 }
 
 float Vector2D::length() const
 {
-	return sqrt(x * x + y * y);
+	return sqrt(x_ * x_ + y_ * y_);
 }
 
 Vector2D& Vector2D::normalize()
@@ -47,15 +47,15 @@ Vector2D& Vector2D::normalize()
 
 Vector2D& Vector2D::operator/=(float s)
 {
-	x /= s;
-	y /= s;
+	x_ /= s;
+	y_ /= s;
 	return *this;
 }
 
 Vector2D& Vector2D::operator*=(float s)
 {
-	x *= s;
-	y *= s;
+	x_ *= s;
+	y_ *= s;
 	return *this;
 }
 

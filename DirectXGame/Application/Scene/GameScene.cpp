@@ -11,17 +11,17 @@ void GameScene::Update()
 
 	//ImGui受付開始
 	ImguiManager::GetInstance()->Begin();
-	ImGui::SliderFloat("Title posX", &titleObject->titleObj_.mat.trans.x, -400, 400);
-	ImGui::SliderFloat("Title posY", &titleObject->titleObj_.mat.trans.y, -400, 400);
-	ImGui::SliderFloat("Title posZ", &titleObject->titleObj_.mat.trans.z, -400, 400);
+	ImGui::SliderFloat("Title posX", &titleObject->titleObj_.mat_.trans_.x_, -400, 400);
+	ImGui::SliderFloat("Title posY", &titleObject->titleObj_.mat_.trans_.y_, -400, 400);
+	ImGui::SliderFloat("Title posZ", &titleObject->titleObj_.mat_.trans_.z_, -400, 400);
 
-	ImGui::SliderFloat("Title rotX", &titleObject->titleObj_.mat.rotAngle.x, -400, 400);
-	ImGui::SliderFloat("Title rotY", &titleObject->titleObj_.mat.rotAngle.y, -400, 400);
-	ImGui::SliderFloat("Title rotZ", &titleObject->titleObj_.mat.rotAngle.z, -400, 400);
+	ImGui::SliderFloat("Title rotX", &titleObject->titleObj_.mat_.rotAngle_.x_, -400, 400);
+	ImGui::SliderFloat("Title rotY", &titleObject->titleObj_.mat_.rotAngle_.y_, -400, 400);
+	ImGui::SliderFloat("Title rotZ", &titleObject->titleObj_.mat_.rotAngle_.z_, -400, 400);
 
-	ImGui::SliderFloat("playcamera posX", &playcamera.eye.x, -400, 400);
-	ImGui::SliderFloat("playcamera posY", &playcamera.eye.y, -400, 400);
-	ImGui::SliderFloat("playcamera posZ", &playcamera.eye.z, -400, 400);
+	ImGui::SliderFloat("playcamera posX", &playcamera.eye_.x_, -400, 400);
+	ImGui::SliderFloat("playcamera posY", &playcamera.eye_.y_, -400, 400);
+	ImGui::SliderFloat("playcamera posZ", &playcamera.eye_.z_, -400, 400);
 
 	//ImGui受付終了
 	ImguiManager::GetInstance()->End();
@@ -75,8 +75,8 @@ void GameScene::Update()
 		}
 
 		//player更新
-		player->Update(matView.mat, matProjection, shader);
-		titleObject->Update(matView.mat, matProjection);
+		player->Update(matView.mat_, matProjection, shader_);
+		titleObject->Update(matView.mat_, matProjection);
 
 		//
 		player->MoveY();
@@ -85,7 +85,7 @@ void GameScene::Update()
 		{
 			object->SetFlag(true);
 
-			object->Update(matView.mat, matProjection);
+			object->Update(matView.mat_, matProjection);
 
 //
 			//if (player->StageCollsionY(object->stage_, matView.mat, matProjection))
@@ -100,7 +100,7 @@ void GameScene::Update()
 		{
 			object->SetFlag(true);
 
-			object->Update(matView.mat, matProjection);
+			object->Update(matView.mat_, matProjection);
 
 		//	if (player->StageCollsionX(object->stage_, matView.mat, matProjection))
 			{
@@ -109,7 +109,7 @@ void GameScene::Update()
 		}
 
 		//スクリーン更新
-		screen.MatUpdate(matView.mat, matProjection, 0);
+		screen.MatUpdate(matView.mat_, matProjection, 0);
 
 		//matView.mat = playcamera.mat;
 
@@ -135,10 +135,10 @@ void GameScene::Update()
 		if (hitStop->GetTime() < 1 && Time == t)
 		{
 			//player更新
-			player->Update(matView.mat, matProjection, shader);
+			player->Update(matView.mat_, matProjection, shader_);
 
 			//enemy更新
-			enemy->Update(matView.mat, matProjection);
+			enemy->Update(matView.mat_, matProjection);
 			enemy->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy->enemy_))
 			{
@@ -159,7 +159,7 @@ void GameScene::Update()
 			}
 
 			//enemy更新
-			enemy2->Update(matView.mat, matProjection);
+			enemy2->Update(matView.mat_, matProjection);
 			enemy2->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy2->enemy_))
 			{
@@ -177,7 +177,7 @@ void GameScene::Update()
 			}
 
 			//enemy更新
-			enemy3->Update(matView.mat, matProjection);
+			enemy3->Update(matView.mat_, matProjection);
 			enemy3->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy3->enemy_))
 			{
@@ -195,7 +195,7 @@ void GameScene::Update()
 			}
 
 			//enemy更新
-			enemy4->Update(matView.mat, matProjection);
+			enemy4->Update(matView.mat_, matProjection);
 			enemy4->SertchPlayer(player->GetModel());
 			if (player->PlayerCollision(enemy4->enemy_))
 			{
@@ -227,9 +227,9 @@ void GameScene::Update()
 
 			if (player->GetWarpMode() == Two)
 			{
-				if (player->GetPos().x < warp->GetOutPos().x)
+				if (player->GetPos().x_ < warp->GetOutPos().x_)
 				{
-					matView.eye.x++;
+					matView.eye_.x_++;
 				}
 				else
 				{
@@ -242,12 +242,12 @@ void GameScene::Update()
 			//ここまで
 
 			//ステージ更新
-			stage->Update(matView.mat, matProjection);
-			goal->Update(matView.mat, matProjection);
-			warp->Update(matView.mat, matProjection);
+			stage->Update(matView.mat_, matProjection);
+			goal->Update(matView.mat_, matProjection);
+			warp->Update(matView.mat_, matProjection);
 
 			//スクリーン更新
-			screen.MatUpdate(matView.mat, matProjection, 0);
+			screen.MatUpdate(matView.mat_, matProjection, 0);
 
 			//Vector2D moveCamera = { 0,0 };
 
@@ -260,7 +260,7 @@ void GameScene::Update()
 			{
 				object->SetFlag(true);
 
-				object->Update(matView.mat, matProjection);
+				object->Update(matView.mat_, matProjection);
 
 
 				if (player->StageCollsionY(object->stage_))
@@ -281,13 +281,13 @@ void GameScene::Update()
 
 
 			//targetをplayerに
-			matView.eye.x = player->GetPos().x;
-			matView.target.x = player->GetPos().x;
+			matView.eye_.x_ = player->GetPos().x_;
+			matView.target_.x_ = player->GetPos().x_;
 
-			matView.eye.y = player->GetPos().y;
-			matView.target.y = player->GetPos().y;
+			matView.eye_.y_ = player->GetPos().y_;
+			matView.target_.y_ = player->GetPos().y_;
 
-			matView.mat = playcamera.mat;
+			matView.mat_ = playcamera.mat_;
 
 			//座標更新
 			//playcamera.Update(*input);
@@ -392,7 +392,7 @@ void GameScene::Update()
 	//パーティクル
 	for (size_t i = 0; i < boxParticles_.size(); i++)
 	{
-		boxParticles_[i]->Update(matView.mat, matProjection);
+		boxParticles_[i]->Update(matView.mat_, matProjection);
 
 		//削除
 		if (boxParticles_[i]->IsDead() == true)
@@ -423,17 +423,17 @@ void GameScene::Initialize()
 
 	//screen
 	//screen.Initialize(dx.get(), multipathPipeline.get(), bilShader);
-	screen.Initialize(multipathPipeline.get(), bilShader);
-	screen.obj.trans.z = 100.1f;
-	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
+	screen.Initialize(multipathPipeline_.get(), bilShader_);
+	screen.obj_.trans_.z_ = 100.1f;
+	screen.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
 	//sprite
-	spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
+	spriteProjection = MyMath::OrthoLH(Window::window_width_, Window::window_height_, 0.0f, 1.0f);
 
 	//tex
-	pressText.Initialize(uiPipeline.get(), spriteShader);
-	pressText.obj.trans.y = -200;
-	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
+	pressText.Initialize(uiPipeline_.get(), spriteShader_);
+	pressText.obj_.trans_.y_ = -200;
+	pressText.obj_.scale_ = { Window::window_width_,Window::window_height_ ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 
 	//描画用行列
@@ -447,46 +447,46 @@ void GameScene::Initialize()
 	enemyHit = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 
 	//player
-	player->Initialize(shader, pipeline.get());
+	player->Initialize(shader_, pipeline_.get());
 
 	//
-	titleObject->Initialize(shader, pipeline.get());
+	titleObject->Initialize(shader_, pipeline_.get());
 
 	//warp
-	warp->Initialize(shader, pipeline.get());
+	warp->Initialize(shader_, pipeline_.get());
 
 	float size = 3.0f;
 
 	//仮enemy置き
-	enemy->Initialize(shader, pipeline.get());
+	enemy->Initialize(shader_, pipeline_.get());
 	enemy->SetTrans(Vector3D{ 180,20,0 });
 	enemy->SetScale(Vector3D{ size,size,size });
 
-	enemy2->Initialize(shader, pipeline.get());
+	enemy2->Initialize(shader_, pipeline_.get());
 	enemy2->SetTrans(Vector3D{ 150,40,0 });
 	enemy2->SetScale(Vector3D{ size,size,size });
 
-	enemy3->Initialize(shader, pipeline.get());
+	enemy3->Initialize(shader_, pipeline_.get());
 	enemy3->SetTrans(Vector3D{ 200,30,0 });
 	enemy3->SetScale(Vector3D{ size,size,size });
 
-	enemy4->Initialize(shader, pipeline.get());
+	enemy4->Initialize(shader_, pipeline_.get());
 	enemy4->SetTrans(Vector3D{ 300,50,0 });
 	enemy4->SetScale(Vector3D{ size,size,size });
 
 	//stage
 	//ステージ初期化
-	stage->Initialize(shader, pipeline.get());
-	float minMapX = stage->stage_.mat.scale.x - 200;
-	stage->stage_.mat.trans.x = minMapX;
+	stage->Initialize(shader_, pipeline_.get());
+	float minMapX = stage->stage_.mat_.scale_.x_ - 200;
+	stage->stage_.mat_.trans_.x_ = minMapX;
 
-	stageWhite->Initialize(shader, pipeline.get());
-	stageWhite->stage_.mat.trans.y += 1;
-	stageWhite->stage_.mat.scale.z = 10;
-	stageWhite->Update(matView.mat, matProjection);
+	stageWhite->Initialize(shader_, pipeline_.get());
+	stageWhite->stage_.mat_.trans_.y_ += 1;
+	stageWhite->stage_.mat_.scale_.z_ = 10;
+	stageWhite->Update(matView.mat_, matProjection);
 
 	//ゴール初期化
-	goal->Initialize(MyDirectX::GetInstance(), shader, pipeline.get());
+	goal->Initialize(MyDirectX::GetInstance(), shader_, pipeline_.get());
 	//シーンフラグ
 	scene = Title;
 
@@ -878,13 +878,13 @@ void GameScene::Run()
 //リセット
 void GameScene::Reset()
 {
-	screen.obj.trans.z = 100.1f;
-	screen.obj.scale = { Window::window_width * 2,Window::window_height / 2,0.2f };
+	screen.obj_.trans_.z_ = 100.1f;
+	screen.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 	goalFlag = false;
 
 	//tex
-	pressText.obj.trans.y = -200;
-	pressText.obj.scale = { Window::window_width,Window::window_height ,0.2f };
+	pressText.obj_.trans_.y_ = -200;
+	pressText.obj_.scale_ = { Window::window_width_,Window::window_height_ ,0.2f };
 	pressText.MatUpdate(Matrix(), spriteProjection, 0);
 
 	//描画用行列
@@ -913,12 +913,12 @@ void GameScene::Reset()
 	enemy4->isDead_ = false;
 	//stage
 	//ステージ初期化
-	float minMapX = stage->stage_.mat.scale.x - 200;
-	stage->stage_.mat.trans.x = minMapX;
+	float minMapX = stage->stage_.mat_.scale_.x_ - 200;
+	stage->stage_.mat_.trans_.x_ = minMapX;
 
-	stageWhite->stage_.mat.trans.y += 1;
-	stageWhite->stage_.mat.scale.z = 10;
-	stageWhite->Update(matView.mat, matProjection);
+	stageWhite->stage_.mat_.trans_.y_ += 1;
+	stageWhite->stage_.mat_.scale_.z_ = 10;
+	stageWhite->Update(matView.mat_, matProjection);
 
 	//ゴール初期化
 	goal->Reset();
@@ -988,11 +988,11 @@ void GameScene::StageReload()
 
 		//ホットリロードでStageSelectごとに読み込むようにする
 		//レベルデータからオブジェクトに生成、配置
-		for (auto& objectdata : levelData_->objects)
+		for (auto& objectdata : levelData_->objects_)
 		{
 			//ファイル名から登録済みモデルを検索
 			Stage* model_ = nullptr;
-			decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
+			decltype(stages_)::iterator it = stages_.find(objectdata.fileName_);
 
 			//終わりか
 			if (it != stages_.end())
@@ -1002,22 +1002,22 @@ void GameScene::StageReload()
 
 			//モデルを指定して3Dオブジェクトを生成
 			Stage* newModel_ = new Stage();
-			newModel_->Initialize(shader, pipeline.get());
+			newModel_->Initialize(shader_, pipeline_.get());
 
 			//調整
 			float scale = 10.0f;
 
 			//trans
-			newModel_->stage_.mat.trans = objectdata.translation * scale;
+			newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
 
 			//rotationboxParticles_
-			newModel_->stage_.mat.rotAngle = objectdata.rotation;
+			newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->stage_.mat.scale = objectdata.scaling * scale;
+			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
 
 			//Update
-			newModel_->Update(matView.mat, matProjection);
+			newModel_->Update(matView.mat_, matProjection);
 
 			//格納
 			objects_.push_back(newModel_);
@@ -1037,7 +1037,7 @@ void GameScene::CreatePatricle(Vector3D pos)
 	{
 		BoxParticle* newP = new BoxParticle();
 
-		newP->Initialize(shader, pipeline.get());
+		newP->Initialize(shader_, pipeline_.get());
 
 		newP->SetPos(pos);
 
@@ -1062,11 +1062,11 @@ void GameScene::StageLoad(const std::string& filePath)
 
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
-	for (auto& objectdata : levelData_->objects)
+	for (auto& objectdata : levelData_->objects_)
 	{
 		//ファイル名から登録済みモデルを検索
 		Stage* model_ = nullptr;
-		decltype(stages_)::iterator it = stages_.find(objectdata.fileName);
+		decltype(stages_)::iterator it = stages_.find(objectdata.fileName_);
 
 		//終わりか
 		if (it != stages_.end())
@@ -1076,22 +1076,22 @@ void GameScene::StageLoad(const std::string& filePath)
 
 		//モデルを指定して3Dオブジェクトを生成
 		Stage* newModel_ = new Stage();
-		newModel_->Initialize(shader, pipeline.get());
+		newModel_->Initialize(shader_, pipeline_.get());
 
 		//調整
 		float scale = 10.0f;
 
 		//trans
-		newModel_->stage_.mat.trans = objectdata.translation * scale;
+		newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
 
 		//rotation
-		newModel_->stage_.mat.rotAngle = objectdata.rotation;
+		newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
 
 		//scale;
-		newModel_->stage_.mat.scale = objectdata.scaling * scale;
+		newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
 
 		//Update
-		newModel_->Update(matView.mat, matProjection);
+		newModel_->Update(matView.mat_, matProjection);
 
 		//格納
 		objects_.push_back(newModel_);

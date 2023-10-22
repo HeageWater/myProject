@@ -14,22 +14,22 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	// 頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> vsBlob;
+	ComPtr<ID3DBlob> vsBlob_;
 
 	// ハルシェーダオブジェクト
-	ComPtr<ID3DBlob> hsBlob;
+	ComPtr<ID3DBlob> hsBlob_;
 
 	// ドメインシェーダオブジェクト
-	ComPtr<ID3DBlob> dsBlob;
+	ComPtr<ID3DBlob> dsBlob_;
 
 	// ジオメトリシェーダオブジェクト
-	ComPtr<ID3DBlob> gsBlob;
+	ComPtr<ID3DBlob> gsBlob_;
 
 	// ピクセルシェーダオブジェクト
-	ComPtr<ID3DBlob> psBlob;
+	ComPtr<ID3DBlob> psBlob_;
 
 	// エラーオブジェクト
-	ComPtr<ID3DBlob> errorBlob;
+	ComPtr<ID3DBlob> errorBlob_;
 
 private:
 
@@ -59,29 +59,29 @@ public:
 	/// 頂点シェーダ取得
 	/// </summary>
 	/// <returns></returns>
-	ID3DBlob* VSBlob() { return vsBlob.Get(); }
+	ID3DBlob* VSBlob() { return vsBlob_.Get(); }
 
 	/// <summary>
 	/// ハルシェーダ取得
 	/// </summary>
 	/// <returns></returns>
-	ID3DBlob* HSBlob() { return hsBlob.Get(); }
+	ID3DBlob* HSBlob() { return hsBlob_.Get(); }
 
 	/// <summary>
 	/// ドメインシェーダシェーダ取得
 	/// </summary>
 	/// <returns></returns>
-	ID3DBlob* DSBlob() { return dsBlob.Get(); }
+	ID3DBlob* DSBlob() { return dsBlob_.Get(); }
 
 	/// <summary>
 	/// ジオメトリシェーダ取得
 	/// </summary>
 	/// <returns></returns>
-	ID3DBlob* GSBlob() { return gsBlob.Get(); }
+	ID3DBlob* GSBlob() { return gsBlob_.Get(); }
 
 	/// <summary>
 	/// ピクセルシェーダ取得
 	/// </summary>
 	/// <returns></returns>
-	ID3DBlob* PSBlob() { return psBlob.Get(); }
+	ID3DBlob* PSBlob() { return psBlob_.Get(); }
 };

@@ -14,8 +14,8 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 {
 	playerAttack_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
 
-	playerAttack_.mat.Initialize();
-	playerAttack_.mat.scale = { 15,5,1 };
+	playerAttack_.mat_.Initialize();
+	playerAttack_.mat_.scale_ = { 15,5,1 };
 
 	controller_ = Controller::GetInstance();
 	attackF_ = false;
@@ -57,5 +57,5 @@ void PlayerAttack::SetUpdate()
 	//playerAttack_.mat.trans.x += range * vec.x;
 	//playerAttack_.mat.trans.y += range * vec.y;
 	//playerAttack_.mat.rotAngle.x = controller->GetRightStickVec().x * 2;
-	playerAttack_.mat.rotAngle.z = controller_->GetRightStickVec().x * controller_->GetRightStickVec().y;
+	playerAttack_.mat_.rotAngle_.z_ = controller_->GetRightStickVec().x_ * controller_->GetRightStickVec().y_;
 }

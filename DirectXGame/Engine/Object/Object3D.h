@@ -15,47 +15,47 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//DirectX
-	MyDirectX* dx = nullptr;
+	MyDirectX* dx_ = nullptr;
 
 	//パイプライン
-	GPipeline* pipeline = nullptr;
+	GPipeline* pipeline_ = nullptr;
 public:
 
 	//matrix
-	MyMath::ObjMatrix mat;
+	MyMath::ObjMatrix mat_;
 
 	//コンストバッファデータトランスフォーム
 	struct ConstBufferDataTransform 
 	{
-		Matrix mat;
+		Matrix mat_;
 	};
 
 	//トランスフォーム
-	ComPtr<ID3D12Resource> transform;
+	ComPtr<ID3D12Resource> transform_;
 
 	//コンストマップ用トランスフォーム
-	ConstBufferDataTransform* constMapTransform = nullptr;
+	ConstBufferDataTransform* constMapTransform_ = nullptr;
 
 	//ヒーププロップ
-	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	D3D12_HEAP_PROPERTIES cbHeapProp_{};
 
 	//リソースデスク
-	D3D12_RESOURCE_DESC cbResourceDesc{};
+	D3D12_RESOURCE_DESC cbResourceDesc_{};
 
 	//頂点サイズ
-	UINT vertexSize;
+	UINT vertexSize_;
 
 	//頂点サイズ(複数)
-	std::vector<Vertex> vertices;
+	std::vector<Vertex> vertices_;
 
 	//インデックスサイズ
-	UINT indexSize;
+	UINT indexSize_;
 
 	//インデックス(複数)
-	std::vector<unsigned short> indices;
+	std::vector<unsigned short> indices_;
 
 	//親子関係
-	Object3D* parent = nullptr;
+	Object3D* parent_ = nullptr;
 
 	/// <summary>
 	/// 初期化

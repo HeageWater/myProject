@@ -11,29 +11,29 @@ class ObjFile
 private:
 
 	//ファイル変数
-	FILE* file;
+	FILE* file_;
 	//std::FILE* file = NULL;
 	
 	//頂点データ
-	std::vector<unsigned short> vertexIndices, uvIndices, normalIndices;
+	std::vector<unsigned short> vertexIndices_, uvIndices_, normalIndices_;
 
 	//頂点
-	std::vector<Vector3D> temp_vertices;
+	std::vector<Vector3D> tempVertices_;
 
 	//uv
-	std::vector<Vector2D> temp_uvs;
+	std::vector<Vector2D> tempUvs_;
 
 	//normal
-	std::vector<Vector3D> temp_normals;
+	std::vector<Vector3D> tempNormals_;
 
 	//頂点データサイズ
-	size_t vertexSize;
+	size_t vertexSize_;
 
 	//uvデータサイズ
-	size_t uvSize;
+	size_t uvSize_;
 
 	//normalデータサイズ
-	size_t normalSize;
+	size_t normalSize_;
 
 	/// <summary>
 	/// ファイル読み込み

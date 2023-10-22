@@ -2,8 +2,8 @@
 
 Goal::Goal()
 {
-	goal_.mat.Initialize();
-	goal_.mat.scale = { 3,3,3 };
+	goal_.mat_.Initialize();
+	goal_.mat_.scale_ = { 3,3,3 };
 }
 
 Goal::~Goal()
@@ -14,14 +14,14 @@ void Goal::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
 	goal_.Initialize(dx_, shader, "Resources\\Model\\ene\\ene.obj", pipeline_);
 
-	goal_.mat.Initialize();
-	goal_.mat.scale = { 5,5,3 };
-	goal_.mat.trans = { 380,-160,0 };
+	goal_.mat_.Initialize();
+	goal_.mat_.scale_ = { 5,5,3 };
+	goal_.mat_.trans_ = { 380,-160,0 };
 }
 
 void Goal::Draw(size_t tex)
 {
-	goal_.mat.rotAngle.y += 0.01f;
+	goal_.mat_.rotAngle_.y_ += 0.01f;
 
 	goal_.Draw(tex);
 }
@@ -33,10 +33,10 @@ void Goal::Update(Matrix matView, Matrix matProjection)
 
 bool Goal::BoxCollision(Model model)
 {
-	float a = (model.mat.trans.x - goal_.mat.trans.x) * (model.mat.trans.x - goal_.mat.trans.x);
-	float b = (model.mat.trans.y - goal_.mat.trans.y) * (model.mat.trans.y - goal_.mat.trans.y);
+	float a = (model.mat_.trans_.x_ - goal_.mat_.trans_.x_) * (model.mat_.trans_.x_ - goal_.mat_.trans_.x_);
+	float b = (model.mat_.trans_.y_ - goal_.mat_.trans_.y_) * (model.mat_.trans_.y_ - goal_.mat_.trans_.y_);
 
-	float c = model.mat.scale.x * goal_.mat.scale.x;
+	float c = model.mat_.scale_.x_ * goal_.mat_.scale_.x_;
 
 	//あたり判定
 	if (a + b < c)
@@ -49,7 +49,7 @@ bool Goal::BoxCollision(Model model)
 
 void Goal::Reset()
 {
-	goal_.mat.Initialize();
-	goal_.mat.scale = { 5,5,3 };
-	goal_.mat.trans = { 380,-160,0 };
+	goal_.mat_.Initialize();
+	goal_.mat_.scale_ = { 5,5,3 };
+	goal_.mat_.trans_ = { 380,-160,0 };
 }

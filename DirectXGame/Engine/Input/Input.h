@@ -16,19 +16,7 @@ public:
 		RightClick = 1,
 		WheelClick = 2,
 	};
-private:
-	Window* win = nullptr;
-	HWND inputHwnd;
 
-	BYTE key[256] = {};
-	BYTE prev[256] = {};
-	IDirectInputDevice8* keyboard = nullptr;
-	IDirectInput8* directInput = nullptr;
-
-	DIMOUSESTATE click = {};
-	DIMOUSESTATE prevclick = {};
-	IDirectInputDevice8* mouse = nullptr;
-	POINT cursor;
 public:
 
 	/// <summary>
@@ -111,5 +99,33 @@ private:
 	//コピーコンストラクタ・代入演算子削除
 	Input& operator=(const Input&) = delete;
 	Input(const Input&) = delete;
+
+private:
+
+	//window
+	Window* win_ = nullptr;
+
+	//Hwnd
+	HWND inputHwnd_;
+
+	//配列
+	BYTE key_[256] = {};
+	BYTE prev_[256] = {};
+
+	//キーボード
+	IDirectInputDevice8* keyboard_ = nullptr;
+	IDirectInput8* directInput_ = nullptr;
+
+	//マウス関連
+	DIMOUSESTATE click_ = {};
+
+	//クリック
+	DIMOUSESTATE prevclick_ = {};
+
+	//マウス
+	IDirectInputDevice8* mouse_ = nullptr;
+
+	//カーソル
+	POINT cursor_;
 };
 

@@ -68,22 +68,22 @@ protected:
 	bool endRequest_ = false;
 
 	//windowApi
-	std::unique_ptr<Window> win;
+	std::unique_ptr<Window> win_;
 
 	//buff
-	std::unique_ptr<ConstBuff> cBuff;
+	std::unique_ptr<ConstBuff> cBuff_;
 
 	//pipeline
-	std::unique_ptr<GPipeline> pipeline;
+	std::unique_ptr<GPipeline> pipeline_;
 
 	//描画初期化
-	std::unique_ptr<GPipeline> multipathPipeline;
+	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//gpipeline
-	std::unique_ptr<GPipeline> uiPipeline;
+	std::unique_ptr<GPipeline> uiPipeline_;
 
 	//shader
-	Shader shader;
-	Shader bilShader;
-	Shader spriteShader;
+	Shader shader_;
+	Shader bilShader_;
+	Shader spriteShader_;
 };

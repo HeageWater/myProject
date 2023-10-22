@@ -31,5 +31,5 @@ public:
 
 private:
 	//シーンファクトリー
-	std::unique_ptr<SceneFactory>sceneManager;
+	std::unique_ptr<SceneFactory>sceneManager_;
 };

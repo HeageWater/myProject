@@ -51,7 +51,7 @@ public:
 	/// posセット
 	/// </summary>
 	/// <param name="pos_"></param>
-	void SetPos(Vector3D pos) { playerAttack_.mat.trans = pos; };
+	void SetPos(Vector3D pos) { playerAttack_.mat_.trans_ = pos; };
 
 	/// <summary>
 	/// 向きセット
@@ -69,19 +69,19 @@ public:
 	/// pos取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return playerAttack_.mat.trans; };
+	Vector3D GetPos() { return playerAttack_.mat_.trans_; };
 
 	/// <summary>
 	/// scale取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetScale() { return playerAttack_.mat.scale; };
+	Vector3D GetScale() { return playerAttack_.mat_.scale_; };
 
 	/// <summary>
 	///rot取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetRot() { return playerAttack_.mat.rotAngle; };
+	Vector3D GetRot() { return playerAttack_.mat_.rotAngle_; };
 
 private:
 

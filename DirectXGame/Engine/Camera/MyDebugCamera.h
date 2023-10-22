@@ -7,28 +7,7 @@
 /// </summary>
 class MyDebugCamera
 {
-public:
-	Matrix mat;
-	Vector3D eye;		//	視点座標
-	Vector3D target;	//	注視点座標
-	Vector3D up;		//	上方向ベクトル
-	Matrix billboard;
-private:
-	float disEyeTarget;
-	Vector3D frontVec;
-	Vector2D cursor;
-	Vector2D prevCursor;
-	Vector2D moveCursor;
-	Vector2D cursorSpd;
 
-	Vector2D rotAngle;
-	Vector2D prevRotAngle;
-	Vector2D endRotAngle;
-
-	Vector3D rightVec;
-	Vector3D downVec;
-
-	Input* input_;
 public:
 
 	/// <summary>
@@ -63,18 +42,51 @@ public:
 	/// eyeを取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D Transfrom() { return eye; }
+	Vector3D Transfrom() { return eye_; }
 
 	/// <summary>
 	/// カメラの前方向を取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D FrontVec() { return frontVec; }
+	Vector3D FrontVec() { return frontVec_; }
 
 	/// <summary>
 	/// eyeとtargetを動かす
 	/// </summary>
 	/// <param name="camerapos"></param>
 	void Move(float camerapos);
+
+public:
+	Matrix mat_;
+	Vector3D eye_;		//	視点座標
+	Vector3D target_;	//	注視点座標
+	Vector3D up_;		//	上方向ベクトル
+	Matrix billboard_;
+private:
+
+	//ターゲット
+	float disEyeTarget_;
+
+	//前ベクトル
+	Vector3D frontVec_;
+
+	//カーソル関係
+	Vector2D cursor_;
+	Vector2D prevCursor_;
+	Vector2D moveCursor_;
+	Vector2D cursorSpd_;
+
+	//角度関係
+	Vector2D rotAngle_;
+	Vector2D prevRotAngle_;
+	Vector2D endRotAngle_;
+
+	//右ベクトル
+	Vector3D rightVec_;
+	//下ベクトル
+	Vector3D downVec_;
+
+	//キーボード
+	Input* input_;
 };
 

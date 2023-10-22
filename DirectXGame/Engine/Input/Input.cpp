@@ -3,113 +3,113 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-void Input::Initialize(Window* win_)
+void Input::Initialize(Window* win)
 {
-	win = win_;
-	inputHwnd = win->GetHwnd();
+	win_ = win;
+	inputHwnd_ = win_->GetHwnd();
 	//	DirectInput初期化
 	HRESULT result = DirectInput8Create(
-		win->GetWND().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+		win_->GetWND().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput_, nullptr);
 	assert(SUCCEEDED(result));
 	//	デバイス生成(キーボード以外も可能)
-	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+	result = directInput_->CreateDevice(GUID_SysKeyboard, &keyboard_, NULL);
 	assert(SUCCEEDED(result));
 	//	入力形成のセット
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+	result = keyboard_->SetDataFormat(&c_dfDIKeyboard);
 	assert(SUCCEEDED(result));
 	//	排他制御のレベルセット
-	result = keyboard->SetCooperativeLevel(
-		win->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = keyboard_->SetCooperativeLevel(
+		win_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 
 
 	result = DirectInput8Create(
-		win->GetWND().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+		win_->GetWND().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput_, nullptr);
 	assert(SUCCEEDED(result));
 	//	デバイス生成(キーボード以外も可能)
-	result = directInput->CreateDevice(GUID_SysMouse, &mouse, NULL);
+	result = directInput_->CreateDevice(GUID_SysMouse, &mouse_, NULL);
 	assert(SUCCEEDED(result));
 	//	入力形成のセット
-	result = mouse->SetDataFormat(&c_dfDIMouse);
+	result = mouse_->SetDataFormat(&c_dfDIMouse);
 	assert(SUCCEEDED(result));
 	//	排他制御のレベルセット
-	result = mouse->SetCooperativeLevel(
-		win->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = mouse_->SetCooperativeLevel(
+		win_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 }
 
 void Input::Update()
 {
 	//	前フレームの情報取得
-	for (size_t i = 0; i < sizeof(key); i++)
+	for (size_t i = 0; i < sizeof(key_); i++)
 	{
-		prev[i] = key[i];
+		prev_[i] = key_[i];
 	}
 
-	prevclick = click;
+	prevclick_ = click_;
 
 	//	キー情報取得
-	keyboard->Acquire();
+	keyboard_->Acquire();
 	//	全キーの入力情報取得
-	keyboard->GetDeviceState(sizeof(key), key);
+	keyboard_->GetDeviceState(sizeof(key_), key_);
 
-	mouse->Acquire();
-	mouse->Poll();
-	mouse->GetDeviceState(sizeof(DIMOUSESTATE), &click);
-	GetCursorPos(&cursor);
-	ScreenToClient(win->GetHwnd(), &cursor);
+	mouse_->Acquire();
+	mouse_->Poll();
+	mouse_->GetDeviceState(sizeof(DIMOUSESTATE), &click_);
+	GetCursorPos(&cursor_);
+	ScreenToClient(win_->GetHwnd(), &cursor_);
 }
 
 void Input::Finalize()
 {
-	keyboard->Unacquire();
-	keyboard->Release();
-	mouse->Unacquire();
-	mouse->Release();
-	directInput->Release();
+	keyboard_->Unacquire();
+	keyboard_->Release();
+	mouse_->Unacquire();
+	mouse_->Release();
+	directInput_->Release();
 }
 
 bool Input::GetKey(size_t _key)
 {
-	return key[_key];
+	return key_[_key];
 }
 
 bool Input::GetTrigger(size_t _key)
 {
-	return key[_key] && !prev[_key];
+	return key_[_key] && !prev_[_key];
 }
 
 bool Input::ReleaseKey(size_t _key)
 {
-	return prev[_key] && !key[_key];
+	return prev_[_key] && !key_[_key];
 }
 
 bool Input::Click(size_t type)
 {
-	return (click.rgbButtons[type] & (0x80));
+	return (click_.rgbButtons[type] & (0x80));
 
 }
 
 bool Input::ClickTrriger(size_t type)
 {
-	return (click.rgbButtons[type] & (0x80)) && !(prevclick.rgbButtons[type] & (0x80));
+	return (click_.rgbButtons[type] & (0x80)) && !(prevclick_.rgbButtons[type] & (0x80));
 }
 
 POINT Input::CursorPos()
 {
-	ScreenToClient(inputHwnd, &cursor);
-	return cursor;
+	ScreenToClient(inputHwnd_, &cursor_);
+	return cursor_;
 }
 
 void Input::CursorPos(Vector2D& pos)
 {
-	pos.x = (float)cursor.x;
-	pos.y = (float)cursor.y;
+	pos.x_ = (float)cursor_.x;
+	pos.y_ = (float)cursor_.y;
 }
 
 LONG Input::Wheel()
 {
-	return click.lZ;
+	return click_.lZ;
 }
 
 Input* Input::GetInstance()

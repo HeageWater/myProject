@@ -2,8 +2,8 @@
 
 Stage::Stage()
 {
-	stage_.mat.Initialize();
-	stage_.mat.scale = { 3,3,3 };
+	stage_.mat_.Initialize();
+	stage_.mat_.scale_ = { 3,3,3 };
 }
 
 Stage::~Stage()
@@ -14,11 +14,11 @@ void Stage::Initialize(Shader shader, GPipeline* pipeline_)
 {
 	stage_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\box.obj", pipeline_);
 
-	stage_.mat.Initialize();
-	stage_.mat.scale = { 1020,5,120 };
-	stage_.mat.trans.x = 0;
-	stage_.mat.trans.y = 0;
-	stage_.mat.trans.z = 0;
+	stage_.mat_.Initialize();
+	stage_.mat_.scale_ = { 1020,5,120 };
+	stage_.mat_.trans_.x_ = 0;
+	stage_.mat_.trans_.y_ = 0;
+	stage_.mat_.trans_.z_ = 0;
 
 	drawFlag_ = true;
 }
@@ -38,6 +38,6 @@ void Stage::Update(Matrix matView, Matrix matProjection)
 
 void Stage::Reset()
 {
-	stage_.mat.trans.x = 0;
-	stage_.mat.trans.y = 0;
+	stage_.mat_.trans_.x_ = 0;
+	stage_.mat_.trans_.y_ = 0;
 }

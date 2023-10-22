@@ -8,13 +8,6 @@
 /// </summary>
 class ViewPort
 {
-private:
-
-	//viewport
-	D3D12_VIEWPORT viewport{};
-
-	//matrix
-	Matrix mat;
 
 public:
 
@@ -41,6 +34,15 @@ public:
 	/// matrixを返す
 	/// </summary>
 	/// <returns></returns>
-	Matrix Mat() { return mat; }
+	Matrix Mat() { return mat_; }
+
+private:
+
+	//viewport
+	D3D12_VIEWPORT viewport_{};
+
+	//matrix
+	Matrix mat_;
+
 };
 

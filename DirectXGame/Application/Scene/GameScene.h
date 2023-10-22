@@ -60,10 +60,10 @@ private:
 
 	//描画用行列
 	MyMath::MatView matView;
-	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width, Window::window_height, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
-	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.1f, 1000.0f);
+	Matrix matProjection = MyMath::PerspectiveFovLH(Window::window_width_, Window::window_height_, MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
+	Matrix orthoProjection = MyMath::OrthoLH(Window::window_width_, Window::window_height_, 0.1f, 1000.0f);
 	//sprite
-	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width, Window::window_height, 0.0f, 1.0f);
+	Matrix spriteProjection = MyMath::OrthoLH(Window::window_width_, Window::window_height_, 0.0f, 1.0f);
 
 	//sound
 	MyXAudio* sound_ = nullptr;

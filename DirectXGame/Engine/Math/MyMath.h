@@ -12,10 +12,10 @@ namespace MyMath
 {
 	struct float4
 	{
-		float x;
-		float y;
-		float z;
-		float w;
+		float x_;
+		float y_;
+		float z_;
+		float w_;
 
 		float4();
 		float4(float x, float y, float z, float w);
@@ -76,10 +76,10 @@ namespace MyMath
 	class MatView
 	{
 	public:
-		Matrix mat;
-		Vector3D eye;		//	視点座標
-		Vector3D target;	//	注視点座標
-		Vector3D up;		//	上方向ベクトル
+		Matrix mat_;
+		Vector3D eye_;		//	視点座標
+		Vector3D target_;	//	注視点座標
+		Vector3D up_;		//	上方向ベクトル
 	public:
 		MatView();
 
@@ -100,16 +100,16 @@ namespace MyMath
 	class ObjMatrix
 	{
 	public:
-		Matrix matWorld;
+		Matrix matWorld_;
 
-		Matrix matScale;
-		Vector3D scale;
+		Matrix matScale_;
+		Vector3D scale_;
 
-		Matrix matRot;
-		Vector3D rotAngle;
+		Matrix matRot_;
+		Vector3D rotAngle_;
 
-		Matrix matTrans;
-		Vector3D trans;
+		Matrix matTrans_;
+		Vector3D trans_;
 
 	private:
 

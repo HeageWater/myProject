@@ -17,38 +17,38 @@ public:
 	HRESULT result_;
 
 	//ヒーププロップ
-	D3D12_HEAP_PROPERTIES heapProp{};
+	D3D12_HEAP_PROPERTIES heapProp_{};
 
 	//リソースデスク
-	D3D12_RESOURCE_DESC resourceDesc{};
+	D3D12_RESOURCE_DESC resourceDesc_{};
 
 	//コンストバッファデータマテリアル
 	struct ConstBufferDataMaterial 
 	{
 		//RGBA
-		Vector4D color;
+		Vector4D color_;
 	};
 
 	//コンストバッファデータマテリアル
 	struct ConstBufferTimeMaterial 
 	{
-		float time;
+		float time_;
 	};
 
 	//マテリアル
-	ComPtr<ID3D12Resource> material;
+	ComPtr<ID3D12Resource> material_;
 
 	//マップ用マテリアル
-	ConstBufferDataMaterial* mapMaterial = nullptr;
+	ConstBufferDataMaterial* mapMaterial_ = nullptr;
 
 	//タイムマテリアル
-	ComPtr<ID3D12Resource> timeMaterial;
+	ComPtr<ID3D12Resource> timeMaterial_;
 
 	//マップ用タイムマテリアル
-	ConstBufferTimeMaterial* timeMapMaterial = nullptr;
+	ConstBufferTimeMaterial* timeMapMaterial_ = nullptr;
 
 	//タイマー
-	float timer = 100000;
+	float timer_ = 100000;
 
 public:
 

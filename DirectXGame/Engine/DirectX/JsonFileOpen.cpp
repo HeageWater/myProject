@@ -2,13 +2,13 @@
 #include <fstream>
 #include <cassert>
 
-const std::string JsonFileOpen::kDefaultBaseDirectory = "Resources/levels/";
-const std::string JsonFileOpen::kExtension = ".json";
+const std::string JsonFileOpen::kDefaultBaseDirectory_ = "Resources/levels/";
+const std::string JsonFileOpen::kExtension_ = ".json";
 
 LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 {
 	//パスを連結する
-	const std::string fullpath = kDefaultBaseDirectory + fileName + kExtension;
+	const std::string fullpath = kDefaultBaseDirectory_ + fileName + kExtension_;
 
 	//ファイルストリーム
 	std::ifstream file;
@@ -61,23 +61,23 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 		if (type.compare("MESH") == 0)
 		{
 			//要素追加
-			levelData->objects.emplace_back(LevelData::ObjectData{});
+			levelData->objects_.emplace_back(LevelData::ObjectData{});
 
 			//今追加した要素の参照を得る
-			LevelData::ObjectData& objectData = levelData->objects.back();
+			LevelData::ObjectData& objectData = levelData->objects_.back();
 
 			//ファイルネームだったら
 			if (object.contains("file_name"))
 			{
 				//ファイル名
-				objectData.fileName = object["file_name"];
+				objectData.fileName_ = object["file_name"];
 			}
 
 			//他に要素があったら
 			if (object.contains("file_name"))
 			{
 				//ファイル名
-				objectData.otherName = object["file_name"];
+				objectData.otherName_ = object["file_name"];
 			}
 
 			//Transformのパラメータ読み込み
@@ -101,25 +101,25 @@ void JsonFileOpen::SetMatrix(nlohmann::json& transform, LevelData::ObjectData& o
 	//float size = 10.0f;
 
 	// 平行移動
-	vec.x = -(float)transform["translation"][1] * size;
-	vec.y = (float)transform["translation"][2] * size;
-	vec.z = (float)transform["translation"][0] * size;
-	objectData.translation.SetVector3(vec);
+	vec.x_ = -(float)transform["translation"][1] * size;
+	vec.y_ = (float)transform["translation"][2] * size;
+	vec.z_ = (float)transform["translation"][0] * size;
+	objectData.translation_.SetVector3(vec);
 
 	//float pi = 3.14;
 	float angle = 60;
 
 	// 回転角
-	vec.x = -(float)transform["rotation"][1] / (angle);
-	vec.y = -(float)transform["rotation"][2] / (angle);
-	vec.z = -(float)transform["rotation"][0] / (angle);
-	objectData.rotation.SetVector3(vec);
+	vec.x_ = -(float)transform["rotation"][1] / (angle);
+	vec.y_ = -(float)transform["rotation"][2] / (angle);
+	vec.z_ = -(float)transform["rotation"][0] / (angle);
+	objectData.rotation_.SetVector3(vec);
 
 	// スケーリング
-	vec.x = (float)transform["scaling"][1] * size;
-	vec.y = (float)transform["scaling"][2] * size;
-	vec.z = (float)transform["scaling"][0] * size;
-	objectData.scaling.SetVector3(vec);
+	vec.x_ = (float)transform["scaling"][1] * size;
+	vec.y_ = (float)transform["scaling"][2] * size;
+	vec.z_ = (float)transform["scaling"][0] * size;
+	objectData.scaling_.SetVector3(vec);
 }
 
 //再帰関数
@@ -140,16 +140,16 @@ LevelData* JsonFileOpen::CheckObjects(nlohmann::json deserialised, LevelData* le
 		if (type.compare("MESH") == 0)
 		{
 			//要素追加
-			levelData->objects.emplace_back(LevelData::ObjectData{});
+			levelData->objects_.emplace_back(LevelData::ObjectData{});
 
 			//今追加した要素の参照を得る
-			LevelData::ObjectData& objectData = levelData->objects.back();
+			LevelData::ObjectData& objectData = levelData->objects_.back();
 
 			//ファイルネームだったら
 			if (object.contains("file_name"))
 			{
 				//ファイル名
-				objectData.fileName = object["file_name"];
+				objectData.fileName_ = object["file_name"];
 			}
 
 			//Transformのパラメータ読み込み

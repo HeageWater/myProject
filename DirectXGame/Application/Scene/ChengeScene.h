@@ -45,13 +45,13 @@ public:
 	/// 今動いているかどうか
 	/// </summary>
 	/// <returns></returns>
-	bool GetPlayFlag() { return isPlayFlag; };
+	bool GetPlayFlag() { return isPlayFlag_; };
 
 	/// <summary>
 	/// 今どれくらい動いたか
 	/// </summary>
 	/// <returns></returns>
-	float GetTime() { return time; };
+	float GetTime() { return time_; };
 
 	/// <summary>
 	/// シングルトン
@@ -61,16 +61,16 @@ public:
 private:
 
 	//これをONにするとシーンチェンジが開始する
-	bool isPlayFlag = false;
+	bool isPlayFlag_ = false;
 
 	//sprite
 	//SpriteCommon* spriteCommon = SpriteCommon::Get();
-	SpriteCommon* spriteCommon = new SpriteCommon();
+	SpriteCommon* spriteCommon_ = new SpriteCommon();
 	Sprite* sprite_ = new Sprite();
 
-	size_t tex = 0;
+	size_t tex_ = 0;
 
-	float time = 0;
+	float time_ = 0;
 
 	std::string next_;
 private:

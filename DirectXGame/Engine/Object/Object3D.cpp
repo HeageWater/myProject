@@ -11,35 +11,35 @@ void Object3D::Initialize(Shader shader)
 	D3D12_RESOURCE_DESC resourceDesc{};
 
 	//	ヒープ設定
-	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
+	cbHeapProp_.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用
 
 	//	リソース設定
-	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xFF) & ~0xFF;
-	cbResourceDesc.Height = 1;
-	cbResourceDesc.DepthOrArraySize = 1;
-	cbResourceDesc.MipLevels = 1;
-	cbResourceDesc.SampleDesc.Count = 1;
-	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	cbResourceDesc_.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbResourceDesc_.Width = (sizeof(ConstBufferDataTransform) + 0xFF) & ~0xFF;
+	cbResourceDesc_.Height = 1;
+	cbResourceDesc_.DepthOrArraySize = 1;
+	cbResourceDesc_.MipLevels = 1;
+	cbResourceDesc_.SampleDesc.Count = 1;
+	cbResourceDesc_.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//	生成
-	result_ = dx->GetDev()->CreateCommittedResource(
-		&cbHeapProp,	//	ヒープ設定
+	result_ = dx_->GetDev()->CreateCommittedResource(
+		&cbHeapProp_,	//	ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,	//	リソース設定
+		&cbResourceDesc_,	//	リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&transform));
+		IID_PPV_ARGS(&transform_));
 	assert(SUCCEEDED(result_));
 
 	//	定数バッファのマッピング
-	result_ = transform->Map(0, nullptr, (void**)&constMapTransform);	//	マッピング
+	result_ = transform_->Map(0, nullptr, (void**)&constMapTransform_);	//	マッピング
 	assert(SUCCEEDED(result_));
 
-	vertexSize = 24;
-	vertices.resize(vertexSize);
+	vertexSize_ = 24;
+	vertices_.resize(vertexSize_);
 	// 頂点データ
-	vertices = {
+	vertices_ = {
 		//	前
 		{{ -1.0f,-1.0f,-1.0f },{},{0.0f, 1.0f}}, // 左下
 		{{ -1.0f, 1.0f,-1.0f },{},{0.0f, 0.0f}}, // 左上
@@ -72,10 +72,10 @@ void Object3D::Initialize(Shader shader)
 		{{  1.0f, 1.0f, 1.0f },{}, {1.0f, 0.0f}}, // 右上
 	};
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertexSize);
-	indexSize = 36;
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertexSize_);
+	indexSize_ = 36;
 	//	インデックスデータ
-	indices =
+	indices_ =
 	{
 		0,1,2,
 		2,1,3,
@@ -91,17 +91,17 @@ void Object3D::Initialize(Shader shader)
 		22,21,23,
 	};
 	//	全体のサイズ
-	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize);
-	VBInitialize(dx->GetDev(), sizeVB, sizeIB, &indices.front(), indexSize);
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indexSize_);
+	VBInitialize(dx_->GetDev(), sizeVB, sizeIB, &indices_.front(), indexSize_);
 	//VBInitialize(dx->GetDev(), sizeVB, vertexSize, sizeIB, &indices.front(), indexSize);
 
-	mat.Initialize();
+	mat_.Initialize();
 }
 
-void Object3D::Initialize(MyDirectX* dx_, GPipeline* pipeline_, Shader shader)
+void Object3D::Initialize(MyDirectX* dx, GPipeline* pipeline, Shader shader)
 {
-	dx = dx_;
-	pipeline = pipeline_;
+	dx_ = dx;
+	pipeline_ = pipeline;
 	Initialize(shader);
 }
 
@@ -111,48 +111,48 @@ Object3D::Object3D()
 
 Object3D::Object3D(MyDirectX* dx_, GPipeline* pipeline_, Shader shader)
 {
-	dx = dx_;
-	pipeline = pipeline_;
+	dx_ = dx_;
+	pipeline_ = pipeline_;
 	Initialize(shader);
 }
 
 
 void Object3D::MatUpdate(Matrix matView, Matrix matProjection)
 {
-	mat.Update();
+	mat_.Update();
 
-	constMapTransform->mat = mat.matWorld;
-	constMapTransform->mat *= matView;
-	constMapTransform->mat *= matProjection;
+	constMapTransform_->mat_ = mat_.matWorld_;
+	constMapTransform_->mat_ *= matView;
+	constMapTransform_->mat_ *= matProjection;
 }
 
 void Object3D::SetVertices()
 {
 	Vertex* vertMap = nullptr;
-	result_ = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 
 	// 全頂点に対して
-	for (size_t i = 0; i < vertexSize; i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
+	for (size_t i = 0; i < vertexSize_; i++) {
+		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
 
 	// 繋がりを解除
-	vertBuff->Unmap(0, nullptr);
+	vertBuff_->Unmap(0, nullptr);
 
 	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
 
 void Object3D::Draw(size_t handle)
 {
-	pipeline->Setting(dx->GetCmdList());
-	pipeline->Update(dx->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	VertBuffUpdate(dx->GetCmdList());
+	pipeline_->Setting(dx_->GetCmdList());
+	pipeline_->Update(dx_->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	VertBuffUpdate(dx_->GetCmdList());
 
 	//	テクスチャ
-	dx->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx->GetTextureHandle((int32_t)handle));
-	dx->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform->GetGPUVirtualAddress());
+	dx_->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx_->GetTextureHandle((int32_t)handle));
+	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform_->GetGPUVirtualAddress());
 
-	dx->GetCmdList()->DrawIndexedInstanced(indexSize, 1, 0, 0, 0);
+	dx_->GetCmdList()->DrawIndexedInstanced(indexSize_, 1, 0, 0, 0);
 }

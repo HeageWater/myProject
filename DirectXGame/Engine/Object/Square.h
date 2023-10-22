@@ -7,10 +7,10 @@
 class UISquare :public VertBuff
 {
 private:
-	GPipeline pipeline;
-	UINT vertexSize;
+	GPipeline pipeline_;
+	UINT vertexSize_;
 public:
-	ScreenVertex pv[4];
+	ScreenVertex pv_[4];
 	UISquare(ID3D12Device* dev, Shader shader);
 	void Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HANDLE handle);
 private:
@@ -26,10 +26,10 @@ private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//DirectX
-	MyDirectX* dx = nullptr;
+	MyDirectX* dx_ = nullptr;
 
 	//パイプライン
-	GPipeline* pipeline = nullptr;
+	GPipeline* pipeline_ = nullptr;
 
 	//結果
 	HRESULT result_;
@@ -37,54 +37,54 @@ private:
 	//コンストバッファデータトランスフォーム
 	struct ConstBufferDataTransform 
 	{
-		Matrix mat;
+		Matrix mat_;
 	};
 
 	//トランスフォーム
-	ComPtr<ID3D12Resource> transform;
+	ComPtr<ID3D12Resource> transform_;
 
 	//コンストマップ用トランスフォーム
-	ConstBufferDataTransform* constMapTransform = nullptr;
+	ConstBufferDataTransform* constMapTransform_ = nullptr;
 
 	//ヒーププロップ
-	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	D3D12_HEAP_PROPERTIES cbHeapProp_{};
 
 	//リソースデスク
-	D3D12_RESOURCE_DESC cbResourceDesc{};
+	D3D12_RESOURCE_DESC cbResourceDesc_{};
 
 	//ヒーププロップ
-	D3D12_HEAP_PROPERTIES heapProp{};
+	D3D12_HEAP_PROPERTIES heapProp_{};
 
 	//リソースデスク
-	D3D12_RESOURCE_DESC resourceDesc{};
+	D3D12_RESOURCE_DESC resourceDesc_{};
 
 	//コンストバッファデータマテリアル
 	struct ConstBufferDataMaterial
 	{
-		Vector4D color;	//	RGBA
+		Vector4D color_;	//	RGBA
 	};
 
 	//マテリアル
-	ComPtr<ID3D12Resource> material;
+	ComPtr<ID3D12Resource> material_;
 
 	//マップ用マテリアル
-	ConstBufferDataMaterial* mapMaterial = nullptr;
+	ConstBufferDataMaterial* mapMaterial_ = nullptr;
 
 	//頂点
-	Vertex pv[4];
+	Vertex pv_[4];
 
 	//頂点サイズ
-	UINT vertexSize;
+	UINT vertexSize_;
 
 	//インデックスサイズ
-	UINT indexSize;
+	UINT indexSize_;
 
 	//インデックス
-	unsigned short indices[6];
+	unsigned short indices_[6];
 public:
 
 	//モデル
-	MyMath::ObjMatrix obj;
+	MyMath::ObjMatrix obj_;
 
 public:
 

@@ -32,8 +32,8 @@ void Particle::Initialize(Shader shader, GPipeline* pipeline_)
 {
 	particle_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\kyu\\kyu.obj", pipeline_);
 
-	particle_.mat.Initialize();
-	particle_.mat.scale = { 5,5,5 };
+	particle_.mat_.Initialize();
+	particle_.mat_.scale_ = { 5,5,5 };
 
 	//方向,タイム,早さをランダムで
 	velocity_ = { 0.1f,0.1f, 0 };
@@ -45,12 +45,12 @@ void Particle::Initialize(Shader shader, GPipeline* pipeline_)
 
 void Particle::SetInitialize(Vector3D pos)
 {
-	particle_.mat.Initialize();
-	particle_.mat.scale = { 5,5,5 };
+	particle_.mat_.Initialize();
+	particle_.mat_.scale_ = { 5,5,5 };
 
-	particle_.mat.trans.x = pos.x;
-	particle_.mat.trans.y = pos.y;
-	particle_.mat.trans.z = pos.z;
+	particle_.mat_.trans_.x_ = pos.x_;
+	particle_.mat_.trans_.y_ = pos.y_;
+	particle_.mat_.trans_.z_ = pos.z_;
 
 	//方向,タイム,早さをランダムで
 	float vel[3];
@@ -82,18 +82,18 @@ void Particle::Draw(size_t tex)
 
 void Particle::Update(Matrix matView, Matrix matProjection)
 {
-	particle_.mat.trans += velocity_ * spd_;
+	particle_.mat_.trans_ += velocity_ * spd_;
 
 	float minSpd = 0.05f;
 
-	particle_.mat.scale -= {minSpd, minSpd, minSpd};
+	particle_.mat_.scale_ -= {minSpd, minSpd, minSpd};
 
 	time_--;
 
 	bool timeZero = time_ < 0;
-	bool scaleZeroX = particle_.mat.scale.x < 0;
-	bool scaleZeroY = particle_.mat.scale.y < 0;
-	bool scaleZeroZ = particle_.mat.scale.z < 0;
+	bool scaleZeroX = particle_.mat_.scale_.x_ < 0;
+	bool scaleZeroY = particle_.mat_.scale_.y_ < 0;
+	bool scaleZeroZ = particle_.mat_.scale_.z_ < 0;
 
 	if (timeZero || scaleZeroX || scaleZeroY || scaleZeroZ)
 	{

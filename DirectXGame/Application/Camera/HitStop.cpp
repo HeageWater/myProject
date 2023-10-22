@@ -2,8 +2,8 @@
 
 HitStop::HitStop()
 {
-	time = 0;
-	countFlag = false;
+	time_ = 0;
+	countFlag_ = false;
 }
 
 HitStop::~HitStop()
@@ -12,19 +12,19 @@ HitStop::~HitStop()
 
 void HitStop::Update()
 {
-	if (countFlag)
+	if (countFlag_)
 	{
-		time--;
+		time_--;
 	}
 
-	if (time < 0)
+	if (time_ < 0)
 	{
-		countFlag = false;
+		countFlag_ = false;
 	}
 }
 
-void HitStop::SetTime(float time_)
+void HitStop::SetTime(float time)
 {
-	this->time = time_;
-	countFlag = true;
+	this->time_ = time;
+	countFlag_ = true;
 };

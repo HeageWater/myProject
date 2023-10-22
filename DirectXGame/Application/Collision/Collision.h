@@ -12,8 +12,8 @@
 /// </summary>
 struct Sphere
 {
-	Vector3D center = { 0, 0, 0 };
-	float radius = 0;
+	Vector3D center_ = { 0, 0, 0 };
+	float radius_ = 0;
 };
 
 /// <summary>
@@ -21,9 +21,9 @@ struct Sphere
 /// </summary>
 struct Plane
 {
-	Vector3D normal = { 0,1,0 };
+	Vector3D normal_ = { 0,1,0 };
 
-	float distance = 0.0f;
+	float distance_ = 0.0f;
 };
 
 /// <summary>
@@ -31,11 +31,11 @@ struct Plane
 /// </summary>
 struct Triangle
 {
-	Vector3D p0 = { 0,0,0 };
-	Vector3D p1 = { 0,0,0 };
-	Vector3D p2 = { 0,0,0 };
+	Vector3D p0_ = { 0,0,0 };
+	Vector3D p1_ = { 0,0,0 };
+	Vector3D p2_ = { 0,0,0 };
 
-	Vector3D normal = { 0,0,0 };
+	Vector3D normal_ = { 0,0,0 };
 };
 
 /// <summary>

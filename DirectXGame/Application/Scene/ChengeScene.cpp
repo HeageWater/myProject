@@ -5,9 +5,9 @@
 void ChengeScene::Initialize(Matrix matProjection)
 {
 	//画像関係
-	spriteCommon->Inilialize(MyDirectX::GetInstance(), false);
-	sprite_->Inilialize(spriteCommon, &matProjection);
-	tex = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
+	spriteCommon_->Inilialize(MyDirectX::GetInstance(), false);
+	sprite_->Inilialize(spriteCommon_, &matProjection);
+	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
 
 	//scale用
 	float size = 2.5f;
@@ -16,24 +16,15 @@ void ChengeScene::Initialize(Matrix matProjection)
 	float width = 1.5f;
 
 	//サイズ
-	sprite_->scale_.x = Window::window_width * size;
-	sprite_->scale_.y = Window::window_height * size;
+	sprite_->scale_.x_ = Window::window_width_ * size;
+	sprite_->scale_.y_ = Window::window_height_ * size;
 
 	//位置
-	sprite_->position_.x = -Window::window_width * width;
-	sprite_->position_.y = -Window::window_height;
+	sprite_->position_.x_ = -Window::window_width_ * width;
+	sprite_->position_.y_ = -Window::window_height_;
 }
 
-void ChengeScene::Draw(size_t tex_)
-{
-	//ここから画像描画(y軸は-に)
-	sprite_->PreDraw();
-
-	//描画
-	sprite_->Draw(tex_);
-}
-
-void ChengeScene::Draw()
+void ChengeScene::Draw(size_t tex)
 {
 	//ここから画像描画(y軸は-に)
 	sprite_->PreDraw();
@@ -42,16 +33,25 @@ void ChengeScene::Draw()
 	sprite_->Draw(tex);
 }
 
+void ChengeScene::Draw()
+{
+	//ここから画像描画(y軸は-に)
+	sprite_->PreDraw();
+
+	//描画
+	sprite_->Draw(tex_);
+}
+
 void ChengeScene::Update()
 {
 	//移動時の最高フレーム
 	float maxTime = 60;
 
 	//プレイフラグがたっているか
-	if (isPlayFlag)
+	if (isPlayFlag_)
 	{
 		//加算
-		time++;
+		time_++;
 
 		////こんな感じで組むこと
 		//if (time > 30.0f)
@@ -68,12 +68,12 @@ void ChengeScene::Update()
 		//}
 
 
-		sprite_->position_.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time / 100, maxTime);
+		sprite_->position_.x_ = (float)Easing::EaseInOut(-2200.0f, -640.0f, time_ / 100, maxTime);
 
 	}
 
 	//maxTimeを超えたらリセット
-	if (time > maxTime)
+	if (time_ > maxTime)
 	{
 		Reset();
 		SceneManager::GetInstance()->ChangeScene(next_);
@@ -88,33 +88,33 @@ void ChengeScene::Reset()
 {
 	float width = 1.5f;
 
-	sprite_->scale_.x = 1;
-	sprite_->scale_.y = 1;
+	sprite_->scale_.x_ = 1;
+	sprite_->scale_.y_ = 1;
 
-	sprite_->position_.x = -Window::window_width * width;
-	sprite_->position_.y = -Window::window_height;
+	sprite_->position_.x_ = -Window::window_width_ * width;
+	sprite_->position_.y_ = -Window::window_height_;
 
-	isPlayFlag = false;
-	time = 0;
+	isPlayFlag_ = false;
+	time_ = 0;
 }
 
 //プレイフラグを外部からOnにする
 void ChengeScene::SetPlayFlag(std::string next)
 {
-	if (!isPlayFlag)
+	if (!isPlayFlag_)
 	{
 		float size = 3.0f;
 		float width = 1.5f;
 
-		isPlayFlag = true;
+		isPlayFlag_ = true;
 
-		sprite_->scale_.x = Window::window_width * size;
-		sprite_->scale_.y = Window::window_height * size;
+		sprite_->scale_.x_ = Window::window_width_ * size;
+		sprite_->scale_.y_ = Window::window_height_ * size;
 
-		sprite_->position_.x = -Window::window_width * width;
-		sprite_->position_.y = -Window::window_height;
+		sprite_->position_.x_ = -Window::window_width_ * width;
+		sprite_->position_.y_ = -Window::window_height_;
 
-		time = 0;
+		time_ = 0;
 
 		next_ = next;
 	}

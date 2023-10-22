@@ -4,21 +4,21 @@
 #include <vector>
 
 struct ChunkHeader {
-	char id[4];
-	int32_t size;
+	char id_[4];
+	int32_t size_;
 };
 struct RiffHeader {
-	ChunkHeader chunk;
-	char type[4];
+	ChunkHeader chunk_;
+	char type_[4];
 };
 struct FormatChunk {
-	ChunkHeader chunk;
-	WAVEFORMATEX fmt;
+	ChunkHeader chunk_;
+	WAVEFORMATEX fmt_;
 };
 struct SoundData {
-	WAVEFORMATEX wfex;
-	BYTE* pBuffer;
-	size_t bufferSize;
+	WAVEFORMATEX wfex_;
+	BYTE* pBuffer_;
+	size_t bufferSize_;
 };
 
 /// <summary>

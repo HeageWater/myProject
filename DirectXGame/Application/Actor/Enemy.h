@@ -60,19 +60,19 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { enemy_.mat.trans = trans; };
+	void SetTrans(Vector3D trans) { enemy_.mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { enemy_.mat.scale = scale; };
+	void SetScale(Vector3D scale) { enemy_.mat_.scale_ = scale; };
 
 	/// <summary>
 	/// pos入手
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return  enemy_.mat.trans; };
+	Vector3D GetPos() { return  enemy_.mat_.trans_; };
 
 
 	//死んでいるか

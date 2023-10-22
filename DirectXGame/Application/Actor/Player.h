@@ -71,25 +71,25 @@ public:
 	/// posを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return player_.mat.trans; };
+	Vector3D GetPos() { return player_.mat_.trans_; };
 
 	/// <summary>
 	///posをセットする
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(Vector3D pos) { player_.mat.trans = pos; };
+	void SetPos(Vector3D pos) { player_.mat_.trans_ = pos; };
 
 	/// <summary>
 	/// rotaionを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetRot() { return player_.mat.rotAngle; };
+	Vector3D GetRot() { return player_.mat_.rotAngle_; };
 
 	/// <summary>
 	/// scaleを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetScale() { return player_.mat.scale; };
+	Vector3D GetScale() { return player_.mat_.scale_; };
 
 	/// <summary>
 	/// modelを返す
@@ -101,19 +101,19 @@ public:
 	/// 攻撃のposを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetAttackPos() { return playerAttack_.mat.trans; };
+	Vector3D GetAttackPos() { return playerAttack_.mat_.trans_; };
 
 	/// <summary>
 	/// 攻撃のrotationを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetAttackRot() { return playerAttack_.mat.rotAngle; };
+	Vector3D GetAttackRot() { return playerAttack_.mat_.rotAngle_; };
 
 	/// <summary>
 	/// 攻撃のscaleを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetAttackScale() { return playerAttack_.mat.scale; };
+	Vector3D GetAttackScale() { return playerAttack_.mat_.scale_; };
 
 	/// <summary>
 	/// 攻撃のmodelを返す
@@ -206,12 +206,12 @@ public:
 	/// <summary>
 	/// 横移動のみ
 	/// </summary>
-	void MoveX() { player_.mat.trans.x += colVec_.x; };
+	void MoveX() { player_.mat_.trans_.x_ += colVec_.x_; };
 
 	/// <summary>
 	/// 縦移動のみ
 	/// </summary>
-	void MoveY() { player_.mat.trans.y += colVec_.y; };
+	void MoveY() { player_.mat_.trans_.y_ += colVec_.y_; };
 
 private:
 
