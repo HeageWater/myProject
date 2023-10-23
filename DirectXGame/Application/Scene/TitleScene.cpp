@@ -7,6 +7,37 @@ void TitleScene::Update()
 	//player更新
 	player_->Update(matView_.mat_, matProjection_, shader_);
 
+	//
+	player_->MoveY();
+	//stageUpdate
+	for (auto& object : LoadObjectData::GetInstance()->GetStage())
+	{
+		object->SetFlag(true);
+
+		object->Update(matView_.mat_, matProjection_);
+
+		//
+		if (player_->StageCollsionY(object->stage_))
+		{
+			//object->SetFlag(false);
+		}
+	}
+
+	//
+	player_->MoveX();
+	for (auto& object : LoadObjectData::GetInstance()->GetStage())
+	{
+		object->SetFlag(true);
+
+		object->Update(matView_.mat_, matProjection_);
+
+		if (player_->StageCollsionX(object->stage_))
+		{
+			//object->SetFlag(false);
+		}
+	}
+
+
 	//targetをplayerに
 	matView_.eye_.x_ = player_->GetPos().x_;
 	matView_.target_.x_ = player_->GetPos().x_;

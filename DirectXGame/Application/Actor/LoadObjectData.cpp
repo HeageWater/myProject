@@ -217,3 +217,4 @@ void LoadObjectData::SetModel(Shader shader, GPipeline* pipeline)
 	shader_ = shader;
 	pipeline_ = pipeline;
 }
+

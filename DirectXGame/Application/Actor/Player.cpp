@@ -103,7 +103,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	if (!WarpAction())
 	{
 		//ジャンプ
-		//Jump();
+		Jump();
 
 		//ノックバック
 		KnockBack();
@@ -431,51 +431,65 @@ bool Player::StageCollsionX(Model stage)
 		return false;
 	}
 
-	float DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
-	float DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
+	float playerTransX = player_.mat_.trans_.x_;
+	float playerTransY = player_.mat_.trans_.y_;
+	float playerScaleX = player_.mat_.scale_.x_ * 2;
+	float playerScaleY = player_.mat_.scale_.y_ * 2;
+
+	float stageTransX = stage.mat_.trans_.x_;
+	float stageTransY = stage.mat_.trans_.y_;
+	float stageScaleX = stage.mat_.scale_.x_;
+	float stageScaleY = stage.mat_.scale_.y_;
+
+	float DisX = playerTransX - stageTransX;
+	float DisY = playerTransY - stageTransY;
 
 	DisX = abs(DisX);
 	DisY = abs(DisY);
 
-	if (DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_ &&
-		DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_)
+	if (DisX <= playerScaleX + stageScaleX &&
+		DisY <= playerScaleY + stageScaleY)
 	{
 		if (colVec_.x_ > 0)
 		{
-			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+			bool colX = DisX <= playerScaleX + stageScaleX;
+			bool colY = DisY <= playerScaleY + stageScaleY;
 
 			while (colX && colY)
 			{
 				player_.mat_.trans_.x_ -= 1;
 
-				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
-				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
+				playerTransX = player_.mat_.trans_.x_;
+
+				DisX = playerTransX - stageTransX;
+				DisY = playerTransY - stageTransY;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+				colX = DisX <= playerScaleX + stageScaleX;
+				colY = DisY <= playerScaleY + stageScaleY;
 			}
 		}
 		else
 		{
-			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+			bool colX = DisX <= playerScaleX + stageScaleX;
+			bool colY = DisY <= playerScaleY + stageScaleY;
 
 			while (colX && colY)
 			{
 				player_.mat_.trans_.x_ += 1;
 
-				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
-				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
+				playerTransX = player_.mat_.trans_.x_;
+
+				DisX = playerTransX - stageTransX;
+				DisY = playerTransY - stageTransY;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+				colX = DisX <= playerScaleX + stageScaleX;
+				colY = DisY <= playerScaleY + stageScaleY;
 			}
 		}
 
@@ -492,52 +506,66 @@ bool Player::StageCollsionY(Model stage)
 		return false;
 	}
 
-	float DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
-	float DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
+	float playerTransX = player_.mat_.trans_.x_;
+	float playerTransY = player_.mat_.trans_.y_;
+	float playerScaleX = player_.mat_.scale_.x_ * 2;
+	float playerScaleY = player_.mat_.scale_.y_ * 2;
+
+	float stageTransX = stage.mat_.trans_.x_;
+	float stageTransY = stage.mat_.trans_.y_;
+	float stageScaleX = stage.mat_.scale_.x_;
+	float stageScaleY = stage.mat_.scale_.y_;
+
+	float DisX = playerTransX - stageTransX;
+	float DisY = playerTransY - stageTransY;
 
 	DisX = abs(DisX);
 	DisY = abs(DisY);
 
-	if (DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_ &&
-		DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_)
+	if (DisX <= playerScaleX + stageScaleX &&
+		DisY <= playerScaleY + stageScaleY)
 	{
 		if (jumpPower_ > 0)
 		{
-			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+			bool colX = DisX <= playerScaleX + stageScaleX;
+			bool colY = DisY <= playerScaleY + stageScaleY;
 
 			while (colX && colY)
 			{
 				player_.mat_.trans_.y_ -= 1;
 
-				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
-				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
+				playerTransY = player_.mat_.trans_.y_;
+
+				DisX = playerTransX - stageTransX;
+				DisY = playerTransY - stageTransY;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+				colX = DisX <= playerScaleX + stageScaleX;
+				colY = DisY <= playerScaleY + stageScaleY;
 			}
 		}
 
 		if (gravirtPower_ > 0)
 		{
-			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+			bool colX = DisX <= playerScaleX + stageScaleX;
+			bool colY = DisY <= playerScaleY + stageScaleY;
 
 			while (colX && colY)
 			{
 				player_.mat_.trans_.y_ += 1;
 
-				DisX = player_.mat_.trans_.x_ - stage.mat_.trans_.x_;
-				DisY = player_.mat_.trans_.y_ - stage.mat_.trans_.y_;
+				playerTransY = player_.mat_.trans_.y_;
+
+				DisX = playerTransX - stageTransX;
+				DisY = playerTransY - stageTransY;
 
 				DisX = abs(DisX);
 				DisY = abs(DisY);
 
-				colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
-				colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
+				colX = DisX <= playerScaleX + stageScaleX;
+				colY = DisY <= playerScaleY + stageScaleY;
 			}
 		}
 

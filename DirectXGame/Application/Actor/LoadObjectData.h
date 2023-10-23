@@ -70,6 +70,11 @@ public:
 	/// <param name="pipeline"></param>
 	void SetModel(Shader shader, GPipeline* pipeline);
 
+	std::vector<Stage*> GetStage()
+	{
+		return stages_;
+	}
+
 private:
 
 	LoadObjectData() = default;
