@@ -4,6 +4,7 @@
 #include "Controller.h"
 #include "Sound.h"
 #include "Player.h"
+#include "TitleObj.h"
 
 #include "LoadObjectData.h"
 
@@ -56,6 +57,9 @@ private:
 		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
+	//sprite用
+	Matrix spriteProjection_ = MyMath::OrthoLH(Window::window_width_, Window::window_height_, 0.0f, 1.0f);
+
 	//pipeline
 	std::unique_ptr<GPipeline> pipeline_;
 
@@ -65,8 +69,18 @@ private:
 	//tex
 	size_t block_ = 0;
 	size_t white_ = 0;
+	size_t attackTex_ = 0;
+	size_t titleTex_ = 0;
 
 	//shader
 	Shader shader_;
 	Shader bilShader_;
+
+	//3Dタイトル
+	TitleObj* titleObject = new TitleObj();
+
+	//common
+	SpriteCommon* spriteCommon_ = new  SpriteCommon();
+	//Attack
+	Sprite* attackPng_ = new Sprite();
 };
