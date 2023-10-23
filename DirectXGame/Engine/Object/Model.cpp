@@ -3,7 +3,7 @@
 
 void Model::Initialize(Shader shader, const char* filename)
 {
-	D3D12_HEAP_PROPERTIES heapProp_{};
+	D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
 	//	ヒープ設定
 	cbHeapProp_.Type = D3D12_HEAP_TYPE_UPLOAD;	//	GPU転送用

@@ -46,10 +46,10 @@ void UISquare::Draw(ID3D12GraphicsCommandList* cmdList, D3D12_GPU_DESCRIPTOR_HAN
 	cmdList->DrawInstanced(4, 1, 0, 0);
 }
 
-void Square::Initialize(GPipeline* pipeline_, Shader shader, size_t blendMord)
+void Square::Initialize(GPipeline* pipeline, Shader shader, size_t blendMord)
 {
 	dx_ = MyDirectX::GetInstance();
-	pipeline_ = pipeline_;
+	pipeline_ = pipeline;
 
 #pragma region  ConstBuffer
 	//	ヒープ設定

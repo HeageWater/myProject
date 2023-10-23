@@ -7,10 +7,6 @@ void TitleScene::Update()
 	//player更新
 	player_->Update(matView_.mat_, matProjection_, shader_);
 
-	Vector3D pos = { (float)(input_->GetKey(DIK_D) - input_->GetKey(DIK_A)),(float)(input_->GetKey(DIK_S) - input_->GetKey(DIK_W)),0 };
-	pos += player_->GetPos();
-	player_->SetPos(pos);
-
 	//targetをplayerに
 	matView_.eye_.x_ = player_->GetPos().x_;
 	matView_.target_.x_ = player_->GetPos().x_;
@@ -21,6 +17,7 @@ void TitleScene::Update()
 	//jsonファイルから読み込んだものの更新
 	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	LoadObjectData::GetInstance()->Update();
+
 	//カメラ更新
 	matView_.MatUpdate();
 
