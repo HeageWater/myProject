@@ -3,8 +3,8 @@
 void LoadObjectData::Initialize()
 {
 	//最初に呼び出すファイル
-	//levelData_ = JsonFileOpen::FileOpen("untitled");
-	StageLoad("untitled");
+	//StageLoad("untitled");
+	StageLoad("untitled2");
 
 	//基本画像
 	enemyTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
@@ -69,8 +69,8 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 	levelData_ = JsonFileOpen::FileOpen(filePath);
 
 	//今あるものの数
-	size_t countEnemy = stages_.size();
-	size_t countStage = enemies_.size();
+	size_t countStage = stages_.size();
+	size_t countEnemy = enemies_.size();
 
 	//今あるステージを削除
 	for (size_t i = 0; i < countStage; i++)

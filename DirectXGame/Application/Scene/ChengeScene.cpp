@@ -45,7 +45,7 @@ void ChengeScene::Draw()
 void ChengeScene::Update()
 {
 	//移動時の最高フレーム
-	float maxTime = 60;
+	float maxTime = 120;
 
 	//プレイフラグがたっているか
 	if (isPlayFlag_)
@@ -53,30 +53,25 @@ void ChengeScene::Update()
 		//加算
 		time_++;
 
-		////こんな感じで組むこと
-		//if (time > 30.0f)
-		//{
-		//	sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time, maxTime);
-		//}
-		//else if (time == 31.0f)
-		//{
-		//	SceneManager::GetInstance()->ChangeScene("PLAY");
-		//}
-		//else
-		//{
-		//	sprite_->position.x = (float)Easing::EaseInOut(-2200.0f, -640.0f, time - 30, maxTime);
-		//}
 
-
-		sprite_->position_.x_ = (float)Easing::EaseInOut(-2200.0f, -640.0f, time_ / 100, maxTime);
-
+		if (time_ < 60.0f)
+		{
+			sprite_->position_.x_ = (float)Easing::EaseInOut(-2200.0f, -640.0f, time_ / 100, maxTime / 2);
+		}
+		else if (time_ == 61.0f)
+		{
+			SceneManager::GetInstance()->ChangeScene(next_);
+		}
+		else if (time_ > 80.0f)
+		{
+			sprite_->position_.x_ = (float)Easing::EaseInOut(-640.0f, 640.0f, time_ / 100, maxTime / 2);
+		}
 	}
 
 	//maxTimeを超えたらリセット
 	if (time_ > maxTime)
 	{
 		Reset();
-		SceneManager::GetInstance()->ChangeScene(next_);
 	}
 
 	//更新

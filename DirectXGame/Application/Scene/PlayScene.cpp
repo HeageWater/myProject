@@ -4,16 +4,6 @@
 
 void PlayScene::Update()
 {
-	//ImGui受付開始
-	//ImGui::Begin("player Pos");
-
-	//float a = player->GetPos().x;
-
-	//ImGui::SliderFloat("player pos", &a, -400, 400);
-
-	////ImGui受付終了
-	//ImGui::End();
-
 	//player更新
 	player_->Update(matView_.mat_, matProjection, shader_);
 

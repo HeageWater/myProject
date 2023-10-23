@@ -40,7 +40,8 @@ void TitleScene::Initialize()
 	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//白画像
-	white_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	block_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	white_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -79,7 +80,7 @@ void TitleScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen_.Draw(white_);
+	screen_.Draw(block_);
 
 	//Actor描画
 	player_->Draw(white_, white_);

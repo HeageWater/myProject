@@ -63,6 +63,7 @@ private:
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//tex
+	size_t block_ = 0;
 	size_t white_ = 0;
 
 	//shader
