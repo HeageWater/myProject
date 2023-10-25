@@ -213,6 +213,10 @@ public:
 	/// </summary>
 	void MoveY() { player_.mat_.trans_.y_ += colVec_.y_; };
 
+	/// <summary>
+	/// 震える
+	/// </summary>
+	void Sheik();
 private:
 
 	/// <summary>
@@ -283,6 +287,8 @@ private:
 
 	//ノックバックのフラグ
 	bool knockBackFlag_;
+
+	size_t sheikF_;
 
 	//敵と当たった時にHP減らしてノックバックのフラグをONに
 	//点滅フラグもONに

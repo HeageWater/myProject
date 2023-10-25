@@ -18,6 +18,8 @@ Player::Player()
 
 	life_ = 3;
 	lesFlag_ = 0;
+
+	sheikF_ = false;
 }
 
 Player::~Player()
@@ -113,6 +115,13 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 
 		//攻撃
 		Attack(shader);
+
+		//シェイク
+		bool sheik = sheikF_ > 0;
+		if (sheik)
+		{
+			Sheik();
+		}
 
 		for (size_t i = 0; i < attack_.size(); i++)
 		{
@@ -676,4 +685,25 @@ bool Player::WarpAction()
 	}
 
 	return false;
+}
+
+
+void Player::Sheik()
+{
+	float x = (float)MyMath::GetRandom(10, 20);
+	float y = (float)MyMath::GetRandom(2, 3);
+
+	if (sheikF_ % 2 == 0)
+	{
+		x = -x;
+		y = -y;
+	}
+
+	player_.mat_.trans_.x_ += x;
+	player_.mat_.trans_.y_ += y;
+
+	if (sheikF_ > 0)
+	{
+		sheikF_--;
+	}
 }

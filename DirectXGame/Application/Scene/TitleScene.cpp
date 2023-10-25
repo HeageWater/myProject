@@ -7,10 +7,10 @@ void TitleScene::Update()
 	//player更新
 	player_->Update(matView_.mat_, matProjection_, shader_);
 
-	titleObject->Update(matView_.mat_, matProjection_);
+	//titleObject->Update(matView_.mat_, matProjection_);
 
 	//
-	player_->MoveY();
+	//player_->MoveY();
 	//stageUpdate
 	for (auto& object : LoadObjectData::GetInstance()->GetStage())
 	{
@@ -25,7 +25,7 @@ void TitleScene::Update()
 	}
 
 	//
-	player_->MoveX();
+	//player_->MoveX();
 	for (auto& object : LoadObjectData::GetInstance()->GetStage())
 	{
 		object->SetFlag(true);
@@ -49,10 +49,6 @@ void TitleScene::Update()
 	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	LoadObjectData::GetInstance()->Update();
 
-	attackPng_->position_ = titleObject->titleObj_.mat_.trans_;
-
-	attackPng_->Update();
-
 	//カメラ更新
 	matView_.MatUpdate();
 
@@ -74,19 +70,10 @@ void TitleScene::Initialize()
 	//描画用行列
 	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	//
-	spriteCommon_->Inilialize(MyDirectX::GetInstance(), false);
-
 	//白画像
-	block_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
-	white_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
-	attackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/Attack.png");
-	titleTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
-
-	//タイトル
-	attackPng_->Inilialize(spriteCommon_, &matProjection_);
-	attackPng_->position_ = { 0,0,0 };
-	attackPng_->scale_ = { 360,144,1 };
+	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -109,7 +96,7 @@ void TitleScene::Initialize()
 	player_->Initialize(shader_, pipeline_.get());
 
 	//
-	titleObject->Initialize(shader_, pipeline_.get());
+	//titleObject->Initialize(shader_, pipeline_.get());
 
 	//jsonファイルから読み込んだものの初期化
 	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
@@ -128,22 +115,16 @@ void TitleScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen_.Draw(block_);
+	screen_.Draw(blockTex_);
 
 	//Actor描画
-	player_->Draw(white_, white_);
+	player_->Draw(plyerTex_, plyerTex_);
 
 	//タイトル
-	titleObject->Draw(titleTex_);
+	//titleObject->Draw(whiteTex_);
 
 	//jsonファイルから読み込んだものの描画
 	LoadObjectData::GetInstance()->Draw();
-
-
-	attackPng_->PreDraw();
-
-	//攻撃表示
-	attackPng_->Draw(attackTex_);
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();

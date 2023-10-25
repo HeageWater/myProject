@@ -17,6 +17,9 @@
 #include "Warp.h"
 #include "TitleObj.h"
 
+#include "LoadObjectData.h"
+#include "ParticleManager.h"
+
 /// <summary>
 /// 基本的なゲーム用シーン
 /// </summary>
@@ -40,7 +43,7 @@ private:
 
 	//描画用行列
 	MyMath::MatView matView_;
-	Matrix matProjection = MyMath::PerspectiveFovLH(
+	Matrix matProjection_ = MyMath::PerspectiveFovLH(
 		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
@@ -57,6 +60,12 @@ private:
 	Shader shader_;
 	Shader bilShader_;
 
+
+	bool movieF_ = false;
+
+	size_t time_ = 0;
+
+	std::vector<BoxParticle*> boxParticles_;
 public:
 	
 	/// <summary>
@@ -78,4 +87,9 @@ public:
 	/// 破棄
 	/// </summary>
 	void Finalize()override;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void CreatePatricle(Vector3D pos);
 };

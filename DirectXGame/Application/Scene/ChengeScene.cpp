@@ -53,7 +53,6 @@ void ChengeScene::Update()
 		//加算
 		time_++;
 
-
 		if (time_ < 60.0f)
 		{
 			sprite_->position_.x_ = (float)Easing::EaseInOut(-2200.0f, -640.0f, time_ / 100, maxTime / 2);

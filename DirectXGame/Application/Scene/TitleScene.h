@@ -67,20 +67,14 @@ private:
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//tex
-	size_t block_ = 0;
-	size_t white_ = 0;
-	size_t attackTex_ = 0;
-	size_t titleTex_ = 0;
+	size_t blockTex_ = 0;
+	size_t plyerTex_ = 0;
+	size_t whiteTex_ = 0;
 
 	//shader
 	Shader shader_;
 	Shader bilShader_;
 
 	//3Dタイトル
-	TitleObj* titleObject = new TitleObj();
-
-	//common
-	SpriteCommon* spriteCommon_ = new  SpriteCommon();
-	//Attack
-	Sprite* attackPng_ = new Sprite();
+	//TitleObj* titleObject = new TitleObj();
 };

@@ -3,7 +3,6 @@
 void LoadObjectData::Initialize()
 {
 	//最初に呼び出すファイル
-	//StageLoad("untitled");
 	StageLoad("untitled2");
 
 	//基本画像
@@ -203,6 +202,31 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			////次へ
 			//continue;
 		}
+
+		//モデルを指定して3Dオブジェクトを生成
+		Stage* newModel_ = new Stage();
+		newModel_->Initialize(shader_, pipeline_);
+
+		//調整
+		float scale = 10.0f;
+
+		//trans
+		newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
+
+		//rotation
+		newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
+
+		//scale;
+		newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
+
+		//Update
+		newModel_->Update(view_, prodaction_);
+
+		//格納
+		stages_.push_back(newModel_);
+
+		//次へ
+		continue;
 	}
 }
 
@@ -218,3 +242,12 @@ void LoadObjectData::SetModel(Shader shader, GPipeline* pipeline)
 	pipeline_ = pipeline;
 }
 
+std::vector<Stage*> LoadObjectData::GetStage()
+{
+	return stages_;
+}
+
+std::vector<Enemy*> LoadObjectData::GetEnemy()
+{
+	return enemies_;
+}

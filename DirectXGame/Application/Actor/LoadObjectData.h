@@ -70,10 +70,17 @@ public:
 	/// <param name="pipeline"></param>
 	void SetModel(Shader shader, GPipeline* pipeline);
 
-	std::vector<Stage*> GetStage()
-	{
-		return stages_;
-	}
+	/// <summary>
+	/// ステージの情報を渡す
+	/// </summary>
+	/// <returns></returns>
+	std::vector<Stage*> GetStage();
+
+	/// <summary>
+	/// エネミーの情報を渡す
+	/// </summary>
+	/// <returns></returns>
+	std::vector<Enemy*> GetEnemy();
 
 private:
 

@@ -4,20 +4,83 @@
 
 void PlayScene::Update()
 {
+	//
+	if (time_ < 100)
+		time_++;
+
+	//
+	player_->MoveY();
+	//stageUpdate
+	for (auto& object : LoadObjectData::GetInstance()->GetStage())
+	{
+		object->SetFlag(true);
+
+		object->Update(matView_.mat_, matProjection_);
+
+		if (player_->StageCollsionY(object->stage_))
+		{
+
+		}
+	}
+
+	//
+	player_->MoveX();
+	for (auto& object : LoadObjectData::GetInstance()->GetStage())
+	{
+		object->SetFlag(true);
+
+		object->Update(matView_.mat_, matProjection_);
+
+		if (player_->StageCollsionX(object->stage_))
+		{
+
+		}
+	}
+
+	//targetをplayerに
+	matView_.eye_.x_ = player_->GetPos().x_;
+	matView_.target_.x_ = player_->GetPos().x_;
+
+	matView_.eye_.y_ = player_->GetPos().y_;
+	matView_.target_.y_ = player_->GetPos().y_;
+
+	/*if (time_ == 75)
+	{
+		Vector3D pos = player_->GetPos();
+		pos -= {0, 5, 0};
+		CreatePatricle(pos);
+	}*/
+
 	//player更新
-	player_->Update(matView_.mat_, matProjection, shader_);
+	player_->Update(matView_.mat_, matProjection_, shader_);
+
+	//jsonファイルから読み込んだものの更新
+	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+	LoadObjectData::GetInstance()->Update();
 
 	//カメラ更新
 	matView_.MatUpdate();
 
 	//スクリーン更新
-	screen_.MatUpdate(matView_.mat_, matProjection, 0);
+	screen_.MatUpdate(matView_.mat_, matProjection_, 0);
+
+	//パーティクル
+	for (size_t i = 0; i < boxParticles_.size(); i++)
+	{
+		boxParticles_[i]->Update(matView_.mat_, matProjection_);
+
+		//削除
+		if (boxParticles_[i]->IsDead() == true)
+		{
+			boxParticles_.erase(boxParticles_.begin() + i);
+		}
+	}
 
 	//シーンチェンジテスト
-	if (input_->GetTrigger(DIK_SPACE))
+	/*if (input_->GetTrigger(DIK_SPACE))
 	{
 		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
-	}
+	}*/
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
@@ -50,6 +113,18 @@ void PlayScene::Initialize()
 
 	//player
 	player_->Initialize(shader_, pipeline_.get());
+	Vector3D pos = player_->GetPos();
+	pos += {-50, 0, 0};
+	player_->SetPos(pos);
+
+	//jsonファイルから読み込んだものの初期化
+	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
+	LoadObjectData::GetInstance()->Initialize();
+
+	//ステージ読み込み
+	LoadObjectData::GetInstance()->StageLoad("stage2");
+
+	time_ = 0;
 }
 
 void PlayScene::Draw()
@@ -69,6 +144,15 @@ void PlayScene::Draw()
 	//Actor描画
 	player_->Draw(white_, white_);
 
+	//ボックスパーティクル
+	for (size_t i = 0; i < boxParticles_.size(); i++)
+	{
+		boxParticles_[i]->Draw(white_);
+	}
+
+	//jsonファイルから読み込んだものの描画
+	LoadObjectData::GetInstance()->Draw();
+
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
 
@@ -78,4 +162,29 @@ void PlayScene::Draw()
 
 void PlayScene::Finalize()
 {
+	for (auto& object : boxParticles_)
+	{
+		delete object;
+	}
+}
+
+
+//ランダムの数パーティクルを出す
+void PlayScene::CreatePatricle(Vector3D pos)
+{
+	size_t minRange = 10;
+	size_t maxRange = 30;
+
+	size_t play = MyMath::GetRandom(minRange, maxRange);
+
+	for (size_t i = 0; i < play; i++)
+	{
+		BoxParticle* newP = new BoxParticle();
+
+		newP->Initialize(shader_, pipeline_.get());
+
+		newP->SetPos(pos);
+
+		boxParticles_.push_back(newP);
+	}
 }

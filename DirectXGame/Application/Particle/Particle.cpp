@@ -102,3 +102,8 @@ void Particle::Update(Matrix matView, Matrix matProjection)
 
 	particle_.MatUpdate(matView, matProjection);
 }
+
+void Particle::SetPos(Vector3D pos)
+{
+	particle_.mat_.trans_ = pos;
+}
