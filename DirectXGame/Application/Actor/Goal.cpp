@@ -12,7 +12,7 @@ Goal::~Goal()
 
 void Goal::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	goal_.Initialize(dx_, shader, "Resources\\Model\\ene\\ene.obj", pipeline_);
+	goal_.Initialize(dx_, shader, "Resources\\Model\\Goal\\goal.obj", pipeline_);
 
 	goal_.mat_.Initialize();
 	goal_.mat_.scale_ = { 5,5,3 };
@@ -52,4 +52,9 @@ void Goal::Reset()
 	goal_.mat_.Initialize();
 	goal_.mat_.scale_ = { 5,5,3 };
 	goal_.mat_.trans_ = { 380,-160,0 };
+}
+
+void Goal::SetPos(Vector3D pos)
+{
+	goal_.mat_.trans_ = pos;
 }

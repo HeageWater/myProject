@@ -53,17 +53,22 @@ void ChengeScene::Update()
 		//加算
 		time_++;
 
-		if (time_ < 60.0f)
+		float nowChenge = maxTime / 2;
+
+		bool a = time_ < nowChenge;
+		bool b = time_ > nowChenge;
+
+		if (a)
 		{
-			sprite_->position_.x_ = (float)Easing::EaseInOut(-2200.0f, -640.0f, time_ / 100, maxTime / 2);
+			sprite_->position_.x_ = (float)Easing::EaseInOut(-2540.0f, -640.0f, time_ / 100, nowChenge);
 		}
-		else if (time_ == 61.0f)
+		else if (time_ == nowChenge)
 		{
 			SceneManager::GetInstance()->ChangeScene(next_);
 		}
-		else if (time_ > 80.0f)
+		else if (b)
 		{
-			sprite_->position_.x_ = (float)Easing::EaseInOut(-640.0f, 640.0f, time_ / 100, maxTime);
+			sprite_->position_.x_ = (float)Easing::EaseInOut(-640.0f, 2540.0f, (time_ - nowChenge) / 100, nowChenge);
 		}
 	}
 

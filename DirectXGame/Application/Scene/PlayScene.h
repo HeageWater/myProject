@@ -41,6 +41,8 @@ private:
 	//player
 	Player* player_ = new Player();
 
+	Goal* goal_ = new Goal();
+
 	//描画用行列
 	MyMath::MatView matView_;
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(
@@ -53,18 +55,58 @@ private:
 	//描画初期化
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
-	//tex
-	size_t white_ = 0;
-
 	//shader
 	Shader shader_;
 	Shader bilShader_;
 
+	//tex
+	size_t blockTex_ = 0;
+	size_t plyerTex_ = 0;
+	size_t whiteTex_ = 0;
 
+	size_t white_ = 0;
+	size_t texP_ = 0;
+	size_t brPng_ = 0;
+	size_t enemyPng_ = 0;
+	size_t clearTex_ = 0;
+	size_t overTex_ = 0;
+	size_t playerTex_ = 0;
+	size_t titleTex_ = 0;
+	size_t heartLesTex_ = 0;
+	size_t heartHaveTex_ = 0;
+	size_t lifeTex_ = 0;
+	size_t blackTex_ = 0;
+	size_t backTex_ = 0;
+	size_t LTex_ = 0;
+	size_t RTex_ = 0;
+	size_t AbuttonTex_ = 0;
+	size_t PressTex_ = 0;
+	size_t LTTex_ = 0;
+
+	//sprite
+	SpriteCommon* normalSpriteCommon_ = new  SpriteCommon();
+	Sprite* sprite_ = new Sprite();
+
+	Sprite* lifePng_ = new Sprite();
+	Sprite* lesPng_ = new Sprite();
+	Sprite* lesPng2_ = new Sprite();
+	Sprite* lesPng3_ = new Sprite();
+	Sprite* havePng_ = new Sprite();
+	Sprite* havePng2_ = new Sprite();
+	Sprite* havePng3_ = new Sprite();
+	Sprite* UILStick_ = new Sprite();
+	Sprite* UIRStick_ = new Sprite();
+	Sprite* UILT_ = new Sprite();
+	Sprite* UIAButton_ = new Sprite();
+	Sprite* UIPress_ = new Sprite();
+
+	//
 	bool movieF_ = false;
 
+	//
 	size_t time_ = 0;
 
+	//
 	std::vector<BoxParticle*> boxParticles_;
 public:
 	
@@ -87,9 +129,4 @@ public:
 	/// 破棄
 	/// </summary>
 	void Finalize()override;
-
-	/// <summary>
-	/// 
-	/// </summary>
-	void CreatePatricle(Vector3D pos);
 };

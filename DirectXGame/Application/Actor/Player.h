@@ -217,6 +217,11 @@ public:
 	/// 震える
 	/// </summary>
 	void Sheik();
+
+	/// <summary>
+	/// matview,matProdactionをセット
+	/// </summary>
+	void SetCamera(Matrix matView, Matrix matProjection);
 private:
 
 	/// <summary>

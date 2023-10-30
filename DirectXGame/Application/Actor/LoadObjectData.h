@@ -61,7 +61,7 @@ public:
 	/// </summary>
 	/// <param name="view"></param>
 	/// <param name="prodaction"></param>
-	void SetCamera(Matrix view,Matrix prodaction);
+	void SetCamera(Matrix view, Matrix prodaction);
 
 	/// <summary>
 	/// シェーダーとパイプラインをセット
@@ -81,6 +81,18 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	std::vector<Enemy*> GetEnemy();
+
+	/// <summary>
+	/// 読み込んだステージの開始地点を返す
+	/// </summary>
+	/// <returns></returns>
+	Vector3D GetStartPos() { return StartPos; };
+
+	/// <summary>
+	/// 読み込んだステージのゴール地点を返す
+	/// </summary>
+	/// <returns></returns>
+	Vector3D GetEndPos() { return EndPos; };
 
 private:
 
@@ -119,4 +131,7 @@ private:
 
 	Shader shader_;
 	GPipeline* pipeline_;
+
+	Vector3D StartPos;
+	Vector3D EndPos;
 };

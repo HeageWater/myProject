@@ -83,6 +83,11 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		enemies_.erase(enemies_.begin());
 	}
 
+	//調整
+	float enemyScale = 3.0f;
+	float stageScale = 10.0f;
+	float pos = 10.0f;
+
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
 	for (auto& objectdata : levelData_->objects_)
@@ -104,17 +109,14 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			Enemy* newModel_ = new Enemy();
 			newModel_->Initialize(shader_, pipeline_);
 
-			//調整
-			float scale = 10.0f;
-
 			//trans
-			newModel_->enemy_.mat_.trans_ = objectdata.translation_ * scale;
+			newModel_->enemy_.mat_.trans_ = objectdata.translation_ * pos;
 
 			//rotation
 			newModel_->enemy_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->enemy_.mat_.scale_ = objectdata.scaling_ * scale;
+			newModel_->enemy_.mat_.scale_ = objectdata.scaling_ * enemyScale;
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -133,17 +135,14 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			Stage* newModel_ = new Stage();
 			newModel_->Initialize(shader_, pipeline_);
 
-			//調整
-			float scale = 10.0f;
-
 			//trans
-			newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
+			newModel_->stage_.mat_.trans_ = objectdata.translation_ * pos;
 
 			//rotation
 			newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
+			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * stageScale;
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -158,75 +157,24 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		//Cameraだったら
 		if (objectdata.fileName_ == "Camera")
 		{
-			//モデルを指定して3Dオブジェクトを生成
-			//CameraPos
-			//Stage* newModel_ = new Stage();
-			//newModel_->Initialize(shader_, pipeline_);
-
-			////調整
-			//float scale = 10.0f;
-
-			////trans
-			//newModel_->stage_.mat.trans = objectdata.translation * scale;
-
-			////番号などをセット
-			////setNum(objectdata.otherName);
-
-			////格納
-			//stages_.push_back(newModel_);
-
-			////次へ
-			//continue;
 		}
 
 		//Warpだったら
 		if (objectdata.fileName_ == "Warp")
 		{
-			//モデルを指定して3Dオブジェクトを生成
-			//CameraPos
-			//Stage* newModel_ = new Stage();
-			//newModel_->Initialize(shader_, pipeline_);
-
-			////調整
-			//float scale = 10.0f;
-
-			////trans
-			//newModel_->stage_.mat.trans = objectdata.translation * scale;
-
-			////番号などをセット
-			////setNum(objectdata.otherName);
-
-			////格納
-			//stages_.push_back(newModel_);
-
-			////次へ
-			//continue;
 		}
 
-		//モデルを指定して3Dオブジェクトを生成
-		Stage* newModel_ = new Stage();
-		newModel_->Initialize(shader_, pipeline_);
+		//Startだったら
+		if (objectdata.fileName_ == "Start")
+		{
+			StartPos = objectdata.translation_ * pos;
+		}
 
-		//調整
-		float scale = 10.0f;
-
-		//trans
-		newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
-
-		//rotation
-		newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
-
-		//scale;
-		newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
-
-		//Update
-		newModel_->Update(view_, prodaction_);
-
-		//格納
-		stages_.push_back(newModel_);
-
-		//次へ
-		continue;
+		//Endだったら
+		if (objectdata.fileName_ == "End")
+		{
+			EndPos = objectdata.translation_ * pos;
+		}
 	}
 }
 

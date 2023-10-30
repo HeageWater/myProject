@@ -62,7 +62,7 @@ void GameScene::Update()
 
 		if (titleObject->EndMovie_)
 		{
-			if (hitStop->GetTime() < 1)
+			//if (hitStop->GetTime() < 1)
 			{
 				if (chengeScene->GetTime() < 1)
 				{
@@ -131,7 +131,7 @@ void GameScene::Update()
 			Time++;
 		}
 
-		if (hitStop->GetTime() < 1 && Time == t)
+		//if (hitStop->GetTime() < 1 && Time == t)
 		{
 			//player更新
 			player->Update(matView.mat_, matProjection, shader_);
@@ -327,7 +327,7 @@ void GameScene::Update()
 				overFlag = false;
 			}
 		}
-		else if (Time == 1)
+		if (Time == 1)
 		{
 			Reset();
 			StageLoad("stage4");

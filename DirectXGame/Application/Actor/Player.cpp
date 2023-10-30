@@ -167,10 +167,10 @@ void Player::Reset()
 
 void Player::Jump()
 {
-	float gravity = 0.2f;
-	float maxGravity = 3;
-	float jump = 1.0f;
-	float maxJunp = 8;
+	float gravity = 0.2f / 2;
+	float maxGravity = 3 / 2;
+	float jump = 1.0f / 2;
+	float maxJunp = 8 / 2;
 
 	if (jumpPower_ > 0)
 	{
@@ -706,4 +706,11 @@ void Player::Sheik()
 	{
 		sheikF_--;
 	}
+}
+
+void Player::SetCamera(Matrix matView, Matrix matProjection)
+{
+	//座標Update
+	player_.MatUpdate(matView, matProjection);
+	playerAttack_.MatUpdate(matView, matProjection);
 }

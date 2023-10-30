@@ -4,67 +4,95 @@
 
 void TitleScene::Update()
 {
-	//player更新
-	player_->Update(matView_.mat_, matProjection_, shader_);
+	//hitStop更新
+	hitStop_->Update();
 
+	//まだ時間無いなら戻る
+	if (hitStop_->GetTimeFlag())
+	{
+		return;
+	}
+
+	if (!ChengeScene::GetInstance()->GetPlayFlag() && !titleObject->IsMovie_)
+	{
+		//player更新
+		player_->Update(matView_.mat_, matProjection_, shader_);
+
+		//縦移動
+		player_->MoveY();
+		//stageUpdate
+		for (auto& object : LoadObjectData::GetInstance()->GetStage())
+		{
+			object->SetFlag(true);
+
+			object->Update(matView_.mat_, matProjection_);
+
+			if (player_->StageCollsionY(object->stage_))
+			{
+
+			}
+		}
+
+		//横移動
+		player_->MoveX();
+		for (auto& object : LoadObjectData::GetInstance()->GetStage())
+		{
+			object->SetFlag(true);
+
+			object->Update(matView_.mat_, matProjection_);
+
+			if (player_->StageCollsionX(object->stage_))
+			{
+
+			}
+		}
+
+		//targetをplayerに
+		matView_.eye_.x_ = player_->GetPos().x_;
+		matView_.target_.x_ = player_->GetPos().x_;
+
+		float prusTargetY = 10;
+
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
+	}
+
+	//タイトルオブジェ更新
 	titleObject->Update(matView_.mat_, matProjection_);
 
+	//
 	if (titleObject->BoxCollision(player_->GetAttackModel()) && !titleObject->IsMovie_)
 	{
 		titleObject->Movie();
 
 		//この下の処理まとめろ
-		//float setStopTime = 7.0f;
+		float setStopTime = 17.0f;
 
-		//hitStop->SetTime(setStopTime);
-		//sound_->SoundPlayWave(enemyHit);
+		//止まる
+		hitStop_->SetTime(setStopTime);
+
+		//hit音
+		sound_->SoundPlayWave(hitSound_);
 	}
 
+	//
 	if (titleObject->EndMovie_)
 	{
 		titleObject->EndMovie_ = false;
 
 		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
-
 	}
 
-	//縦移動
-	player_->MoveY();
-	//stageUpdate
-	for (auto& object : LoadObjectData::GetInstance()->GetStage())
+	if (titleObject->IsMovie_)
 	{
-		object->SetFlag(true);
+		matView_.eye_.x_ = 0;
+		matView_.target_.x_ = 0;
 
-		object->Update(matView_.mat_, matProjection_);
+		matView_.eye_.y_ = 15;
+		matView_.target_.y_ = 15;
 
-		if (player_->StageCollsionY(object->stage_))
-		{
-
-		}
+		player_->SetCamera(matView_.mat_,matProjection_);
 	}
-
-	//横移動
-	player_->MoveX();
-	for (auto& object : LoadObjectData::GetInstance()->GetStage())
-	{
-		object->SetFlag(true);
-
-		object->Update(matView_.mat_, matProjection_);
-
-		if (player_->StageCollsionX(object->stage_))
-		{
-
-		}
-	}
-
-	//targetをplayerに
-	matView_.eye_.x_ = player_->GetPos().x_;
-	matView_.target_.x_ = player_->GetPos().x_;
-
-	float prusTargetY = 10;
-
-	matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
-	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 
 	//jsonファイルから読み込んだものの更新
 	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
@@ -122,6 +150,9 @@ void TitleScene::Initialize()
 	//jsonファイルから読み込んだものの初期化
 	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
 	LoadObjectData::GetInstance()->Initialize();
+
+	//音読み込み
+	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 }
 
 void TitleScene::Draw()

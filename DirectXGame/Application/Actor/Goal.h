@@ -51,6 +51,11 @@ public:
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// posをセット
+	/// </summary>
+	void SetPos(Vector3D pos);
+
 	//ゴール用モデル
 	Model goal_;
 };

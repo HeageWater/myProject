@@ -5,7 +5,7 @@
 #include "Sound.h"
 #include "Player.h"
 #include "TitleObj.h"
-
+#include "HitStop.h"
 #include "LoadObjectData.h"
 
 /// <summary>
@@ -74,6 +74,12 @@ private:
 	//shader
 	Shader shader_;
 	Shader bilShader_;
+
+	//BGM
+	size_t hitSound_;
+
+	//hitstop
+	HitStop* hitStop_ = new HitStop();
 
 	//3Dタイトル
 	TitleObj* titleObject = new TitleObj();

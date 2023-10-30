@@ -3,6 +3,9 @@
 
 void ParticleManager::Initalize()
 {
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+
+	//model_ ="Resources\\Model\\kyu\\kyu.obj ;
 }
 
 void ParticleManager::Update()
@@ -11,12 +14,24 @@ void ParticleManager::Update()
 	for (size_t i = 0; i < boxParticles_.size(); i++)
 	{
 		boxParticles_[i]->Update(matview_, matProdaction_);
+
+		//削除
+		if (boxParticles_[i]->IsDead() == true)
+		{
+			boxParticles_.erase(boxParticles_.begin() + i);
+		}
 	}
 
 	//サークルパーティクル
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
 		particles_[i]->Update(matview_, matProdaction_);
+
+		//削除
+		if (particles_[i]->IsDead() == true)
+		{
+			particles_.erase(particles_.begin() + i);
+		}
 	}
 }
 
@@ -25,13 +40,13 @@ void ParticleManager::Draw()
 	//ボックスパーティクル
 	for (size_t i = 0; i < boxParticles_.size(); i++)
 	{
-		boxParticles_[i]->Draw(0);
+		boxParticles_[i]->Draw(whiteTex_);
 	}
 
 	//サークルパーティクル
 	for (size_t i = 0; i < particles_.size(); i++)
 	{
-		particles_[i]->Draw(0);
+		particles_[i]->Draw(whiteTex_);
 	}
 }
 
@@ -91,6 +106,7 @@ void ParticleManager::CreateCircleParticle(Vector3D pos)
 
 		//初期化
 		newP->Initialize(shader_, pipeline_);
+		//newP->Initialize(model_, shader_, pipeline_);
 
 		//場所をセット
 		newP->SetPos(pos);

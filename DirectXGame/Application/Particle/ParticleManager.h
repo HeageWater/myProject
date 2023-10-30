@@ -70,6 +70,11 @@ private:
 	Shader shader_;
 	GPipeline* pipeline_;
 
+	//初期画像
+	size_t whiteTex_ = 0;
+
+	Model* model_;
+
 	//
 	ParticleManager() = default;
 	~ParticleManager() = default;
