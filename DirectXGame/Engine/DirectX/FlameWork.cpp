@@ -98,13 +98,13 @@ void FlameWork::Run()
 	while (true)
 	{
 		//ImGui受付開始
-		ImguiManager::GetInstance()->Begin();
+		//ImguiManager::GetInstance()->Begin();
 
 		//更新
 		Update();
 
 		//ImGui受付終了
-		ImguiManager::GetInstance()->End();
+		//ImguiManager::GetInstance()->End();
 
 		//描画
 		Draw();
@@ -112,7 +112,7 @@ void FlameWork::Run()
 #ifdef _DEBUG
 
 		//ImGui描画
-		ImguiManager::GetInstance()->Draw();
+		//ImguiManager::GetInstance()->Draw();
 
 #endif _DEBUG
 

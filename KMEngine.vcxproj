@@ -160,6 +160,8 @@
     <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\ParticleManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp" />
+    <ClCompile Include="DirectXGame\Application\Scene\GameClearScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\Scene\GameOverScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -253,6 +255,8 @@
     <ClInclude Include="DirectXGame\Application\Actor\Warp.h" />
     <ClInclude Include="DirectXGame\Application\Particle\ParticleManager.h" />
     <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h" />
+    <ClInclude Include="DirectXGame\Application\Scene\GameClearScene.h" />
+    <ClInclude Include="DirectXGame\Application\Scene\GameOverScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

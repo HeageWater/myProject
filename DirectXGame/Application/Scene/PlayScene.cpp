@@ -4,7 +4,7 @@
 
 void PlayScene::Update()
 {
-	//
+	//最初のムービー用タイマー
 	if (time_ < 100)
 		time_++;
 
@@ -41,8 +41,11 @@ void PlayScene::Update()
 	matView_.eye_.x_ = player_->GetPos().x_;
 	matView_.target_.x_ = player_->GetPos().x_;
 
-	matView_.eye_.y_ = player_->GetPos().y_;
-	matView_.target_.y_ = player_->GetPos().y_;
+	//playerのyからどれくらい離すか
+	float prusTargetY = 10;
+
+	matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
+	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 
 	/*if (time_ == 75)
 	{
@@ -77,10 +80,10 @@ void PlayScene::Update()
 	}
 
 	//シーンチェンジテスト
-	/*if (input_->GetTrigger(DIK_SPACE))
+	if (input_->GetTrigger(DIK_SPACE))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
-	}*/
+		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
+	}
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
@@ -113,9 +116,9 @@ void PlayScene::Initialize()
 
 	//player
 	player_->Initialize(shader_, pipeline_.get());
-	Vector3D pos = player_->GetPos();
-	pos += {-50, 0, 0};
-	player_->SetPos(pos);
+	//Vector3D pos = player_->GetPos();
+	//pos += {-50, 0, 0};
+	//player_->SetPos(pos);
 
 	//jsonファイルから読み込んだものの初期化
 	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());

@@ -11,7 +11,7 @@
 /// <summary>
 /// ゲームのタイトルシーン
 /// </summary>
-class TitleScene :public BaseScene
+class GameClearScene :public BaseScene
 {
 public:
 
@@ -76,5 +76,5 @@ private:
 	Shader bilShader_;
 
 	//3Dタイトル
-	TitleObj* titleObject = new TitleObj();
+	//TitleObj* titleObject = new TitleObj();
 };

@@ -3,7 +3,7 @@
 void LoadObjectData::Initialize()
 {
 	//最初に呼び出すファイル
-	StageLoad("untitled2");
+	StageLoad("TitleStage");
 
 	//基本画像
 	enemyTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");

@@ -16,7 +16,7 @@ void TitleObj::Initialize(Shader shader, GPipeline* pipeline_)
 
 	titleObj_.mat_.Initialize();
 	titleObj_.mat_.scale_ = { 5,5,5 };
-	titleObj_.mat_.trans_ = { 30,20,0 };
+	titleObj_.mat_.trans_ = { 30,-10,0 };
 	titleObj_.mat_.rotAngle_ = { 2,0,0 };
 }
 
@@ -75,18 +75,36 @@ void TitleObj::Movie()
 	{
 		if (time_ < 100)
 		{
+			//最大時間
 			float maxTime = 15;
 
+			//インクリメント
 			time_++;
 
-			titleObj_.mat_.trans_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.trans_.x_, 0, time_ / 100, maxTime);
-			titleObj_.mat_.trans_.y_ = (float)Easing::EaseInOut(titleObj_.mat_.trans_.y_, 50, time_ / 100, maxTime);
+			//制御時間をまとめた
+			float nowTime = time_ / 100;
 
-			titleObj_.mat_.rotAngle_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.trans_.x_, 0, time_ / 100, maxTime);
-			//titleObj.mat.rotAngle.y = (float)Easing::EaseInOut(titleObj.mat.trans.y, 0, time / 100, maxTime);
+			//pos,scale,rotの変数
+			//最終的Pos
+			float endPosX = 0;
+			float endPosY = 20;
 
-			titleObj_.mat_.scale_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.scale_.x_, 20, time_ / 100, maxTime);
-			titleObj_.mat_.scale_.y_ = (float)Easing::EaseInOut(titleObj_.mat_.scale_.y_, 20, time_ / 100, maxTime);
+			//最終的Rot
+			float endRotX = 0;
+			//float endRotY = 0;
+
+			//最終的Scale
+			float endScaleX = 20;
+			float endScaleY = 20;
+
+			titleObj_.mat_.trans_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.trans_.x_, endPosX, nowTime, maxTime);
+			titleObj_.mat_.trans_.y_ = (float)Easing::EaseInOut(titleObj_.mat_.trans_.y_, endPosY, nowTime, maxTime);
+
+			titleObj_.mat_.rotAngle_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.trans_.x_, endRotX, nowTime, maxTime);
+			//titleObj.mat.rotAngle.y = (float)Easing::EaseInOut(titleObj.mat.trans.y, endRotY, nowTime, maxTime);
+
+			titleObj_.mat_.scale_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.scale_.x_, endScaleX, nowTime, maxTime);
+			titleObj_.mat_.scale_.y_ = (float)Easing::EaseInOut(titleObj_.mat_.scale_.y_, endScaleY, nowTime, maxTime);
 		}
 		else if (time_ < 150)
 		{

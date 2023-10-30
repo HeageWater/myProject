@@ -7,10 +7,29 @@ void TitleScene::Update()
 	//player更新
 	player_->Update(matView_.mat_, matProjection_, shader_);
 
-	//titleObject->Update(matView_.mat_, matProjection_);
+	titleObject->Update(matView_.mat_, matProjection_);
 
-	//
-	//player_->MoveY();
+	if (titleObject->BoxCollision(player_->GetAttackModel()) && !titleObject->IsMovie_)
+	{
+		titleObject->Movie();
+
+		//この下の処理まとめろ
+		//float setStopTime = 7.0f;
+
+		//hitStop->SetTime(setStopTime);
+		//sound_->SoundPlayWave(enemyHit);
+	}
+
+	if (titleObject->EndMovie_)
+	{
+		titleObject->EndMovie_ = false;
+
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+
+	}
+
+	//縦移動
+	player_->MoveY();
 	//stageUpdate
 	for (auto& object : LoadObjectData::GetInstance()->GetStage())
 	{
@@ -24,8 +43,8 @@ void TitleScene::Update()
 		}
 	}
 
-	//
-	//player_->MoveX();
+	//横移動
+	player_->MoveX();
 	for (auto& object : LoadObjectData::GetInstance()->GetStage())
 	{
 		object->SetFlag(true);
@@ -42,8 +61,10 @@ void TitleScene::Update()
 	matView_.eye_.x_ = player_->GetPos().x_;
 	matView_.target_.x_ = player_->GetPos().x_;
 
-	matView_.eye_.y_ = player_->GetPos().y_;
-	matView_.target_.y_ = player_->GetPos().y_;
+	float prusTargetY = 10;
+
+	matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
+	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 
 	//jsonファイルから読み込んだものの更新
 	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
@@ -95,8 +116,8 @@ void TitleScene::Initialize()
 	//player
 	player_->Initialize(shader_, pipeline_.get());
 
-	//
-	//titleObject->Initialize(shader_, pipeline_.get());
+	//タイトルモデルの初期化
+	titleObject->Initialize(shader_, pipeline_.get());
 
 	//jsonファイルから読み込んだものの初期化
 	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
@@ -121,7 +142,7 @@ void TitleScene::Draw()
 	player_->Draw(plyerTex_, plyerTex_);
 
 	//タイトル
-	//titleObject->Draw(whiteTex_);
+	titleObject->Draw(whiteTex_);
 
 	//jsonファイルから読み込んだものの描画
 	LoadObjectData::GetInstance()->Draw();
