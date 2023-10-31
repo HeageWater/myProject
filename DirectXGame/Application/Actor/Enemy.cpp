@@ -20,7 +20,6 @@ void Enemy::Initialize(Shader shader, GPipeline* pipeline_)
 	isDead_ = false;
 	deadVec_ = false;
 	Vec_ = { 0,0,0 };
-
 }
 
 void Enemy::Draw(size_t tex)
@@ -33,7 +32,7 @@ void Enemy::Draw(size_t tex)
 
 void Enemy::Update(Matrix matView, Matrix matProjection)
 {
-	float spd = 0.01f;
+	float spd = 0.005f;
 
 	if (deadVec_)
 	{
@@ -75,6 +74,22 @@ bool Enemy::BoxCollision(Model model)
 
 			return true;
 		}
+
+		a = (-model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (-model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
+		b = (-model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (-model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
+
+		c = model.mat_.scale_.x_ * enemy_.mat_.scale_.x_;
+
+		//あたり判定
+		if (a + b < c)
+		{
+			float spd = 1.5f;
+			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
+			Vec_ *= spd;
+			deadVec_ = true;
+
+			return true;
+		}
 	}
 
 	return false;
@@ -98,9 +113,9 @@ void Enemy::SertchPlayer(Model model)
 		move_ = enemy_.mat_.trans_ - model.mat_.trans_;
 		move_.normalize();
 
-		move_.x_ /= 2;
-		move_.y_ /= 2;
-		move_.z_ /= 2;
+		move_.x_ /= 4;
+		move_.y_ /= 4;
+		move_.z_ /= 4;
 	}
 	else
 	{

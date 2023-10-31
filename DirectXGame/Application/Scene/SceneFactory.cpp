@@ -1,6 +1,8 @@
 #include"SceneFactory.h"
 #include"TitleScene.h"
 #include"PlayScene.h"
+#include"GameClearScene.h"
+#include"GameOverScene.h"
 #include"GameScene.h"
 
 //
@@ -15,12 +17,15 @@ std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName
 	}
 	else if (sceneName == "PLAY")
 	{
-		//newScene = new GameScene();
 		newScene = new PlayScene();
 	}
-	else if (sceneName == "")
+	else if (sceneName == "GAMECLEAR")
 	{
-
+		newScene = new GameClearScene();
+	}
+	else if (sceneName == "GAMEOVER")
+	{
+		newScene = new GameOverScene();
 	}
 
 	return std::unique_ptr<BaseScene>(newScene);

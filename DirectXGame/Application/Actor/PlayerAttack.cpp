@@ -12,19 +12,21 @@ PlayerAttack::~PlayerAttack()
 
 void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	playerAttack_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+	//playerAttack_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
+	playerAttack_.Initialize(dx_, shader, "Resources\\Model\\Attack\\attack2.obj", pipeline_);
 
 	playerAttack_.mat_.Initialize();
-	playerAttack_.mat_.scale_ = { 15,5,1 };
+	//playerAttack_.mat_.scale_ = { 50,5,1 };
+	playerAttack_.mat_.scale_ = { 10,5,1 };
 
 	controller_ = Controller::GetInstance();
 	attackF_ = false;
 
 	sound_ = MyXAudio::GetInstance();
-	//volcano = sound_->SoundLoadWave("Resources/sound/BGM.wav");
 
-	time_ = 20;
+	time_ = 15;
 	isDead_ = false;
+	deleteFlag = false;
 }
 
 void PlayerAttack::Draw()
@@ -41,21 +43,51 @@ void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 		isDead_ = true;
 	}
 
-	//playerAttack_.mat.trans += Vector3D{ -vec.x * spd,vec.y * spd,0 };
-	//playerAttack_.mat.trans.x += controller->GetLeftStickVec().x;
-	//playerAttack_.mat.trans.y += controller->GetLeftStickVec().y;
+	float maxScale = playerAttack_.mat_.scale_.x_ * 1.5f;
+	float spd = 3.0f;
 
-	//playerAttack_.mat.trans.x += (float)Easing::EaseInBack((double)playerAttack_.mat.trans.x, (double)playerAttack_.mat.trans.x + 10, 10);
+	if (!deleteFlag)
+	{
+		if (playerAttack_.mat_.scale_.x_ < maxScale)
+		{
+			playerAttack_.mat_.scale_.x_ += spd;
+		}
+		else
+		{
+			deleteFlag = true;
+		}
+
+		if (playerAttack_.mat_.scale_.y_ < maxScale / 2)
+		{
+			playerAttack_.mat_.scale_.y_ += spd;
+		}
+	}
+
+	if (deleteFlag)
+	{
+		if (playerAttack_.mat_.scale_.x_ > 0)
+		{
+			playerAttack_.mat_.scale_.x_ -= spd;
+		}
+
+		if (playerAttack_.mat_.scale_.y_ > 0)
+		{
+			playerAttack_.mat_.scale_.y_ -= spd;
+		}
+	}
 
 	playerAttack_.MatUpdate(matView, matProjection);
 }
 
 void PlayerAttack::SetUpdate()
 {
-	//float range = 120.0f;
+	float angle = 3.1415f / 2;
 
-	//playerAttack_.mat.trans.x += range * vec.x;
-	//playerAttack_.mat.trans.y += range * vec.y;
-	//playerAttack_.mat.rotAngle.x = controller->GetRightStickVec().x * 2;
-	playerAttack_.mat_.rotAngle_.z_ = controller_->GetRightStickVec().x_ * controller_->GetRightStickVec().y_;
+	if (vec_.x_ > 0)
+	{
+		angle *= 2;
+	}
+
+	vec_.normalize();
+	playerAttack_.mat_.rotAngle_.z_ = (angle * vec_.y_);
 }

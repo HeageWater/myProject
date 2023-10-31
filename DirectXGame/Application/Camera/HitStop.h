@@ -33,7 +33,7 @@ public:
 	/// あと何フレームかを取得する
 	/// </summary>
 	/// <returns></returns>
-	float GetTime() { return time_; };
+	bool GetTimeFlag() { return time_ > 0; };
 
 private:
 	float time_ = 0;

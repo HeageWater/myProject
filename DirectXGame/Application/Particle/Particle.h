@@ -60,6 +60,12 @@ public:
 	/// <param name="model"></param>
 	void SetModel(Model model) { particle_ = model; };
 
+	/// <summary>
+	/// 生成する場所をセット
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetPos(Vector3D pos);
+
 	//今どれくらいたったか
 	float time_ = 0;
 private:

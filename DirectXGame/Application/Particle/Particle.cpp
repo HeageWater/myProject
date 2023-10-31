@@ -30,7 +30,7 @@ Particle::~Particle()
 
 void Particle::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	particle_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\kyu\\kyu.obj", pipeline_);
+	particle_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
 
 	particle_.mat_.Initialize();
 	particle_.mat_.scale_ = { 5,5,5 };
@@ -101,4 +101,9 @@ void Particle::Update(Matrix matView, Matrix matProjection)
 	}
 
 	particle_.MatUpdate(matView, matProjection);
+}
+
+void Particle::SetPos(Vector3D pos)
+{
+	particle_.mat_.trans_ = pos;
 }

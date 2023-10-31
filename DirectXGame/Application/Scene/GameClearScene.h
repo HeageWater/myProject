@@ -5,13 +5,13 @@
 #include "Sound.h"
 #include "Player.h"
 #include "TitleObj.h"
-#include "HitStop.h"
+
 #include "LoadObjectData.h"
 
 /// <summary>
 /// ゲームのタイトルシーン
 /// </summary>
-class TitleScene :public BaseScene
+class GameClearScene :public BaseScene
 {
 public:
 
@@ -67,20 +67,17 @@ private:
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//tex
-	size_t blockTex_ = 0;
+	size_t clearTex_ = 0;
 	size_t plyerTex_ = 0;
-	size_t whiteTex_ = 0;
+	size_t blockTex_ = 0;
 
 	//shader
 	Shader shader_;
 	Shader bilShader_;
 
-	//BGM
-	size_t hitSound_;
+	//sprite
+	SpriteCommon* normalSpriteCommon_ = new  SpriteCommon();
+	Sprite* sprite_ = new Sprite();
 
-	//hitstop
-	HitStop* hitStop_ = new HitStop();
-
-	//3Dタイトル
-	TitleObj* titleObject = new TitleObj();
+	Sprite* clearPng_ = new Sprite();
 };

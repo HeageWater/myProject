@@ -29,8 +29,26 @@ public:
 	/// </summary>
 	void Finalize();
 
-	//四角のパーティクルを作る
+	/// <summary>
+	/// 四角のパーティクルを作る
+	/// </summary>
+	/// <param name="pos"></param>
 	void CreateBoxParticle(Vector3D pos);
+
+	/// <summary>
+	/// 円のパーティクルを作る
+	/// </summary>
+	void CreateCircleParticle(Vector3D pos);
+
+	/// <summary>
+	/// ViewやProdactionを送る
+	/// </summary>
+	void SetCamera(Matrix matview, Matrix matProdaction);
+
+	/// <summary>
+	/// shaderやpipelineを送る
+	/// </summary>
+	void SetDraw(Shader shader,GPipeline*pipeline);
 
 	//シングルトン
 	static ParticleManager* GetInstance()
@@ -41,7 +59,21 @@ public:
 private:
 
 	//箱型パーティクル格納用変数
-	std::vector<BoxParticle*> boxs_;
+	std::vector<BoxParticle*> boxParticles_;
+	std::vector<Particle*> particles_;
+
+	//camera用変数
+	Matrix matview_;
+	Matrix matProdaction_;
+
+	//描画用変数
+	Shader shader_;
+	GPipeline* pipeline_;
+
+	//初期画像
+	size_t whiteTex_ = 0;
+
+	Model* model_;
 
 	//
 	ParticleManager() = default;

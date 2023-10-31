@@ -3,8 +3,7 @@
 void LoadObjectData::Initialize()
 {
 	//最初に呼び出すファイル
-	//levelData_ = JsonFileOpen::FileOpen("untitled");
-	StageLoad("untitled");
+	StageLoad("TitleStage");
 
 	//基本画像
 	enemyTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
@@ -69,8 +68,8 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 	levelData_ = JsonFileOpen::FileOpen(filePath);
 
 	//今あるものの数
-	size_t countEnemy = stages_.size();
-	size_t countStage = enemies_.size();
+	size_t countStage = stages_.size();
+	size_t countEnemy = enemies_.size();
 
 	//今あるステージを削除
 	for (size_t i = 0; i < countStage; i++)
@@ -83,6 +82,11 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 	{
 		enemies_.erase(enemies_.begin());
 	}
+
+	//調整
+	float enemyScale = 3.0f;
+	float stageScale = 10.0f;
+	float pos = 10.0f;
 
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
@@ -105,17 +109,14 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			Enemy* newModel_ = new Enemy();
 			newModel_->Initialize(shader_, pipeline_);
 
-			//調整
-			float scale = 10.0f;
-
 			//trans
-			newModel_->enemy_.mat_.trans_ = objectdata.translation_ * scale;
+			newModel_->enemy_.mat_.trans_ = objectdata.translation_ * pos;
 
 			//rotation
 			newModel_->enemy_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->enemy_.mat_.scale_ = objectdata.scaling_ * scale;
+			newModel_->enemy_.mat_.scale_ = objectdata.scaling_ * enemyScale;
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -134,17 +135,14 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			Stage* newModel_ = new Stage();
 			newModel_->Initialize(shader_, pipeline_);
 
-			//調整
-			float scale = 10.0f;
-
 			//trans
-			newModel_->stage_.mat_.trans_ = objectdata.translation_ * scale;
+			newModel_->stage_.mat_.trans_ = objectdata.translation_ * pos;
 
 			//rotation
 			newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
 
 			//scale;
-			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * scale;
+			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * stageScale;
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -159,49 +157,23 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		//Cameraだったら
 		if (objectdata.fileName_ == "Camera")
 		{
-			//モデルを指定して3Dオブジェクトを生成
-			//CameraPos
-			//Stage* newModel_ = new Stage();
-			//newModel_->Initialize(shader_, pipeline_);
-
-			////調整
-			//float scale = 10.0f;
-
-			////trans
-			//newModel_->stage_.mat.trans = objectdata.translation * scale;
-
-			////番号などをセット
-			////setNum(objectdata.otherName);
-
-			////格納
-			//stages_.push_back(newModel_);
-
-			////次へ
-			//continue;
 		}
 
 		//Warpだったら
 		if (objectdata.fileName_ == "Warp")
 		{
-			//モデルを指定して3Dオブジェクトを生成
-			//CameraPos
-			//Stage* newModel_ = new Stage();
-			//newModel_->Initialize(shader_, pipeline_);
+		}
 
-			////調整
-			//float scale = 10.0f;
+		//Startだったら
+		if (objectdata.fileName_ == "Start")
+		{
+			StartPos = objectdata.translation_ * pos;
+		}
 
-			////trans
-			//newModel_->stage_.mat.trans = objectdata.translation * scale;
-
-			////番号などをセット
-			////setNum(objectdata.otherName);
-
-			////格納
-			//stages_.push_back(newModel_);
-
-			////次へ
-			//continue;
+		//Endだったら
+		if (objectdata.fileName_ == "End")
+		{
+			EndPos = objectdata.translation_ * pos;
 		}
 	}
 }
@@ -216,4 +188,14 @@ void LoadObjectData::SetModel(Shader shader, GPipeline* pipeline)
 {
 	shader_ = shader;
 	pipeline_ = pipeline;
+}
+
+std::vector<Stage*> LoadObjectData::GetStage()
+{
+	return stages_;
+}
+
+std::vector<Enemy*> LoadObjectData::GetEnemy()
+{
+	return enemies_;
 }

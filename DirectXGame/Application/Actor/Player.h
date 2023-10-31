@@ -213,6 +213,15 @@ public:
 	/// </summary>
 	void MoveY() { player_.mat_.trans_.y_ += colVec_.y_; };
 
+	/// <summary>
+	/// 震える
+	/// </summary>
+	void Sheik();
+
+	/// <summary>
+	/// matview,matProdactionをセット
+	/// </summary>
+	void SetCamera(Matrix matView, Matrix matProjection);
 private:
 
 	/// <summary>
@@ -228,6 +237,18 @@ private:
 
 public:
 
+	/// <summary>
+	/// HPがゼロになった時のアニメーション
+	/// </summary>
+	bool DeadAnimation();
+
+	/// <summary>
+	/// 死亡時に一回呼び出す
+	/// </summary>
+	void SetDeadAnimation();
+
+private:
+
 	//ワープの入口に触れた時
 	bool warpActionFlag_ = false;
 
@@ -238,6 +259,16 @@ public:
 	Vector3D warpPos_[2];
 
 private:
+
+	//ワープの種類
+	uint8_t deadAnimationMode_ = 0;
+
+	//死亡時いた場所
+	Vector3D deadAnimationPos_;
+
+private:
+
+	GPipeline* pipeline_;
 
 	//音
 	MyXAudio* sound_ = nullptr;
@@ -283,6 +314,13 @@ private:
 
 	//ノックバックのフラグ
 	bool knockBackFlag_;
+
+	size_t sheikF_;
+
+	Matrix matView_;
+	Matrix matProjection_;
+
+	size_t time_;
 
 	//敵と当たった時にHP減らしてノックバックのフラグをONに
 	//点滅フラグもONに

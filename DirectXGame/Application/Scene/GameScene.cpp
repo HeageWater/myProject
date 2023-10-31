@@ -44,7 +44,6 @@ void GameScene::Update()
 	case Title:
 
 		if (chengeScene->GetTime() > chengeTime)
-		if (chengeScene->GetTime() > chengeTime)
 		{
 			scene = Play;
 		}
@@ -63,7 +62,7 @@ void GameScene::Update()
 
 		if (titleObject->EndMovie_)
 		{
-			if (hitStop->GetTime() < 1)
+			//if (hitStop->GetTime() < 1)
 			{
 				if (chengeScene->GetTime() < 1)
 				{
@@ -132,7 +131,7 @@ void GameScene::Update()
 			Time++;
 		}
 
-		if (hitStop->GetTime() < 1 && Time == t)
+		//if (hitStop->GetTime() < 1 && Time == t)
 		{
 			//player更新
 			player->Update(matView.mat_, matProjection, shader_);
@@ -219,7 +218,7 @@ void GameScene::Update()
 				player->knockBackFlag = true;*/
 
 				//player->SetPos(warp->GetOutPos());
-				player->warpActionFlag_ = true;
+				//player->warpActionFlag_ = true;
 				player->SetWarpPos(warp->GetInPos(), warp->GetOutPos());
 			}
 
@@ -328,7 +327,7 @@ void GameScene::Update()
 				overFlag = false;
 			}
 		}
-		else if (Time == 1)
+		if (Time == 1)
 		{
 			Reset();
 			StageLoad("stage4");
