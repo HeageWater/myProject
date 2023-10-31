@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Easing.h"
 #include <imgui.h>
 
 Player::Player()
@@ -20,6 +21,8 @@ Player::Player()
 	lesFlag_ = 0;
 
 	sheikF_ = false;
+
+	deadAnimationMode_ = 0;
 }
 
 Player::~Player()
@@ -30,8 +33,10 @@ Player::~Player()
 	}
 }
 
-void Player::Initialize(Shader shader, GPipeline* pipeline_)
+void Player::Initialize(Shader shader, GPipeline* pipeline)
 {
+	pipeline_ = pipeline;
+
 	player_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
 
 	player_.mat_.Initialize();
@@ -54,6 +59,7 @@ void Player::Initialize(Shader shader, GPipeline* pipeline_)
 	warpActionFlag_ = false;
 
 	warpMord_ = 0;
+	time_ = 0;
 
 	sound_ = MyXAudio::GetInstance();
 	jumpSE_ = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
@@ -66,7 +72,7 @@ void Player::Draw(size_t tex, size_t tex2)
 		player_.Draw(tex);
 	}
 
-	if (attackF_)
+	if (false)
 	{
 		playerAttack_.Draw(tex2);
 	}
@@ -95,15 +101,29 @@ Vector2D Player::MoveCamera(Matrix matView, Matrix matProjection, Input* input)
 
 void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 {
+	matView_ = matView;
+	matProjection_ = matProjection;
+
 	//コントローラーUpdate
 	controller_->Update();
 
 	//左スティックの角度代入
 	colVec_ = { controller_->GetLeftStickVec().x_, 0,0 };
 
+	bool prus = colVec_.x_ >= 0.0f;
+
 	//ワープしているか
 	if (!WarpAction())
 	{
+		if (prus)
+		{
+			player_.mat_.rotAngle_.y_ = 2;
+		}
+		else
+		{
+			player_.mat_.rotAngle_.y_ = -2;
+		}
+
 		//ジャンプ
 		Jump();
 
@@ -125,7 +145,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 
 		for (size_t i = 0; i < attack_.size(); i++)
 		{
-			attack_[i]->Update(matView, matProjection);
+			attack_[i]->Update(matView_, matProjection_);
 
 			if (attack_[i]->GetIsDead())
 			{
@@ -207,7 +227,7 @@ void Player::Attack(Shader shader)
 	Vector2D Rstick = controller_->GetRightStickVec();
 
 	//最低ライン
-	Vector2D minLine = { 0.2f,0.2f };
+	Vector2D minLine = { 0.4f,0.4f };
 
 	//デッドゾ－ン超えてるか
 	bool moreLineX = minLine.x_ < Rstick.x_ || -minLine.x_ > Rstick.x_;
@@ -232,30 +252,85 @@ void Player::Attack(Shader shader)
 		//描画する
 		attackF_ = true;
 
-		////attackModel生成
-		//if (createAttackFlag)
-		//{
-		//	PlayerAttack* newAttack = new PlayerAttack(dx_, shader, pipeline_);
+		//attackModel生成
+		if (createAttackFlag_)
+		{
+			PlayerAttack* newAttack = new PlayerAttack(MyDirectX::GetInstance(), shader, pipeline_);
 
-		//	Vector3D pos = player_.mat.trans;
-		//	newAttack->SetPos(pos);
+			Vector3D pos = player_.mat_.trans_;
+			newAttack->SetPos(pos);
 
-		//	Vector2D vec = controller->GetRightStickVec();
-		//	vec *= -1;
-		//	newAttack->SetVec(vec);
+			Vector2D vec = controller_->GetRightStickVec();
+			vec *= -1;
+			newAttack->SetVec(vec);
 
-		//	newAttack->SetUpdate();
+			newAttack->SetUpdate();
 
-		//	attack.push_back(newAttack);
+			attack_.push_back(newAttack);
 
-		//	createAttackFlag = false;
-		//}
+			createAttackFlag_ = false;
+		}
 	}
 	else if (!createAttackFlag_)
 	{
 		//attackModel生成
 		createAttackFlag_ = true;
 	}
+}
+
+void Player::SetDeadAnimation()
+{
+	knockBackVec_ = 0;
+	deadAnimationMode_ = 1;
+	deadAnimationPos_ = player_.mat_.trans_;
+	player_.mat_.scale_ *= 2;
+	player_.mat_.rotAngle_.y_ = 3.14f;
+}
+
+bool Player::DeadAnimation()
+{
+	float maxTime = 30;
+	time_++;
+
+	switch (deadAnimationMode_)
+	{
+	case 1:
+		if (time_ > maxTime)
+		{
+			deadAnimationMode_++;
+		}
+
+		break;
+	case 2:
+		player_.mat_.trans_.z_ = -10.0f;
+		player_.mat_.rotAngle_.z_ += 0.15f;
+
+		player_.mat_.trans_.y_ += player_.mat_.rotAngle_.z_ / 3;
+
+		if (time_ > maxTime * deadAnimationMode_)
+		{
+			deadAnimationMode_++;
+		}
+		break;
+	case 3:
+		player_.mat_.rotAngle_.z_ += 0.15f;
+		player_.mat_.trans_.y_ -= player_.mat_.rotAngle_.z_ / 3;
+
+		if (time_ > maxTime * deadAnimationMode_ + 10)
+		{
+			return true;
+		}
+		break;
+	default:
+
+
+		break;
+	}
+
+	//座標Update
+	player_.MatUpdate(matView_, matProjection_);
+
+	return false;
 }
 
 void Player::PopPlayerAttack()
@@ -267,12 +342,27 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 	for (size_t i = 0; i < attack_.size(); i++)
 	{
 		Vector3D nowPos = attack_[i]->GetPos();
-		Vector3D nowScale = attack_[i]->GetScale();
+		Vector3D nowScale = attack_[i]->GetScale() * 3;
 
 		float a = (enemy.mat_.trans_.x_ - nowPos.x_) * (enemy.mat_.trans_.x_ - nowPos.x_);
 		float b = (enemy.mat_.trans_.y_ - nowPos.y_) * (enemy.mat_.trans_.y_ - nowPos.y_);
 
 		float c = enemy.mat_.scale_.x_ * nowScale.x_;
+
+		//あたり判定
+		if (a + b < c)
+		{
+			attack_.erase(attack_.begin() + i);
+			return true;
+		}
+
+		nowPos = -attack_[i]->GetPos();
+		nowScale = attack_[i]->GetScale() * 3;
+
+		a = (enemy.mat_.trans_.x_ - nowPos.x_) * (enemy.mat_.trans_.x_ - nowPos.x_);
+		b = (enemy.mat_.trans_.y_ - nowPos.y_) * (enemy.mat_.trans_.y_ - nowPos.y_);
+
+		c = enemy.mat_.scale_.x_ * nowScale.x_;
 
 		//あたり判定
 		if (a + b < c)
@@ -287,8 +377,12 @@ bool Player::CollisionAttackToEnemy(Model enemy)
 void Player::LesLife()
 {
 	life_--;
-	lesFlag_ = 50;
-	knockBackFlag_ = true;
+
+	if (life_ > 0)
+	{
+		lesFlag_ = 50;
+		knockBackFlag_ = true;
+	}
 }
 
 void Player::KnockBack()
@@ -713,4 +807,14 @@ void Player::SetCamera(Matrix matView, Matrix matProjection)
 	//座標Update
 	player_.MatUpdate(matView, matProjection);
 	playerAttack_.MatUpdate(matView, matProjection);
+
+	for (size_t i = 0; i < attack_.size(); i++)
+	{
+		attack_[i]->Update(matView, matProjection);
+
+		if (attack_[i]->GetIsDead())
+		{
+			attack_.erase(attack_.begin() + i);
+		}
+	}
 }

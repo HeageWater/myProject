@@ -106,7 +106,7 @@ void TitleObj::Movie()
 			titleObj_.mat_.scale_.x_ = (float)Easing::EaseInOut(titleObj_.mat_.scale_.x_, endScaleX, nowTime, maxTime);
 			titleObj_.mat_.scale_.y_ = (float)Easing::EaseInOut(titleObj_.mat_.scale_.y_, endScaleY, nowTime, maxTime);
 		}
-		else if (time_ < 150)
+		else if (time_ < 130)
 		{
 			time_++;
 		}

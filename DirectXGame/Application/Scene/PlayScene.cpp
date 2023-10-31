@@ -4,98 +4,171 @@
 
 void PlayScene::Update()
 {
+	//hitStop更新
+	hitStop_->Update();
+
+	//まだ時間無いなら戻る
+	if (hitStop_->GetTimeFlag())
+	{
+		return;
+	}
+
+	//ゴールに触れているか
+	bool checkGoal = goal_->BoxCollision(player_->GetModel());
+
 	//最初のムービー用タイマー
 	if (time_ < 100)
 	{
 		time_++;
 	}
 
-	//
-	player_->MoveY();
-	//stageUpdate
-	for (auto& object : LoadObjectData::GetInstance()->GetStage())
+	if (!movieFlag_)
 	{
-		object->SetFlag(true);
-
-		object->Update(matView_.mat_, matProjection_);
-
-		if (player_->StageCollsionY(object->stage_))
+		//
+		player_->MoveY();
+		//stageUpdate
+		for (auto& object : LoadObjectData::GetInstance()->GetStage())
 		{
+			object->SetFlag(true);
 
+			object->Update(matView_.mat_, matProjection_);
+
+			if (player_->StageCollsionY(object->stage_))
+			{
+
+			}
 		}
-	}
 
-	//
-	player_->MoveX();
-	for (auto& object : LoadObjectData::GetInstance()->GetStage())
-	{
-		object->SetFlag(true);
-
-		object->Update(matView_.mat_, matProjection_);
-
-		if (player_->StageCollsionX(object->stage_))
+		//
+		player_->MoveX();
+		for (auto& object : LoadObjectData::GetInstance()->GetStage())
 		{
+			object->SetFlag(true);
 
+			object->Update(matView_.mat_, matProjection_);
+
+			if (player_->StageCollsionX(object->stage_))
+			{
+
+			}
 		}
+
+		//プレイヤーと敵の判定
+		for (auto& object : LoadObjectData::GetInstance()->GetEnemy())
+		{
+			object->Update(matView_.mat_, matProjection_);
+			object->SertchPlayer(player_->GetModel());
+
+			if (object->deadVec_)
+			{
+				continue;
+			}
+
+			if (player_->PlayerCollision(object->enemy_))
+			{
+				//敵が止まっている時間
+				float setStopTime = 150.0f;
+
+				ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
+				object->Time_ = setStopTime;
+				sound_->SoundPlayWave(hitSound_);
+			}
+
+			//playerの攻撃との判定
+			if (object->BoxCollision(player_->GetAttackModel()))
+			{
+				//止まっている時間
+				float setStopTime = 10.0f;
+
+				hitStop_->SetTime(setStopTime);
+				sound_->SoundPlayWave(hitSound_);
+				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
+			}
+		}
+
+		//パーティクルテスト
+		if (input_->GetTrigger(DIK_1))
+		{
+			ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
+		}
+
+		//player_->PlayerCollision(player_->GetModel());
+
+		//targetをplayerに
+		matView_.eye_.x_ = player_->GetPos().x_;
+		matView_.target_.x_ = player_->GetPos().x_;
+
+		//playerのyからどれくらい離すか
+		float prusTargetY = 10;
+
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
+
+		/*if (time_ == 75)
+		{
+			Vector3D pos = player_->GetPos();
+			pos -= {0, 5, 0};
+			CreatePatricle(pos);
+		}*/
+
+		//player更新
+		player_->Update(matView_.mat_, matProjection_, shader_);
+		goal_->Update(matView_.mat_, matProjection_);
+
+		//jsonファイルから読み込んだものの更新
+		LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+		LoadObjectData::GetInstance()->Update();
+
+		//カメラ更新
+		matView_.MatUpdate();
+
+		//スクリーン更新
+		screen_.MatUpdate(matView_.mat_, matProjection_, 0);
+
+		//パーティクル更新
+		ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+		ParticleManager::GetInstance()->Update();
+
+		//GameClear条件が達成されたら
+		if (checkGoal)
+		{
+			movieFlag_ = true;
+		}
+
+		//GameOver条件が達成されたら
+		if (player_->GetLife() <= 0)
+		{
+			movieFlag_ = true;
+			player_->SetDeadAnimation();
+		}
+
+#ifdef _DEBUG
+
+		if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
+		{
+			player_->SetLife(0);
+		}
+
+#endif _DEBUG
+	
 	}
-
-	//パーティクルテスト
-	if (input_->GetTrigger(DIK_1))
+	else
 	{
-		ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
-	}
+		//GameClear条件が達成されたら
+		if (checkGoal)
+		{
+			ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
+		}
 
-	//player_->PlayerCollision(player_->GetModel());
-
-	//targetをplayerに
-	matView_.eye_.x_ = player_->GetPos().x_;
-	matView_.target_.x_ = player_->GetPos().x_;
-
-	//playerのyからどれくらい離すか
-	float prusTargetY = 10;
-
-	matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
-	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
-
-	/*if (time_ == 75)
-	{
-		Vector3D pos = player_->GetPos();
-		pos -= {0, 5, 0};
-		CreatePatricle(pos);
-	}*/
-
-	//player更新
-	player_->Update(matView_.mat_, matProjection_, shader_);
-	goal_->Update(matView_.mat_, matProjection_);
-
-	//jsonファイルから読み込んだものの更新
-	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
-	LoadObjectData::GetInstance()->Update();
-
-	//カメラ更新
-	matView_.MatUpdate();
-
-	//スクリーン更新
-	screen_.MatUpdate(matView_.mat_, matProjection_, 0);
-
-	//パーティクル更新
-	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
-	ParticleManager::GetInstance()->Update();
-
-	//
-	bool checkGoal = goal_->BoxCollision(player_->GetModel());
-
-	//GameClear条件が達成されたら
-	if (checkGoal)
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
-		checkGoal = false;
-	}
-
-	//GameOver条件が達成されたら
-	if (player_->GetLife() <= 0)
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
+		//GameOver条件が達成されたら
+		if (player_->GetLife() <= 0)
+		{
+			//死亡アニメーション
+			if (player_->DeadAnimation())
+			{
+				ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
+			}
+		}
 	}
 
 	//シーンチェンジ更新
@@ -245,6 +318,12 @@ void PlayScene::Initialize()
 		UIPress_->position_ = { -280,-230,0 };
 		UIPress_->scale_ = { 600,240,1 };
 	};
+
+	//
+	movieFlag_ = false;
+
+	//音読み込み
+	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 }
 
 void PlayScene::Draw()

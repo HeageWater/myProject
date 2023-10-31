@@ -97,6 +97,9 @@ private:
 	//攻撃しているかフラグ
 	bool attackF_ = false;
 
+	//消えかかる
+	bool deleteFlag = false;
+
 	//向き
 	Vector2D vec_;
 

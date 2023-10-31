@@ -100,6 +100,12 @@ private:
 	Sprite* UIAButton_ = new Sprite();
 	Sprite* UIPress_ = new Sprite();
 
+	//hitstop
+	HitStop* hitStop_ = new HitStop();
+
+	//BGM
+	size_t hitSound_;
+
 	//
 	bool movieF_ = false;
 
@@ -108,6 +114,9 @@ private:
 
 	//
 	std::vector<BoxParticle*> boxParticles_;
+
+	//ムービー
+	bool movieFlag_;
 public:
 	
 	/// <summary>

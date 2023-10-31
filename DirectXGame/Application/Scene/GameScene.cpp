@@ -218,7 +218,7 @@ void GameScene::Update()
 				player->knockBackFlag = true;*/
 
 				//player->SetPos(warp->GetOutPos());
-				player->warpActionFlag_ = true;
+				//player->warpActionFlag_ = true;
 				player->SetWarpPos(warp->GetInPos(), warp->GetOutPos());
 			}
 
