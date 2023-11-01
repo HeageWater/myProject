@@ -173,7 +173,6 @@ void PlayScene::Update()
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
-
 }
 
 void PlayScene::Initialize()

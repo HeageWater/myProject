@@ -23,6 +23,8 @@ Player::Player()
 	sheikF_ = false;
 
 	deadAnimationMode_ = 0;
+
+	time_ = 0;
 }
 
 Player::~Player()
