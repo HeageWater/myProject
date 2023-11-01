@@ -324,6 +324,7 @@ void GPipeline::SetScreenRootSignature(ID3D12Device* dev)
 
 GPipeline::GPipeline()
 {
+	result_ = S_OK;
 }
 
 GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
