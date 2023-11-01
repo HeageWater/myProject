@@ -97,14 +97,22 @@ void FlameWork::Run()
 	//ゲームループ
 	while (true)
 	{
+#ifdef _DEBUG
+
 		//ImGui受付開始
 		//ImguiManager::GetInstance()->Begin();
+
+#endif _DEBUG
 
 		//更新
 		Update();
 
+#ifdef _DEBUG
+
 		//ImGui受付終了
 		//ImguiManager::GetInstance()->End();
+
+#endif _DEBUG
 
 		//描画
 		Draw();
