@@ -47,7 +47,7 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 	//levelData = CheckObjects(deserialised, levelData);
 
 	//objectsの全オブジェクトを走査
-	for (nlohmann::json& object : deserialised["objects"])
+	for (nlohmann::json& object : deserialised["object"])
 	{
 		//チェック
 		assert(object.contains("type"));
