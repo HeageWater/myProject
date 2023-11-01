@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KMEngine", "KMEngine.vcxproj", "{EA506BE5-ED35-42A9-B2D0-5E8346F6D80C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{43177EC8-8FFA-4897-B9F0-7593678396A9}"
-	ProjectSection(SolutionItems) = preProject
-		DirectXGame\Application\Camera\GameCamera.cpp = DirectXGame\Application\Camera\GameCamera.cpp
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Imgui", "External\Imgui\Imgui.vcxproj", "{3E04ACD9-84A3-4175-9CF5-D47B3875059A}"
 EndProject

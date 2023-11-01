@@ -48,7 +48,7 @@ public:
 	/// <summary>
 	/// shaderやpipelineを送る
 	/// </summary>
-	void SetDraw(Shader shader,GPipeline*pipeline);
+	void SetDraw(Shader shader, GPipeline* pipeline);
 
 	//シングルトン
 	static ParticleManager* GetInstance()
@@ -68,7 +68,7 @@ private:
 
 	//描画用変数
 	Shader shader_;
-	GPipeline* pipeline_;
+	GPipeline* pipeline_ ;
 
 	//初期画像
 	size_t whiteTex_ = 0;
