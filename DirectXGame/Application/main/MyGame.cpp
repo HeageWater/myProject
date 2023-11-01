@@ -5,9 +5,11 @@ void MyGame::Initialize()
 {
 	//フレームワーク初期化
 	FlameWork::Initialize();
-	
+
+	//共通カメラ
+
+
 	//シーンチェンジ初期化
-	// //カメラをつくる
 	//ChengeScene::GetInstance()->Initialize();
 
 	//シーンマネージャーに最初のシーンをセット
@@ -30,6 +32,9 @@ void MyGame::Draw()
 {
 	//シーンマネージャーの描画処理
 	SceneManager::GetInstance()->Draw();
+
+	//SceneChenge描画
+	//ChengeScene::GetInstance()->Draw();
 }
 
 void MyGame::Finalize()

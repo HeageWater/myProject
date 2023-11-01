@@ -4,8 +4,6 @@
 void ParticleManager::Initalize()
 {
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
-
-	//model_ ="Resources\\Model\\kyu\\kyu.obj ;
 }
 
 void ParticleManager::Update()

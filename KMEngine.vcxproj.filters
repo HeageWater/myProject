@@ -27,40 +27,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Application\main.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\MyGame.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Player.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp">
-      <Filter>ソースファイル\Application\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\LoadObjectData.cpp">
       <Filter>ソースファイル\Application\Actor</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Camera\GameCamera.cpp">
@@ -214,21 +181,48 @@
     <ClCompile Include="DirectXGame\Application\Scene\GameOverScene.cpp">
       <Filter>ソースファイル\Application\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
+      <Filter>ソースファイル\Application\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp">
+      <Filter>ソースファイル\Application\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp">
+      <Filter>ソースファイル\Application\Actor\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\LoadObjectData.cpp">
+      <Filter>ソースファイル\Application\Actor\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp">
+      <Filter>ソースファイル\Application\Actor\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp">
+      <Filter>ソースファイル\Application\Actor\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp">
+      <Filter>ソースファイル\Application\Actor\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp">
+      <Filter>ソースファイル\Application\Actor\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp">
+      <Filter>ソースファイル\Application\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Player.cpp">
+      <Filter>ソースファイル\Application\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\main\MyGame.cpp">
+      <Filter>ソースファイル\Application\MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\main\main.cpp">
+      <Filter>ソースファイル\Application\MainGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Application\MyGame.h">
+    <ClInclude Include="DirectXGame\Application\main\MyGame.h">
       <Filter>ヘッダーファイル\Engine</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\Actor.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Enemy.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Goal.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Warp.h">
       <Filter>ヘッダーファイル\Application\Actor</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h">
@@ -248,9 +242,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\GameScene.h">
       <Filter>ヘッダーファイル\Application\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\LoadObjectData.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Collision\Collision.h">
       <Filter>ヘッダーファイル\Application\Collision</Filter>
@@ -312,26 +303,11 @@
     <ClInclude Include="DirectXGame\Engine\Math\Vector2D.h">
       <Filter>ヘッダーファイル\Engine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Stage.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Player.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\PlayScene.h">
       <Filter>ヘッダーファイル\Application\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\PlayerAttack.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Input\Input.h">
       <Filter>ヘッダーファイル\Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Skydome.h">
-      <Filter>ヘッダーファイル\Application\Actor</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Camera\MyDebugCamera.h">
       <Filter>ヘッダーファイル\Application\Camera</Filter>
@@ -396,6 +372,36 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\GameOverScene.h">
       <Filter>ヘッダーファイル\Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
+      <Filter>ヘッダーファイル\Application\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Enemy.h">
+      <Filter>ヘッダーファイル\Application\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Player.h">
+      <Filter>ヘッダーファイル\Application\Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Goal.h">
+      <Filter>ヘッダーファイル\Application\Actor\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\LoadObjectData.h">
+      <Filter>ヘッダーファイル\Application\Actor\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Skydome.h">
+      <Filter>ヘッダーファイル\Application\Actor\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Stage.h">
+      <Filter>ヘッダーファイル\Application\Actor\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h">
+      <Filter>ヘッダーファイル\Application\Actor\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Warp.h">
+      <Filter>ヘッダーファイル\Application\Actor\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\PlayerAttack.h">
+      <Filter>ヘッダーファイル\Application\Actor\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +518,27 @@
     </Filter>
     <Filter Include="ソースファイル\Engine\Math">
       <UniqueIdentifier>{7aae273e-6a70-4eff-bad0-fdafb165da12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Application\Actor\Enemy">
+      <UniqueIdentifier>{4a83f4f8-9b1e-4909-a48e-4cea2eba1a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Application\Actor\Enemy">
+      <UniqueIdentifier>{c2d94ed9-9e8e-499b-a7a0-d867d2fb2dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Application\Actor\Object">
+      <UniqueIdentifier>{5e649837-9d68-4597-9d8f-8073e88f8d52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Application\Actor\Player">
+      <UniqueIdentifier>{75be06f9-e456-4552-ba70-eb45e85699c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Application\Actor\Player">
+      <UniqueIdentifier>{e06b0e1d-2ec5-4d8f-bc94-a9e08d733968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Application\Actor\Object">
+      <UniqueIdentifier>{02677ed2-9b3e-42e9-9402-216c54877338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Application\MainGame">
+      <UniqueIdentifier>{884aaf2a-04fc-426c-9541-303e96fe7b5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
