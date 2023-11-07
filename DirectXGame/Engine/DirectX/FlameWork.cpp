@@ -1,6 +1,7 @@
 #include "FlameWork.h"
 #include "SceneManager.h"
 #include "ChengeScene.h"
+#include "ParticleManager.h"
 
 void FlameWork::Update()
 {
@@ -11,6 +12,9 @@ void FlameWork::Update()
 	{
 		SetEndRwqust(true);
 	}
+
+	//SetCameraが必要
+	//ParticleManager::GetInstance()->Update();
 
 	//キーボードの受付更新
 	Input::GetInstance()->Update();
@@ -80,6 +84,9 @@ void FlameWork::Initialize()
 	//シーンマネージャー
 	SceneFactory* sceneFactory = new SceneCreate();
 	SceneManager::GetInstance()->SetSceneFactory(sceneFactory);
+
+	//パーティクルマネージャー
+	//ParticleManager::GetInstance()->Initalize();
 }
 
 void FlameWork::Finalize()
@@ -87,6 +94,7 @@ void FlameWork::Finalize()
 	ImguiManager::GetInstance()->Finalize();
 	Input::GetInstance()->Finalize();
 	MyXAudio::GetInstance()->Finalize();
+	//ParticleManager::GetInstance()->Finalize();
 }
 
 void FlameWork::Run()

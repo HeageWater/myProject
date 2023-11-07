@@ -1,25 +1,17 @@
 #pragma once
-#include "GPipeline.h"
-#include "Object3D.h"
-#include "ConstBuff.h"
-#include "Shader.h"
-#include "MyDebugCamera.h"
-#include "Square.h"
-#include "Controller.h"
-#include <memory>
-#include "Model.h"
+#include "BaseEnemy.h"
 
 /// <summary>
 /// 敵生成用クラス(基盤ではない)
 /// </summary>
-class Enemy 
+class Enemy :BaseEnemy
 {
 public:
 	Enemy();
 	~Enemy();
 
 	/// <summary>
-	/// 初期日
+	/// 初期化
 	/// </summary>
 	/// <param name="shader"></param>
 	/// <param name="pipeline_"></param>
@@ -82,10 +74,10 @@ public:
 	bool deadVec_ = false;
 
 	//向き
-	Vector3D Vec_ = {0,0,0};
+	Vector3D Vec_ = { 0,0,0 };
 
 	//動く量
-	Vector3D move_ = {0,0,0};
+	Vector3D move_ = { 0,0,0 };
 
 	//どのくらいたったか
 	float Time_ = 0;

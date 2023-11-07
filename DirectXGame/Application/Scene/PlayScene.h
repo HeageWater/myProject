@@ -113,7 +113,7 @@ private:
 	size_t time_ = 0;
 
 	//
-	std::vector<BoxParticle*> boxParticles_;
+	//std::vector<BoxParticle*> boxParticles_;
 
 	//ムービー
 	bool movieFlag_;

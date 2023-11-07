@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "MyMath.h"
 #include "Input.h"
 
@@ -7,9 +7,7 @@
 /// </summary>
 class MyDebugCamera
 {
-
 public:
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>

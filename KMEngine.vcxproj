@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\DescriptorHeap.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision\CollisionManager.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameClearScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameOverScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\MoviePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -201,6 +203,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\DescriptorHeap.h" />
     <ClInclude Include="DirectXGame\Application\Collision\CollisionManager.h" />
@@ -261,6 +264,8 @@
     <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameClearScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameOverScene.h" />
+    <ClInclude Include="DirectXGame\Engine\Math\Enum.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\MoviePlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

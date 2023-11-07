@@ -1,0 +1,27 @@
+{
+    "name": "scene",
+    "object": [
+        {
+            "type": "MESH",
+            "name": "Cube",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -0.3531053960323334,
+                    0.1759188175201416
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    9.962003707885742,
+                    8.0,
+                    1.0
+                ]
+            },
+            "file_name": "Stage"
+        }
+    ]
+}

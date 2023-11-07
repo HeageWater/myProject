@@ -4,6 +4,7 @@
 #include "Controller.h"
 #include "Sound.h"
 #include "Player.h"
+#include "MoviePlayer.h"
 #include "TitleObj.h"
 
 #include "LoadObjectData.h"
@@ -49,7 +50,7 @@ private:
 	Square screen_;
 
 	//player
-	Player* player_ = new Player();
+	MoviePlayer* moiePlayer_ = new MoviePlayer();
 
 	//描画用行列
 	MyMath::MatView matView_;
@@ -80,4 +81,7 @@ private:
 	Sprite* sprite_ = new Sprite();
 
 	Sprite* clearPng_ = new Sprite();
+
+	bool ClearGravity = false;
+	bool notP = false;
 };

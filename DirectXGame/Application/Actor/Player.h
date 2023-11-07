@@ -295,7 +295,7 @@ private:
 	float jumpPower_ = 0;
 
 	//重力
-	float gravirtPower_ = 0;
+	float gravityPower_ = 0;
 
 	//コントローラー
 	Controller* controller_ = nullptr;

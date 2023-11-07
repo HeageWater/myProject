@@ -104,13 +104,6 @@ void PlayScene::Update()
 		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
 		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 
-		/*if (time_ == 75)
-		{
-			Vector3D pos = player_->GetPos();
-			pos -= {0, 5, 0};
-			CreatePatricle(pos);
-		}*/
-
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
 		goal_->Update(matView_.mat_, matProjection_);
@@ -155,7 +148,7 @@ void PlayScene::Update()
 	else
 	{
 		//GameClear条件が達成されたら
-		if (checkGoal)
+		if (movieFlag_)
 		{
 			ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
 		}
@@ -211,7 +204,7 @@ void PlayScene::Initialize()
 	LoadObjectData::GetInstance()->Initialize();
 
 	//ステージ読み込み
-	LoadObjectData::GetInstance()->StageLoad("stage");
+	LoadObjectData::GetInstance()->StageLoad("stage3");
 
 	//開始地点をセット
 	player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());

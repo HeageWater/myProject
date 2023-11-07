@@ -1,5 +1,6 @@
 #include "GameClearScene.h"
 #include "ChengeScene.h"
+#include "ParticleManager.h"
 
 void GameClearScene::Initialize()
 {
@@ -29,7 +30,7 @@ void GameClearScene::Initialize()
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
 	//player
-	player_->Initialize(shader_, pipeline_.get());
+	moiePlayer_->Initialize(shader_, pipeline_.get());
 
 	//透過するかどうか
 	normalSpriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
@@ -39,8 +40,24 @@ void GameClearScene::Initialize()
 
 	//
 	clearPng_->Inilialize(normalSpriteCommon_, &matProjection_);
-	clearPng_->position_ = { -680,-420,0 };
+	clearPng_->position_ = { -680,0,0 };
 	clearPng_->scale_ = { 3600,1440,1 };
+
+	//jsonファイルから読み込んだものの初期化
+	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
+	LoadObjectData::GetInstance()->Initialize();
+
+	//ステージ読み込み
+	LoadObjectData::GetInstance()->StageLoad("ClearStage");
+
+	ClearGravity = false;
+	notP = false;
+
+	//
+	ParticleManager::GetInstance()->Initalize();
+	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+	ParticleManager::GetInstance()->SetDraw(shader_, pipeline_.get());
+
 }
 
 void GameClearScene::Update()
@@ -51,10 +68,40 @@ void GameClearScene::Update()
 	//
 	clearPng_->Update();
 
+	//
+	moiePlayer_->Update(matView_.mat_, matProjection_, shader_);
+
+	//
+	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+	LoadObjectData::GetInstance()->Update();
+
 	if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
 	{
 		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
 	}
+
+	if (moiePlayer_->PlayerSet() && !notP)
+	{
+		ClearGravity = true;
+	}
+
+	if (ClearGravity && !notP)
+	{
+		ParticleManager::GetInstance()->CreateBoxParticle(moiePlayer_->GetPos());
+		notP = true;
+	}
+
+	if (notP)
+	{
+		if (clearPng_->position_.y_ > -420)
+		{
+			clearPng_->position_.y_ -= 10;
+		}
+	}
+
+	//パーティクル更新
+	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+	ParticleManager::GetInstance()->Update();
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
@@ -75,7 +122,13 @@ void GameClearScene::Draw()
 	screen_.Draw(blockTex_);
 
 	//Actor描画
-	player_->Draw(plyerTex_, plyerTex_);
+	moiePlayer_->Draw(plyerTex_);
+
+	//
+	LoadObjectData::GetInstance()->Draw();
+
+	//ボックスパーティクル
+	ParticleManager::GetInstance()->Draw();
 
 	//スプライトのプレドロー
 	sprite_->PreDraw();
@@ -89,4 +142,6 @@ void GameClearScene::Draw()
 
 void GameClearScene::Finalize()
 {
+	//ボックスパーティクル
+	ParticleManager::GetInstance()->Finalize();
 }

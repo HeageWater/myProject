@@ -199,21 +199,21 @@ void Player::Jump()
 		jumpPower_ -= jump;
 	}
 
-	if (gravirtPower_ < maxGravity)
+	if (gravityPower_ < maxGravity)
 	{
-		gravirtPower_ += gravity;
+		gravityPower_ += gravity;
 	}
 
 	if (controller_->ButtonTriggerPush(LT))
 	{
 		jumpPower_ = maxJunp;
-		gravirtPower_ = 0;
+		gravityPower_ = 0;
 
 		sound_->SoundPlayWave(jumpSE_);
 	}
 
 	player_.mat_.trans_.y_ += jumpPower_;
-	player_.mat_.trans_.y_ -= gravirtPower_;
+	player_.mat_.trans_.y_ -= gravityPower_;
 }
 
 void Player::Attack(Shader shader)
@@ -458,7 +458,7 @@ bool Player::StageCollsion(Model stage, Matrix matView, Matrix matProjection)
 			}
 		}
 
-		if (gravirtPower_ > 0)
+		if (gravityPower_ > 0)
 		{
 			bool colX = DisX <= player_.mat_.scale_.x_ + stage.mat_.scale_.x_;
 			bool colY = DisY <= player_.mat_.scale_.y_ + stage.mat_.scale_.y_;
@@ -652,7 +652,7 @@ bool Player::StageCollsionY(Model stage)
 			}
 		}
 
-		if (gravirtPower_ > 0)
+		if (gravityPower_ > 0)
 		{
 			bool colX = DisX <= playerScaleX + stageScaleX;
 			bool colY = DisY <= playerScaleY + stageScaleY;
