@@ -1,6 +1,7 @@
 #include "TitleScene.h"
 #include "imgui.h"
 #include "ChengeScene.h"
+#include "Enum.h"
 
 void TitleScene::Update()
 {
@@ -73,6 +74,12 @@ void TitleScene::Update()
 
 		//hit音
 		sound_->SoundPlayWave(hitSound_);
+
+		hozon[0] = matView_.eye_.x_;
+		hozon[1] = matView_.target_.x_;
+
+		hozon[2] = matView_.eye_.y_;
+		hozon[3] = matView_.target_.y_;
 	}
 
 	//
@@ -85,13 +92,21 @@ void TitleScene::Update()
 
 	if (titleObject->IsMovie_)
 	{
-		matView_.eye_.x_ = 0;
-		matView_.target_.x_ = 0;
+		const float MaxTime = 50;
 
-		matView_.eye_.y_ = 15;
-		matView_.target_.y_ = 15;
+		if (time_ < MaxTime)
+		{
+			time_++;
+		}
 
-		player_->SetCamera(matView_.mat_,matProjection_);
+		matView_.eye_.x_ = (float)Easing::EaseInOut((double)hozon[0], 0.0f, (float)time_ / MaxTime, MaxTime);
+		matView_.target_.x_ = (float)Easing::EaseInOut((double)hozon[1], 0.0f, (float)time_ / MaxTime, MaxTime);
+
+		const float y = 15;
+		matView_.eye_.y_ = (float)Easing::EaseInOut((double)hozon[2], y, (float)time_ / MaxTime, MaxTime);
+		matView_.target_.y_ = (float)Easing::EaseInOut((double)hozon[3], y, (float)time_ / MaxTime, MaxTime);
+
+		player_->SetCamera(matView_.mat_, matProjection_);
 	}
 
 	//jsonファイルから読み込んだものの更新
@@ -102,12 +117,12 @@ void TitleScene::Update()
 	matView_.MatUpdate();
 
 	//スクリーン更新
-	screen_.MatUpdate(matView_.mat_, matProjection_, 0);
+	screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
 
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+		//ChengeScene::GetInstance()->SetPlayFlag("PLAY");
 	}
 
 	//シーンチェンジ更新
@@ -153,6 +168,8 @@ void TitleScene::Initialize()
 
 	//音読み込み
 	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
+
+	time_ = 0;
 }
 
 void TitleScene::Draw()

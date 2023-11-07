@@ -12,5 +12,5 @@
 class BaseEnemy
 {
 protected:
-	virtual void Initalize();
+	//virtual void Initalize();
 };

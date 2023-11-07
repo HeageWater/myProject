@@ -83,4 +83,8 @@ private:
 
 	//3Dタイトル
 	TitleObj* titleObject = new TitleObj();
-};
+
+	float hozon[4] = { 0,0,0,0 };
+
+	size_t time_ = 0;
+}; 
