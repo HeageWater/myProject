@@ -16,6 +16,11 @@ void LoadObjectData::Update()
 	for (size_t i = 0; i < enemies_.size(); i++)
 	{
 		enemies_[i]->Update(view_, prodaction_);
+
+		if (enemies_[i]->GetIsDead())
+		{
+			enemies_.erase(enemies_.begin() + i);
+		}
 	}
 
 	//ステージ更新
@@ -83,10 +88,10 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		enemies_.erase(enemies_.begin());
 	}
 
-	//調整
-	float enemyScale = 3.0f;
-	float stageScale = 10.0f;
-	float pos = 10.0f;
+	//調整用変数
+	const float enemyScale = 3.0f;
+	const float stageScale = 10.0f;
+	const float pos = 10.0f;
 
 	//ホットリロードでStageSelectごとに読み込むようにする
 	//レベルデータからオブジェクトに生成、配置
@@ -110,13 +115,13 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			newModel_->Initialize(shader_, pipeline_);
 
 			//trans
-			newModel_->enemy_.mat_.trans_ = objectdata.translation_ * pos;
+			newModel_->SetTrans(objectdata.translation_ * pos);
 
 			//rotation
-			newModel_->enemy_.mat_.rotAngle_ = objectdata.rotation_;
+			newModel_->SetRot(objectdata.rotation_);
 
 			//scale;
-			newModel_->enemy_.mat_.scale_ = objectdata.scaling_ * enemyScale;
+			newModel_->SetScale(objectdata.scaling_ * enemyScale);
 
 			//Update
 			newModel_->Update(view_, prodaction_);
@@ -136,13 +141,13 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			newModel_->Initialize(shader_, pipeline_);
 
 			//trans
-			newModel_->stage_.mat_.trans_ = objectdata.translation_ * pos;
+			newModel_->SetTrans(objectdata.translation_ * pos);
 
 			//rotation
-			newModel_->stage_.mat_.rotAngle_ = objectdata.rotation_;
+			newModel_->SetRot(objectdata.rotation_);
 
 			//scale;
-			newModel_->stage_.mat_.scale_ = objectdata.scaling_ * stageScale;
+			newModel_->SetScale(objectdata.scaling_ * stageScale);
 
 			//Update
 			newModel_->Update(view_, prodaction_);

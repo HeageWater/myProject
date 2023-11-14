@@ -27,7 +27,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BossEnemy.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\BossEnemy.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp">
@@ -401,7 +401,7 @@
     <ClInclude Include="DirectXGame\Application\Actor\LoadObjectData.h">
       <Filter>ヘッダーファイル\LoadFile</Filter>
     </ClInclude>
-    <ClInclude Include="BossEnemy.h">
+    <ClInclude Include="DirectXGame\Application\Actor\BossEnemy.h">
       <Filter>ヘッダーファイル\Actor\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

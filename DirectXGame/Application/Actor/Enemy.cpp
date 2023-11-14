@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Enum.h"
 
 Enemy::Enemy()
 {
@@ -62,12 +63,12 @@ bool Enemy::BoxCollision(Model model)
 		float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
 		float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
 
-		float c = model.mat_.scale_.x_ * enemy_.mat_.scale_.x_;
+		float c = model.mat_.scale_.x_ + enemy_.mat_.scale_.x_;
 
 		//あたり判定
-		if (a + b < c)
+		if (a + b < c * (float)TWO)
 		{
-			float spd = 1.5f;
+			float spd = TWO;
 			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
@@ -78,12 +79,12 @@ bool Enemy::BoxCollision(Model model)
 		a = (-model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (-model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
 		b = (-model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (-model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
 
-		c = model.mat_.scale_.x_ * enemy_.mat_.scale_.x_;
+		c = model.mat_.scale_.x_ + enemy_.mat_.scale_.x_;
 
 		//あたり判定
 		if (a + b < c)
 		{
-			float spd = 1.5f;
+			float spd = TWO;
 			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
@@ -97,14 +98,12 @@ bool Enemy::BoxCollision(Model model)
 
 void Enemy::SertchPlayer(Model model)
 {
-	float sertchScale = 500;
-	//Vector3D sertchScale = {10,10,10};
+	const float sertchScale = 100;
 
 	float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
 	float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
 
-	float c = model.mat_.scale_.x_ * sertchScale;
-	//float c = model.mat.scale.x * enemy_.mat.scale.x;
+	float c = model.mat_.scale_.x_ + sertchScale;
 
 	//あたり判定
 	if (a + b < c)

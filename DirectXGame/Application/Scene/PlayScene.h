@@ -116,7 +116,8 @@ private:
 	//std::vector<BoxParticle*> boxParticles_;
 
 	//ムービー
-	bool movieFlag_;
+	bool movieClearFlag_;
+	bool movieOverFlag_;
 public:
 	
 	/// <summary>

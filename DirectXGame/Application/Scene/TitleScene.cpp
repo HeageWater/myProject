@@ -170,6 +170,15 @@ void TitleScene::Initialize()
 	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 
 	time_ = 0;
+
+	//targetをplayerに
+	matView_.eye_.x_ = player_->GetPos().x_;
+	matView_.target_.x_ = player_->GetPos().x_;
+
+	float prusTargetY = 10;
+
+	matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
+	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 }
 
 void TitleScene::Draw()

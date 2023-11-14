@@ -72,6 +72,9 @@ void GameClearScene::Update()
 	moiePlayer_->Update(matView_.mat_, matProjection_, shader_);
 
 	//
+	controller_->Update();
+
+	//
 	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	LoadObjectData::GetInstance()->Update();
 
@@ -135,6 +138,9 @@ void GameClearScene::Draw()
 
 	//
 	clearPng_->Draw(clearTex_);
+
+	//シーンチェンジ描画
+	ChengeScene::GetInstance()->Draw();
 
 	//描画受付終了
 	MyDirectX::GetInstance()->PostDraw();

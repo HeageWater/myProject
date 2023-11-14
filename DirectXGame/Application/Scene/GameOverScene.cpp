@@ -56,6 +56,13 @@ void GameOverScene::Update()
 		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
 	}
 
+	//
+	controller_->Update();
+
+	//
+	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+	LoadObjectData::GetInstance()->Update();
+
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
 }
@@ -82,6 +89,9 @@ void GameOverScene::Draw()
 
 	//
 	overPng_->Draw(overTex_);
+
+	//シーンチェンジ描画
+	ChengeScene::GetInstance()->Draw();
 
 	//描画受付終了
 	MyDirectX::GetInstance()->PostDraw();

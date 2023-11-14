@@ -48,6 +48,24 @@ public:
 	/// <param name="flag"></param>
 	void SetFlag(bool flag) { drawFlag_ = flag; };
 
+	/// <summary>
+	/// transセット
+	/// </summary>
+	/// <param name="trans"></param>
+	void SetTrans(Vector3D trans) { stage_.mat_.trans_ = trans; };
+
+	/// <summary>
+	/// scaleセット
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetScale(Vector3D scale) { stage_.mat_.scale_ = scale; };
+
+	/// <summary>
+	/// rotationセット
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetRot(Vector3D rotAngle) { stage_.mat_.rotAngle_ = rotAngle; };
+
 	//モデル
 	Model stage_;
 private:

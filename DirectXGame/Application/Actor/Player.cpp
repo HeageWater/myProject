@@ -130,7 +130,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		Jump();
 
 		//ノックバック
-		KnockBack();
+		//KnockBack();
 
 		//座標に演算
 		//player_.mat.trans += colVec;

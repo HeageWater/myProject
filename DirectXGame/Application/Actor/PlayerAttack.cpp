@@ -24,7 +24,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 
 	sound_ = MyXAudio::GetInstance();
 
-	time_ = 15;
+	time_ = 10;
 	isDead_ = false;
 	deleteFlag = false;
 }
@@ -44,7 +44,7 @@ void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 	}
 
 	float maxScale = playerAttack_.mat_.scale_.x_ * 1.5f;
-	float spd = 3.0f;
+	float spd = 10.0f;
 
 	if (!deleteFlag)
 	{

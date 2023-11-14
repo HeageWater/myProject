@@ -61,11 +61,42 @@ public:
 	void SetScale(Vector3D scale) { enemy_.mat_.scale_ = scale; };
 
 	/// <summary>
+	/// rotationセット
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetRot(Vector3D rotAngle) { enemy_.mat_.rotAngle_ = rotAngle; };
+
+	/// <summary>
 	/// pos入手
 	/// </summary>
 	/// <returns></returns>
 	Vector3D GetPos() { return  enemy_.mat_.trans_; };
 
+	/// <summary>
+	/// 死んでいるか
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsDead() { return isDead_; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	Model GetModel() { return enemy_; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	bool GetDeadVec() { return deadVec_; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="time"></param>
+	void SetTime(size_t time) { Time_ = time; };
+
+private:
 
 	//死んでいるか
 	bool isDead_ = false;
@@ -80,7 +111,7 @@ public:
 	Vector3D move_ = { 0,0,0 };
 
 	//どのくらいたったか
-	float Time_ = 0;
+	size_t Time_ = 0;
 
 	//モデル
 	Model enemy_;

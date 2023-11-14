@@ -60,7 +60,9 @@ void ChengeScene::Update()
 
 		if (a)
 		{
-			sprite_->position_.x_ = (float)Easing::EaseInOut(-2540.0f, -640.0f, time_ / 100, nowChenge);
+
+			float width = 2.0f;
+			sprite_->position_.x_ = (float)Easing::EaseOut(-Window::window_width_ * width, -640.0f, time_ / 100, nowChenge);
 		}
 		else if (time_ == nowChenge)
 		{
@@ -68,7 +70,8 @@ void ChengeScene::Update()
 		}
 		else if (b)
 		{
-			sprite_->position_.x_ = (float)Easing::EaseInOut(-640.0f, 2540.0f, (time_ - nowChenge) / 100, nowChenge);
+			float width = 0.5f;
+			sprite_->position_.x_ = (float)Easing::EaseInOut(-640.0f, Window::window_width_ * width, (time_ - nowChenge) / 100, nowChenge);
 		}
 	}
 
@@ -85,7 +88,7 @@ void ChengeScene::Update()
 //リセット
 void ChengeScene::Reset()
 {
-	float width = 1.5f;
+	float width = 2.0f;
 
 	sprite_->scale_.x_ = 1;
 	sprite_->scale_.y_ = 1;
@@ -103,7 +106,7 @@ void ChengeScene::SetPlayFlag(std::string next)
 	if (!isPlayFlag_)
 	{
 		float size = 3.0f;
-		float width = 1.5f;
+		float width = 2.0;
 
 		isPlayFlag_ = true;
 

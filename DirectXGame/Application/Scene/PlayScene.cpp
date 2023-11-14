@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "imgui.h"
 #include "ChengeScene.h"
+#include "Enum.h"
 
 void PlayScene::Update()
 {
@@ -17,10 +18,12 @@ void PlayScene::Update()
 	bool checkGoal = goal_->BoxCollision(player_->GetModel());
 
 	//最初のムービー用タイマー
-	if (time_ < 100)
+	if (time_ < HUNDRED)
 	{
 		time_++;
 	}
+
+	bool movieFlag_ = movieClearFlag_ || movieOverFlag_;
 
 	if (!movieFlag_)
 	{
@@ -53,38 +56,40 @@ void PlayScene::Update()
 			}
 		}
 
+		//止まっている時間
+		size_t setStopTime = 0;
+
 		//プレイヤーと敵の判定
 		for (auto& object : LoadObjectData::GetInstance()->GetEnemy())
 		{
 			object->Update(matView_.mat_, matProjection_);
 			object->SertchPlayer(player_->GetModel());
 
-			if (object->deadVec_)
+			if (object->GetDeadVec())
 			{
 				continue;
 			}
 
-			if (player_->PlayerCollision(object->enemy_))
+			if (player_->PlayerCollision(object->GetModel()))
 			{
 				//敵が止まっている時間
-				float setStopTime = 150.0f;
+				const size_t StopTime = 150;
 
 				ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
-				object->Time_ = setStopTime;
+				object->SetTime(StopTime);
 				sound_->SoundPlayWave(hitSound_);
 			}
 
 			//playerの攻撃との判定
 			if (object->BoxCollision(player_->GetAttackModel()))
 			{
-				//止まっている時間
-				float setStopTime = 10.0f;
-
-				hitStop_->SetTime(setStopTime);
+				setStopTime += TEN;
 				sound_->SoundPlayWave(hitSound_);
 				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
 			}
 		}
+
+		hitStop_->SetTime((float)setStopTime);
 
 		//パーティクルテスト
 		if (input_->GetTrigger(DIK_1))
@@ -99,7 +104,7 @@ void PlayScene::Update()
 		matView_.target_.x_ = player_->GetPos().x_;
 
 		//playerのyからどれくらい離すか
-		float prusTargetY = 10;
+		const float prusTargetY = 10;
 
 		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
 		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
@@ -116,7 +121,7 @@ void PlayScene::Update()
 		matView_.MatUpdate();
 
 		//スクリーン更新
-		screen_.MatUpdate(matView_.mat_, matProjection_, 0);
+		screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
 
 		//パーティクル更新
 		ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
@@ -125,30 +130,25 @@ void PlayScene::Update()
 		//GameClear条件が達成されたら
 		if (checkGoal)
 		{
-			movieFlag_ = true;
+			movieClearFlag_ = true;
 		}
 
 		//GameOver条件が達成されたら
-		if (player_->GetLife() <= 0)
+		if (player_->GetLife() <= (float)ZERO)
 		{
-			movieFlag_ = true;
+			movieOverFlag_ = true;
 			player_->SetDeadAnimation();
 		}
 
-#ifdef _DEBUG
-
-		if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
+		/*if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
 		{
-			player_->SetLife(0);
-		}
-
-#endif _DEBUG
-	
+			player_->SetLife(ZERO);
+		}*/
 	}
 	else
 	{
 		//GameClear条件が達成されたら
-		if (movieFlag_)
+		if (movieClearFlag_)
 		{
 			ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
 		}
@@ -312,7 +312,8 @@ void PlayScene::Initialize()
 	};
 
 	//
-	movieFlag_ = false;
+	movieOverFlag_ = false;
+	movieClearFlag_ = false;
 
 	//音読み込み
 	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
@@ -365,7 +366,7 @@ void PlayScene::Draw()
 	float maxHP = 3;
 
 	//HP表示(3つまで)
-		//(マジックナンバー直す)
+	//(マジックナンバー直す)
 	for (size_t i = 0; i < maxHP; i++)
 	{
 		if (i < (player_->GetLife()))
