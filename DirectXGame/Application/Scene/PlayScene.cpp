@@ -67,6 +67,7 @@ void PlayScene::Update()
 
 			if (object->GetDeadVec())
 			{
+				ParticleManager::GetInstance()->MinCreateBoxParticle(object->GetPos());
 				continue;
 			}
 
@@ -86,6 +87,8 @@ void PlayScene::Update()
 				setStopTime += TEN;
 				sound_->SoundPlayWave(hitSound_);
 				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
+
+				shake.SetTime(30);
 			}
 		}
 
@@ -96,18 +99,21 @@ void PlayScene::Update()
 		{
 			ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
 		}
-
-		//player_->PlayerCollision(player_->GetModel());
+		if (input_->GetTrigger(DIK_2))
+		{
+			ParticleManager::GetInstance()->CreateCircleParticle(player_->GetPos());
+		}
 
 		//targetをplayerに
-		matView_.eye_.x_ = player_->GetPos().x_;
-		matView_.target_.x_ = player_->GetPos().x_;
+		matView_.eye_.x_ = player_->GetPos().x_ + shake.GetShake().x_;
+		matView_.target_.x_ = player_->GetPos().x_ + shake.GetShake().x_;
 
 		//playerのyからどれくらい離すか
 		const float prusTargetY = 10;
 
-		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
-		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
+		//
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + shake.GetShake().y_;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + shake.GetShake().y_;
 
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
@@ -127,6 +133,8 @@ void PlayScene::Update()
 		ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 		ParticleManager::GetInstance()->Update();
 
+		shake.Update();
+
 		//GameClear条件が達成されたら
 		if (checkGoal)
 		{
@@ -140,10 +148,11 @@ void PlayScene::Update()
 			player_->SetDeadAnimation();
 		}
 
-		/*if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
+		if (input_->GetTrigger(DIK_SPACE))
 		{
-			player_->SetLife(ZERO);
-		}*/
+			//player_->SetLife(ZERO);
+			//ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
+		}
 	}
 	else
 	{
@@ -192,6 +201,9 @@ void PlayScene::Initialize()
 	screen_.Initialize(multipathPipeline_.get(), bilShader_);
 	screen_.obj_.trans_.z_ = 100.1f;
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
+
+	//カメラ初期化
+	gameCamera_ = std::make_unique<GameCamera>();
 
 	//player
 	player_->Initialize(shader_, pipeline_.get());
@@ -246,6 +258,8 @@ void PlayScene::Initialize()
 	//透過するかどうか
 	normalSpriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
+
 	{
 		//基礎
 		sprite_->Inilialize(normalSpriteCommon_, &matProjection_);
@@ -254,61 +268,73 @@ void PlayScene::Initialize()
 		lifePng_->Inilialize(normalSpriteCommon_, &matProjection_);
 		lifePng_->position_ = { -590,240,0 };
 		lifePng_->scale_ = { 360,144,1 };
+		lifePng_->SetColor(color_);
 
 		//ライフ1
 		lesPng_->Inilialize(normalSpriteCommon_, &matProjection_);
 		lesPng_->position_ = { -200,200,0 };
 		lesPng_->scale_ = { 256,144,1 };
+		lesPng_->SetColor(color_);
 
 		//ライフ2
 		lesPng2_->Inilialize(normalSpriteCommon_, &matProjection_);
 		lesPng2_->position_ = { -200,200,0 };
 		lesPng2_->scale_ = { 256,144,1 };
+		lesPng2_->SetColor(color_);
 
 		//ライフ3
 		lesPng3_->Inilialize(normalSpriteCommon_, &matProjection_);
 		lesPng3_->position_ = { -200,200,0 };
 		lesPng3_->scale_ = { 256,144,1 };
+		lesPng3_->SetColor(color_);
 
 		//ライフ1
 		havePng_->Inilialize(normalSpriteCommon_, &matProjection_);
 		havePng_->position_ = { -680,-420,0 };
 		havePng_->scale_ = { 256,144,1 };
+		havePng_->SetColor(color_);
 
 		//ライフ2
 		havePng2_->Inilialize(normalSpriteCommon_, &matProjection_);
 		havePng2_->position_ = { -680,-420,0 };
 		havePng2_->scale_ = { 256,144,1 };
+		havePng2_->SetColor(color_);
 
 		//ライフ3
 		havePng3_->Inilialize(normalSpriteCommon_, &matProjection_);
 		havePng3_->position_ = { -680,-420,0 };
 		havePng3_->scale_ = { 256,144,1 };
+		havePng3_->SetColor(color_);
 
 		//LStick
 		UILStick_->Inilialize(normalSpriteCommon_, &matProjection_);
 		UILStick_->position_ = { -540,-280,0 };
 		UILStick_->scale_ = { 240,120,1 };
+		UILStick_->SetColor(color_);
 
 		//RStick
 		UIRStick_->Inilialize(normalSpriteCommon_, &matProjection_);
 		UIRStick_->position_ = { -460,-320,0 };
 		UIRStick_->scale_ = { 240,120,1 };
+		UIRStick_->SetColor(color_);
 
 		//LT
 		UILT_->Inilialize(normalSpriteCommon_, &matProjection_);
 		UILT_->position_ = { -600,-230,0 };
 		UILT_->scale_ = { 200,120,1 };
+		UILT_->SetColor(color_);
 
 		//Abutton
 		UIAButton_->Inilialize(normalSpriteCommon_, &matProjection_);
 		UIAButton_->position_ = { 180,-230,0 };
 		UIAButton_->scale_ = { 480,240,1 };
+		UIAButton_->SetColor(color_);
 
 		//Press
 		UIPress_->Inilialize(normalSpriteCommon_, &matProjection_);
 		UIPress_->position_ = { -280,-230,0 };
 		UIPress_->scale_ = { 600,240,1 };
+		UIPress_->SetColor(color_);
 	};
 
 	//
@@ -344,9 +370,6 @@ void PlayScene::Draw()
 
 	//jsonファイルから読み込んだものの描画
 	LoadObjectData::GetInstance()->Draw();
-
-	//スプライトのプレドロー
-	sprite_->PreDraw();
 
 	//操作(UI描画一つにまとめる)
 	UILStick_->Draw(LTex_);

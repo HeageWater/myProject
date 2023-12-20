@@ -41,6 +41,28 @@ void Particle::Initialize(Shader shader, GPipeline* pipeline_)
 	time_ = 50.0f;
 
 	spd_ = 0.01f;
+
+	//方向,タイム,早さをランダムで
+	float vel[3];
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		vel[i] = (float)MyMath::GetRandom(0, 100) - 50;
+
+		vel[i] /= 10;
+	}
+
+	velocity_ = { vel[0],vel[1],vel[2] };
+
+	//tine
+	time_ = (float)MyMath::GetRandom(30, 50);
+
+	//spd
+	spd_ = (float)MyMath::GetRandom(0, 15) - 15;
+
+	spd_ /= 100;
+
+	isDead_ = false;
 }
 
 void Particle::SetInitialize(Vector3D pos)
@@ -59,7 +81,7 @@ void Particle::SetInitialize(Vector3D pos)
 	{
 		vel[i] = (float)MyMath::GetRandom(0, 100) - 50;
 
-		vel[i] /= 100;
+		vel[i] /= 10;
 	}
 
 	velocity_ = { vel[0],vel[1],vel[2] };

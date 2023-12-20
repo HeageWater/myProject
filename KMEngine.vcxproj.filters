@@ -33,12 +33,6 @@
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp">
       <Filter>ソースファイル\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp">
       <Filter>ソースファイル\Actor</Filter>
     </ClCompile>
@@ -212,6 +206,15 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engine\Object\Square.cpp">
       <Filter>ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
+      <Filter>ソースファイル\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp">
+      <Filter>ソースファイル\Actor\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp">
+      <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +405,9 @@
       <Filter>ヘッダーファイル\LoadFile</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\BossEnemy.h">
+      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\BulletEnemy.h">
       <Filter>ヘッダーファイル\Actor\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

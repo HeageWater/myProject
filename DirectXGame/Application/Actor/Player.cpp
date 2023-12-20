@@ -110,9 +110,16 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	controller_->Update();
 
 	//左スティックの角度代入
-	colVec_ = { controller_->GetLeftStickVec().x_, 0,0 };
+	colVec_ = { controller_->GetLeftStickVec(Vector2D(0.3f,0.3f)).x_, 0,0 };
+
+	float line = 0.1f;
 
 	bool prus = colVec_.x_ >= 0.0f;
+
+	if (colVec_.x_ > -line && colVec_.x_ < line)
+	{
+		colVec_.x_ = 0.0f;
+	}
 
 	//ワープしているか
 	if (!WarpAction())
@@ -302,9 +309,14 @@ bool Player::DeadAnimation()
 			deadAnimationMode_++;
 		}
 
+		if (player_.mat_.trans_.z_ >= -50.0f)
+		{
+			player_.mat_.trans_.z_ -= 2.0f;
+		}
+
 		break;
 	case 2:
-		player_.mat_.trans_.z_ = -10.0f;
+		player_.mat_.trans_.z_ = -50.0f;
 		player_.mat_.rotAngle_.z_ += 0.15f;
 
 		player_.mat_.trans_.y_ += player_.mat_.rotAngle_.z_ / 3;

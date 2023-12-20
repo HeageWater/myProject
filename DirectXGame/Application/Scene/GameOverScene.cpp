@@ -41,6 +41,7 @@ void GameOverScene::Initialize()
 	overPng_->Inilialize(normalSpriteCommon_, &matProjection_);
 	overPng_->position_ = { -680,-420,0 };
 	overPng_->scale_ = { 3600,1440,1 };
+	overPng_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void GameOverScene::Update()
@@ -83,9 +84,6 @@ void GameOverScene::Draw()
 
 	//Actor描画
 	player_->Draw(plyerTex_, plyerTex_);
-
-	//スプライトのプレドロー
-	sprite_->PreDraw();
 
 	//
 	overPng_->Draw(overTex_);

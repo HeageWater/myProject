@@ -1,5 +1,7 @@
 #include "GPipeline.h"
+#include "DirectX.h"
 #include <vector>
+#include <cassert>
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -257,11 +259,12 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
-	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
-	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob;
+	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
+
 	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		rootSigBlob.ReleaseAndGetAddressOf(),
-		errorBlob.ReleaseAndGetAddressOf());
+		&rootSigBlob,
+		&errorBlob);
 	assert(SUCCEEDED(result_));
 	result_ = dev->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(rootSignature_.ReleaseAndGetAddressOf()));

@@ -429,7 +429,6 @@ void MyDirectX::PostDraw()
 #pragma endregion ChangeScreen
 }
 
-//void MyDirectX::PrevDrawScreen(FLOAT* clearColor_)
 void MyDirectX::PrevDrawScreen()
 {
 	rtvHandle_ = screenRTVHeap_->GetCPUDescriptorHandleForHeapStart();
@@ -437,6 +436,21 @@ void MyDirectX::PrevDrawScreen()
 	CmdListDrawAble(screenBarrierDesc_, screenResource_.Get(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET,
 		rtvHandle_, dsvHandle_);
+
+	viewPort_.Update(cmdList_.Get());
+
+	scissorRect_.Update(cmdList_.Get());
+
+	cmdList_->SetDescriptorHeaps(1, screenSRVHeap_[0].GetAddressOf());
+}
+
+void MyDirectX::PrevDrawScreen(FLOAT* clearColor)
+{
+	rtvHandle_ = screenRTVHeap_->GetCPUDescriptorHandleForHeapStart();
+	dsvHandle_ = dsvHeap_->GetCPUDescriptorHandleForHeapStart();
+	CmdListDrawAble(screenBarrierDesc_, screenResource_.Get(),
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET,
+		rtvHandle_, dsvHandle_, clearColor);
 
 	viewPort_.Update(cmdList_.Get());
 

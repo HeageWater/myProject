@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BossEnemy.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\DescriptorHeap.cpp" />
@@ -203,6 +204,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Application\Actor\BulletEnemy.h" />
     <ClInclude Include="DirectXGame\Application\Actor\BossEnemy.h" />
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\DescriptorHeap.h" />

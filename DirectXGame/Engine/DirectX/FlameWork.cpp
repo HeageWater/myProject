@@ -62,6 +62,11 @@ void FlameWork::Initialize()
 		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 
+	//音読み込み
+	hitSound_ = MyXAudio::GetInstance()->SoundLoadWave("Resources/sound/BGM.wav");
+	
+	MyXAudio::GetInstance()->SoundPlayLoopWave(hitSound_);
+
 	//欲しい機能
 	{
 		/*Camera::StaticInitialize(windowsApp_.get());

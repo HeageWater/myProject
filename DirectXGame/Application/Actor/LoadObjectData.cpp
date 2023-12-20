@@ -58,6 +58,12 @@ void LoadObjectData::Finalize()
 	{
 		enemies_.erase(enemies_.begin());
 	}
+
+	//保存したosを削除
+	for (size_t i = 0; i < cameraPos_.size(); i++)
+	{
+		cameraPos_.erase(cameraPos_.begin());
+	}
 }
 
 LoadObjectData* LoadObjectData::GetInstance()
@@ -162,6 +168,8 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		//Cameraだったら
 		if (objectdata.fileName_ == "Camera")
 		{
+			Vector3D cameraPos = objectdata.translation_;
+			cameraPos_.push_back(&cameraPos);
 		}
 
 		//Warpだったら
@@ -179,6 +187,14 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		if (objectdata.fileName_ == "End")
 		{
 			EndPos = objectdata.translation_ * pos;
+		}
+
+		//Eventだったら
+		if (objectdata.fileName_ == "Event")
+		{
+			//縦に長いイベントボックスとの判定をとって
+			//カメラの位置を固定にして連続雑魚戦
+
 		}
 	}
 }

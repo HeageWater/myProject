@@ -58,7 +58,6 @@ private:
 	/// <summary>
 	/// ルートシグネチャセット
 	/// </summary>
-	/// <param name="dev"></param>
 	/// <param name="rootParamNum"></param>
 	void SetRootSignature(ID3D12Device* dev, UINT rootParamNum = 1);
 
@@ -78,7 +77,6 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="dev"></param>
 	/// <param name="shader"></param>
 	/// <param name="topologyType"></param>
 	/// <param name="fillmord"></param>
@@ -88,7 +86,6 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="dev"></param>
 	/// <param name="shader"></param>
 	/// <param name="inputLayout"></param>
 	/// <param name="inputLayoutSize"></param>
@@ -113,14 +110,13 @@ public:
 	/// <summary>
 	/// ブレンドセット
 	/// </summary>
-	/// <param name="dev"></param>
 	/// <param name="mord"></param>
 	void SetBlend(ID3D12Device* dev, int mord);
 
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
-	ComPtr<ID3D12RootSignature> rootSignature_;
+	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	ComPtr<ID3D12PipelineState> state_;
 	HRESULT result_;
 };

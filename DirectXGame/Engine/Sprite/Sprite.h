@@ -44,6 +44,11 @@ public:
 	/// <param name="textureName"></param>
 	void LoadFile(const wchar_t* textureName);
 
+	/// <summary>
+	/// SetColor
+	/// </summary>
+	void SetColor(Vector4D color);
+
 	//スプライトコモン
 	SpriteCommon* spriteCommon_ = nullptr;
 	//Microsoft::WRL::ComPtr<SpriteCommon> spriteCommon_;

@@ -109,7 +109,7 @@ void ChengeScene::SetPlayFlag(std::string next)
 		float width = 2.0;
 
 		isPlayFlag_ = true;
-
+		
 		sprite_->scale_.x_ = Window::window_width_ * size;
 		sprite_->scale_.y_ = Window::window_height_ * size;
 

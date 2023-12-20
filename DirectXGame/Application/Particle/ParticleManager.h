@@ -50,6 +50,11 @@ public:
 	/// </summary>
 	void SetDraw(Shader shader, GPipeline* pipeline);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void MinCreateBoxParticle(Vector3D pos);
+
 	//シングルトン
 	static ParticleManager* GetInstance()
 	{
@@ -60,7 +65,9 @@ private:
 
 	//箱型パーティクル格納用変数
 	std::vector<BoxParticle*> boxParticles_;
+	//std::forward_list<BoxParticle*> boxParticles_;
 	std::vector<Particle*> particles_;
+	//std::forward_list<Particle> particles_;
 
 	//camera用変数
 	Matrix matview_;
@@ -68,7 +75,7 @@ private:
 
 	//描画用変数
 	Shader shader_;
-	GPipeline* pipeline_ ;
+	GPipeline* pipeline_;
 
 	//初期画像
 	size_t whiteTex_ = 0;

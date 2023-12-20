@@ -201,8 +201,6 @@ void Sprite::Update()
 		0.0f,
 		1.0f);
 
-	//constMapTransform->color = color;
-
 	constMapTransform_->mat_.m_[0][0] = 2.0f / Window::window_width_;
 	constMapTransform_->mat_.m_[1][1] = -2.0f / Window::window_height_;
 
@@ -231,6 +229,9 @@ void Sprite::PreDraw()
 
 void Sprite::Draw(size_t handle)
 {
+	//
+	PreDraw();
+
 	//頂点バッファビューの設定コマンド
 	spriteCommon_->dxCommon_->GetCmdList()->IASetVertexBuffers(0, 1, &vbView_);
 
@@ -267,4 +268,9 @@ void Sprite::Draw()
 void Sprite::LoadFile(const wchar_t* textureName)
 {
 	tex_ = spriteCommon_->dxCommon_->LoadTextureGraph(textureName);
+}
+
+void Sprite::SetColor(Vector4D color)
+{
+	constMapTransform_->color_ = { color.x_, color.y_ ,color.z_ ,color.w_ };
 }

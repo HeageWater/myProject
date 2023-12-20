@@ -132,6 +132,7 @@ void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyMath::MatView::MatUpdate()
 {
+	//float back = 120;
 	float back = 50;
 
 	if (eye_.x_ < back)

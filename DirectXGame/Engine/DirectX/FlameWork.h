@@ -86,4 +86,7 @@ protected:
 	Shader shader_;
 	Shader bilShader_;
 	Shader spriteShader_;
+
+	//BGM
+	size_t hitSound_;
 };

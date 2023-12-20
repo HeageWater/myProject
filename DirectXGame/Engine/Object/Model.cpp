@@ -47,7 +47,7 @@ void Model::Initialize(MyDirectX* dx, GPipeline* pipeline)
 	pipeline_ = pipeline;
 }
 
-void Model::Initialize(MyDirectX* dx, Shader shader, const char* filename, GPipeline* pipeline)
+void Model:: Initialize(MyDirectX* dx, Shader shader, const char* filename, GPipeline* pipeline)
 {
 	dx_ = dx;
 	pipeline_ = pipeline;
@@ -56,6 +56,7 @@ void Model::Initialize(MyDirectX* dx, Shader shader, const char* filename, GPipe
 
 Model::Model()
 {
+
 }
 
 Model::Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_)

@@ -123,6 +123,9 @@ private:
 	std::vector<Stage*> stages_;
 	std::vector<Enemy*> enemies_;
 
+	//カメラのposを記録しておく
+	std::vector<Vector3D*> cameraPos_;
+
 	Matrix view_;
 	Matrix prodaction_;
 

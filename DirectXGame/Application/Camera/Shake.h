@@ -35,6 +35,12 @@ public:
 	/// <returns></returns>
 	float GetTime() { return time_; };
 
+	/// <summary>
+	/// 揺れの値を返す
+	/// </summary>
+	/// <returns></returns>
+	Vector3D GetShake() { return shake_; };
+
 private:
 	float time_ = 0;
 	bool countFlag_;

@@ -37,7 +37,7 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 
 	if (deadVec_)
 	{
-		spd = 1.2f;
+		spd = 0.7f;
 	}
 
 	enemy_.mat_.rotAngle_.y_ += spd;
@@ -63,7 +63,7 @@ bool Enemy::BoxCollision(Model model)
 		float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
 		float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
 
-		float c = model.mat_.scale_.x_ + enemy_.mat_.scale_.x_;
+		float c = model.mat_.scale_.x_ + enemy_.mat_.scale_.x_ * 100;
 
 		//あたり判定
 		if (a + b < c * (float)TWO)
@@ -112,9 +112,11 @@ void Enemy::SertchPlayer(Model model)
 		move_ = enemy_.mat_.trans_ - model.mat_.trans_;
 		move_.normalize();
 
-		move_.x_ /= 4;
-		move_.y_ /= 4;
-		move_.z_ /= 4;
+		const float SIZE = 8;
+
+		move_.x_ /= SIZE;
+		move_.y_ /= SIZE;
+		move_.z_ /= SIZE;
 	}
 	else
 	{

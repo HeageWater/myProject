@@ -32,19 +32,6 @@ private:
 	void UpdateFPS();
 
 	/// <summary>
-	/// スクリーンクリア(色指定)
-	/// </summary>
-	/// <param name="clearColor">色指定</param>
-	/// <param name="rtvHandle"></param>
-	void ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
-
-	/// <summary>
-	/// スクリーンクリア
-	/// </summary>
-	/// <param name="rtvHandle"></param>
-	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
-
-	/// <summary>
 	/// セットリソースバリア
 	/// </summary>
 	/// <param name="desc"></param>
@@ -79,6 +66,11 @@ public:
 	void PrevDrawScreen();
 
 	/// <summary>
+	/// スクリーン描画前準備(clearColorSet)
+	/// </summary>
+	void PrevDrawScreen(FLOAT* clearColor_);
+
+	/// <summary>
 	/// スクリーン描画後始末
 	/// </summary>
 	void PostDrawScreen();
@@ -98,7 +90,11 @@ public:
 	/// </summary>
 	void ClearDepthBuff();
 
-	//画像読み込み
+	/// <summary>
+	/// 画像読み込み
+	/// </summary>
+	/// <param name="textureName"></param>
+	/// <returns></returns>
 	size_t LoadTextureGraph(const wchar_t* textureName);
 
 	/// <summary>
@@ -144,8 +140,24 @@ public:
 	/// <returns></returns>
 	size_t GetBackByfferCount() const { return backBuffers_.size(); };
 
-	//シングルトン
+	/// <summary>
+	///シングルトン
+	/// </summary>
+	/// <returns></returns>
 	static MyDirectX* GetInstance();
+
+	/// <summary>
+	/// スクリーンクリア(色指定)
+	/// </summary>
+	/// <param name="clearColor">色指定</param>
+	/// <param name="rtvHandle"></param>
+	void ScreenClear(FLOAT* clearColor, D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
+
+	/// <summary>
+	/// スクリーンクリア
+	/// </summary>
+	/// <param name="rtvHandle"></param>
+	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
 
 	private:
 		Window* win_ = nullptr;

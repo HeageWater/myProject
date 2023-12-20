@@ -16,6 +16,8 @@
 #include "ChengeScene.h"
 #include "Warp.h"
 #include "TitleObj.h"
+#include "Shake.h"
+#include "GameCamera.h"
 
 #include "LoadObjectData.h"
 #include "ParticleManager.h"
@@ -48,6 +50,9 @@ private:
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(
 		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
+
+	//camera
+	std::unique_ptr<GameCamera> gameCamera_;
 
 	//pipeline
 	std::unique_ptr<GPipeline> pipeline_;
@@ -118,6 +123,11 @@ private:
 	//ムービー
 	bool movieClearFlag_;
 	bool movieOverFlag_;
+
+	Shake shake;
+
+	Vector4D color_ = { 0,0,0,0 };
+
 public:
 	
 	/// <summary>

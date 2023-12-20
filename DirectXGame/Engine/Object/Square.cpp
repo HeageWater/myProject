@@ -15,7 +15,7 @@ UISquare::UISquare(ID3D12Device* dev, Shader shader)
 		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
 	};
 	pipeline_.Init(dev, shader, inputLayout, _countof(inputLayout));
-	pipeline_.SetBlend(dev, GPipeline::ALPHA_BLEND);
+	pipeline_.SetBlend(dev,GPipeline::ALPHA_BLEND);
 }
 
 void UISquare::SetVertices()
@@ -167,7 +167,7 @@ void Square::Draw(size_t handle)
 	//	テクスチャ
 	dx_->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx_->GetTextureHandle((int32_t)handle));
 	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform_->GetGPUVirtualAddress());
-
+	
 	dx_->GetCmdList()->DrawIndexedInstanced(indexSize_, 1, 0, 0, 0);
 }
 

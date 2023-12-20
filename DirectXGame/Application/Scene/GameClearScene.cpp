@@ -42,6 +42,7 @@ void GameClearScene::Initialize()
 	clearPng_->Inilialize(normalSpriteCommon_, &matProjection_);
 	clearPng_->position_ = { -680,0,0 };
 	clearPng_->scale_ = { 3600,1440,1 };
+	clearPng_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//jsonファイルから読み込んだものの初期化
 	LoadObjectData::GetInstance()->SetModel(shader_, pipeline_.get());
@@ -132,9 +133,6 @@ void GameClearScene::Draw()
 
 	//ボックスパーティクル
 	ParticleManager::GetInstance()->Draw();
-
-	//スプライトのプレドロー
-	sprite_->PreDraw();
 
 	//
 	clearPng_->Draw(clearTex_);
