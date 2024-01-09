@@ -68,7 +68,6 @@ private:
 	size_t blockTex_ = 0;
 	size_t plyerTex_ = 0;
 	size_t whiteTex_ = 0;
-
 	size_t white_ = 0;
 	size_t texP_ = 0;
 	size_t brPng_ = 0;
@@ -105,6 +104,9 @@ private:
 	Sprite* UIAButton_ = new Sprite();
 	Sprite* UIPress_ = new Sprite();
 
+	//Sprite
+	Sprite* blackOut_ = new Sprite();
+
 	//hitstop
 	HitStop* hitStop_ = new HitStop();
 
@@ -124,12 +126,22 @@ private:
 	bool movieClearFlag_;
 	bool movieOverFlag_;
 
-	Shake shake;
+	//ステージシェイク
+	Shake shake_;
 
+	//
 	Vector4D color_ = { 0,0,0,0 };
 
+	//現在のステージ数
+	uint32_t stageCount_ = 0;
+	//ステージの最大数
+	const uint32_t MaxStageCount_ = 2;
+
+	//
+	bool blackOutFlag_ = false;
+
 public:
-	
+
 	/// <summary>
 	/// 初期化
 	/// </summary>

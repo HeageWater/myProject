@@ -8,8 +8,9 @@ void FlameWork::Update()
 	//下の処理まとめよう
 	//Escapeで抜けるかどうかは後で消す
 	win_->MsgUpdate();
-	if (win_->EndLoop() || Input::GetInstance()->GetTrigger(DIK_ESCAPE))
+	if (win_->EndLoop())// || Input::GetInstance()->GetTrigger(DIK_ESCAPE)
 	{
+		//ポーズクラスを作りインスタンスでフラグを取得し
 		SetEndRwqust(true);
 	}
 

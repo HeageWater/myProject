@@ -5,23 +5,32 @@
 void ChengeScene::Initialize(Matrix matProjection)
 {
 	//画像関係
-	spriteCommon_->Inilialize(MyDirectX::GetInstance(), false);
+	spriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 	sprite_->Inilialize(spriteCommon_, &matProjection);
-	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
+	//tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
+	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/black.png");
 
 	//scale用
-	float size = 2.5f;
+	//float size = 2.5f;
 
 	//pos用
-	float width = 1.5f;
+	//float width = 1.5f;
+
+	//scale用
+	const float size = 15.5f;
 
 	//サイズ
-	sprite_->scale_.x_ = Window::window_width_ * size;
-	sprite_->scale_.y_ = Window::window_height_ * size;
+	sprite_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
+	//sprite_->scale_.y_ = Window::window_height_ * size;
 
 	//位置
-	sprite_->position_.x_ = -Window::window_width_ * width;
-	sprite_->position_.y_ = -Window::window_height_;
+	sprite_->position_ = { -680,-Window::window_height_,0 };
+	//sprite_->position_.y_ = -Window::window_height_;
+
+	//カラー
+	sprite_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+
+	color_ = { 0.0f,0.0f,0.0f,0.0f };
 }
 
 void ChengeScene::Draw(size_t tex)
@@ -44,42 +53,54 @@ void ChengeScene::Draw()
 
 void ChengeScene::Update()
 {
-	//移動時の最高フレーム
-	float maxTime = 120;
-
 	//プレイフラグがたっているか
 	if (isPlayFlag_)
 	{
-		//加算
-		time_++;
-
-		float nowChenge = maxTime / 2;
-
-		bool a = time_ < nowChenge;
-		bool b = time_ > nowChenge;
-
-		if (a)
+		if (!chengeFlag_)
 		{
+			//ブラックアウトテスト
+			if (color_.x_ < 1.0f)
+			{
+				color_.x_ += 0.01f;
+				color_.y_ += 0.01f;
+				color_.z_ += 0.01f;
+				color_.w_ += 0.01f;
 
-			float width = 2.0f;
-			sprite_->position_.x_ = (float)Easing::EaseOut(-Window::window_width_ * width, -640.0f, time_ / 100, nowChenge);
+				if (color_.x_ >= 1.0f)
+				{
+					SceneManager::GetInstance()->ChangeScene(next_);
+					chengeFlag_ = true;
+				}
+			}
+			else
+			{
+				color_.x_ = 1.0f;
+				color_.y_ = 1.0f;
+				color_.z_ = 1.0f;
+				color_.w_ = 1.0f;
+			}
 		}
-		else if (time_ == nowChenge)
+		else
 		{
-			SceneManager::GetInstance()->ChangeScene(next_);
-		}
-		else if (b)
-		{
-			float width = 0.5f;
-			sprite_->position_.x_ = (float)Easing::EaseInOut(-640.0f, Window::window_width_ * width, (time_ - nowChenge) / 100, nowChenge);
+			//ブラックアウトテスト
+			if (color_.x_ > 0.0f)
+			{
+				color_.x_ -= 0.01f;
+				color_.y_ -= 0.01f;
+				color_.z_ -= 0.01f;
+				color_.w_ -= 0.01f;
+
+				if (color_.x_ < 0.0f)
+				{
+					Reset();
+				}
+			}
+
 		}
 	}
 
-	//maxTimeを超えたらリセット
-	if (time_ > maxTime)
-	{
-		Reset();
-	}
+	//カラー
+	sprite_->SetColor(color_);
 
 	//更新
 	sprite_->Update();
@@ -105,20 +126,32 @@ void ChengeScene::SetPlayFlag(std::string next)
 {
 	if (!isPlayFlag_)
 	{
-		float size = 3.0f;
-		float width = 2.0;
+		//float size = 3.0f;
+		//float width = 2.0;
+
+		//scale用
+		const float size = 15.5f;
 
 		isPlayFlag_ = true;
-		
-		sprite_->scale_.x_ = Window::window_width_ * size;
-		sprite_->scale_.y_ = Window::window_height_ * size;
 
-		sprite_->position_.x_ = -Window::window_width_ * width;
-		sprite_->position_.y_ = -Window::window_height_;
+		//サイズ
+		sprite_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
+		//sprite_->scale_.y_ = Window::window_height_ * size;
+
+		//位置
+		sprite_->position_ = { -680,-Window::window_height_,0 };
+		//sprite_->position_.y_ = -Window::window_height_;
+
+		//カラー
+		sprite_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+
+		color_ = { 0.0f,0.0f,0.0f,0.0f };
 
 		time_ = 0;
 
 		next_ = next;
+
+		chengeFlag_ = false;
 	}
 }
 

@@ -306,7 +306,7 @@ bool Player::DeadAnimation()
 	case 1:
 		if (time_ > maxTime)
 		{
-			deadAnimationMode_++;
+			deadAnimationMode_ += 2;
 		}
 
 		if (player_.mat_.trans_.z_ >= -50.0f)

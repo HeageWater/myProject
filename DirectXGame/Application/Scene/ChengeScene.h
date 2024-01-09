@@ -73,6 +73,10 @@ private:
 	float time_ = 0;
 
 	std::string next_;
+
+	Vector4D color_;
+
+	bool chengeFlag_ = false;
 private:
 
 	ChengeScene() = default;

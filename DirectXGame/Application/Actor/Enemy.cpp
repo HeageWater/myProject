@@ -14,7 +14,7 @@ Enemy::~Enemy()
 
 void Enemy::Initialize(Shader shader, GPipeline* pipeline_)
 {
-	enemy_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\ene\\ene.obj", pipeline_);
+	enemy_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
 
 	enemy_.mat_.Initialize();
 	enemy_.mat_.scale_ = { 1,1,1 };
@@ -37,7 +37,7 @@ void Enemy::Update(Matrix matView, Matrix matProjection)
 
 	if (deadVec_)
 	{
-		spd = 0.7f;
+		spd = 0.01f;
 	}
 
 	enemy_.mat_.rotAngle_.y_ += spd;
@@ -98,7 +98,7 @@ bool Enemy::BoxCollision(Model model)
 
 void Enemy::SertchPlayer(Model model)
 {
-	const float sertchScale = 100;
+	const float sertchScale = 500;
 
 	float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
 	float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);

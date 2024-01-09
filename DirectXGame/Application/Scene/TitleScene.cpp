@@ -119,13 +119,10 @@ void TitleScene::Update()
 	//スクリーン更新
 	screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
 
-	//burakkuauto 
-	blackOut_->Update();
-
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+		//ChengeScene::GetInstance()->SetPlayFlag("PLAY");
 	}
 
 	//シーンチェンジ更新
@@ -141,7 +138,6 @@ void TitleScene::Initialize()
 	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
-	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/black.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -190,41 +186,11 @@ void TitleScene::Initialize()
 	//透過するかどうか
 	spriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 
-	//scale用
-	float size = 15.5f;
-
-	//ブラックアウト
-	blackOut_->Inilialize(spriteCommon_, &matProjection_);
-	blackOut_->position_ = { -680,-Window::window_height_,0 };
-	blackOut_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
-	blackOut_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
-
 	matView_.eye_.y_ += 15;
 }
 
 void TitleScene::Draw()
 {
-	//ブラックアウトテスト
-	if (color_.x_ < 1.0f)
-	{
-		color_.x_ += 0.01f;
-		color_.y_ += 0.01f;
-		color_.z_ += 0.01f;
-		color_.w_ += 0.01f;
-
-		if (color_.x_ >= 1.0f)
-		{
-			ChengeScene::GetInstance()->SetPlayFlag("PLAY");
-		}
-	}
-	else
-	{
-		color_.x_ = 1.0f;
-		color_.y_ = 1.0f;
-		color_.z_ = 1.0f;
-		color_.w_ = 1.0f;
-	}
-
 	//Draw
 	MyDirectX::GetInstance()->PrevDrawScreen();
 
@@ -241,14 +207,10 @@ void TitleScene::Draw()
 	player_->Draw(plyerTex_, plyerTex_);
 
 	//タイトル
-	//titleObject->Draw(whiteTex_);
+	titleObject->Draw(whiteTex_);
 
 	//jsonファイルから読み込んだものの描画
-	LoadObjectData::GetInstance()->Draw(); 
-
-	//ブラックアウト
-	blackOut_->SetColor(color_);
-	blackOut_->Draw(blackTex_);
+	LoadObjectData::GetInstance()->Draw();
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();

@@ -70,12 +70,9 @@ private:
 	size_t blockTex_ = 0;
 	size_t plyerTex_ = 0;
 	size_t whiteTex_ = 0;
-	size_t blackTex_ = 0;
 
 	//sprite
 	SpriteCommon* spriteCommon_ = new  SpriteCommon();
-	//Sprite
-	Sprite* blackOut_ = new Sprite();
 
 	Vector4D color_ = { 0,0,0,0 };
 

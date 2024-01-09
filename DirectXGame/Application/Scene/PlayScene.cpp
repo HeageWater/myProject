@@ -88,7 +88,7 @@ void PlayScene::Update()
 				sound_->SoundPlayWave(hitSound_);
 				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
 
-				shake.SetTime(30);
+				shake_.SetTime(30);
 			}
 		}
 
@@ -105,15 +105,15 @@ void PlayScene::Update()
 		}
 
 		//targetをplayerに
-		matView_.eye_.x_ = player_->GetPos().x_ + shake.GetShake().x_;
-		matView_.target_.x_ = player_->GetPos().x_ + shake.GetShake().x_;
+		matView_.eye_.x_ = player_->GetPos().x_ + shake_.GetShake().x_;
+		matView_.target_.x_ = player_->GetPos().x_ + shake_.GetShake().x_;
 
 		//playerのyからどれくらい離すか
 		const float prusTargetY = 10;
 
 		//
-		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + shake.GetShake().y_;
-		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + shake.GetShake().y_;
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + shake_.GetShake().y_;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + shake_.GetShake().y_;
 
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
@@ -133,12 +133,24 @@ void PlayScene::Update()
 		ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 		ParticleManager::GetInstance()->Update();
 
-		shake.Update();
+		shake_.Update();
 
 		//GameClear条件が達成されたら
-		if (checkGoal)
+		if (checkGoal && !blackOutFlag_)
 		{
-			movieClearFlag_ = true;
+			//ステージの最大数より多いか
+			if (MaxStageCount_ > stageCount_)
+			{
+				//ステージカウントプラス
+				stageCount_++;
+
+				//ブラックアウト
+				blackOutFlag_ = true;
+			}
+			else
+			{
+				movieClearFlag_ = true;
+			}
 		}
 
 		//GameOver条件が達成されたら
@@ -175,6 +187,54 @@ void PlayScene::Update()
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
+
+	//burakkuauto 
+	blackOut_->Update();
+
+	//ブラックアウト
+	if (blackOutFlag_)
+	{
+		//ブラックアウトテスト
+		if (color_.x_ < 1.0f)
+		{
+			color_.x_ += 0.01f;
+			color_.y_ += 0.01f;
+			color_.z_ += 0.01f;
+			color_.w_ += 0.01f;
+
+			if (color_.x_ >= 1.0f)
+			{
+				//ステージ読み込み
+				if (stageCount_ == ONE)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stage2");
+				}
+				else if (stageCount_ == TWO)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stage3");
+				}
+
+				//開始地点をセット
+				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+				//ゴール初期化
+				goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+				blackOutFlag_ = false;
+			}
+		}
+	}
+	else
+	{
+		//ブラックアウトテスト
+		if (color_.x_ > 0.0f)
+		{
+			color_.x_ -= 0.01f;
+			color_.y_ -= 0.01f;
+			color_.z_ -= 0.01f;
+			color_.w_ -= 0.01f;
+		}
+	}
 }
 
 void PlayScene::Initialize()
@@ -216,7 +276,7 @@ void PlayScene::Initialize()
 	LoadObjectData::GetInstance()->Initialize();
 
 	//ステージ読み込み
-	LoadObjectData::GetInstance()->StageLoad("stage3");
+	LoadObjectData::GetInstance()->StageLoad("stage1");
 
 	//開始地点をセット
 	player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
@@ -343,6 +403,18 @@ void PlayScene::Initialize()
 
 	//音読み込み
 	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
+
+	//scale用
+	float size = 15.5f;
+
+	//ブラックアウト
+	blackOut_->Inilialize(normalSpriteCommon_, &matProjection_);
+	blackOut_->position_ = { -680,-Window::window_height_,0 };
+	blackOut_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
+	blackOut_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+
+	//画像色
+	color_ = { 0.0f,0.0f,0.0f,0.0f };
 }
 
 void PlayScene::Draw()
@@ -362,7 +434,7 @@ void PlayScene::Draw()
 	//Actor描画
 	player_->Draw(plyerTex_, plyerTex_);
 
-	//
+	//ゴール描画
 	goal_->Draw(white_);
 
 	//ボックスパーティクル
@@ -436,6 +508,10 @@ void PlayScene::Draw()
 		}
 	}
 
+	//ブラックアウト
+	blackOut_->SetColor(color_);
+	blackOut_->Draw(blackTex_);
+
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
 
@@ -445,6 +521,6 @@ void PlayScene::Draw()
 
 void PlayScene::Finalize()
 {
-
+	//パーティクル削除
 	ParticleManager::GetInstance()->Finalize();
 }
