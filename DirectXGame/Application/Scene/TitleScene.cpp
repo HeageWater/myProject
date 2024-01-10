@@ -122,7 +122,7 @@ void TitleScene::Update()
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
-		//ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
 	}
 
 	//シーンチェンジ更新

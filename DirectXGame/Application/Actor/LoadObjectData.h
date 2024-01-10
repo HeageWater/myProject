@@ -86,13 +86,22 @@ public:
 	/// 読み込んだステージの開始地点を返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetStartPos() { return StartPos; };
+	Vector3D GetStartPos() { return StartPos_; };
 
 	/// <summary>
 	/// 読み込んだステージのゴール地点を返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetEndPos() { return EndPos; };
+	Vector3D GetEndPos() { return EndPos_; };
+
+	/// <summary>
+	/// 読み込んだステージのイベント地点を返す
+	/// </summary>
+	/// <returns></returns>
+	Vector3D GetEvwntPos() { return EventPos_; };
+
+	//
+	//void EventCollision();
 
 private:
 
@@ -135,6 +144,14 @@ private:
 	Shader shader_;
 	GPipeline* pipeline_;
 
-	Vector3D StartPos;
-	Vector3D EndPos;
+	//スタート位置を格納する
+	Vector3D StartPos_;
+	//ゴール位置を格納する
+	Vector3D EndPos_;
+	//イベント位置を格納する
+	Vector3D EventPos_;
+	Vector3D EventScale_;
+
+	//イベント時のカメラの位置を格納する
+	Vector3D EventCameraPos_;
 };

@@ -92,6 +92,7 @@ void PlayScene::Update()
 			}
 		}
 
+		//保存したヒットストップの時間をセット
 		hitStop_->SetTime((float)setStopTime);
 
 		//パーティクルテスト
@@ -111,7 +112,7 @@ void PlayScene::Update()
 		//playerのyからどれくらい離すか
 		const float prusTargetY = 10;
 
-		//
+		//カメラに揺れを追加
 		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + shake_.GetShake().y_;
 		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + shake_.GetShake().y_;
 
@@ -133,6 +134,7 @@ void PlayScene::Update()
 		ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 		ParticleManager::GetInstance()->Update();
 
+		//揺れ更新
 		shake_.Update();
 
 		//GameClear条件が達成されたら
@@ -160,6 +162,7 @@ void PlayScene::Update()
 			player_->SetDeadAnimation();
 		}
 
+		//Spaceキーでテスト
 		if (input_->GetTrigger(DIK_SPACE))
 		{
 			//player_->SetLife(ZERO);
@@ -444,18 +447,18 @@ void PlayScene::Draw()
 	LoadObjectData::GetInstance()->Draw();
 
 	//操作(UI描画一つにまとめる)
-	UILStick_->Draw(LTex_);
 	UILStick_->Update();
+	UILStick_->Draw(LTex_);
 
-	UIRStick_->Draw(RTex_);
 	UIRStick_->Update();
+	UIRStick_->Draw(RTex_);
 
-	UILT_->Draw(LTTex_);
 	UILT_->Update();
+	UILT_->Draw(LTTex_);
 
 	//HP表示
-	lifePng_->Draw(lifeTex_);
 	lifePng_->Update();
+	lifePng_->Draw(lifeTex_);
 
 	//描画用の最大HP(HitPoint用のクラスを作る)
 	float maxHP = 3;

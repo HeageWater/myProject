@@ -59,7 +59,7 @@ void LoadObjectData::Finalize()
 		enemies_.erase(enemies_.begin());
 	}
 
-	//保存したosを削除
+	//保存したposを削除
 	for (size_t i = 0; i < cameraPos_.size(); i++)
 	{
 		cameraPos_.erase(cameraPos_.begin());
@@ -180,13 +180,13 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		//Startだったら
 		if (objectdata.fileName_ == "Start")
 		{
-			StartPos = objectdata.translation_ * pos;
+			StartPos_ = objectdata.translation_ * pos;
 		}
 
 		//Endだったら
 		if (objectdata.fileName_ == "End")
 		{
-			EndPos = objectdata.translation_ * pos;
+			EndPos_ = objectdata.translation_ * pos;
 		}
 
 		//Eventだったら
@@ -194,7 +194,16 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		{
 			//縦に長いイベントボックスとの判定をとって
 			//カメラの位置を固定にして連続雑魚戦
+			EventPos_ = objectdata.translation_ * pos;
+			EventScale_ = objectdata.scaling_ * pos;
+		}
 
+		//EventCameraだったら
+		if (objectdata.fileName_ == "EventCamera")
+		{
+			//縦に長いイベントボックスとの判定をとって
+			//カメラの位置を固定にして連続雑魚戦
+			EventCameraPos_ = objectdata.translation_ * pos;
 		}
 	}
 }

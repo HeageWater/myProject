@@ -4,7 +4,7 @@
 class BulletEnemy : BaseEnemy
 {
 
-	/*/// <summary>
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="shader"></param>
@@ -15,7 +15,7 @@ class BulletEnemy : BaseEnemy
 	/// 描画
 	/// </summary>
 	/// <param name="tex"></param>
-	void Draw(size_t tex)override;
+	void Draw()override;
 
 	/// <summary>
 	/// 更新
@@ -34,6 +34,6 @@ class BulletEnemy : BaseEnemy
 	/// 
 	/// </summary>
 	/// <returns></returns>
-	Model GetModel() override;*/
+	Model GetModel() override;
 
 };

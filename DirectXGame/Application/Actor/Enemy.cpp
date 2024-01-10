@@ -98,7 +98,7 @@ bool Enemy::BoxCollision(Model model)
 
 void Enemy::SertchPlayer(Model model)
 {
-	const float sertchScale = 500;
+	const float sertchScale = 1000;
 
 	float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
 	float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);

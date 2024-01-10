@@ -96,3 +96,8 @@ void MoviePlayer::SetCamera(Matrix matView, Matrix matProjection)
 	//座標Update
 	player_.MatUpdate(matView, matProjection);
 }
+
+//GoalUpdate();
+//GAmeOverUpdate();
+//DeadAnimatinUpdate();
+//StartUpdate();

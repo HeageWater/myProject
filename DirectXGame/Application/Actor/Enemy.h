@@ -4,7 +4,7 @@
 /// <summary>
 /// 敵生成用クラス(基盤ではない)
 /// </summary>
-class Enemy :BaseEnemy
+class Enemy //:BaseEnemy
 {
 public:
 	Enemy();
