@@ -168,7 +168,8 @@
     <ClCompile Include="DirectXGame\Application\Scene\GameClearScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameOverScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\MoviePlayer.cpp" />
-    <ClCompile Include="DirectXGame\Application\Pause.cpp" />
+    <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp" />
+    <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -269,7 +270,8 @@
     <ClInclude Include="DirectXGame\Application\Scene\GameOverScene.h" />
     <ClInclude Include="DirectXGame\Engine\Math\Enum.h" />
     <ClInclude Include="DirectXGame\Application\Actor\MoviePlayer.h" />
-    <ClInclude Include="DirectXGame\Application\Pause.h" />
+    <ClInclude Include="DirectXGame\Application\Scene\Pause.h" />
+    <ClInclude Include="DirectXGame\Engine\Sprite\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

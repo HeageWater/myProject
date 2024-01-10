@@ -569,6 +569,11 @@ void MyDirectX::ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle)
 	cmdList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 }
 
+DescriptorHeap* MyDirectX::GetDescriptorHeap()
+{
+	return descriptorHeap_.get();
+}
+
 void MyDirectX::ClearDepthBuff()
 {
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得

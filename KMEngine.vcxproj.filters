@@ -216,7 +216,10 @@
     <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Pause.cpp">
+    <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -413,7 +416,10 @@
     <ClInclude Include="DirectXGame\Application\Actor\BulletEnemy.h">
       <Filter>ヘッダーファイル\Actor\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Pause.h">
+    <ClInclude Include="DirectXGame\Application\Scene\Pause.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engine\Sprite\TextureManager.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

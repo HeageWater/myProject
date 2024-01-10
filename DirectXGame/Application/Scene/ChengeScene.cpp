@@ -7,25 +7,16 @@ void ChengeScene::Initialize(Matrix matProjection)
 	//画像関係
 	spriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 	sprite_->Inilialize(spriteCommon_, &matProjection);
-	//tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
 	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/black.png");
-
-	//scale用
-	//float size = 2.5f;
-
-	//pos用
-	//float width = 1.5f;
 
 	//scale用
 	const float size = 15.5f;
 
 	//サイズ
 	sprite_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
-	//sprite_->scale_.y_ = Window::window_height_ * size;
 
 	//位置
 	sprite_->position_ = { -680,-Window::window_height_,0 };
-	//sprite_->position_.y_ = -Window::window_height_;
 
 	//カラー
 	sprite_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
@@ -126,9 +117,6 @@ void ChengeScene::SetPlayFlag(std::string next)
 {
 	if (!isPlayFlag_)
 	{
-		//float size = 3.0f;
-		//float width = 2.0;
-
 		//scale用
 		const float size = 15.5f;
 
@@ -136,18 +124,14 @@ void ChengeScene::SetPlayFlag(std::string next)
 
 		//サイズ
 		sprite_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
-		//sprite_->scale_.y_ = Window::window_height_ * size;
 
 		//位置
 		sprite_->position_ = { -680,-Window::window_height_,0 };
-		//sprite_->position_.y_ = -Window::window_height_;
 
 		//カラー
 		sprite_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 
 		color_ = { 0.0f,0.0f,0.0f,0.0f };
-
-		time_ = 0;
 
 		next_ = next;
 

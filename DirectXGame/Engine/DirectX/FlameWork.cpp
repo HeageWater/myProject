@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "ChengeScene.h"
 #include "ParticleManager.h"
+#include "TextureManager.h"
 
 void FlameWork::Update()
 {
@@ -66,14 +67,16 @@ void FlameWork::Initialize()
 	//音読み込み
 	hitSound_ = MyXAudio::GetInstance()->SoundLoadWave("Resources/sound/BGM.wav");
 	
+	//BGMを鳴らす
 	MyXAudio::GetInstance()->SoundPlayLoopWave(hitSound_);
+
+	//テクスチャマネージャ
+	TextureManager::GetInstance()->StaticInitialize();
 
 	//欲しい機能
 	{
 		/*Camera::StaticInitialize(windowsApp_.get());
-
-		TextureManager::GetInstance()->StaticInitialize();
-
+		
 		SpriteCommon::StaticInitialize();
 		Sprite2D::StaticInitialize(windowsApp_.get());
 

@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "ViewPort.h"
 #include "ScissorRect.h"
+#include "DescriptorHeap.h"
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <cassert>
@@ -39,7 +40,7 @@ private:
 	/// <param name="StateAfter"></param>
 	/// <param name="pResource"></param>
 	void SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource = nullptr);
-	
+
 	/// <summary>
 	/// コマンドリスト
 	/// </summary>
@@ -159,56 +160,64 @@ public:
 	/// <param name="rtvHandle"></param>
 	void ScreenClear(D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle);
 
-	private:
-		Window* win_ = nullptr;
+	/// <summary>
+	/// デスクリプタヒープを返す
+	/// </summary>
+	DescriptorHeap* GetDescriptorHeap();
 
-		HRESULT result_;
+private:
+	Window* win_ = nullptr;
 
-		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	HRESULT result_;
 
-		ComPtr<ID3D12Device> device_;
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		ComPtr<ID3D12CommandAllocator> cmdAllocator_;
-		ComPtr<ID3D12GraphicsCommandList> cmdList_;
+	ComPtr<ID3D12Device> device_;
 
-		ComPtr<ID3D12CommandQueue> cmdQueue_;
+	ComPtr<ID3D12CommandAllocator> cmdAllocator_;
+	ComPtr<ID3D12GraphicsCommandList> cmdList_;
 
-		ComPtr<IDXGISwapChain4> swapChain_;
+	ComPtr<ID3D12CommandQueue> cmdQueue_;
 
-		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
-		ComPtr<ID3D12DescriptorHeap> rtvHeap_;
+	ComPtr<IDXGISwapChain4> swapChain_;
 
-		// バックバッファ
-		std::vector<ComPtr<ID3D12Resource>> backBuffers_;
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_;
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
+	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
 
-		ComPtr<ID3D12Fence> fence_;
-		UINT64 fenceVal_ = 0;
+	// バックバッファ
+	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle_;
 
-		D3D12_RESOURCE_BARRIER barrierDesc_{};
+	ComPtr<ID3D12Fence> fence_;
+	UINT64 fenceVal_ = 0;
 
-		FLOAT clearColor_[4] = {};
+	D3D12_RESOURCE_BARRIER barrierDesc_{};
 
-		ComPtr<ID3D12DescriptorHeap> dsvHeap_;
-		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_;
+	FLOAT clearColor_[4] = {};
 
-		ComPtr<ID3D12Resource> depthBuff_;
+	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle_;
 
-		// screenTexture
-		ComPtr<ID3D12Resource> screenResource_;
-		D3D12_RESOURCE_BARRIER screenBarrierDesc_;
-		ComPtr<ID3D12DescriptorHeap> screenRTVHeap_;
-		std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap_;
+	ComPtr<ID3D12Resource> depthBuff_;
 
-		//	ビューポート
-		ViewPort viewPort_;
-		// シザー矩形
-		ScissorRect scissorRect_;
+	// screenTexture
+	ComPtr<ID3D12Resource> screenResource_;
+	D3D12_RESOURCE_BARRIER screenBarrierDesc_;
+	ComPtr<ID3D12DescriptorHeap> screenRTVHeap_;
+	std::vector<ComPtr<ID3D12DescriptorHeap>> screenSRVHeap_;
 
-		int textureNum_;
-		std::vector<ComPtr<ID3D12Resource>> texBuff_;
-		UINT incrementSize_;
+	//	ビューポート
+	ViewPort viewPort_;
+	// シザー矩形
+	ScissorRect scissorRect_;
 
-		std::chrono::steady_clock::time_point reference_;
+	int textureNum_;
+	std::vector<ComPtr<ID3D12Resource>> texBuff_;
+	UINT incrementSize_;
+
+	std::chrono::steady_clock::time_point reference_;
+
+	//デスクプリタヒープ
+	std::unique_ptr<DescriptorHeap> descriptorHeap_;
 };
 
