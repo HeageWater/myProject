@@ -20,7 +20,7 @@ public:
 	/// <summary>
 	/// 
 	/// </summary>
-	void Initialize();
+	void Initialize(Shader shader, GPipeline* pipeline);
 
 	/// <summary>
 	/// 
@@ -32,9 +32,36 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="view"></param>
+	/// <param name="prodaction"></param>
+	void SetCamera(Matrix view, Matrix prodaction);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetPos(Vector3D pos) { bullet_.mat_.trans_ = pos; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="vec"></param>
+	void SetVec(Vector3D vec) { Vec = vec; };
 private:
 
 	//
 	Model bullet_;
+
+	Vector3D Vec = { 0,0,0 };
+
+	size_t tex_ = 0;
+
+	Shader shader_;
+	GPipeline* pipeline_;
+	Matrix view_;
+	Matrix prodaction_;
 
 };

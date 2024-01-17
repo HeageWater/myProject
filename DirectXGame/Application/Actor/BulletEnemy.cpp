@@ -2,9 +2,12 @@
 #include "ENum.h"
 #include "DirectX.h"
 
-void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline_)
+void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline)
 {
-	enemy_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
+	shader_ = shader;
+	pipeline_ = pipeline;
+
+	enemy_.Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
 
 	//mat初期化
 	enemy_.mat_.Initialize();
@@ -29,11 +32,23 @@ void BulletEnemy::Draw()
 {
 	//描画
 	enemy_.Draw(tex_);
+
+	//弾描画
+	for (size_t i = 0; i < bullets_.size(); i++)
+	{
+		bullets_[i]->Draw();
+	}
+
 }
 
 void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 {
 	float spd = 0.005f;
+
+	if (fireFlag_)
+	{
+		spd = 0.03f;
+	}
 
 	if (deadVec_)
 	{
@@ -59,10 +74,10 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 	EnemyAttack();
 
 	//
-	//BulletUpdate(matView, matProjection);
+	BulletUpdate(matView, matProjection);
 
 	//カメラ位置などをセット
-	enemy_.SetCamera(matView,matProjection);
+	enemy_.SetCamera(matView, matProjection);
 
 	//更新
 	enemy_.Update();
@@ -91,7 +106,6 @@ bool BulletEnemy::BoxCollision(Model model)
 		if (a + b < c * (float)TWO)
 		{
 			float spd = TWO;
-			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
@@ -107,7 +121,6 @@ bool BulletEnemy::BoxCollision(Model model)
 		if (a + b < c)
 		{
 			float spd = TWO;
-			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
@@ -120,6 +133,8 @@ bool BulletEnemy::BoxCollision(Model model)
 
 void BulletEnemy::SertchPlayer(Model model)
 {
+	playerVec = enemy_.mat_.trans_ - model.mat_.trans_;
+
 	const float sertchScale = 1000;
 
 	float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
@@ -132,6 +147,10 @@ void BulletEnemy::SertchPlayer(Model model)
 	{
 		//攻撃準備
 		fireFlag_ = true;
+	}
+	else
+	{
+		fireFlag_ = false;
 	}
 }
 
@@ -154,56 +173,17 @@ void BulletEnemy::DeadVec()
 
 void BulletEnemy::BulletUpdate(Matrix matView, Matrix matProjection)
 {
-	Matrix mat = matView;
-	Matrix mat2 = matProjection;
-	mat = mat2;
-
 	//弾更新
 	for (size_t i = 0; i < bullets_.size(); i++)
 	{
-		/*bullets_[i]->Update(view_, prodaction_);
+		bullets_[i]->SetCamera(matView, matProjection);
+		bullets_[i]->Update();
 
-		if (bullets_[i]->GetIsDead())
+		/*if (bullets_[i]->GetIsDead())
 		{
 			bullets_.erase(bullets_.begin() + i);
 		}*/
 	}
-
-	//弾描画
-	for (size_t i = 0; i < bullets_.size(); i++)
-	{
-		//bullets_[i]->Draw(enemyTex_);
-		//bullets_[i]->Draw();
-	}
-
-	//今ある弾を削除
-	for (size_t i = 0; i < bullets_.size(); i++)
-	{
-		//bullets_.erase(bullets_.begin());
-	}
-
-	//Create() {
-	//	//モデルを指定して3Dオブジェクトを生成
-	//			//Enemy* newModel_ = new Enemy();
-	//	BulletEnemy* newModel_ = new BulletEnemy();
-	//	newModel_->Initialize(shader_, pipeline_);
-
-	//	//trans
-	//	newModel_->SetTrans(objectdata.translation_ * pos);
-
-	//	//rotation
-	//	newModel_->SetRot(objectdata.rotation_);
-
-	//	//scale;
-	//	newModel_->SetScale(objectdata.scaling_ * enemyScale);
-
-	//	//Update
-	//	newModel_->Update(view_, prodaction_);
-
-	//	//格納
-	//	enemies_.push_back(newModel_);
-	//}
-
 }
 
 std::vector<Bullet*> BulletEnemy::GetBullet()
@@ -213,8 +193,38 @@ std::vector<Bullet*> BulletEnemy::GetBullet()
 
 void BulletEnemy::EnemyAttack()
 {
-	if (fireFlag_)
+	if (!fireFlag_)
 	{
-
+		return;
 	}
+
+	attackTime_++;
+
+	const size_t AttackTime = 300;
+
+	if (attackTime_ > AttackTime)
+	{
+		attackTime_ = ZERO;
+
+		//弾生成
+		CreateBullet();
+	}
+}
+
+void  BulletEnemy::CreateBullet()
+{
+	//モデルを指定して3Dオブジェクトを生成
+	Bullet* newBullet_ = new Bullet();
+
+	//初期化
+	newBullet_->Initialize(shader_, pipeline_);
+
+	//trans
+	newBullet_->SetPos(enemy_.mat_.trans_);
+
+	//Vec
+	newBullet_->SetVec(playerVec.normalize());
+
+	//格納
+	bullets_.push_back(newBullet_);
 }

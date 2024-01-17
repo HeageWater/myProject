@@ -108,10 +108,23 @@ public:
 	/// </summary>
 	void EnemyAttack();
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void CreateBullet();
+
 private:
 	//弾格納用
 	std::vector<Bullet*> bullets_;
 
 	//撃つフラグ
 	bool fireFlag_;
+
+	size_t attackTime_ = 0;
+
+	Shader shader_;
+	GPipeline* pipeline_;
+
+	//
+	Vector3D playerVec = { 0,0,0 };
 };
