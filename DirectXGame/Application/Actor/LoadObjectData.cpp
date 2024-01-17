@@ -35,7 +35,8 @@ void LoadObjectData::Draw()
 	//エネミー描画
 	for (size_t i = 0; i < enemies_.size(); i++)
 	{
-		enemies_[i]->Draw(enemyTex_);
+		//enemies_[i]->Draw(enemyTex_);
+		enemies_[i]->Draw();
 	}
 
 	//ステージ描画
@@ -117,7 +118,8 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		if (objectdata.fileName_ == "Enemy")
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			Enemy* newModel_ = new Enemy();
+			//Enemy* newModel_ = new Enemy();
+			BulletEnemy* newModel_ = new BulletEnemy();
 			newModel_->Initialize(shader_, pipeline_);
 
 			//trans
@@ -225,7 +227,8 @@ std::vector<Stage*> LoadObjectData::GetStage()
 	return stages_;
 }
 
-std::vector<Enemy*> LoadObjectData::GetEnemy()
+//std::vector<Enemy*> LoadObjectData::GetEnemy()
+std::vector<BaseEnemy*> LoadObjectData::GetEnemy()
 {
 	return enemies_;
 }

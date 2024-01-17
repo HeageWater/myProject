@@ -1,8 +1,10 @@
 #pragma once
+#include "Bullet.h"
 #include "BaseEnemy.h"
 
-class BulletEnemy : BaseEnemy
+class BulletEnemy : public BaseEnemy
 {
+public://継承しているもの
 
 	/// <summary>
 	/// 初期化
@@ -36,4 +38,80 @@ class BulletEnemy : BaseEnemy
 	/// <returns></returns>
 	Model GetModel() override;
 
+	/// <summary>
+	/// 箱同士の判定(collisionManager作成後削除)
+	/// </summary>
+	/// <param name="model"></param>
+	/// <returns></returns>
+	bool BoxCollision(Model model);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="time"></param>
+	void SetTime(size_t time) { time_ = time; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	bool GetDeadVec() { return deadVec_; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void SertchPlayer(Model model);
+
+	/// <summary>
+	/// pos入手
+	/// </summary>
+	/// <returns></returns>
+	Vector3D GetPos() { return  enemy_.mat_.trans_; };
+
+public:
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void DeadVec();
+
+	/// <summary>
+	/// transセット
+	/// </summary>
+	/// <param name="trans"></param>
+	void SetTrans(Vector3D trans) { enemy_.mat_.trans_ = trans; };
+
+	/// <summary>
+	/// scaleセット
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetScale(Vector3D scale) { enemy_.mat_.scale_ = scale; };
+
+	/// <summary>
+	/// rotationセット
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetRot(Vector3D rotAngle) { enemy_.mat_.rotAngle_ = rotAngle; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void BulletUpdate(Matrix matView, Matrix matProjection);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	std::vector<Bullet*> GetBullet();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void EnemyAttack();
+
+private:
+	//弾格納用
+	std::vector<Bullet*> bullets_;
+
+	//撃つフラグ
+	bool fireFlag_;
 };

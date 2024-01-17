@@ -101,7 +101,7 @@ private:
 	//死んでいるか
 	bool isDead_ = false;
 
-	//死んだときに吹っ飛ぶ方向
+	//死んだときに吹っ飛ぶ
 	bool deadVec_ = false;
 
 	//向き

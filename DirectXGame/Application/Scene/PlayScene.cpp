@@ -197,7 +197,7 @@ void PlayScene::Update()
 	//ブラックアウト
 	if (blackOutFlag_)
 	{
-		//ブラックアウトテスト
+		//ブラックアウト
 		if (color_.x_ < 1.0f)
 		{
 			color_.x_ += 0.01f;
@@ -216,7 +216,7 @@ void PlayScene::Update()
 				{
 					LoadObjectData::GetInstance()->StageLoad("stage3");
 				}
-
+				
 				//開始地点をセット
 				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
 

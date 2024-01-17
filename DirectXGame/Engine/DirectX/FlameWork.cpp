@@ -36,22 +36,22 @@ void FlameWork::Initialize()
 	//buff
 	cBuff_ = std::make_unique<ConstBuff>(MyDirectX::GetInstance()->GetDev());
 
-	//shader
-	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
-	bilShader_.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
-	spriteShader_.Initizlize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
+	////shader
+	//shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
+	//bilShader_.Initizlize(L"Resources/shader/VShader.hlsl", L"Resources/shader/PShader.hlsl");
+	//spriteShader_.Initizlize(L"Resources/shader/SpriteVS.hlsl", L"Resources/shader/SpritePS.hlsl");
 
-	//pipeline
-	pipeline_ = std::make_unique<GPipeline>();
-	pipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), shader_);
+	////pipeline
+	//pipeline_ = std::make_unique<GPipeline>();
+	//pipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), shader_);
 
-	//描画初期化
-	multipathPipeline_ = std::make_unique<GPipeline>();
-	multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
+	////描画初期化
+	//multipathPipeline_ = std::make_unique<GPipeline>();
+	//multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
-	//gpipeline
-	uiPipeline_ = std::make_unique<GPipeline>();
-	uiPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
+	////gpipeline
+	//uiPipeline_ = std::make_unique<GPipeline>();
+	//uiPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
 	//キーボード
 	Input::GetInstance()->Initialize(win_.get());

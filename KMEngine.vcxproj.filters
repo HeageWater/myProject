@@ -222,6 +222,9 @@
     <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp">
+      <Filter>ソースファイル\Actor\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
@@ -421,6 +424,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Sprite\TextureManager.h">
       <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\Bullet.h">
+      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

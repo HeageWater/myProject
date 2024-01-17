@@ -73,19 +73,19 @@ protected:
 	//buff
 	std::unique_ptr<ConstBuff> cBuff_;
 
-	//pipeline
-	std::unique_ptr<GPipeline> pipeline_;
+	////pipeline
+	//std::unique_ptr<GPipeline> pipeline_;
 
-	//描画初期化
-	std::unique_ptr<GPipeline> multipathPipeline_;
+	////描画初期化
+	//std::unique_ptr<GPipeline> multipathPipeline_;
 
-	//gpipeline
-	std::unique_ptr<GPipeline> uiPipeline_;
+	////gpipeline
+	//std::unique_ptr<GPipeline> uiPipeline_;
 
-	//shader
-	Shader shader_;
-	Shader bilShader_;
-	Shader spriteShader_;
+	////shader
+	//Shader shader_;
+	//Shader bilShader_;
+	//Shader spriteShader_;
 
 	//BGM
 	size_t hitSound_;

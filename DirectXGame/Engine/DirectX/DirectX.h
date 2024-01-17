@@ -29,7 +29,9 @@ private:
 	/// </summary>
 	void InitializeFPS();
 
-	//FPS更新
+	/// <summary>
+	/// FPS更新
+	/// </summary>
 	void UpdateFPS();
 
 	/// <summary>

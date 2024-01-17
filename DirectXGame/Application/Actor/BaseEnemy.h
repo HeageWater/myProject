@@ -11,7 +11,7 @@
 
 class BaseEnemy
 {
-protected:
+public:
 	virtual ~BaseEnemy() = default;
 
 	/// <summary>
@@ -46,10 +46,40 @@ protected:
 	/// <returns></returns>
 	virtual Model GetModel() = 0;
 
-protected:
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="model"></param>
+	/// <returns></returns>
+	virtual bool BoxCollision(Model model) = 0;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="time"></param>
+	virtual void SetTime(size_t time) = 0;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	virtual bool GetDeadVec() = 0;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	virtual void SertchPlayer(Model model) = 0;
+
+	/// <summary>
+	/// pos入手
+	/// </summary>
+	/// <returns></returns>
+	virtual Vector3D GetPos() = 0;
+
+public:
 
 	//画像
-	uint32_t tex_;
+	size_t tex_;
 
 	//死んでいるか
 	bool isDead_ = false;
@@ -62,4 +92,10 @@ protected:
 
 	//モデル
 	Model enemy_;
+
+	//どのくらいたったか
+	size_t time_ = 0;
+
+	//死んだときに吹っ飛ぶ
+	bool deadVec_ = false;
 };
