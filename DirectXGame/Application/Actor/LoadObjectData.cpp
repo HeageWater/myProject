@@ -207,6 +207,12 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 			//カメラの位置を固定にして連続雑魚戦
 			EventCameraPos_ = objectdata.translation_ * pos;
 		}
+
+		//Back(背景)だったら
+		if (objectdata.fileName_ == "Back")
+		{
+			//立方体を出す
+		}
 	}
 }
 
