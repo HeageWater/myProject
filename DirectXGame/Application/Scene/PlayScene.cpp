@@ -84,7 +84,7 @@ void PlayScene::Update()
 			//playerの攻撃との判定
 			if (object->BoxCollision(player_->GetAttackModel()))
 			{
-				setStopTime += TEN;
+				setStopTime += FIVE;
 				sound_->SoundPlayWave(hitSound_);
 				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
 

@@ -225,6 +225,9 @@
     <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
@@ -427,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\Bullet.h">
       <Filter>ヘッダーファイル\Actor\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Actor\GameModel.h">
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

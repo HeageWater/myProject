@@ -50,18 +50,28 @@ public:
 	/// </summary>
 	/// <param name="vec"></param>
 	void SetVec(Vector3D vec) { Vec = vec; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	bool GetIsDead() { return isDead_; };
 private:
 
-	//
+	//モデル
 	Model bullet_;
 
+	//向き
 	Vector3D Vec = { 0,0,0 };
 
+	//画像
 	size_t tex_ = 0;
 
+	//死んでいるかのフラグ
+	bool isDead_ = false;
+
+	//更新関係
 	Shader shader_;
 	GPipeline* pipeline_;
 	Matrix view_;
 	Matrix prodaction_;
-
 };

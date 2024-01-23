@@ -15,13 +15,13 @@ void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline)
 	//スケールをセット
 	enemy_.mat_.scale_ = { 1,1,1 };
 
-	//
+	//死んでいるかのフラグをoffに
 	isDead_ = false;
 
-	//
+	//移動値
 	move_ = { 0,0,0 };
 
-	//
+	//向き
 	Vec_ = { 0,0,0 };
 
 	//画像読み込み
@@ -38,7 +38,6 @@ void BulletEnemy::Draw()
 	{
 		bullets_[i]->Draw();
 	}
-
 }
 
 void BulletEnemy::Update(Matrix matView, Matrix matProjection)
@@ -106,6 +105,7 @@ bool BulletEnemy::BoxCollision(Model model)
 		if (a + b < c * (float)TWO)
 		{
 			float spd = TWO;
+			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
@@ -121,6 +121,7 @@ bool BulletEnemy::BoxCollision(Model model)
 		if (a + b < c)
 		{
 			float spd = TWO;
+			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
@@ -179,10 +180,10 @@ void BulletEnemy::BulletUpdate(Matrix matView, Matrix matProjection)
 		bullets_[i]->SetCamera(matView, matProjection);
 		bullets_[i]->Update();
 
-		/*if (bullets_[i]->GetIsDead())
+		if (bullets_[i]->GetIsDead())
 		{
 			bullets_.erase(bullets_.begin() + i);
-		}*/
+		}
 	}
 }
 
