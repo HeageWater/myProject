@@ -1,4 +1,6 @@
 #include "Bullet.h"
+#include "CollisionManager.h"
+#include "ParticleManager.h"
 
 Bullet::Bullet()
 {
@@ -7,16 +9,20 @@ Bullet::Bullet()
 
 void Bullet::Initialize(Shader shader, GPipeline* pipeline)
 {
+	//
+	tag_ = "bullet";
+	CollisionManager::GetInstance()->AddCollision(this);
+
 	//更新関係代入
 	shader_ = shader;
 	pipeline_ = pipeline;
 
 	//読み込み
-	bullet_.Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
+	model_.Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
 
 	//初期化
-	bullet_.mat_.Initialize();
-	bullet_.mat_.scale_ = { 5,5,5 };
+	model_.mat_.Initialize();
+	model_.mat_.scale_ = { 5,5,5 };
 
 	//画像読み込み
 	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
@@ -28,25 +34,42 @@ void Bullet::Initialize(Shader shader, GPipeline* pipeline)
 void Bullet::Update()
 {
 	//進む速度
-	const float SPEED = 0.05f;
+	const float SPEED = 0.1f;
 
 	//移動
-	bullet_.mat_.trans_ -= Vec * SPEED;
+	model_.mat_.trans_ -= Vec * SPEED;
 
 	//Cameraなど更新
-	bullet_.SetCamera(view_, prodaction_);
-	bullet_.Update();
+	model_.SetCamera(view_, prodaction_);
+	model_.Update();
+
+	//消える瞬間
+	Delete();
 }
 
 void Bullet::Draw()
 {
 	//描画
-	bullet_.Draw(tex_);
+	model_.Draw(tex_);
 }
 
-void Bullet::SetCamera(Matrix view, Matrix prodaction)
+void Bullet::SetCamera(const Matrix& view, const Matrix& prodaction)
 {
 	//更新関係代入
 	view_ = view;
 	prodaction_ = prodaction;
+}
+
+void Bullet::Delete()
+{
+	//消える瞬間
+	if (GetDeleteFlag())
+	{
+		isDead_ = true;
+	}
+}
+
+void Bullet::OnCollision()
+{
+	ParticleManager::GetInstance()->CreateBoxParticle(model_.mat_.trans_);
 }

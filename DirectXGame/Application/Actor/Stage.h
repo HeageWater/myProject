@@ -7,11 +7,12 @@
 #include "Square.h"
 #include <memory>
 #include "Model.h"
+#include "GameModel.h"
 
 /// <summary>
 /// ステージ
 /// </summary>
-class Stage
+class Stage :GameModel
 {
 public:
 	Stage();
@@ -52,22 +53,22 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { stage_.mat_.trans_ = trans; };
+	void SetTrans(Vector3D trans) { model_.mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { stage_.mat_.scale_ = scale; };
+	void SetScale(Vector3D scale) { model_.mat_.scale_ = scale; };
 
 	/// <summary>
 	/// rotationセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetRot(Vector3D rotAngle) { stage_.mat_.rotAngle_ = rotAngle; };
+	void SetRot(Vector3D rotAngle) { model_.mat_.rotAngle_ = rotAngle; };
 
 	//モデル
-	Model stage_;
+	Model GetModel() { return model_; };
 private:
 
 	//描画フラグ

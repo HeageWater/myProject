@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "MyMath.h"
 #include "VertBuff.h"
 
@@ -13,7 +14,7 @@ private:
 	//ファイル変数
 	FILE* file_;
 	//std::FILE* file = NULL;
-	
+
 	//頂点データ
 	std::vector<unsigned short> vertexIndices_, uvIndices_, normalIndices_;
 
@@ -40,7 +41,6 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	bool ReadFile();
-
 public:
 
 	ObjFile(const char* filename, std::vector<Vertex>& out_vertices);

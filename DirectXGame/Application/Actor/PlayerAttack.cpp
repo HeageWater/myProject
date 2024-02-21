@@ -1,5 +1,6 @@
 #include "PlayerAttack.h"
 #include "Easing.h"
+#include "CollisionManager.h"
 
 PlayerAttack::PlayerAttack(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
@@ -12,12 +13,13 @@ PlayerAttack::~PlayerAttack()
 
 void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline_)
 {
-	//playerAttack_.Initialize(dx_, shader, "Resources\\Model\\box.obj", pipeline_);
-	playerAttack_.Initialize(dx_, shader, "Resources\\Model\\Attack\\attack2.obj", pipeline_);
+	tag_ = "attack";
+	CollisionManager::GetInstance()->AddCollision(this);
 
-	playerAttack_.mat_.Initialize();
-	//playerAttack_.mat_.scale_ = { 50,5,1 };
-	playerAttack_.mat_.scale_ = { 10,5,1 };
+	model_.Initialize(dx_, shader, "Resources\\Model\\Attack\\attack2.obj", pipeline_);
+
+	model_.mat_.Initialize();
+	model_.mat_.scale_ = { 10,5,1 };
 
 	controller_ = Controller::GetInstance();
 	attackF_ = false;
@@ -31,7 +33,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 
 void PlayerAttack::Draw()
 {
-	playerAttack_.Draw(tex_);
+	model_.Draw(tex_);
 }
 
 void PlayerAttack::Update(Matrix matView, Matrix matProjection)
@@ -41,42 +43,44 @@ void PlayerAttack::Update(Matrix matView, Matrix matProjection)
 	if (time_ <= 1)
 	{
 		isDead_ = true;
+		deleteFlag = true;
+		Destroy();
 	}
 
-	float maxScale = playerAttack_.mat_.scale_.x_ * 1.5f;
+	float maxScale = model_.mat_.scale_.x_ * 1.5f;
 	float spd = 10.0f;
 
 	if (!deleteFlag)
 	{
-		if (playerAttack_.mat_.scale_.x_ < maxScale)
+		if (model_.mat_.scale_.x_ < maxScale)
 		{
-			playerAttack_.mat_.scale_.x_ += spd;
+			model_.mat_.scale_.x_ += spd;
 		}
 		else
 		{
 			deleteFlag = true;
 		}
 
-		if (playerAttack_.mat_.scale_.y_ < maxScale / 2)
+		if (model_.mat_.scale_.y_ < maxScale / 2)
 		{
-			playerAttack_.mat_.scale_.y_ += spd;
+			model_.mat_.scale_.y_ += spd;
 		}
 	}
 
 	if (deleteFlag)
 	{
-		if (playerAttack_.mat_.scale_.x_ > 0)
+		if (model_.mat_.scale_.x_ > 0)
 		{
-			playerAttack_.mat_.scale_.x_ -= spd;
+			model_.mat_.scale_.x_ -= spd;
 		}
 
-		if (playerAttack_.mat_.scale_.y_ > 0)
+		if (model_.mat_.scale_.y_ > 0)
 		{
-			playerAttack_.mat_.scale_.y_ -= spd;
+			model_.mat_.scale_.y_ -= spd;
 		}
 	}
 
-	playerAttack_.MatUpdate(matView, matProjection);
+	model_.MatUpdate(matView, matProjection);
 }
 
 void PlayerAttack::SetUpdate()
@@ -89,5 +93,5 @@ void PlayerAttack::SetUpdate()
 	}
 
 	vec_.normalize();
-	playerAttack_.mat_.rotAngle_.z_ = (angle * vec_.y_);
+	model_.mat_.rotAngle_.z_ = (angle * vec_.y_);
 }

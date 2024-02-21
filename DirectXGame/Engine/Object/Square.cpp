@@ -165,8 +165,8 @@ void Square::Draw(size_t handle)
 	pipeline_->Update(dx_->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	VertBuffUpdate(dx_->GetCmdList());
 	//	テクスチャ
-	dx_->GetCmdList()->SetGraphicsRootDescriptorTable(1, dx_->GetTextureHandle((int32_t)handle));
-	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(2, transform_->GetGPUVirtualAddress());
+	dx_->GetCmdList()->SetGraphicsRootDescriptorTable(3, dx_->GetTextureHandle((int32_t)handle));
+	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(1, transform_->GetGPUVirtualAddress());
 	
 	dx_->GetCmdList()->DrawIndexedInstanced(indexSize_, 1, 0, 0, 0);
 }

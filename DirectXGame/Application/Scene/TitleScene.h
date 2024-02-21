@@ -49,7 +49,9 @@ private:
 	Square screen_;
 
 	//player
-	Player* player_ = new Player();
+	//Player* player_ = new Player();
+	std::unique_ptr<Player> player_;
+
 
 	//描画用行列
 	MyMath::MatView matView_;

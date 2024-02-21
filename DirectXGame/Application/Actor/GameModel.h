@@ -22,6 +22,8 @@ private:
 	//static Camera* camera_;
 
 public:
+
+	//
 	Model model_{};
 	//方向ベクトル
 	Vector2D directionalVec_{};
@@ -32,41 +34,72 @@ public:
 	Vector3D knockBackVec_ = {};
 	uint32_t knockBackFlame_ = 0;
 	uint32_t notKnockBackFlame_ = 0;
+
 private:
-	bool deleteFlag_ = false;//これがtrueになっているオブジェクトは削除されたものとして扱うべし。
+
+	//これがtrueになっているオブジェクトは削除されたものとして扱う
+	bool deleteFlag_ = false;
 
 public:
 
-	//デストラクタ
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~GameModel() = default;
 
-	//初期化処理
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
 	virtual void Initialize() {};
 
-	//更新処理
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	virtual void Update() {};
 
-	//描画処理
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	virtual void Draw() {};
 
-	//オブジェクトの名前取得処理
-	virtual std::string GetName() { return ""; };
+	/// <summary>
+	/// オブジェクトの名前取得処理
+	/// </summary>
+	/// <returns></returns>
+	virtual std::string GetName() { return tag_; };
 
-	//オブジェクトの衝突判定処理
+	/// <summary>
+	/// オブジェクトの衝突判定処理
+	/// </summary>
 	virtual void OnCollision() {};
 
-	//死亡フラグの取得
+	/// <summary>
+	/// 死亡フラグの取得
+	/// </summary>
+	/// <returns></returns>
 	virtual const bool GetIsDead() { return false; };
 
-	virtual const bool GetIsDamageObject() { return false; };
-
-	//死亡アニメーションフラグの取得
+	/// <summary>
+	/// 死亡アニメーションフラグの取得
+	/// </summary>
+	/// <returns></returns>
 	virtual const bool GetDeathAnimationFlag() { return false; };
 
+	/// <summary>
+	/// 破棄
+	/// </summary>
 	void Destroy() { deleteFlag_ = true; };
 
+	/// <summary>
+	/// 消滅フラグ
+	/// </summary>
+	/// <returns></returns>
 	bool GetDeleteFlag() { return deleteFlag_; };
 
+	/// <summary>
+	/// ノックバック
+	/// </summary>
+	/// <returns></returns>
 	bool IsKnockBack() { return knockBackFlame_ > 0; };
 
 	//Vector3D vec
@@ -77,6 +110,9 @@ public:
 	//const uint16_t& num
 	virtual void Appearance() {};
 
+	/// <summary>
+	/// 
+	/// </summary>
 	virtual void EffectCreate() {};
 
 public:

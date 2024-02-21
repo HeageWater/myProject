@@ -172,6 +172,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp" />
+    <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -276,6 +277,7 @@
     <ClInclude Include="DirectXGame\Application\Scene\Pause.h" />
     <ClInclude Include="DirectXGame\Engine\Sprite\TextureManager.h" />
     <ClInclude Include="DirectXGame\Application\Actor\GameModel.h" />
+    <ClInclude Include="DirectXGame\Engine\Object\ModelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

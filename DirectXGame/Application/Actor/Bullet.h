@@ -8,8 +8,9 @@
 #include "Controller.h"
 #include <memory>
 #include "Model.h"
+#include "GameModel.h"
 
-class Bullet
+class Bullet :GameModel
 {
 public:
 	/// <summary>
@@ -37,28 +38,35 @@ public:
 	/// </summary>
 	/// <param name="view"></param>
 	/// <param name="prodaction"></param>
-	void SetCamera(Matrix view, Matrix prodaction);
+	void SetCamera(const Matrix& view, const Matrix& prodaction);
 
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(Vector3D pos) { bullet_.mat_.trans_ = pos; };
+	void SetPos(const Vector3D& pos) { model_.mat_.trans_ = pos; };
 
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="vec"></param>
-	void SetVec(Vector3D vec) { Vec = vec; };
+	void SetVec(const Vector3D& vec) { Vec = vec; };
 
 	/// <summary>
 	/// 
 	/// </summary>
-	bool GetIsDead() { return isDead_; };
-private:
+	const bool GetIsDead() { return isDead_; };
 
-	//モデル
-	Model bullet_;
+	/// <summary>
+	/// 消滅
+	/// </summary>
+	void Delete();
+
+	/// <summary>
+	/// どこかに当たった時
+	/// </summary>
+	void OnCollision();
+private:
 
 	//向き
 	Vector3D Vec = { 0,0,0 };

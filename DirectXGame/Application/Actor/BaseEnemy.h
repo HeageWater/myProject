@@ -8,8 +8,9 @@
 #include "Controller.h"
 #include <memory>
 #include "Model.h"
+#include "GameModel.h"
 
-class BaseEnemy
+class BaseEnemy : public GameModel
 {
 public:
 	virtual ~BaseEnemy() = default;
@@ -38,7 +39,7 @@ public:
 	/// 死んでいるか
 	/// </summary>
 	/// <returns></returns>
-	virtual bool GetIsDead() = 0;
+	//virtual bool GetIsDead() = 0;
 
 	/// <summary>
 	/// 
@@ -89,9 +90,6 @@ public:
 
 	//動く量
 	Vector3D move_ = { 0,0,0 };
-
-	//モデル
-	Model enemy_;
 
 	//どのくらいたったか
 	size_t time_ = 0;

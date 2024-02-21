@@ -52,7 +52,15 @@ private:
 	/// <param name="enemy"></param>
 	/// <param name="scale"></param>
 	/// <returns></returns>
-	bool CircleCollision(Model player, Model enemy, float scale);
+	bool CircleCollision(Model object1, Model object2);
+
+	/// <summary>
+	/// 四角の判定
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="enemy"></param>
+	/// <returns></returns>
+	bool BoxCollision(Model object1, Model object2);
 
 	CollisionManager() = default;
 	~CollisionManager() = default;

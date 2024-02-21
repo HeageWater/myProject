@@ -12,11 +12,12 @@
 #include "DirectX.h"
 #include "GPipeline.h"
 #include "Shader.h"
+#include "GameModel.h"
 
 /// <summary>
 /// 攻撃生成用モデル
 /// </summary>
-class PlayerAttack
+class PlayerAttack :public GameModel
 {
 public:
 	PlayerAttack(MyDirectX* dx, Shader shader, GPipeline* pipeline);
@@ -51,7 +52,7 @@ public:
 	/// posセット
 	/// </summary>
 	/// <param name="pos_"></param>
-	void SetPos(Vector3D pos) { playerAttack_.mat_.trans_ = pos; };
+	void SetPos(Vector3D pos) { model_.mat_.trans_ = pos; };
 
 	/// <summary>
 	/// 向きセット
@@ -63,25 +64,25 @@ public:
 	/// 死んでいるか
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsDead() { return isDead_; };
+	const bool GetIsDead() { return isDead_; };
 
 	/// <summary>
 	/// pos取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return playerAttack_.mat_.trans_; };
+	Vector3D GetPos() { return model_.mat_.trans_; };
 
 	/// <summary>
 	/// scale取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetScale() { return playerAttack_.mat_.scale_; };
+	Vector3D GetScale() { return model_.mat_.scale_; };
 
 	/// <summary>
 	///rot取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetRot() { return playerAttack_.mat_.rotAngle_; };
+	Vector3D GetRot() { return model_.mat_.rotAngle_; };
 
 private:
 
@@ -92,7 +93,7 @@ private:
 	size_t tex_ = 0;
 
 	//攻撃用モデル
-	Model playerAttack_;
+	//Model playerAttack_;
 
 	//攻撃しているかフラグ
 	bool attackF_ = false;

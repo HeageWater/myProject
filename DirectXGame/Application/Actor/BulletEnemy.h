@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include "BaseEnemy.h"
 
-class BulletEnemy : public BaseEnemy
+class BulletEnemy : public BaseEnemy 
 {
 public://継承しているもの
 
@@ -30,7 +30,7 @@ public://継承しているもの
 	/// 死んでいるか
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsDead() override;
+	const bool GetIsDead() override;
 
 	/// <summary>
 	/// 
@@ -66,7 +66,7 @@ public://継承しているもの
 	/// pos入手
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return  enemy_.mat_.trans_; };
+	Vector3D GetPos() { return  model_.mat_.trans_; };
 
 public:
 
@@ -79,19 +79,19 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { enemy_.mat_.trans_ = trans; };
+	void SetTrans(Vector3D trans) { model_.mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { enemy_.mat_.scale_ = scale; };
+	void SetScale(Vector3D scale) { model_.mat_.scale_ = scale; };
 
 	/// <summary>
 	/// rotationセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetRot(Vector3D rotAngle) { enemy_.mat_.rotAngle_ = rotAngle; };
+	void SetRot(Vector3D rotAngle) { model_.mat_.rotAngle_ = rotAngle; };
 
 	/// <summary>
 	/// 

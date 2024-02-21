@@ -63,6 +63,12 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 {
 	fopen_s(&file_, filename, "r");
 
+	////重複排除
+	//if (models.contains(filename))
+	//{
+	//	return;
+	//}
+
 	if (ReadFile()) {
 		out_vertices.resize(vertexIndices_.size());
 		for (auto i = 0; i < vertexIndices_.size(); i++)
@@ -77,7 +83,8 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 		}
 	}
 
+	//格納
+	//models.insert(std::make_pair(filename, std::move(nullptr)));
+
 	fclose(file_);
-
-
 }

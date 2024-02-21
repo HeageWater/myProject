@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "ChengeScene.h"
 #include "Enum.h"
+#include "CollisionManager.h"
 
 void PlayScene::Update()
 {
@@ -36,7 +37,7 @@ void PlayScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionY(object->stage_))
+			if (player_->StageCollsionY(object->GetModel()))
 			{
 
 			}
@@ -50,7 +51,7 @@ void PlayScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionX(object->stage_))
+			if (player_->StageCollsionX(object->GetModel()))
 			{
 
 			}
@@ -283,7 +284,8 @@ void PlayScene::Initialize()
 
 	//開始地点をセット
 	player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
+	/*pos += {200, 0, 0};
+	player_->SetPos(pos);*/
 	//ゴール初期化
 	goal_->Initialize(MyDirectX::GetInstance(), shader_, pipeline_.get());
 	goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());

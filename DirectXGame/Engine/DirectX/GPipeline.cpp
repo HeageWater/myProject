@@ -93,11 +93,11 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader)
 		IID_PPV_ARGS(state_.ReleaseAndGetAddressOf()));
 }
 
-GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize,
-	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord)
-{
-	Init(dev, shader, inputLayout, inputLayoutSize, topologyType, fillmord);
-}
+//GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize,
+//	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord)
+//{
+//	Init(dev, shader, inputLayout, inputLayoutSize, topologyType, fillmord);
+//}
 
 void GPipeline::Update(ID3D12GraphicsCommandList* cmdList, D3D_PRIMITIVE_TOPOLOGY primitive)
 {
@@ -229,11 +229,38 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 
 #pragma region	ルートパラメータ
 	//	ルートパラメータの設定
-	std::vector<D3D12_ROOT_PARAMETER> rootParams = {};
-	rootParams.resize(rootParamNum);
-	SetRootParam(rootParams[0], D3D12_ROOT_PARAMETER_TYPE_CBV, 0, 0);
-	SetRootParam(rootParams[1], D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, descriptorRange, 1);
-	SetRootParam(rootParams[2], D3D12_ROOT_PARAMETER_TYPE_CBV, 1, 0);
+	std::vector<D3D12_ROOT_PARAMETER> rootParamS = {};
+	rootParamS.resize(rootParamNum);
+	SetRootParam(rootParamS[0], D3D12_ROOT_PARAMETER_TYPE_CBV, 0, 0);
+	SetRootParam(rootParamS[1], D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, descriptorRange, 1);
+	SetRootParam(rootParamS[2], D3D12_ROOT_PARAMETER_TYPE_CBV, 1, 0);
+
+	//ルートパラメータの設定
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
+	//ルートパラメータの設定
+	//行列
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	rootParams[0].Descriptor.ShaderRegister = 0;					//定数バッファ番号
+	rootParams[0].Descriptor.RegisterSpace = 0;						//デフォルト値
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダから見える
+
+	//陰影
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	rootParams[1].Descriptor.ShaderRegister = 1;					//定数バッファ番号
+	rootParams[1].Descriptor.RegisterSpace = 0;						//デフォルト値
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダから見える
+
+	//色
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	rootParams[2].Descriptor.ShaderRegister = 2;					//定数バッファ番号
+	rootParams[2].Descriptor.RegisterSpace = 0;						//デフォルト値
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダから見える
+
+	//テクスチャレジスタ3番
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;	//種類
+	rootParams[3].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
+	rootParams[3].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダから見える
 #pragma endregion
 
 #pragma region sampler
@@ -254,8 +281,8 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	// ルートシグネチャの設定
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	rootSignatureDesc.pParameters = &rootParams.front();						//	先頭アドレス
-	rootSignatureDesc.NumParameters = (int32_t)rootParams.size();				//	ルートパラメータ数
+	rootSignatureDesc.pParameters = rootParams;						//	先頭アドレス
+	rootSignatureDesc.NumParameters = _countof(rootParams);				//	ルートパラメータ数
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 	// ルートシグネチャのシリアライズ
@@ -330,16 +357,16 @@ GPipeline::GPipeline()
 	result_ = S_OK;
 }
 
-GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
-{
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	法線ベクトル
-		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
-	};
-
-	Init(dev, shader, inputLayout, _countof(inputLayout), topologyType, fillmord, cullmord);
-}
+//GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
+//{
+//	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+//		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	xyz座標
+//		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},		//	法線ベクトル
+//		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},				//	uv座標
+//	};
+//
+//	Init(dev, shader, inputLayout, _countof(inputLayout), topologyType, fillmord, cullmord);
+//}
 
 void GPipeline::Initialize(ID3D12Device* dev, Shader shader, D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord, D3D12_CULL_MODE cullmord)
 {

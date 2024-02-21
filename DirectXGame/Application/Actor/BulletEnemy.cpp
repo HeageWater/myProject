@@ -1,19 +1,24 @@
 #include "BulletEnemy.h"
 #include "ENum.h"
 #include "DirectX.h"
+#include "CollisionManager.h"
 
 void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline)
 {
+	//
+	tag_ = "enemy";
+	CollisionManager::GetInstance()->AddCollision(this);
+
 	shader_ = shader;
 	pipeline_ = pipeline;
 
-	enemy_.Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
+	model_.Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
 
 	//mat初期化
-	enemy_.mat_.Initialize();
+	model_.mat_.Initialize();
 
 	//スケールをセット
-	enemy_.mat_.scale_ = { 1,1,1 };
+	model_.mat_.scale_ = { 1,1,1 };
 
 	//死んでいるかのフラグをoffに
 	isDead_ = false;
@@ -31,7 +36,7 @@ void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline)
 void BulletEnemy::Draw()
 {
 	//描画
-	enemy_.Draw(tex_);
+	model_.Draw(tex_);
 
 	//弾描画
 	for (size_t i = 0; i < bullets_.size(); i++)
@@ -54,7 +59,7 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 		spd = 0.01f;
 	}
 
-	enemy_.mat_.rotAngle_.y_ += spd;
+	model_.mat_.rotAngle_.y_ += spd;
 
 	if (time_ > 0)
 	{
@@ -64,7 +69,7 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 	}
 
 	//
-	enemy_.mat_.trans_ -= move_;
+	model_.mat_.trans_ -= move_;
 
 	//
 	DeadVec();
@@ -76,52 +81,52 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 	BulletUpdate(matView, matProjection);
 
 	//カメラ位置などをセット
-	enemy_.SetCamera(matView, matProjection);
+	model_.SetCamera(matView, matProjection);
 
 	//更新
-	enemy_.Update();
+	model_.Update();
 }
 
-bool BulletEnemy::GetIsDead()
+const bool BulletEnemy::GetIsDead()
 {
 	return isDead_;
 }
 
 Model BulletEnemy::GetModel()
 {
-	return enemy_;
+	return model_;
 }
 
 bool BulletEnemy::BoxCollision(Model model)
 {
 	if (deadVec_ == false)
 	{
-		float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
-		float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
+		float a = (model.mat_.trans_.x_ - model_.mat_.trans_.x_) * (model.mat_.trans_.x_ - model_.mat_.trans_.x_);
+		float b = (model.mat_.trans_.y_ - model_.mat_.trans_.y_) * (model.mat_.trans_.y_ - model_.mat_.trans_.y_);
 
-		float c = model.mat_.scale_.x_ + enemy_.mat_.scale_.x_ * 100;
+		float c = model.mat_.scale_.x_ + model_.mat_.scale_.x_ * 100;
 
 		//あたり判定
 		if (a + b < c * (float)TWO)
 		{
 			float spd = TWO;
-			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
+			Vec_ = model.mat_.trans_ - model_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
 			return true;
 		}
 
-		a = (-model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (-model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
-		b = (-model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (-model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
+		a = (-model.mat_.trans_.x_ - model_.mat_.trans_.x_) * (-model.mat_.trans_.x_ - model_.mat_.trans_.x_);
+		b = (-model.mat_.trans_.y_ - model_.mat_.trans_.y_) * (-model.mat_.trans_.y_ - model_.mat_.trans_.y_);
 
-		c = model.mat_.scale_.x_ + enemy_.mat_.scale_.x_;
+		c = model.mat_.scale_.x_ + model_.mat_.scale_.x_;
 
 		//あたり判定
 		if (a + b < c)
 		{
 			float spd = TWO;
-			Vec_ = model.mat_.trans_ - enemy_.mat_.trans_;
+			Vec_ = model.mat_.trans_ - model_.mat_.trans_;
 			Vec_ *= spd;
 			deadVec_ = true;
 
@@ -134,12 +139,12 @@ bool BulletEnemy::BoxCollision(Model model)
 
 void BulletEnemy::SertchPlayer(Model model)
 {
-	playerVec = enemy_.mat_.trans_ - model.mat_.trans_;
+	playerVec = model_.mat_.trans_ - model.mat_.trans_;
 
 	const float sertchScale = 1000;
 
-	float a = (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_) * (model.mat_.trans_.x_ - enemy_.mat_.trans_.x_);
-	float b = (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_) * (model.mat_.trans_.y_ - enemy_.mat_.trans_.y_);
+	float a = (model.mat_.trans_.x_ - model_.mat_.trans_.x_) * (model.mat_.trans_.x_ - model_.mat_.trans_.x_);
+	float b = (model.mat_.trans_.y_ - model_.mat_.trans_.y_) * (model.mat_.trans_.y_ - model_.mat_.trans_.y_);
 
 	float c = model.mat_.scale_.x_ + sertchScale;
 
@@ -159,15 +164,16 @@ void BulletEnemy::DeadVec()
 {
 	if (deadVec_)
 	{
-		enemy_.mat_.trans_ -= Vec_;
+		model_.mat_.trans_ -= Vec_;
 
-		bool Y = -15 > enemy_.mat_.trans_.y_ || 1000 < enemy_.mat_.trans_.y_;
-		bool X = 0 > enemy_.mat_.trans_.x_ || 1000 < enemy_.mat_.trans_.x_;
+		bool Y = -15 > model_.mat_.trans_.y_ || 1000 < model_.mat_.trans_.y_;
+		bool X = 0 > model_.mat_.trans_.x_ || 1000 < model_.mat_.trans_.x_;
 
 		if (Y || X)
 		{
 			deadVec_ = false;
 			isDead_ = true;
+			Destroy();
 		}
 	}
 }
@@ -221,7 +227,7 @@ void  BulletEnemy::CreateBullet()
 	newBullet_->Initialize(shader_, pipeline_);
 
 	//trans
-	newBullet_->SetPos(enemy_.mat_.trans_);
+	newBullet_->SetPos(model_.mat_.trans_);
 
 	//Vec
 	newBullet_->SetVec(playerVec.normalize());

@@ -35,7 +35,19 @@ void ImguiManager::Initialize(Window* window)
 		srvHeap_.Get(),
 		srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 		srvHeap_->GetGPUDescriptorHandleForHeapStart()
-	);
+	); 
+
+	//DescriptorHeap::DescriptorHeapViewHandle handle = MyDirectX::GetInstance()->GetDescriptorHeap()->AddSRV();
+
+	////この下のsrvHeapのところをシングルトンデスクリプタヒープにしないとImGuiを全部で使えない
+	//ImGui_ImplDX12_Init(
+	//	MyDirectX::GetInstance()->GetDev(),
+	//	static_cast<int>(MyDirectX::GetInstance()->GetBackByfferCount()),
+	//	DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+	//	MyDirectX::GetInstance()->GetDescriptorHeap()->GetHeap().Get(),
+	//	handle.cpuHandle,
+	//	handle.gpuHandle
+	//);
 
 	ImGuiIO& io = ImGui::GetIO();
 	//標準フォントを追加する

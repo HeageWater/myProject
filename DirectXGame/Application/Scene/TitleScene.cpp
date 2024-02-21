@@ -5,6 +5,20 @@
 
 void TitleScene::Update()
 {
+#ifdef _DEBUG
+
+	//ImGui受付開始
+	ImguiManager::GetInstance()->Begin();
+	float test1 = 0.5f;
+
+	ImGui::Text("test");
+	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
+
+	//ImGui受付終了
+	ImguiManager::GetInstance()->End();
+
+#endif _DEBUG
+
 	//hitStop更新
 	hitStop_->Update();
 
@@ -28,7 +42,7 @@ void TitleScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionY(object->stage_))
+			if (player_->StageCollsionY(object->GetModel()))
 			{
 
 			}
@@ -42,7 +56,7 @@ void TitleScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionX(object->stage_))
+			if (player_->StageCollsionX(object->GetModel()))
 			{
 
 			}
@@ -152,11 +166,12 @@ void TitleScene::Initialize()
 	multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
 	//背景のスクリーン(これが必要なので依存しないようにしたい)
-	screen_.Initialize(multipathPipeline_.get(), bilShader_);
+	screen_.Initialize(pipeline_.get(), bilShader_);
 	screen_.obj_.trans_.z_ = 100.1f;
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
 	//player
+	player_ = std::make_unique<Player>();
 	player_->Initialize(shader_, pipeline_.get());
 
 	//タイトルモデルの初期化
@@ -214,6 +229,13 @@ void TitleScene::Draw()
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
+
+#ifdef _DEBUG
+
+	//ImGui描画
+	ImguiManager::GetInstance()->Draw();
+
+#endif _DEBUG
 
 	//描画受付終了
 	MyDirectX::GetInstance()->PostDraw();

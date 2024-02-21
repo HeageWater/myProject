@@ -3,6 +3,7 @@
 #include "ChengeScene.h"
 #include "ParticleManager.h"
 #include "TextureManager.h"
+#include "CollisionManager.h"
 
 void FlameWork::Update()
 {
@@ -20,6 +21,9 @@ void FlameWork::Update()
 
 	//キーボードの受付更新
 	Input::GetInstance()->Update();
+
+	//当たり判定
+	CollisionManager::GetInstance()->Update();
 }
 
 void FlameWork::Initialize()

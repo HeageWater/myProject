@@ -212,6 +212,7 @@ void LoadObjectData::StageLoad(const std::string& filePath)
 		if (objectdata.fileName_ == "Back")
 		{
 			//立方体を出す
+
 		}
 	}
 }

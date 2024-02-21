@@ -1,10 +1,11 @@
 #pragma once
 #include "BaseEnemy.h"
+#include "GameModel.h"
 
 /// <summary>
 /// 敵生成用クラス(基盤ではない)
 /// </summary>
-class Enemy //:BaseEnemy
+class Enemy :GameModel
 {
 public:
 	Enemy();
@@ -52,37 +53,37 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { enemy_.mat_.trans_ = trans; };
+	void SetTrans(Vector3D trans) { model_.mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { enemy_.mat_.scale_ = scale; };
+	void SetScale(Vector3D scale) { model_.mat_.scale_ = scale; };
 
 	/// <summary>
 	/// rotationセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetRot(Vector3D rotAngle) { enemy_.mat_.rotAngle_ = rotAngle; };
+	void SetRot(Vector3D rotAngle) { model_.mat_.rotAngle_ = rotAngle; };
 
 	/// <summary>
 	/// pos入手
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return  enemy_.mat_.trans_; };
+	Vector3D GetPos() { return  model_.mat_.trans_; };
 
 	/// <summary>
 	/// 死んでいるか
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsDead() { return isDead_; };
+	//bool GetIsDead() { return isDead_; };
 
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <returns></returns>
-	Model GetModel() { return enemy_; };
+	Model GetModel() { return model_; };
 
 	/// <summary>
 	/// 
@@ -112,9 +113,6 @@ private:
 
 	//どのくらいたったか
 	size_t Time_ = 0;
-
-	//モデル
-	Model enemy_;
 
 	//索敵範囲にいるか
 	bool sertchFlag_ = false;

@@ -1,11 +1,12 @@
 #pragma once
 #include "PlayerAttack.h"
 #include "ImGuiManager.h"
+#include "GameModel.h"
 
 /// <summary>
 /// ゲーム中の自機
 /// </summary>
-class Player
+class Player :GameModel
 {
 	//関数
 public:
@@ -71,31 +72,31 @@ public:
 	/// posを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return player_.mat_.trans_; };
+	Vector3D GetPos() { return model_.mat_.trans_; };
 
 	/// <summary>
 	///posをセットする
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(Vector3D pos) { player_.mat_.trans_ = pos; };
+	void SetPos(Vector3D pos) { model_.mat_.trans_ = pos; };
 
 	/// <summary>
 	/// rotaionを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetRot() { return player_.mat_.rotAngle_; };
+	Vector3D GetRot() { return model_.mat_.rotAngle_; };
 
 	/// <summary>
 	/// scaleを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetScale() { return player_.mat_.scale_; };
+	Vector3D GetScale() { return model_.mat_.scale_; };
 
 	/// <summary>
 	/// modelを返す
 	/// </summary>
 	/// <returns></returns>
-	Model GetModel() { return player_; };
+	Model GetModel() { return model_; };
 
 	/// <summary>
 	/// 攻撃のposを返す
@@ -206,12 +207,12 @@ public:
 	/// <summary>
 	/// 横移動のみ
 	/// </summary>
-	void MoveX() { player_.mat_.trans_.x_ += colVec_.x_; };
+	void MoveX() { model_.mat_.trans_.x_ += colVec_.x_; };
 
 	/// <summary>
 	/// 縦移動のみ
 	/// </summary>
-	void MoveY() { player_.mat_.trans_.y_ += colVec_.y_; };
+	void MoveY() { model_.mat_.trans_.y_ += colVec_.y_; };
 
 	/// <summary>
 	/// 震える
@@ -247,6 +248,10 @@ public:
 	/// </summary>
 	void SetDeadAnimation();
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void OnCollision()override;
 private:
 
 	//ワープの入口に触れた時
@@ -277,7 +282,7 @@ private:
 	size_t jumpSE_ = 0;
 
 	//モデルデータ
-	Model player_;
+	//Model model_;
 
 	//攻撃用モデルデータ
 	Model playerAttack_;
