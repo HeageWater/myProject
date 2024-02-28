@@ -1,4 +1,7 @@
 #include "CollisionManager.h"
+#include "ParticleManager.h"
+#include "Shake.h"
+#include "HitStop.h"
 
 //判定が必要なもの一覧
 //player -> enemy,bullet,stage,goal
@@ -18,7 +21,7 @@ void CollisionManager::Update()
 	//全ての判定のあるオブジェクトをこのリストに
 	objects.remove_if([](GameModel* object) { return object->GetDeleteFlag(); });
 
-	//
+	// 
 	for (auto object1 : objects)
 	{
 		//tagを入手
@@ -45,6 +48,11 @@ void CollisionManager::Update()
 				//bulletなら
 				if (name2 == "bullet")
 				{
+					Vector3D playVec = (object2->GetPos() - object1->GetPos());
+
+					//弾を向きを変える
+					object2->SetVec(playVec.normalize());
+
 					//playerとbulletの判定
 					if (!CircleCollision(object1->model_, object2->model_))
 					{
@@ -54,6 +62,9 @@ void CollisionManager::Update()
 					//プレイヤーにダメージ
 					object1->OnCollision();
 
+					//プレイヤーの位置にパーティクル
+					ParticleManager::GetInstance()->CreateBoxParticle(object1->GetPos());
+
 					//弾を消す
 					object2->OnCollision();
 					object2->Destroy();
@@ -62,7 +73,17 @@ void CollisionManager::Update()
 				//enemyなら
 				if (name2 == "enemy")
 				{
+					//playerとbulletの判定
+					if (!CircleCollision(object1->model_, object2->model_))
+					{
+						continue;
+					}
 
+					//プレイヤーにダメージ
+					object1->OnCollision();
+
+					//プレイヤーの位置にパーティクル
+					ParticleManager::GetInstance()->CreateBoxParticle(object1->GetPos());
 				}
 
 				//stageなら
@@ -90,7 +111,9 @@ void CollisionManager::Update()
 						continue;
 					}
 
-					//弾を消す
+					//弾を向きを変える
+					object2->SetVec(object1->GetPos() - object2->GetPos());
+
 					object2->OnCollision();
 					object2->Destroy();
 				}
@@ -126,7 +149,6 @@ void CollisionManager::Update()
 			}
 		}
 	}
-
 }
 
 void CollisionManager::AddCollision(GameModel* object)

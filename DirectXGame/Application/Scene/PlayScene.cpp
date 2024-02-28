@@ -2,7 +2,6 @@
 #include "imgui.h"
 #include "ChengeScene.h"
 #include "Enum.h"
-#include "CollisionManager.h"
 
 void PlayScene::Update()
 {
@@ -63,12 +62,12 @@ void PlayScene::Update()
 		//プレイヤーと敵の判定
 		for (auto& object : LoadObjectData::GetInstance()->GetEnemy())
 		{
-			object->Update(matView_.mat_, matProjection_);
+			//object->Update(matView_.mat_, matProjection_);
 			object->SertchPlayer(player_->GetModel());
 
 			if (object->GetDeadVec())
 			{
-				ParticleManager::GetInstance()->MinCreateBoxParticle(object->GetPos());
+				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
 				continue;
 			}
 
@@ -89,7 +88,7 @@ void PlayScene::Update()
 				sound_->SoundPlayWave(hitSound_);
 				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
 
-				shake_.SetTime(30);
+				Shake::GetInstance()->SetTime(30);
 			}
 		}
 
@@ -107,15 +106,15 @@ void PlayScene::Update()
 		}
 
 		//targetをplayerに
-		matView_.eye_.x_ = player_->GetPos().x_ + shake_.GetShake().x_;
-		matView_.target_.x_ = player_->GetPos().x_ + shake_.GetShake().x_;
+		matView_.eye_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_;
+		matView_.target_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_;
 
 		//playerのyからどれくらい離すか
 		const float prusTargetY = 10;
 
 		//カメラに揺れを追加
-		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + shake_.GetShake().y_;
-		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + shake_.GetShake().y_;
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_;
 
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
@@ -136,7 +135,7 @@ void PlayScene::Update()
 		ParticleManager::GetInstance()->Update();
 
 		//揺れ更新
-		shake_.Update();
+		Shake::GetInstance()->Update();
 
 		//GameClear条件が達成されたら
 		if (checkGoal && !blackOutFlag_)
@@ -215,7 +214,7 @@ void PlayScene::Update()
 				}
 				else if (stageCount_ == TWO)
 				{
-					LoadObjectData::GetInstance()->StageLoad("stage3");
+					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
 				}
 				
 				//開始地点をセット
@@ -270,6 +269,7 @@ void PlayScene::Initialize()
 	gameCamera_ = std::make_unique<GameCamera>();
 
 	//player
+	player_ = std::make_unique<Player>();
 	player_->Initialize(shader_, pipeline_.get());
 	Vector3D pos = player_->GetPos();
 	pos += {0, 10, 0};
@@ -420,6 +420,8 @@ void PlayScene::Initialize()
 
 	//画像色
 	color_ = { 0.0f,0.0f,0.0f,0.0f };
+
+	Shake::GetInstance()->Initalize();
 }
 
 void PlayScene::Draw()

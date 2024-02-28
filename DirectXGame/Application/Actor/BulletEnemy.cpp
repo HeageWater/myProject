@@ -27,7 +27,7 @@ void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline)
 	move_ = { 0,0,0 };
 
 	//向き
-	Vec_ = { 0,0,0 };
+	vec_ = { 0,0,0 };
 
 	//画像読み込み
 	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/br.png");
@@ -110,8 +110,8 @@ bool BulletEnemy::BoxCollision(Model model)
 		if (a + b < c * (float)TWO)
 		{
 			float spd = TWO;
-			Vec_ = model.mat_.trans_ - model_.mat_.trans_;
-			Vec_ *= spd;
+			vec_ = model.mat_.trans_ - model_.mat_.trans_;
+			vec_ *= spd;
 			deadVec_ = true;
 
 			return true;
@@ -126,8 +126,8 @@ bool BulletEnemy::BoxCollision(Model model)
 		if (a + b < c)
 		{
 			float spd = TWO;
-			Vec_ = model.mat_.trans_ - model_.mat_.trans_;
-			Vec_ *= spd;
+			vec_ = model.mat_.trans_ - model_.mat_.trans_;
+			vec_ *= spd;
 			deadVec_ = true;
 
 			return true;
@@ -141,7 +141,7 @@ void BulletEnemy::SertchPlayer(Model model)
 {
 	playerVec = model_.mat_.trans_ - model.mat_.trans_;
 
-	const float sertchScale = 1000;
+	const float sertchScale = 5000;
 
 	float a = (model.mat_.trans_.x_ - model_.mat_.trans_.x_) * (model.mat_.trans_.x_ - model_.mat_.trans_.x_);
 	float b = (model.mat_.trans_.y_ - model_.mat_.trans_.y_) * (model.mat_.trans_.y_ - model_.mat_.trans_.y_);
@@ -164,7 +164,7 @@ void BulletEnemy::DeadVec()
 {
 	if (deadVec_)
 	{
-		model_.mat_.trans_ -= Vec_;
+		model_.mat_.trans_ -= vec_;
 
 		bool Y = -15 > model_.mat_.trans_.y_ || 1000 < model_.mat_.trans_.y_;
 		bool X = 0 > model_.mat_.trans_.x_ || 1000 < model_.mat_.trans_.x_;

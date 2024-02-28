@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "CollisionManager.h"
 #include<cassert>
 
 void SceneManager::Update()
@@ -15,6 +16,9 @@ void SceneManager::Update()
 
 		//シーン切り替え
 		scene_ = std::move(nextScene_);
+
+		//
+		CollisionManager::GetInstance()->Reset();
 
 		//次シーンを初期化する
 		scene_->Initialize();

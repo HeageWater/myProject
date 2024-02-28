@@ -105,9 +105,6 @@ private:
 	//死んだときに吹っ飛ぶ
 	bool deadVec_ = false;
 
-	//向き
-	Vector3D Vec_ = { 0,0,0 };
-
 	//動く量
 	Vector3D move_ = { 0,0,0 };
 

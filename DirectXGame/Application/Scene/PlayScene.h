@@ -41,7 +41,7 @@ private:
 	Square screen_;
 
 	//player
-	Player* player_ = new Player();
+	std::unique_ptr<Player> player_;
 
 	Goal* goal_ = new Goal();
 
@@ -125,9 +125,6 @@ private:
 	//ムービー
 	bool movieClearFlag_;
 	bool movieOverFlag_;
-
-	//ステージシェイク
-	Shake shake_;
 
 	//
 	Vector4D color_ = { 0,0,0,0 };

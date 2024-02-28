@@ -1,16 +1,12 @@
 #include "Shake.h"
 #include "Mymath.h"
 
-Shake::Shake()
+void Shake::Initalize()
 {
 	time_ = 0;
 	countFlag_ = false;
 
 	shake_ = { 0,0,0 };
-}
-
-Shake::~Shake()
-{
 }
 
 void Shake::Update()
@@ -52,4 +48,10 @@ void Shake::SetTime(float time)
 	shake_.x_ = (float)MyMath::GetRandom(min, max) * shake_.z_ / 10;
 	shake_.y_ = (float)MyMath::GetRandom(min, max) * shake_.z_ / 10;
 	shake_.z_ = 1;
+}
+
+Shake* Shake::GetInstance()
+{
+	static Shake shake;
+	return &shake;
 }

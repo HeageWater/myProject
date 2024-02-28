@@ -93,11 +93,11 @@ GPipeline::GPipeline(ID3D12Device* dev, Shader shader)
 		IID_PPV_ARGS(state_.ReleaseAndGetAddressOf()));
 }
 
-//GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize,
-//	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord)
-//{
-//	Init(dev, shader, inputLayout, inputLayoutSize, topologyType, fillmord);
-//}
+GPipeline::GPipeline(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize,
+	D3D12_PRIMITIVE_TOPOLOGY_TYPE topologyType, D3D12_FILL_MODE fillmord)
+{
+	Init(dev, shader, inputLayout, inputLayoutSize, topologyType, fillmord);
+}
 
 void GPipeline::Update(ID3D12GraphicsCommandList* cmdList, D3D_PRIMITIVE_TOPOLOGY primitive)
 {
@@ -151,7 +151,7 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	pipelineDesc_.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;			//	小さければ合格
 	pipelineDesc_.DSVFormat = DXGI_FORMAT_D32_FLOAT;									//	深度フォーマット
 
-	SetRootSignature(dev, 3);
+	SetRootSignature(dev);
 
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
@@ -218,7 +218,7 @@ void GPipeline::SetRootParam(D3D12_ROOT_PARAMETER& rootParam, D3D12_ROOT_PARAMET
 	rootParam.ShaderVisibility = shaderVisibility;
 }
 
-void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
+void GPipeline::SetRootSignature(ID3D12Device* dev)
 {
 	//デスクリプタレンジの設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange{};
@@ -228,13 +228,6 @@ void GPipeline::SetRootSignature(ID3D12Device* dev, UINT rootParamNum)
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 #pragma region	ルートパラメータ
-	//	ルートパラメータの設定
-	std::vector<D3D12_ROOT_PARAMETER> rootParamS = {};
-	rootParamS.resize(rootParamNum);
-	SetRootParam(rootParamS[0], D3D12_ROOT_PARAMETER_TYPE_CBV, 0, 0);
-	SetRootParam(rootParamS[1], D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE, descriptorRange, 1);
-	SetRootParam(rootParamS[2], D3D12_ROOT_PARAMETER_TYPE_CBV, 1, 0);
-
 	//ルートパラメータの設定
 	D3D12_ROOT_PARAMETER rootParams[4] = {};
 	//ルートパラメータの設定

@@ -146,13 +146,18 @@ void Object3D::SetVertices()
 
 void Object3D::Draw(size_t handle)
 {
+	//パイプラインセット
 	pipeline_->Setting(dx_->GetCmdList());
+	//パイプラインアップデート
 	pipeline_->Update(dx_->GetCmdList(), D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//バッファアップデート
 	VertBuffUpdate(dx_->GetCmdList());
 
-	//	テクスチャ
+	// SRVヒープの先頭にあるSRVをルートパラメータ3番に設定
 	dx_->GetCmdList()->SetGraphicsRootDescriptorTable(3, dx_->GetTextureHandle((int32_t)handle));
+	// SRVヒープの設定コマンド
 	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(1, transform_->GetGPUVirtualAddress());
 
+	// 描画コマンド
 	dx_->GetCmdList()->DrawIndexedInstanced(indexSize_, 1, 0, 0, 0);
 }

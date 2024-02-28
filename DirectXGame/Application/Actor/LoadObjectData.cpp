@@ -4,6 +4,7 @@ void LoadObjectData::Initialize()
 {
 	//最初に呼び出すファイル
 	StageLoad("TitleStage");
+	//StageLoad("stageLIBLADE");
 
 	//基本画像
 	enemyTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");

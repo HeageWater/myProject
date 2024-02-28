@@ -58,7 +58,7 @@ public:
 	/// 向きセット
 	/// </summary>
 	/// <param name="vec_"></param>
-	void SetVec(Vector2D vec) { this->vec_ = vec; };
+	//void SetVec(Vector3D vec) { this->vec_ = vec; };
 
 	/// <summary>
 	/// 死んでいるか
@@ -101,9 +101,6 @@ private:
 	//消えかかる
 	bool deleteFlag = false;
 
-	//向き
-	Vector2D vec_;
-
 	//どのくらいたったか
 	uint32_t time_;
 
@@ -112,4 +109,8 @@ private:
 
 	//コントローラー
 	Controller* controller_ = nullptr;
+
+	//
+	Model model1_;
+	Model model2_;
 };

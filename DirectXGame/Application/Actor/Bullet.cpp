@@ -37,7 +37,7 @@ void Bullet::Update()
 	const float SPEED = 0.1f;
 
 	//移動
-	model_.mat_.trans_ -= Vec * SPEED;
+	model_.mat_.trans_ -= vec_ * SPEED;
 
 	//Cameraなど更新
 	model_.SetCamera(view_, prodaction_);

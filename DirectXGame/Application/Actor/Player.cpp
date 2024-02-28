@@ -275,7 +275,7 @@ void Player::Attack(Shader shader)
 			Vector3D pos = model_.mat_.trans_;
 			newAttack->SetPos(pos);
 
-			Vector2D vec = controller_->GetRightStickVec();
+			Vector3D vec = { controller_->GetRightStickVec().x_,controller_->GetRightStickVec().y_,0 };
 			vec *= -1;
 			newAttack->SetVec(vec);
 

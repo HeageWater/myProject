@@ -9,14 +9,9 @@ class Shake
 public:
 
 	/// <summary>
-	/// コンストラクタ
+	/// 初期化
 	/// </summary>
-	Shake();
-
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~Shake();
+	void Initalize();
 
 	/// <summary>
 	/// 更新
@@ -45,4 +40,19 @@ private:
 	float time_ = 0;
 	bool countFlag_;
 	Vector3D shake_;
+
+public:
+	/// <summary>
+	/// シングルトン
+	/// </summary>
+	/// <returns></returns>
+	static Shake* GetInstance();
+private:
+
+	Shake() = default;
+	~Shake() = default;
+
+	//コピーコンストラクタ・代入演算子削除
+	Shake& operator=(const Shake&) = delete;
+	Shake(const Shake&) = delete;
 };

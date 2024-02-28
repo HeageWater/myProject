@@ -99,7 +99,7 @@ void FlameWork::Initialize()
 	SceneManager::GetInstance()->SetSceneFactory(sceneFactory);
 
 	//パーティクルマネージャー
-	//ParticleManager::GetInstance()->Initalize();
+	ParticleManager::GetInstance()->Initalize();
 }
 
 void FlameWork::Finalize()
@@ -107,7 +107,7 @@ void FlameWork::Finalize()
 	ImguiManager::GetInstance()->Finalize();
 	Input::GetInstance()->Finalize();
 	MyXAudio::GetInstance()->Finalize();
-	//ParticleManager::GetInstance()->Finalize();
+	ParticleManager::GetInstance()->Finalize();
 }
 
 void FlameWork::Run()

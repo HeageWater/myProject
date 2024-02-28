@@ -86,7 +86,6 @@ void ChengeScene::Update()
 					Reset();
 				}
 			}
-
 		}
 	}
 

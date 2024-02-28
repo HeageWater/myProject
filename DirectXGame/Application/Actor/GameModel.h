@@ -25,15 +25,12 @@ public:
 
 	//
 	Model model_{};
-	//方向ベクトル
-	Vector2D directionalVec_{};
-	CollisionData collisionData{};
 	//std::unique_ptr<Model>model_{};
 	uint32_t modelTex_ = 0;
 	std::string tag_ = "";
-	Vector3D knockBackVec_ = {};
-	uint32_t knockBackFlame_ = 0;
-	uint32_t notKnockBackFlame_ = 0;
+
+	//向き
+	Vector3D vec_;
 
 private:
 
@@ -74,6 +71,11 @@ public:
 	virtual void OnCollision() {};
 
 	/// <summary>
+	/// 位置を返す
+	/// </summary>
+	virtual Vector3D GetPos() { return model_.mat_.trans_; };
+
+	/// <summary>
 	/// 死亡フラグの取得
 	/// </summary>
 	/// <returns></returns>
@@ -96,16 +98,11 @@ public:
 	/// <returns></returns>
 	bool GetDeleteFlag() { return deleteFlag_; };
 
-	/// <summary>
-	/// ノックバック
-	/// </summary>
-	/// <returns></returns>
-	bool IsKnockBack() { return knockBackFlame_ > 0; };
-
 	//Vector3D vec
 	virtual void SetKnockBack() {};
-	virtual bool GetNotKnockBack() { return notKnockBackFlame_ > 0; };
-	virtual void NotKnockBackTimer() { };
+
+	//向きを決める
+	virtual void SetVec(Vector3D vec) { vec_ = vec; };
 
 	//const uint16_t& num
 	virtual void Appearance() {};

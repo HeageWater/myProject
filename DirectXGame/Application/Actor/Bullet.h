@@ -50,7 +50,7 @@ public:
 	/// 
 	/// </summary>
 	/// <param name="vec"></param>
-	void SetVec(const Vector3D& vec) { Vec = vec; };
+	void SetVec(const Vector3D& vec) { vec_ = vec; };
 
 	/// <summary>
 	/// 
@@ -67,9 +67,6 @@ public:
 	/// </summary>
 	void OnCollision();
 private:
-
-	//向き
-	Vector3D Vec = { 0,0,0 };
 
 	//画像
 	size_t tex_ = 0;

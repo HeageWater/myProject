@@ -226,7 +226,7 @@ void TitleScene::Draw()
 
 	//jsonファイルから読み込んだものの描画
 	LoadObjectData::GetInstance()->Draw();
-
+	 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
 
@@ -243,4 +243,5 @@ void TitleScene::Draw()
 
 void TitleScene::Finalize()
 {
+	
 }

@@ -50,11 +50,6 @@ public:
 	/// </summary>
 	void SetDraw(Shader shader, GPipeline* pipeline);
 
-	/// <summary>
-	/// 
-	/// </summary>
-	void MinCreateBoxParticle(Vector3D pos);
-
 	//シングルトン
 	static ParticleManager* GetInstance()
 	{

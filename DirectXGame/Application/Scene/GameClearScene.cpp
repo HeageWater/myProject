@@ -58,7 +58,6 @@ void GameClearScene::Initialize()
 	ParticleManager::GetInstance()->Initalize();
 	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	ParticleManager::GetInstance()->SetDraw(shader_, pipeline_.get());
-
 }
 
 void GameClearScene::Update()
