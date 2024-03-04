@@ -14,6 +14,12 @@ void TitleScene::Update()
 	ImGui::Text("test");
 	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
 
+	//playSceneheへ
+	if (ImGui::Button("Play"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+	}
+
 	//ImGui受付終了
 	ImguiManager::GetInstance()->End();
 

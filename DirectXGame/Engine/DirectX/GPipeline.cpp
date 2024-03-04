@@ -131,6 +131,7 @@ void GPipeline::Init(ID3D12Device* dev, Shader shader, D3D12_INPUT_ELEMENT_DESC*
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	Blend(blenddesc);
+
 #pragma endregion
 
 	// 頂点レイアウトの設定
