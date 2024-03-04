@@ -14,10 +14,28 @@ void TitleScene::Update()
 	ImGui::Text("test");
 	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
 
+	//titleSceneheへ
+	if (ImGui::Button("TITLE"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
+	}
+
 	//playSceneheへ
 	if (ImGui::Button("Play"))
 	{
 		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+	}
+
+	//clearSceneheへ
+	if (ImGui::Button("GAMECLEAR"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
+	}
+
+	//goalSceneheへ
+	if (ImGui::Button("GAMEOVER"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
 	}
 
 	//ImGui受付終了
