@@ -52,7 +52,6 @@ private:
 	//Player* player_ = new Player();
 	std::unique_ptr<Player> player_;
 
-
 	//描画用行列
 	MyMath::MatView matView_;
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(

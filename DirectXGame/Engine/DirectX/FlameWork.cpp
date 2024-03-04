@@ -4,6 +4,7 @@
 #include "ParticleManager.h"
 #include "TextureManager.h"
 #include "CollisionManager.h"
+#include "ModelManager.h"
 
 void FlameWork::Update()
 {
@@ -100,6 +101,9 @@ void FlameWork::Initialize()
 
 	//パーティクルマネージャー
 	ParticleManager::GetInstance()->Initalize();
+
+	//モデルマネージャー
+	ModelManager::GetInstance()->Initialize();
 }
 
 void FlameWork::Finalize()

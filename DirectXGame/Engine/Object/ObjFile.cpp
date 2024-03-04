@@ -59,15 +59,11 @@ bool ObjFile::ReadFile()
 	return true;
 }
 
-ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
+ObjFile::ObjFile(const std::string& filename, std::vector<Vertex>& out_vertices)
 {
-	fopen_s(&file_, filename, "r");
+	const char* filename_ = filename.c_str();
 
-	////重複排除
-	//if (models.contains(filename))
-	//{
-	//	return;
-	//}
+	fopen_s(&file_, filename_, "r");
 
 	if (ReadFile()) {
 		out_vertices.resize(vertexIndices_.size());
@@ -82,9 +78,6 @@ ObjFile::ObjFile(const char* filename, std::vector<Vertex>& out_vertices)
 			out_vertices[i].normal_ = tempNormals_[normalIndex - 1];
 		}
 	}
-
-	//格納
-	//models.insert(std::make_pair(filename, std::move(nullptr)));
 
 	fclose(file_);
 }

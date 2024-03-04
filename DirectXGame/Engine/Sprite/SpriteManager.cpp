@@ -112,7 +112,6 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 		},
 	};
 
-
 	//グラフィックスパイプライン設定
 	//D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipelineDesc{};
 
@@ -134,8 +133,6 @@ void SpriteCommon::Inilialize(MyDirectX* dxCommon,bool isSemiArpha)
 	pipelineDesc_.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
 	//深度クリッピングを有効に
 	pipelineDesc_.RasterizerState.DepthClipEnable = false;
-
-
 
 	//ブレンドステート
 	pipelineDesc_.BlendState.RenderTarget[0].RenderTargetWriteMask

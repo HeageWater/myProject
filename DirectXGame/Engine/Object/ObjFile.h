@@ -43,6 +43,6 @@ private:
 	bool ReadFile();
 public:
 
-	ObjFile(const char* filename, std::vector<Vertex>& out_vertices);
+	ObjFile(const std::string& filename, std::vector<Vertex>& out_vertices);
 };
 
