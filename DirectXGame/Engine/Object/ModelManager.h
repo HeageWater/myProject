@@ -5,12 +5,19 @@
 #include "MyMath.h"
 #include "VertBuff.h"
 #include "Model.h"
+#include "ObjFile.h"
 
 class ModelManager
 {
 private:
 	//読み込んだことのあるモデルをここに格納
-	std::map<std::string, std::unique_ptr<Model>> models;
+	//std::map<std::string, std::unique_ptr<Model>> models;
+
+	//pipeline
+	std::unique_ptr<GPipeline> pipeline_;
+
+	//shader
+	Shader shader_;
 
 public:
 
@@ -20,25 +27,29 @@ public:
 	void Initialize();
 
 	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
-
-	/// <summary>
 	/// 破棄
 	/// </summary>
 	void Finalize();
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void LoadModel(const std::string& filename);
+
+	/// <summary>
+	/// 指定されたモデルを返す
+	/// </summary>
+	/// <returns></returns>
+	//Model* FindModel(const std::string& filename);
+
+public:
 
 	/// <summary>
 	/// シングルトン
 	/// </summary>
 	/// <returns></returns>
 	static ModelManager* GetInstance();
+
 private:
 
 	ModelManager() = default;

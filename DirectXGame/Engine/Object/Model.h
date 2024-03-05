@@ -3,6 +3,7 @@
 #include "DirectX.h"
 #include "GPipeline.h"
 #include "VertBuff.h"
+#include "ModelManager.h"
 
 /// <summary>
 /// モデルクラス
@@ -11,7 +12,7 @@ class Model :public VertBuff
 {
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	
+
 	//DirectX
 	MyDirectX* dx_ = nullptr;
 
@@ -23,7 +24,7 @@ private:
 	{
 		Matrix mat_;
 	};
-	
+
 	//トランスフォーム
 	ComPtr<ID3D12Resource> transform_;
 
@@ -58,7 +59,7 @@ public:
 	/// </summary>
 	/// <param name="shader"></param>
 	/// <param name="filename"></param>
-	void Initialize(Shader shader, const char* filename);
+	void Initialize(Shader shader, const std::string& filename);
 
 	/// <summary>
 	/// 初期化(DirextXを使うとき)
@@ -74,11 +75,11 @@ public:
 	/// <param name="shader"></param>
 	/// <param name="filename"></param>
 	/// <param name="pipeline_"></param>
-	void Initialize(MyDirectX* dx, Shader shader, const char* filename, GPipeline* pipeline);
+	void Initialize(MyDirectX* dx, Shader shader, const std::string& filename, GPipeline* pipeline);
 
 public:
 	Model();
-	Model(MyDirectX* dx_, Shader shader, const char* filename, GPipeline* pipeline_);
+	Model(MyDirectX* dx_, Shader shader, const std::string& filename, GPipeline* pipeline_);
 
 	/// <summary>
 	/// matrix更新

@@ -19,7 +19,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 	model_.Initialize(dx_, shader, "Resources\\Model\\Attack\\attack2.obj", pipeline_);
 
 	model_.mat_.Initialize();
-	model_.mat_.scale_ = { 10,2,1 };
+	model_.mat_.scale_ = { 10,1,1 };
 
 	model1_.Initialize(dx_, shader, "Resources\\Model\\Attack\\attackFront.obj", pipeline_);
 
@@ -40,7 +40,7 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 void PlayerAttack::Draw()
 {
 	model_.Draw(tex_);
-	model1_.Draw(tex_);
+	//model1_.Draw(tex_);
 }
 
 void PlayerAttack::Update(Matrix matView, Matrix matProjection)

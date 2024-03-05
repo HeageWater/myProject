@@ -38,6 +38,14 @@ void PlayScene::Update()
 		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
 	}
 
+	//+x
+	if (ImGui::Button("+x"))
+	{
+		Vector3D nowPos = player_->GetPos();
+		nowPos += {10, 0, 0};
+		player_->SetPos(nowPos);
+	}
+
 	//ImGui受付終了
 	ImguiManager::GetInstance()->End();
 

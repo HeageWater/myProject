@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "ObjFile.h"
 
-void Model::Initialize(Shader shader, const char* filename)
+void Model::Initialize(Shader shader, const std::string& filename)
 {
 	D3D12_HEAP_PROPERTIES heapProp{};
 	D3D12_RESOURCE_DESC resourceDesc{};
@@ -47,7 +47,7 @@ void Model::Initialize(MyDirectX* dx, GPipeline* pipeline)
 	pipeline_ = pipeline;
 }
 
-void Model:: Initialize(MyDirectX* dx, Shader shader, const char* filename, GPipeline* pipeline)
+void Model::Initialize(MyDirectX* dx, Shader shader, const std::string& filename, GPipeline* pipeline)
 {
 	dx_ = dx;
 	pipeline_ = pipeline;
@@ -59,7 +59,7 @@ Model::Model()
 
 }
 
-Model::Model(MyDirectX* dx, Shader shader, const char* filename, GPipeline* pipeline)
+Model::Model(MyDirectX* dx, Shader shader, const std::string& filename, GPipeline* pipeline)
 {
 	dx_ = dx;
 	pipeline_ = pipeline;
