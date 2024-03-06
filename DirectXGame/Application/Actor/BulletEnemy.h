@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include "BaseEnemy.h"
 
-class BulletEnemy : public BaseEnemy 
+class BulletEnemy : public BaseEnemy
 {
 public://継承しているもの
 
@@ -33,17 +33,11 @@ public://継承しているもの
 	const bool GetIsDead() override;
 
 	/// <summary>
-	/// 
-	/// </summary>
-	/// <returns></returns>
-	Model GetModel() override;
-
-	/// <summary>
 	/// 箱同士の判定(collisionManager作成後削除)
 	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
-	bool BoxCollision(Model model);
+	bool BoxCollision(MyMath::ObjMatrix model);
 
 	/// <summary>
 	/// 
@@ -60,13 +54,13 @@ public://継承しているもの
 	/// <summary>
 	/// 
 	/// </summary>
-	void SertchPlayer(Model model);
+	void SertchPlayer(MyMath::ObjMatrix model);
 
 	/// <summary>
 	/// pos入手
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return  model_.mat_.trans_; };
+	Vector3D GetPos() { return  model_->mat_.trans_; };
 
 public:
 
@@ -79,19 +73,19 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { model_.mat_.trans_ = trans; };
+	void SetTrans(Vector3D trans) { model_->mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { model_.mat_.scale_ = scale; };
+	void SetScale(Vector3D scale) { model_->mat_.scale_ = scale; };
 
 	/// <summary>
 	/// rotationセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetRot(Vector3D rotAngle) { model_.mat_.rotAngle_ = rotAngle; };
+	void SetRot(Vector3D rotAngle) { model_->mat_.rotAngle_ = rotAngle; };
 
 	/// <summary>
 	/// 
@@ -113,6 +107,11 @@ public:
 	/// </summary>
 	void CreateBullet();
 
+	/// <summary>
+	/// モデル情報を確保
+	/// </summary>
+	/// <returns></returns>
+	//Model* GetModel() { return model_; };
 private:
 	//弾格納用
 	std::vector<Bullet*> bullets_;

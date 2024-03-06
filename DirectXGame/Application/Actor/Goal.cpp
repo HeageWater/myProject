@@ -31,12 +31,12 @@ void Goal::Update(Matrix matView, Matrix matProjection)
 	goal_.MatUpdate(matView, matProjection);
 }
 
-bool Goal::BoxCollision(Model model)
+bool Goal::BoxCollision(MyMath::ObjMatrix model)
 {
-	float a = (model.mat_.trans_.x_ - goal_.mat_.trans_.x_) * (model.mat_.trans_.x_ - goal_.mat_.trans_.x_);
-	float b = (model.mat_.trans_.y_ - goal_.mat_.trans_.y_) * (model.mat_.trans_.y_ - goal_.mat_.trans_.y_);
+	float a = (model.trans_.x_ - goal_.mat_.trans_.x_) * (model.trans_.x_ - goal_.mat_.trans_.x_);
+	float b = (model.trans_.y_ - goal_.mat_.trans_.y_) * (model.trans_.y_ - goal_.mat_.trans_.y_);
 
-	float c = model.mat_.scale_.x_ * goal_.mat_.scale_.x_;
+	float c = model.scale_.x_ * goal_.mat_.scale_.x_;
 
 	//あたり判定
 	if (a + b < c)

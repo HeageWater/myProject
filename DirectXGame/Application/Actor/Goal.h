@@ -44,7 +44,7 @@ public:
 	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
-	bool BoxCollision(Model model);
+	bool BoxCollision(MyMath::ObjMatrix model);
 
 	/// <summary>
 	/// リセット

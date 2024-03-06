@@ -53,22 +53,28 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { model_.mat_.trans_ = trans; };
+	void SetTrans(Vector3D trans) { model_->mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { model_.mat_.scale_ = scale; };
+	void SetScale(Vector3D scale) { model_->mat_.scale_ = scale; };
 
 	/// <summary>
 	/// rotationセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetRot(Vector3D rotAngle) { model_.mat_.rotAngle_ = rotAngle; };
+	void SetRot(Vector3D rotAngle) { model_->mat_.rotAngle_ = rotAngle; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	MyMath::ObjMatrix GetMat() { return model_->mat_; };
 
 	//モデル
-	Model GetModel() { return model_; };
+	//Model* GetModel() { return model_; };
 private:
 
 	//描画フラグ

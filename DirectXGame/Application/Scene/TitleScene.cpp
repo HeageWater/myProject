@@ -66,7 +66,7 @@ void TitleScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionY(object->GetModel()))
+			if (player_->StageCollsionY(object->GetMat()))
 			{
 
 			}
@@ -80,7 +80,7 @@ void TitleScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionX(object->GetModel()))
+			if (player_->StageCollsionX(object->GetMat()))
 			{
 
 			}

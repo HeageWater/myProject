@@ -42,7 +42,7 @@ public:
 	/// プレイヤーが一定範囲に入ったら行動開始(collisionManager作成後削除)
 	/// </summary>
 	/// <param name="model"></param>
-	void SertchPlayer(Model model);
+	void SertchPlayer(Model* model);
 
 	/// <summary>
 	/// ぶっ飛んでいるか
@@ -53,25 +53,25 @@ public:
 	/// transセット
 	/// </summary>
 	/// <param name="trans"></param>
-	void SetTrans(Vector3D trans) { model_.mat_.trans_ = trans; };
+	void SetTrans(Vector3D trans) { model_->mat_.trans_ = trans; };
 
 	/// <summary>
 	/// scaleセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(Vector3D scale) { model_.mat_.scale_ = scale; };
+	void SetScale(Vector3D scale) { model_->mat_.scale_ = scale; };
 
 	/// <summary>
 	/// rotationセット
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetRot(Vector3D rotAngle) { model_.mat_.rotAngle_ = rotAngle; };
+	void SetRot(Vector3D rotAngle) { model_->mat_.rotAngle_ = rotAngle; };
 
 	/// <summary>
 	/// pos入手
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return  model_.mat_.trans_; };
+	Vector3D GetPos() { return  model_->mat_.trans_; };
 
 	/// <summary>
 	/// 死んでいるか
@@ -83,7 +83,7 @@ public:
 	/// 
 	/// </summary>
 	/// <returns></returns>
-	Model GetModel() { return model_; };
+	//Model* GetModel() { return model_; };
 
 	/// <summary>
 	/// 

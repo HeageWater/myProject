@@ -44,7 +44,7 @@ public:
 	/// 
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(const Vector3D& pos) { model_.mat_.trans_ = pos; };
+	void SetPos(const Vector3D& pos) { model_->mat_.trans_ = pos; };
 
 	/// <summary>
 	/// 

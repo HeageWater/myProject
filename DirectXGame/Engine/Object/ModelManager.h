@@ -11,7 +11,7 @@ class ModelManager
 {
 private:
 	//読み込んだことのあるモデルをここに格納
-	//std::map<std::string, std::unique_ptr<Model>> models;
+	//std::map<std::string, std::unique_ptr<Model>> models_;
 
 	//pipeline
 	std::unique_ptr<GPipeline> pipeline_;

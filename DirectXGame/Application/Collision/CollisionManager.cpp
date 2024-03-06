@@ -54,7 +54,7 @@ void CollisionManager::Update()
 					object2->SetVec(playVec.normalize());
 
 					//playerとbulletの判定
-					if (!CircleCollision(object1->model_, object2->model_))
+					if (!CircleCollision(object1->GetMat(), object2->GetMat()))
 					{
 						continue;
 					}
@@ -74,7 +74,7 @@ void CollisionManager::Update()
 				if (name2 == "enemy")
 				{
 					//playerとbulletの判定
-					if (!CircleCollision(object1->model_, object2->model_))
+					if (!CircleCollision(object1->GetMat(), object2->GetMat()))
 					{
 						continue;
 					}
@@ -106,7 +106,7 @@ void CollisionManager::Update()
 				if (name2 == "bullet")
 				{
 					//playerとbulletの判定
-					if (!CircleCollision(object1->model_, object2->model_))
+					if (!CircleCollision(object1->GetMat(), object2->GetMat()))
 					{
 						continue;
 					}
@@ -137,7 +137,7 @@ void CollisionManager::Update()
 				//stageなら
 				if (name2 == "stage")
 				{
-					if (!BoxCollision(object1->model_, object2->model_))
+					if (!BoxCollision(object1->GetMat(), object2->GetMat()))
 					{
 						continue;
 					}
@@ -172,23 +172,23 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-bool CollisionManager::CircleCollision(Model object1, Model object2)
+bool CollisionManager::CircleCollision(MyMath::ObjMatrix object1, MyMath::ObjMatrix object2)
 {
 	//scale
-	float Scale = (object1.mat_.scale_.x_ + object2.mat_.scale_.x_);
+	float Scale = (object1.scale_.x_ + object2.scale_.x_);
 
 	//判定
-	float Dist = (object1.mat_.trans_ - object2.mat_.trans_).length();
+	float Dist = (object1.trans_ - object2.trans_).length();
 
 	return Dist <= Scale;
 }
 
-bool CollisionManager::BoxCollision(Model object1, Model object2)
+bool CollisionManager::BoxCollision(MyMath::ObjMatrix object1, MyMath::ObjMatrix object2)
 {
-	float a = (object1.mat_.trans_.x_ - object2.mat_.trans_.x_) * (object1.mat_.trans_.x_ - object2.mat_.trans_.x_);
-	float b = (object1.mat_.trans_.y_ - object2.mat_.trans_.y_) * (object1.mat_.trans_.y_ - object2.mat_.trans_.y_);
+	float a = (object1.trans_.x_ - object2.trans_.x_) * (object1.trans_.x_ - object2.trans_.x_);
+	float b = (object1.trans_.y_ - object2.trans_.y_) * (object1.trans_.y_ - object2.trans_.y_);
 
-	float c = object1.mat_.scale_.x_ + object2.mat_.scale_.x_ * 100;
+	float c = object1.scale_.x_ + object2.scale_.x_ * 100;
 
 	//あたり判定
 	if (a + b < c)

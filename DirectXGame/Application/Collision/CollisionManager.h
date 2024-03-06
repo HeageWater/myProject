@@ -52,7 +52,7 @@ private:
 	/// <param name="enemy"></param>
 	/// <param name="scale"></param>
 	/// <returns></returns>
-	bool CircleCollision(Model object1, Model object2);
+	bool CircleCollision(MyMath::ObjMatrix object1, MyMath::ObjMatrix object2);
 
 	/// <summary>
 	/// 四角の判定
@@ -60,7 +60,7 @@ private:
 	/// <param name="player"></param>
 	/// <param name="enemy"></param>
 	/// <returns></returns>
-	bool BoxCollision(Model object1, Model object2);
+	bool BoxCollision(MyMath::ObjMatrix object1, MyMath::ObjMatrix object2);
 
 	CollisionManager() = default;
 	~CollisionManager() = default;

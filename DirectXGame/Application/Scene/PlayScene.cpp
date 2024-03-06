@@ -61,7 +61,7 @@ void PlayScene::Update()
 	}
 
 	//ゴールに触れているか
-	bool checkGoal = goal_->BoxCollision(player_->GetModel());
+	bool checkGoal = goal_->BoxCollision(player_->GetAttackModel().mat_);
 
 	//最初のムービー用タイマー
 	if (time_ < HUNDRED)
@@ -82,7 +82,7 @@ void PlayScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionY(object->GetModel()))
+			if (player_->StageCollsionY(object->GetMat()))
 			{
 
 			}
@@ -96,7 +96,7 @@ void PlayScene::Update()
 
 			object->Update(matView_.mat_, matProjection_);
 
-			if (player_->StageCollsionX(object->GetModel()))
+			if (player_->StageCollsionX(object->GetMat()))
 			{
 
 			}
@@ -109,7 +109,7 @@ void PlayScene::Update()
 		for (auto& object : LoadObjectData::GetInstance()->GetEnemy())
 		{
 			//object->Update(matView_.mat_, matProjection_);
-			object->SertchPlayer(player_->GetModel());
+			object->SertchPlayer(player_->GetAttackModel().mat_);
 
 			if (object->GetDeadVec())
 			{
@@ -117,7 +117,7 @@ void PlayScene::Update()
 				continue;
 			}
 
-			if (player_->PlayerCollision(object->GetModel()))
+			if (player_->PlayerCollision(object->GetMat()))
 			{
 				//敵が止まっている時間
 				const size_t StopTime = 150;
@@ -128,7 +128,7 @@ void PlayScene::Update()
 			}
 
 			//playerの攻撃との判定
-			if (object->BoxCollision(player_->GetAttackModel()))
+			if (object->BoxCollision(player_->GetAttackModel().mat_))
 			{
 				setStopTime += FIVE;
 				sound_->SoundPlayWave(hitSound_);

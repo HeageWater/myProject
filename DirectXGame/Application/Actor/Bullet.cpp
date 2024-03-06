@@ -9,7 +9,10 @@ Bullet::Bullet()
 
 void Bullet::Initialize(Shader shader, GPipeline* pipeline)
 {
-	//
+	//modelを制作
+	model_ = std::make_unique<Model>();
+
+	//タグ
 	tag_ = "bullet";
 	CollisionManager::GetInstance()->AddCollision(this);
 
@@ -18,11 +21,11 @@ void Bullet::Initialize(Shader shader, GPipeline* pipeline)
 	pipeline_ = pipeline;
 
 	//読み込み
-	model_.Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
+	model_->Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
 
 	//初期化
-	model_.mat_.Initialize();
-	model_.mat_.scale_ = { 5,5,5 };
+	model_->mat_.Initialize();
+	model_->mat_.scale_ = { 5,5,5 };
 
 	//画像読み込み
 	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
@@ -37,11 +40,11 @@ void Bullet::Update()
 	const float SPEED = 0.1f;
 
 	//移動
-	model_.mat_.trans_ -= vec_ * SPEED;
+	model_->mat_.trans_ -= vec_ * SPEED;
 
 	//Cameraなど更新
-	model_.SetCamera(view_, prodaction_);
-	model_.Update();
+	model_->SetCamera(view_, prodaction_);
+	model_->Update();
 
 	//消える瞬間
 	Delete();
@@ -50,7 +53,7 @@ void Bullet::Update()
 void Bullet::Draw()
 {
 	//描画
-	model_.Draw(tex_);
+	model_->Draw(tex_);
 }
 
 void Bullet::SetCamera(const Matrix& view, const Matrix& prodaction)
@@ -71,5 +74,5 @@ void Bullet::Delete()
 
 void Bullet::OnCollision()
 {
-	ParticleManager::GetInstance()->CreateBoxParticle(model_.mat_.trans_);
+	ParticleManager::GetInstance()->CreateBoxParticle(model_->mat_.trans_);
 }

@@ -23,10 +23,13 @@ private:
 
 public:
 
-	//
-	Model model_{};
-	//std::unique_ptr<Model>model_{};
+	//メインモデル
+	std::unique_ptr<Model>model_{};
+
+	//画像
 	uint32_t modelTex_ = 0;
+
+	//コリジョン用のタグ
 	std::string tag_ = "";
 
 	//向き
@@ -47,7 +50,7 @@ public:
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	virtual void Initialize() {};
+	virtual void Initialize(){};
 
 	/// <summary>
 	/// 更新処理
@@ -73,7 +76,7 @@ public:
 	/// <summary>
 	/// 位置を返す
 	/// </summary>
-	virtual Vector3D GetPos() { return model_.mat_.trans_; };
+	virtual Vector3D GetPos() { return model_->mat_.trans_; };
 
 	/// <summary>
 	/// 死亡フラグの取得
@@ -111,6 +114,29 @@ public:
 	/// 
 	/// </summary>
 	virtual void EffectCreate() {};
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	MyMath::ObjMatrix GetMat() { return model_->mat_; };
+
+	/// <summary>
+	/// モデル読み込み
+	/// </summary>
+	/*void LoadMode(const std::string& filename)
+	{
+		ModelManager::GetInstance()->LoadModel(filename);
+	};
+
+	/// <summary>
+	/// モデルをセットする
+	/// </summary>
+	/// <returns></returns>
+	Model* SetModel(const std::string& filename)
+	{
+		return ModelManager::GetInstance()->FindModel(filename);
+	};*/
 
 public:
 	//static void SetCamera(Camera* camera) { camera_ = camera; };

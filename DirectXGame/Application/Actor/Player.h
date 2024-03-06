@@ -72,31 +72,31 @@ public:
 	/// posを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return model_.mat_.trans_; };
+	Vector3D GetPos() { return model_->mat_.trans_; };
 
 	/// <summary>
 	///posをセットする
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPos(Vector3D pos) { model_.mat_.trans_ = pos; };
+	void SetPos(Vector3D pos) { model_->mat_.trans_ = pos; };
 
 	/// <summary>
 	/// rotaionを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetRot() { return model_.mat_.rotAngle_; };
+	Vector3D GetRot() { return model_->mat_.rotAngle_; };
 
 	/// <summary>
 	/// scaleを返す
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetScale() { return model_.mat_.scale_; };
+	Vector3D GetScale() { return model_->mat_.scale_; };
 
 	/// <summary>
 	/// modelを返す
 	/// </summary>
 	/// <returns></returns>
-	Model GetModel() { return model_; };
+	//Model* GetModel() { return model_; };
 
 	/// <summary>
 	/// 攻撃のposを返す
@@ -149,35 +149,35 @@ public:
 	/// <param name="matView"></param>
 	/// <param name="matProjection"></param>
 	/// <returns></returns>
-	bool StageCollsion(Model stage, Matrix matView, Matrix matProjection);
+	bool StageCollsion(MyMath::ObjMatrix stage, Matrix matView, Matrix matProjection);
 
 	/// <summary>
 	/// ステージとの横判定
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
-	bool StageCollsionX(Model stage);
+	bool StageCollsionX(MyMath::ObjMatrix stage);
 
 	/// <summary>
 	/// ステージとの縦判定
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
-	bool StageCollsionY(Model stage);
+	bool StageCollsionY(MyMath::ObjMatrix stage);
 
 	/// <summary>
 	/// ステージとの判定(多分使わなくなるので消すこと)
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
-	bool StageCollision(Model stage);
+	bool StageCollision(MyMath::ObjMatrix stage);
 
 	/// <summary>
 	/// playerと敵との判定
 	/// </summary>
 	/// <param name="enemy"></param>
 	/// <returns></returns>
-	bool PlayerCollision(Model enemy);
+	bool PlayerCollision(MyMath::ObjMatrix enemy);
 
 	/// <summary>
 	/// ワープするアクション
@@ -207,12 +207,12 @@ public:
 	/// <summary>
 	/// 横移動のみ
 	/// </summary>
-	void MoveX() { model_.mat_.trans_.x_ += colVec_.x_; };
+	void MoveX() { model_->mat_.trans_.x_ += colVec_.x_; };
 
 	/// <summary>
 	/// 縦移動のみ
 	/// </summary>
-	void MoveY() { model_.mat_.trans_.y_ += colVec_.y_; };
+	void MoveY() { model_->mat_.trans_.y_ += colVec_.y_; };
 
 	/// <summary>
 	/// 震える

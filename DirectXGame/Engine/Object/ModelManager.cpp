@@ -18,10 +18,10 @@ void ModelManager::Finalize()
 void ModelManager::LoadModel(const std::string& filename)
 {
 	std::string a = filename;
-	a = "E";
+	a = "s";
 
 	////重複排除
-	//if (models.contains(filename))
+	//if (models_.contains(filename))
 	//{
 	//	return;
 	//}
@@ -33,15 +33,15 @@ void ModelManager::LoadModel(const std::string& filename)
 	//model->Initialize(MyDirectX::GetInstance(), shader_, filename, pipeline_.get());
 
 	////モデル格納
-	//models.insert(std::make_pair(filename, std::move(model)));
+	//models_.insert(std::make_pair(filename, std::move(model)));
 }
 
 //Model* ModelManager::FindModel(const std::string& filename)
 //{
 //	//保存したモデルを探して返す
-//	if (models.contains(filename))
+//	if (models_.contains(filename))
 //	{
-//		return models.at(filename).get();
+//		return models_.at(filename).get();
 //	}
 //
 //	//ない時

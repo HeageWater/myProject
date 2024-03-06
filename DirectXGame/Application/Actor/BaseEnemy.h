@@ -44,15 +44,9 @@ public:
 	/// <summary>
 	/// 
 	/// </summary>
-	/// <returns></returns>
-	virtual Model GetModel() = 0;
-
-	/// <summary>
-	/// 
-	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
-	virtual bool BoxCollision(Model model) = 0;
+	virtual bool BoxCollision(MyMath::ObjMatrix model) = 0;
 
 	/// <summary>
 	/// 
@@ -69,7 +63,7 @@ public:
 	/// <summary>
 	/// 
 	/// </summary>
-	virtual void SertchPlayer(Model model) = 0;
+	virtual void SertchPlayer(MyMath::ObjMatrix model) = 0;
 
 	/// <summary>
 	/// pos入手

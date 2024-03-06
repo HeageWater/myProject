@@ -52,7 +52,7 @@ public:
 	/// posセット
 	/// </summary>
 	/// <param name="pos_"></param>
-	void SetPos(Vector3D pos) { model_.mat_.trans_ = pos; };
+	void SetPos(Vector3D pos) { model_->mat_.trans_ = pos; };
 
 	/// <summary>
 	/// 向きセット
@@ -70,19 +70,19 @@ public:
 	/// pos取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetPos() { return model_.mat_.trans_; };
+	Vector3D GetPos() { return model_->mat_.trans_; };
 
 	/// <summary>
 	/// scale取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetScale() { return model_.mat_.scale_; };
+	Vector3D GetScale() { return model_->mat_.scale_; };
 
 	/// <summary>
 	///rot取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3D GetRot() { return model_.mat_.rotAngle_; };
+	Vector3D GetRot() { return model_->mat_.rotAngle_; };
 
 private:
 
