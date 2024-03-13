@@ -165,6 +165,9 @@ void TitleScene::Update()
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
+
+	//
+	sprite_->Update();
 }
 
 void TitleScene::Initialize()
@@ -176,6 +179,7 @@ void TitleScene::Initialize()
 	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
+	attackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/Attack.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -220,12 +224,18 @@ void TitleScene::Initialize()
 	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 
 	//画像色
-	color_ = { 0.0f,0.0f,0.0f,0.0f };
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 	//透過するかどうか
 	spriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 
 	matView_.eye_.y_ += 15;
+
+	//attack誘導
+	sprite_->Inilialize(spriteCommon_, &spriteProjection_);
+	sprite_->position_ = { 40,-300,0 };
+	sprite_->scale_ = { 320,70,1 };
+	sprite_->SetColor(color_);
 }
 
 void TitleScene::Draw()
@@ -241,6 +251,9 @@ void TitleScene::Draw()
 
 	//スクリーン描画
 	screen_.Draw(blockTex_);
+
+	//attack表示
+	//sprite_->Draw(attackTex_);
 
 	//Actor描画
 	player_->Draw(plyerTex_, plyerTex_);

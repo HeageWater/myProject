@@ -1,4 +1,5 @@
 #include"SceneFactory.h"
+#include"TutorialScene.h"
 #include"TitleScene.h"
 #include"PlayScene.h"
 #include"GameClearScene.h"
@@ -11,7 +12,12 @@ std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName
 	//次のシーンを生成
 	BaseScene* newScene = nullptr;
 
-	if (sceneName == "TITLE")
+
+	if (sceneName == "TUTORIAL")
+	{
+		newScene = new TutorialScene();
+	}
+	else if (sceneName == "TITLE")
 	{
 		newScene = new TitleScene();
 	}

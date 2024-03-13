@@ -50,7 +50,7 @@ public:
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	virtual void Initialize(){};
+	virtual void Initialize() {};
 
 	/// <summary>
 	/// 更新処理

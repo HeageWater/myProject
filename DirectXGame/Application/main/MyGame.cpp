@@ -13,7 +13,8 @@ void MyGame::Initialize()
 	//ChengeScene::GetInstance()->Initialize();
 
 	//シーンマネージャーに最初のシーンをセット
-	SceneManager::GetInstance()->ChangeScene("TITLE");
+	SceneManager::GetInstance()->ChangeScene("TUTORIAL");
+	//SceneManager::GetInstance()->ChangeScene("PLAY");
 }
 
 void MyGame::Update()

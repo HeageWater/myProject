@@ -119,7 +119,7 @@ void GameClearScene::Update()
 
 	if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
 	}
 
 	if (moiePlayer_->PlayerSet() && !notP)

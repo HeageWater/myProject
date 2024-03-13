@@ -11,7 +11,7 @@
 /// <summary>
 /// ゲームのタイトルシーン
 /// </summary>
-class TitleScene :public BaseScene
+class TutorialScene :public BaseScene
 {
 public:
 
@@ -68,10 +68,10 @@ private:
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//tex
-	size_t blockTex_ = 0;
-	size_t plyerTex_ = 0;
+	size_t blackTex_ = 0;
 	size_t whiteTex_ = 0;
-	size_t attackTex_ = 0;
+	//注意事項
+	size_t tutorialTex_ = 0;
 
 	//sprite
 	SpriteCommon* spriteCommon_ = new  SpriteCommon();
@@ -92,7 +92,9 @@ private:
 	//3Dタイトル
 	TitleObj* titleObject = new TitleObj();
 
+	//
 	float hozon[4] = { 0,0,0,0 };
 
+	//カウント用
 	size_t time_ = 0;
 };

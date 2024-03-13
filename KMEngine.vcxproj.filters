@@ -231,6 +231,9 @@
     <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
@@ -439,6 +442,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Object\ModelManager.h">
       <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\TutorialScene.h">
+      <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

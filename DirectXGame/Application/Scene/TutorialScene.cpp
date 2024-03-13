@@ -1,17 +1,20 @@
-#include "GameOverScene.h"
+#include "TutorialScene.h"
+#include "imgui.h"
 #include "ChengeScene.h"
-#include "ImGui.h"
+#include "Enum.h"
 
-void GameOverScene::Initialize()
+void TutorialScene::Update()
 {
 #ifdef _DEBUG
 
 	//ImGui受付開始
 	ImguiManager::GetInstance()->Begin();
 	float test1 = 0.5f;
+	float testTime = (float)time_;
 
 	ImGui::Text("test");
 	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
+	ImGui::SliderFloat("Test", &testTime, 0.01f, 0.99f);
 
 	//titleSceneheへ
 	if (ImGui::Button("TITLE"))
@@ -42,13 +45,47 @@ void GameOverScene::Initialize()
 
 #endif _DEBUG
 
+	//カウントを進める
+	time_++;
+
+	//一定カウントで次に
+	if (time_ == 350)
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
+	}
+
+	//ブラックアウト
+	if (color_.x_ < 1.0f)
+	{
+		color_.x_ += 0.003f;
+		color_.y_ += 0.003f;
+		color_.z_ += 0.003f;
+		color_.w_ += 0.003f;
+	}
+
+	//スプライト更新
+	sprite_->SetColor(color_);
+	sprite_->Update();
+
+	//カメラ更新
+	matView_.MatUpdate();
+
+	//スクリーン更新
+	screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
+
+	//シーンチェンジ更新
+	ChengeScene::GetInstance()->Update();
+}
+
+void TutorialScene::Initialize()
+{
 	//描画用行列
 	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
-	//
-	overTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/gameover.png");
-	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
-	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	//白画像
+	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
+	tutorialTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/tutorial.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -63,69 +100,41 @@ void GameOverScene::Initialize()
 	multipathPipeline_->Initialize(MyDirectX::GetInstance()->GetDev(), bilShader_);
 
 	//背景のスクリーン(これが必要なので依存しないようにしたい)
-	screen_.Initialize(multipathPipeline_.get(), bilShader_);
+	screen_.Initialize(pipeline_.get(), bilShader_);
 	screen_.obj_.trans_.z_ = 100.1f;
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
-	//player
-	player_->Initialize(shader_, pipeline_.get());
+	time_ = 0;
+
+	//画像色
+	color_ = { 0.0f,0.0f,0.0f,0.0f };
 
 	//透過するかどうか
-	normalSpriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
+	spriteCommon_->Inilialize(MyDirectX::GetInstance(), false);
 
-	//基礎
-	sprite_->Inilialize(normalSpriteCommon_, &matProjection_);
-
-	//
-	overPng_->Inilialize(normalSpriteCommon_, &matProjection_);
-	overPng_->position_ = { -680,-420,0 };
-	overPng_->scale_ = { 3600,1440,1 };
-	overPng_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+	//注意事項
+	sprite_->Inilialize(spriteCommon_, &matProjection_);
+	sprite_->position_ = { -640,-200,0 };
+	sprite_->scale_ = { 3200,700,1 };
+	sprite_->SetColor(color_);
 }
 
-void GameOverScene::Update()
-{
-	//スクリーン更新
-	screen_.MatUpdate(matView_.mat_, matProjection_, 0);
-
-	//
-	overPng_->Update();
-
-	if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
-	}
-
-	//
-	controller_->Update();
-
-	//
-	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
-	LoadObjectData::GetInstance()->Update();
-
-	//シーンチェンジ更新
-	ChengeScene::GetInstance()->Update();
-}
-
-void GameOverScene::Draw()
+void TutorialScene::Draw()
 {
 	//Draw
 	MyDirectX::GetInstance()->PrevDrawScreen();
 
-	//// 描画コマンド
+	// 描画コマンド
 	MyDirectX::GetInstance()->PostDrawScreen();
 
 	//UIDraw
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen_.Draw(blockTex_);
+	screen_.Draw(blackTex_);
 
-	//Actor描画
-	player_->Draw(plyerTex_, plyerTex_);
-
-	//
-	overPng_->Draw(overTex_);
+	//注意事項
+	sprite_->Draw(tutorialTex_);
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
@@ -141,6 +150,7 @@ void GameOverScene::Draw()
 	MyDirectX::GetInstance()->PostDraw();
 }
 
-void GameOverScene::Finalize()
+void TutorialScene::Finalize()
 {
+
 }
