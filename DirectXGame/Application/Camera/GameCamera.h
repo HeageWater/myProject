@@ -39,19 +39,13 @@ private:
 		Window::window_width_, Window::window_height_,
 		MyMath::ConvertToRad(70.0f), 0.1f, 1000.0f);
 public:
-
-	/// <summary>
-	/// 
-	/// </summary>
-	GameCamera();
-
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="_eye"></param>
 	/// <param name="_target"></param>
 	/// <param name="_up"></param>
-	GameCamera(Vector3D _eye, Vector3D _target, Vector3D _up);
+	void Initialize(Vector3D _eye, Vector3D _target, Vector3D _up);
 
 	/// <summary>
 	/// 
@@ -61,19 +55,45 @@ public:
 	/// <summary>
 	/// 
 	/// </summary>
-	/// <param name="_eye"></param>
-	/// <param name="_target"></param>
-	/// <param name="_up"></param>
-	void Init(Vector3D _eye, Vector3D _target, Vector3D _up);
-
-	/// <summary>
-	/// 
-	/// </summary>
-	void MatUpdate();
-
-	/// <summary>
-	/// 
-	/// </summary>
 	/// <param name="camerapos"></param>
 	void Move(float camerapos);
+
+	/// <summary>
+	/// MatViewをセットする
+	/// </summary>
+	void SetMatView(MyMath::MatView view) { matView_ = view; };
+
+	/// <summary>
+	/// Matrixをセットする 
+	/// </summary>
+	void SetMatrix(Matrix matrix) { matProjection_ = matrix; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	MyMath::MatView GetMatView() { return matView_; };
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	Matrix GetMatrix() { return matProjection_; };
+
+	//シングルトン
+	static GameCamera* GetInstance()
+	{
+		static GameCamera gameCamera;
+		return &gameCamera;
+	}
+
+private:
+	//
+	GameCamera() = default;
+	~GameCamera() = default;
+
+	//
+	GameCamera& operator=(const GameCamera&) = delete;
+	GameCamera(const GameCamera&) = delete;
+private:
 };

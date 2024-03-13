@@ -58,50 +58,8 @@ void PlayScene::Update()
 	//burakkuauto 
 	blackOut_->Update();
 
-	//ブラックアウト
-	if (blackOutFlag_)
-	{
-		//ブラックアウト
-		if (color_.x_ < 1.0f)
-		{
-			color_.x_ += 0.01f;
-			color_.y_ += 0.01f;
-			color_.z_ += 0.01f;
-			color_.w_ += 0.01f;
-
-			if (color_.x_ >= 1.0f)
-			{
-				//ステージ読み込み
-				if (stageCount_ == ONE)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stage2");
-				}
-				else if (stageCount_ == TWO)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
-				}
-
-				//開始地点をセット
-				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
-				//ゴール初期化
-				goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
-
-				blackOutFlag_ = false;
-			}
-		}
-	}
-	else
-	{
-		//ブラックアウト
-		if (color_.x_ > 0.0f)
-		{
-			color_.x_ -= 0.01f;
-			color_.y_ -= 0.01f;
-			color_.z_ -= 0.01f;
-			color_.w_ -= 0.01f;
-		}
-	}
+	//暗転
+	BlackOut();
 
 	//まだ時間無いなら戻る
 	if (hitStop_->GetTimeFlag() || blackOutFlag_)
@@ -435,4 +393,52 @@ void PlayScene::Finalize()
 {
 	//パーティクル削除
 	ParticleManager::GetInstance()->Finalize();
+}
+
+void PlayScene::BlackOut()
+{
+	//ブラックアウト
+	if (blackOutFlag_)
+	{
+		//ブラックアウト
+		if (color_.x_ < 1.0f)
+		{
+			color_.x_ += 0.01f;
+			color_.y_ += 0.01f;
+			color_.z_ += 0.01f;
+			color_.w_ += 0.01f;
+
+			if (color_.x_ >= 1.0f)
+			{
+				//ステージ読み込み
+				if (stageCount_ == ONE)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stage2");
+				}
+				else if (stageCount_ == TWO)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
+				}
+
+				//開始地点をセット
+				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+				//ゴール初期化
+				goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+				blackOutFlag_ = false;
+			}
+		}
+	}
+	else
+	{
+		//ブラックアウト
+		if (color_.x_ > 0.0f)
+		{
+			color_.x_ -= 0.01f;
+			color_.y_ -= 0.01f;
+			color_.z_ -= 0.01f;
+			color_.w_ -= 0.01f;
+		}
+	}
 }

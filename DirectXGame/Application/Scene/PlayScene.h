@@ -130,4 +130,9 @@ public:
 	/// 破棄
 	/// </summary>
 	void Finalize()override;
+
+	/// <summary>
+	/// ステージが切り替わるときの暗転
+	/// </summary>
+	void BlackOut();
 };
