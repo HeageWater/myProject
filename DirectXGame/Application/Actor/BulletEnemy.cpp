@@ -54,7 +54,7 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 
 	if (fireFlag_)
 	{
-		spd = 0.03f;
+		spd = 0.01f;
 	}
 
 	if (deadVec_)
@@ -109,6 +109,7 @@ bool BulletEnemy::BoxCollision(MyMath::ObjMatrix model)
 		{
 			float spd = TWO;
 			vec_ = model.trans_ - model_->mat_.trans_;
+			vec_.normalize();
 			vec_ *= spd;
 			deadVec_ = true;
 

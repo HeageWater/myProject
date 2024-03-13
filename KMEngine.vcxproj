@@ -63,7 +63,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\DirectXGame\Application\Scene;$(ProjectDir)\DirectXGame\Application\Particle;$(ProjectDir)\DirectXGame\Application\Collision;$(ProjectDir)\DirectXGame\Application\Camera;$(ProjectDir)\DirectXGame\Engine\Sound;$(ProjectDir)\DirectXGame\Engine\Math;$(ProjectDir)\DirectXGame\Engine\DirectX;$(ProjectDir)\DirectXGame\Engine\Input;$(ProjectDir)\DirectXGame\Engine\Object;$(ProjectDir)\DirectXGame\Engine\Shader;$(ProjectDir)\DirectXGame\Engine\Sprite;$(ProjectDir)\DirectXGame\Engine\Camera;$(ProjectDir)\DirectXGame\Application\main</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\DirectXGame\Application\Scene;$(ProjectDir)\DirectXGame\Application\Particle;$(ProjectDir)\DirectXGame\Application\Collision;$(ProjectDir)\DirectXGame\Application\Camera;$(ProjectDir)\DirectXGame\Engine\Sound;$(ProjectDir)\DirectXGame\Engine\Math;$(ProjectDir)\DirectXGame\Engine\DirectX;$(ProjectDir)\DirectXGame\Engine\Input;$(ProjectDir)\DirectXGame\Engine\Object;$(ProjectDir)\DirectXGame\Engine\Shader;$(ProjectDir)\DirectXGame\Engine\Sprite;$(ProjectDir)\DirectXGame\Engine\Camera;$(ProjectDir)\DirectXGame\Application\main;$(ProjectDir)\DirectXGame\Application\Ui</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -83,7 +83,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\DirectXGame\Application\Scene;$(ProjectDir)\DirectXGame\Application\Particle;$(ProjectDir)\DirectXGame\Application\Collision;$(ProjectDir)\DirectXGame\Application\Camera;$(ProjectDir)\DirectXGame\Engine\Sound;$(ProjectDir)\DirectXGame\Engine\Math;$(ProjectDir)\DirectXGame\Engine\DirectX;$(ProjectDir)\DirectXGame\Engine\Input;$(ProjectDir)\DirectXGame\Engine\Object;$(ProjectDir)\DirectXGame\Engine\Shader;$(ProjectDir)\DirectXGame\Engine\Sprite;$(ProjectDir)\DirectXGame\Engine\Camera;$(ProjectDir)\DirectXGame\Application\main</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\Engine;$(ProjectDir)\DirectXGame\Application;$(ProjectDir)\DirectXGame;$(ProjectDir)\External\Imgui;$(ProjectDir)\External\DirectXTex;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\Application\Actor;$(ProjectDir)\DirectXGame\Application\Scene;$(ProjectDir)\DirectXGame\Application\Particle;$(ProjectDir)\DirectXGame\Application\Collision;$(ProjectDir)\DirectXGame\Application\Camera;$(ProjectDir)\DirectXGame\Engine\Sound;$(ProjectDir)\DirectXGame\Engine\Math;$(ProjectDir)\DirectXGame\Engine\DirectX;$(ProjectDir)\DirectXGame\Engine\Input;$(ProjectDir)\DirectXGame\Engine\Object;$(ProjectDir)\DirectXGame\Engine\Shader;$(ProjectDir)\DirectXGame\Engine\Sprite;$(ProjectDir)\DirectXGame\Engine\Camera;$(ProjectDir)\DirectXGame\Application\main;$(ProjectDir)\DirectXGame\Application\Ui</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -175,6 +175,7 @@
     <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp" />
     <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -281,6 +282,7 @@
     <ClInclude Include="DirectXGame\Application\Actor\GameModel.h" />
     <ClInclude Include="DirectXGame\Engine\Object\ModelManager.h" />
     <ClInclude Include="DirectXGame\Application\Scene\TutorialScene.h" />
+    <ClInclude Include="DirectXGame\Application\Ui\UiManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

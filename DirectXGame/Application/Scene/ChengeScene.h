@@ -58,6 +58,13 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static ChengeScene* GetInstance();
+
+	/// <summary>
+	/// 今のシーンを返す
+	/// </summary>
+	/// <returns></returns>
+	std::string GetNowScene() { return next_; };
+
 private:
 
 	//これをONにするとシーンチェンジが開始する

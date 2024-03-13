@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "ChengeScene.h"
 #include "Enum.h"
+#include "UiManager.h"
 
 void TitleScene::Update()
 {
@@ -263,6 +264,9 @@ void TitleScene::Draw()
 
 	//jsonファイルから読み込んだものの描画
 	LoadObjectData::GetInstance()->Draw();
+
+	//Uiマネージャー描画
+	UiManager::GetInstance()->Draw();
 	 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();

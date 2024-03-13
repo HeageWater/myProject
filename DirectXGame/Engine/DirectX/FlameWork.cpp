@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "CollisionManager.h"
 #include "ModelManager.h"
+#include "UiManager.h"
 
 void FlameWork::Update()
 {
@@ -104,6 +105,9 @@ void FlameWork::Initialize()
 
 	//モデルマネージャー
 	ModelManager::GetInstance()->Initialize();
+
+	//UIマネージャー
+	UiManager::GetInstance()->Initialize();
 }
 
 void FlameWork::Finalize()

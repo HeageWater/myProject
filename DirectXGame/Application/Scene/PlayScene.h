@@ -126,7 +126,7 @@ private:
 	bool movieClearFlag_;
 	bool movieOverFlag_;
 
-	//
+	//カラー
 	Vector4D color_ = { 0,0,0,0 };
 
 	//現在のステージ数

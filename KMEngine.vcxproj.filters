@@ -234,6 +234,9 @@
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp">
       <Filter>ソースファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp">
+      <Filter>ソースファイル\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
@@ -446,6 +449,9 @@
     <ClInclude Include="DirectXGame\Application\Scene\TutorialScene.h">
       <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Ui\UiManager.h">
+      <Filter>ヘッダーファイル\Ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -585,6 +591,12 @@
     </Filter>
     <Filter Include="ソースファイル\Scene">
       <UniqueIdentifier>{d0d3e572-45d4-4491-bc93-7cf18f73b1b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\UI">
+      <UniqueIdentifier>{0cfc2ea1-45c4-48ef-869a-e51c8694f915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Ui">
+      <UniqueIdentifier>{2e8a9e33-20c9-4549-89b0-db17d4a7d073}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
