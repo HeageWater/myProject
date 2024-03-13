@@ -55,14 +55,62 @@ void PlayScene::Update()
 	//hitStop更新
 	hitStop_->Update();
 
+	//burakkuauto 
+	blackOut_->Update();
+
+	//ブラックアウト
+	if (blackOutFlag_)
+	{
+		//ブラックアウト
+		if (color_.x_ < 1.0f)
+		{
+			color_.x_ += 0.01f;
+			color_.y_ += 0.01f;
+			color_.z_ += 0.01f;
+			color_.w_ += 0.01f;
+
+			if (color_.x_ >= 1.0f)
+			{
+				//ステージ読み込み
+				if (stageCount_ == ONE)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stage2");
+				}
+				else if (stageCount_ == TWO)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
+				}
+
+				//開始地点をセット
+				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+				//ゴール初期化
+				goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+				blackOutFlag_ = false;
+			}
+		}
+	}
+	else
+	{
+		//ブラックアウト
+		if (color_.x_ > 0.0f)
+		{
+			color_.x_ -= 0.01f;
+			color_.y_ -= 0.01f;
+			color_.z_ -= 0.01f;
+			color_.w_ -= 0.01f;
+		}
+	}
+
 	//まだ時間無いなら戻る
-	if (hitStop_->GetTimeFlag())
+	if (hitStop_->GetTimeFlag() || blackOutFlag_)
 	{
 		return;
 	}
 
 	//ゴールに触れているか
-	bool checkGoal = goal_->BoxCollision(player_->GetAttackModel().mat_);
+	bool checkGoal = goal_->BoxCollision(player_->GetMat());
 
 	//最初のムービー用タイマー
 	if (time_ < HUNDRED)
@@ -109,7 +157,6 @@ void PlayScene::Update()
 		//プレイヤーと敵の判定
 		for (auto& object : LoadObjectData::GetInstance()->GetEnemy())
 		{
-			//object->Update(matView_.mat_, matProjection_);
 			object->SertchPlayer(player_->GetAttackModel().mat_);
 
 			if (object->GetDeadVec())
@@ -123,7 +170,7 @@ void PlayScene::Update()
 				//敵が止まっている時間
 				const size_t StopTime = 150;
 
-				//ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
+				ParticleManager::GetInstance()->CreateBoxParticle(player_->GetPos());
 				object->SetTime(StopTime);
 				sound_->SoundPlayWave(hitSound_);
 			}
@@ -238,54 +285,6 @@ void PlayScene::Update()
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
 
-	//burakkuauto 
-	blackOut_->Update();
-
-	//ブラックアウト
-	if (blackOutFlag_)
-	{
-		//ブラックアウト
-		if (color_.x_ < 1.0f)
-		{
-			color_.x_ += 0.01f;
-			color_.y_ += 0.01f;
-			color_.z_ += 0.01f;
-			color_.w_ += 0.01f;
-
-			if (color_.x_ >= 1.0f)
-			{
-				//ステージ読み込み
-				if (stageCount_ == ONE)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stage2");
-				}
-				else if (stageCount_ == TWO)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
-				}
-				
-				//開始地点をセット
-				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
-				//ゴール初期化
-				goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
-
-				blackOutFlag_ = false;
-			}
-		}
-	}
-	else
-	{
-		//ブラックアウトテスト
-		if (color_.x_ > 0.0f)
-		{
-			color_.x_ -= 0.01f;
-			color_.y_ -= 0.01f;
-			color_.z_ -= 0.01f;
-			color_.w_ -= 0.01f;
-		}
-	}
-
 	//Uiマネージャー更新
 	UiManager::GetInstance()->Update();
 	UiManager::GetInstance()->SetLife(player_->GetLife());
@@ -335,13 +334,12 @@ void PlayScene::Initialize()
 
 	//開始地点をセット
 	player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-	/*pos += {200, 0, 0};
-	player_->SetPos(pos);*/
+
 	//ゴール初期化
 	goal_->Initialize(MyDirectX::GetInstance(), shader_, pipeline_.get());
 	goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
 
-	//
+	//パーティクルマネージャー
 	ParticleManager::GetInstance()->Initalize();
 	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	ParticleManager::GetInstance()->SetDraw(shader_, pipeline_.get());
@@ -350,13 +348,15 @@ void PlayScene::Initialize()
 	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
+	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
 
-	//
+	//カウント
 	time_ = 0;
 
 	////透過するかどうか
 	normalSpriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 
+	//画像色
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 	//基礎
@@ -376,7 +376,7 @@ void PlayScene::Initialize()
 	blackOut_->Inilialize(normalSpriteCommon_, &matProjection_);
 	blackOut_->position_ = { -680,-Window::window_height_,0 };
 	blackOut_->scale_ = { Window::window_width_ * size,Window::window_height_ * size,1 };
-	blackOut_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
+	blackOut_->SetColor(color_);
 
 	//画像色
 	color_ = { 0.0f,0.0f,0.0f,0.0f };

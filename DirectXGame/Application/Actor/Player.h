@@ -252,6 +252,12 @@ public:
 	/// 
 	/// </summary>
 	void OnCollision()override;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	MyMath::ObjMatrix GetMat() { return model_->mat_; };
 private:
 
 	//ワープの入口に触れた時

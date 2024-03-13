@@ -233,10 +233,7 @@ void Sprite::Draw(size_t handle)
 	PreDraw();
 
 	//頂点バッファビューの設定コマンド
-	spriteCommon_->dxCommon_->GetCmdList()->IASetVertexBuffers(0, 1, &vbView_);
-
-	//デスクリプタ
-	//spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootDescriptorTable(1,);
+	spriteCommon_->dxCommon_->GetCmdList()->IASetVertexBuffers(0, 1, &vbView_);\
 
 	//画像を引数に入れたものに
 	spriteCommon_->dxCommon_->GetCmdList()->SetGraphicsRootDescriptorTable(1, spriteCommon_->dxCommon_->GetTextureHandle(handle));

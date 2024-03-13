@@ -70,39 +70,11 @@ private:
 	size_t whiteTex_ = 0;
 	size_t white_ = 0;
 	size_t texP_ = 0;
-	size_t brPng_ = 0;
-	size_t enemyPng_ = 0;
-	size_t clearTex_ = 0;
-	size_t overTex_ = 0;
-	size_t playerTex_ = 0;
-	size_t titleTex_ = 0;
-	size_t heartLesTex_ = 0;
-	size_t heartHaveTex_ = 0;
-	size_t lifeTex_ = 0;
 	size_t blackTex_ = 0;
-	size_t backTex_ = 0;
-	size_t LTex_ = 0;
-	size_t RTex_ = 0;
-	size_t AbuttonTex_ = 0;
-	size_t PressTex_ = 0;
-	size_t LTTex_ = 0;
 
 	//sprite
 	SpriteCommon* normalSpriteCommon_ = new  SpriteCommon();
 	Sprite* sprite_ = new Sprite();
-
-	Sprite* lifePng_ = new Sprite();
-	Sprite* lesPng_ = new Sprite();
-	Sprite* lesPng2_ = new Sprite();
-	Sprite* lesPng3_ = new Sprite();
-	Sprite* havePng_ = new Sprite();
-	Sprite* havePng2_ = new Sprite();
-	Sprite* havePng3_ = new Sprite();
-	Sprite* UILStick_ = new Sprite();
-	Sprite* UIRStick_ = new Sprite();
-	Sprite* UILT_ = new Sprite();
-	Sprite* UIAButton_ = new Sprite();
-	Sprite* UIPress_ = new Sprite();
 
 	//Sprite
 	Sprite* blackOut_ = new Sprite();

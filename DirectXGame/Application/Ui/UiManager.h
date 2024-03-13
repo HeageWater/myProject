@@ -86,9 +86,6 @@ private:
 	Sprite* UIPress_ = new Sprite();
 
 	//tex
-	size_t blockTex_ = 0;
-	size_t plyerTex_ = 0;
-	size_t whiteTex_ = 0;
 	size_t white_ = 0;
 	size_t texP_ = 0;
 	size_t brPng_ = 0;
@@ -100,7 +97,6 @@ private:
 	size_t heartLesTex_ = 0;
 	size_t heartHaveTex_ = 0;
 	size_t lifeTex_ = 0;
-	size_t blackTex_ = 0;
 	size_t backTex_ = 0;
 	size_t LTex_ = 0;
 	size_t RTex_ = 0;

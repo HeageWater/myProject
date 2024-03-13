@@ -10,7 +10,6 @@ void UiManager::Initialize()
 	overTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/gameover.png");
 	titleTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/Title.png");
 	enemyPng_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
-	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
 	heartLesTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/heartLes.png");
 	heartHaveTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/heartHave.png");
 	lifeTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/life.png");
