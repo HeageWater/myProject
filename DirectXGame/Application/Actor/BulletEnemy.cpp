@@ -54,7 +54,7 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 
 	if (fireFlag_)
 	{
-		spd = 0.01f;
+		spd = 0.1f;
 	}
 
 	if (deadVec_)

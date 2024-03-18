@@ -150,6 +150,13 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		//ジャンプ
 		Jump();
 
+		//壁キック
+		WallRightKick();
+		WallLeftKick();
+
+		//壁キック分加算
+		colVec_ += kickVec_;
+
 		//ノックバック
 		//KnockBack();
 
@@ -227,10 +234,13 @@ void Player::Jump()
 
 	if (controller_->ButtonTriggerPush(LT))
 	{
-		jumpPower_ = maxJunp;
-		gravityPower_ = 0;
+		if (jumpPower_ <= 0)
+		{
+			jumpPower_ = maxJunp;
+			gravityPower_ = 0;
 
-		sound_->SoundPlayWave(jumpSE_);
+			sound_->SoundPlayWave(jumpSE_);
+		}
 	}
 
 	model_->mat_.trans_.y_ += jumpPower_;
@@ -298,6 +308,84 @@ void Player::Attack(Shader shader)
 	{
 		//attackModel生成
 		createAttackFlag_ = true;
+	}
+}
+
+void Player::WallRightKick()
+{
+	float moveX = 7;
+	float moveY = 4;
+
+	if (kickVec_.x_ > 0)
+	{
+		kickVec_.x_--;
+
+		if (kickVec_.x_ <= 0)
+		{
+			kickVec_.x_ = 0;
+		}
+	}
+
+	if (kickVec_.y_ > 0)
+	{
+		kickVec_.y_--;
+
+		if (kickVec_.y_ <= 0)
+		{
+			kickVec_.y_ = 0;
+		}
+	}
+
+	//
+	if (!rightKick_)
+	{
+		return;
+	}
+
+	if (controller_->ButtonTriggerPush(LT))
+	{
+		kickVec_.x_ = moveX;
+		kickVec_.y_ = moveY;
+		rightKick_ = false;
+	}
+}
+
+void Player::WallLeftKick()
+{
+	float moveX = 7;
+	float moveY = 4;
+
+	if (kickVec_.x_ < 0)
+	{
+		kickVec_.x_++;
+
+		if (kickVec_.x_ >= 0)
+		{
+			kickVec_.x_ = 0;
+		}
+	}
+	
+	if (kickVec_.y_ > 0)
+	{
+		kickVec_.y_--;
+
+		if (kickVec_.y_ <= 0)
+		{
+			kickVec_.y_ = 0;
+		}
+	}
+
+	//
+	if (!leftKick_)
+	{
+		return;
+	}
+
+	if (controller_->ButtonTriggerPush(LT))
+	{
+		kickVec_.x_ = -moveX;
+		kickVec_.y_ = moveY;
+		leftKick_ = false;
 	}
 }
 
@@ -605,6 +693,9 @@ bool Player::StageCollsionX(MyMath::ObjMatrix stage)
 
 				colX = DisX <= playerScaleX + stageScaleX;
 				colY = DisY <= playerScaleY + stageScaleY;
+
+				//leftKick
+				leftKick_ = true;
 			}
 		}
 		else
@@ -626,6 +717,9 @@ bool Player::StageCollsionX(MyMath::ObjMatrix stage)
 
 				colX = DisX <= playerScaleX + stageScaleX;
 				colY = DisY <= playerScaleY + stageScaleY;
+
+				//rightKick
+				rightKick_ = true;
 			}
 		}
 

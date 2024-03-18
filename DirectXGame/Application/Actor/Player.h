@@ -236,6 +236,16 @@ private:
 	/// <param name="shader"></param>
 	void Attack(Shader shader);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void WallRightKick();
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void WallLeftKick();
+
 public:
 
 	/// <summary>
@@ -332,6 +342,12 @@ private:
 	Matrix matProjection_;
 
 	size_t time_;
+
+	bool leftKick_ = false;
+	bool rightKick_ = false;
+
+	//
+	Vector3D kickVec_ = {0,0,0};
 
 	//敵と当たった時にHP減らしてノックバックのフラグをONに
 	//点滅フラグもONに

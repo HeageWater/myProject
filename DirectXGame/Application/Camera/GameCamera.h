@@ -87,7 +87,7 @@ public:
 		return &gameCamera;
 	}
 
-private:
+public:
 	//
 	GameCamera() = default;
 	~GameCamera() = default;
@@ -95,5 +95,4 @@ private:
 	//
 	GameCamera& operator=(const GameCamera&) = delete;
 	GameCamera(const GameCamera&) = delete;
-private:
 };

@@ -62,6 +62,12 @@ private:
 	/// <returns></returns>
 	bool BoxCollision(MyMath::ObjMatrix object1, MyMath::ObjMatrix object2);
 
+	/// <summary>
+	/// AABB
+	/// </summary>
+	/// <returns></returns>
+	//bool AABBCollision(MyMath::ObjMatrix object1, MyMath::ObjMatrix object2);
+
 	CollisionManager() = default;
 	~CollisionManager() = default;
 

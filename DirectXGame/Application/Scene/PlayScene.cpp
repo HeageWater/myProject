@@ -39,6 +39,32 @@ void PlayScene::Update()
 		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
 	}
 
+	if (ImGui::Button("stage2"))
+	{
+		LoadObjectData::GetInstance()->StageLoad("stage2");
+
+		//開始地点をセット
+		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+		//ゴール初期化
+		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+		stageCount_ = 1;
+	}
+
+	if (ImGui::Button("stageLIBLADE"))
+	{
+		LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
+
+		//開始地点をセット
+		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+		//ゴール初期化
+		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+		stageCount_ = 2;
+	}
+
 	//+x
 	if (ImGui::Button("+x"))
 	{
@@ -115,7 +141,7 @@ void PlayScene::Update()
 		//プレイヤーと敵の判定
 		for (auto& object : LoadObjectData::GetInstance()->GetEnemy())
 		{
-			object->SertchPlayer(player_->GetAttackModel().mat_);
+			object->SertchPlayer(player_->GetMat());
 
 			if (object->GetDeadVec())
 			{
