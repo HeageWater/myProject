@@ -347,7 +347,9 @@ private:
 	bool rightKick_ = false;
 
 	//
-	Vector3D kickVec_ = {0,0,0};
+	Vector3D kickVec_ = { 0,0,0 };
+
+	float jumpCount = 0;
 
 	//敵と当たった時にHP減らしてノックバックのフラグをONに
 	//点滅フラグもONに

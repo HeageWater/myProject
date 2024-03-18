@@ -216,25 +216,25 @@
     <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp">
-      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp">
       <Filter>ソースファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp">
+      <Filter>ソースファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp">
+      <Filter>ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp">
+      <Filter>ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp">
+      <Filter>ソースファイル\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp">
       <Filter>ソースファイル\UI</Filter>
     </ClCompile>
   </ItemGroup>

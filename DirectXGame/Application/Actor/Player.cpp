@@ -154,6 +154,9 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		WallRightKick();
 		WallLeftKick();
 
+		leftKick_ = false;
+		rightKick_ = false;
+
 		//壁キック分加算
 		colVec_ += kickVec_;
 
@@ -220,7 +223,8 @@ void Player::Jump()
 	float gravity = 0.2f / 2;
 	float maxGravity = 3 / 2;
 	float jump = 1.0f / 2;
-	float maxJunp = 8 / 2;
+	float maxJunp = 6;
+	float maxJunpCount = 2;
 
 	if (jumpPower_ > 0)
 	{
@@ -232,14 +236,21 @@ void Player::Jump()
 		gravityPower_ += gravity;
 	}
 
-	if (controller_->ButtonTriggerPush(LT))
-	{
-		if (jumpPower_ <= 0)
-		{
-			jumpPower_ = maxJunp;
-			gravityPower_ = 0;
+	bool wallKick = rightKick_ || leftKick_;
 
-			sound_->SoundPlayWave(jumpSE_);
+	if (!wallKick)
+	{
+		if (controller_->ButtonTriggerPush(LT))
+		{
+			if (jumpCount < maxJunpCount)
+			{
+				jumpPower_ = maxJunp;
+				gravityPower_ = 0;
+
+				jumpCount++;
+
+				sound_->SoundPlayWave(jumpSE_);
+			}
 		}
 	}
 
@@ -314,11 +325,12 @@ void Player::Attack(Shader shader)
 void Player::WallRightKick()
 {
 	float moveX = 7;
-	float moveY = 4;
+	float moveY = 6;
+	float gen = 0.5f;
 
 	if (kickVec_.x_ > 0)
 	{
-		kickVec_.x_--;
+		kickVec_.x_ -= gen;
 
 		if (kickVec_.x_ <= 0)
 		{
@@ -328,7 +340,7 @@ void Player::WallRightKick()
 
 	if (kickVec_.y_ > 0)
 	{
-		kickVec_.y_--;
+		kickVec_.y_ -= gen / 2;
 
 		if (kickVec_.y_ <= 0)
 		{
@@ -353,21 +365,22 @@ void Player::WallRightKick()
 void Player::WallLeftKick()
 {
 	float moveX = 7;
-	float moveY = 4;
+	float moveY = 6;
+	float gen = 0.5f;
 
 	if (kickVec_.x_ < 0)
 	{
-		kickVec_.x_++;
+		kickVec_.x_ += gen;
 
 		if (kickVec_.x_ >= 0)
 		{
 			kickVec_.x_ = 0;
 		}
 	}
-	
+
 	if (kickVec_.y_ > 0)
 	{
-		kickVec_.y_--;
+		kickVec_.y_ -= gen / 2;
 
 		if (kickVec_.y_ <= 0)
 		{
@@ -755,7 +768,7 @@ bool Player::StageCollsionY(MyMath::ObjMatrix stage)
 	if (DisX <= playerScaleX + stageScaleX &&
 		DisY <= playerScaleY + stageScaleY)
 	{
-		if (jumpPower_ > 0)
+		if (jumpPower_ > 0 || kickVec_.y_ > 0)
 		{
 			bool colX = DisX <= playerScaleX + stageScaleX;
 			bool colY = DisY <= playerScaleY + stageScaleY;
@@ -796,6 +809,8 @@ bool Player::StageCollsionY(MyMath::ObjMatrix stage)
 
 				colX = DisX <= playerScaleX + stageScaleX;
 				colY = DisY <= playerScaleY + stageScaleY;
+
+				jumpCount = 0;
 			}
 		}
 
