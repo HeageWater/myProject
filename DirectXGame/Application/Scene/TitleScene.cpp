@@ -105,7 +105,7 @@ void TitleScene::Update()
 	{
 		titleObject->Movie();
 
-		//この下の処理まとめろ
+		//
 		float setStopTime = 17.0f;
 
 		//止まる
@@ -158,6 +158,11 @@ void TitleScene::Update()
 	//スクリーン更新
 	screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
 
+	attack_.obj_.trans_ = titleObject->titleObj_.mat_.trans_;
+	attack_.obj_.trans_.y_ += 15;
+
+	attack_.MatUpdate(matView_.mat_, matProjection_, ZERO);
+
 	//シーンチェンジテスト
 	if (input_->GetTrigger(DIK_SPACE))
 	{
@@ -198,6 +203,11 @@ void TitleScene::Initialize()
 	screen_.Initialize(pipeline_.get(), bilShader_);
 	screen_.obj_.trans_.z_ = 100.1f;
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
+
+	attack_.Initialize(pipeline_.get(), shader_);
+	attack_.obj_.trans_.z_ = 10.1f;
+	attack_.obj_.scale_ = { 9,3,0.2f };
+	moveY = 0;
 
 	//player
 	player_ = std::make_unique<Player>();
@@ -252,6 +262,11 @@ void TitleScene::Draw()
 
 	//スクリーン描画
 	screen_.Draw(blockTex_);
+
+	if (!titleObject->IsMovie_)
+	{
+		attack_.Draw(attackTex_);
+	}
 
 	//attack表示
 	//sprite_->Draw(attackTex_);

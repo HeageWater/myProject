@@ -236,6 +236,7 @@ void Player::Jump()
 		gravityPower_ += gravity;
 	}
 
+	//壁に擦っているか
 	bool wallKick = rightKick_ || leftKick_;
 
 	if (!wallKick)
@@ -250,12 +251,21 @@ void Player::Jump()
 				jumpCount++;
 
 				sound_->SoundPlayWave(jumpSE_);
+
+				if (jumpCount == maxJunpCount)
+				{
+					jumpAnimationF_ = true;
+				}
 			}
 		}
 	}
 
+	//重力と跳躍力を加算
 	model_->mat_.trans_.y_ += jumpPower_;
 	model_->mat_.trans_.y_ -= gravityPower_;
+
+	//ジャンプアニメーション
+	JumpAnimation();
 }
 
 void Player::Attack(Shader shader)
@@ -349,7 +359,7 @@ void Player::WallRightKick()
 	}
 
 	//
-	if (!rightKick_)
+	if (!rightKick_ || jumpCount == 0)
 	{
 		return;
 	}
@@ -389,7 +399,7 @@ void Player::WallLeftKick()
 	}
 
 	//
-	if (!leftKick_)
+	if (!leftKick_ || jumpCount == 0)
 	{
 		return;
 	}
@@ -414,6 +424,20 @@ void Player::SetDeadAnimation()
 void Player::OnCollision()
 {
 	LesLife();
+}
+
+void Player::JumpAnimation()
+{
+	if (jumpAnimationF_)
+	{
+		model_->mat_.rotAngle_.x_ += 0.3f;
+
+		if (model_->mat_.rotAngle_.x_ > 5.5f)
+		{
+			model_->mat_.rotAngle_.x_ = 0;
+			jumpAnimationF_ = false;
+		}
+	}
 }
 
 bool Player::DeadAnimation()

@@ -47,6 +47,7 @@ private:
 
 	//screen
 	Square screen_;
+	Square attack_;
 
 	//player
 	//Player* player_ = new Player();
@@ -95,4 +96,6 @@ private:
 	float hozon[4] = { 0,0,0,0 };
 
 	size_t time_ = 0;
+
+	float moveY = 0;
 };

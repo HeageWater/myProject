@@ -249,6 +249,11 @@ private:
 public:
 
 	/// <summary>
+	/// ジャンプ用アニメーション
+	/// </summary>
+	void JumpAnimation();
+
+	/// <summary>
 	/// HPがゼロになった時のアニメーション
 	/// </summary>
 	bool DeadAnimation();
@@ -336,19 +341,27 @@ private:
 	//ノックバックのフラグ
 	bool knockBackFlag_;
 
+	//
 	size_t sheikF_;
 
+	//
 	Matrix matView_;
 	Matrix matProjection_;
 
+	//タイム
 	size_t time_;
 
+	//壁キックするフラグ
 	bool leftKick_ = false;
 	bool rightKick_ = false;
 
-	//
+	//ジャンプのアニメーションをするためのフラグ
+	bool jumpAnimationF_ = false;
+
+	//壁キックの進む方向
 	Vector3D kickVec_ = { 0,0,0 };
 
+	//今何回ジャンプしているか
 	float jumpCount = 0;
 
 	//敵と当たった時にHP減らしてノックバックのフラグをONに
