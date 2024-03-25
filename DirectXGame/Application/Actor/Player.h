@@ -370,4 +370,7 @@ private:
 
 	//敵と当たった時のノックバック
 	void KnockBack();
+
+	//ジャンプ時の演出
+	std::unique_ptr<Model>donatu_{};
 };

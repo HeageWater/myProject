@@ -49,7 +49,7 @@ void TutorialScene::Update()
 	time_++;
 
 	//一定カウントで次に
-	if (time_ == 350)
+	if (time_ == 250)
 	{
 		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
 	}

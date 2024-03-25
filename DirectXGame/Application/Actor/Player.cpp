@@ -8,8 +8,12 @@ Player::Player()
 {
 	//modelを制作
 	model_ = std::make_unique<Model>();
+	donatu_ = std::make_unique<Model>();
 
+	//tagを追加
 	tag_ = "player";
+
+	//コリジョンマネージャーに登録
 	CollisionManager::GetInstance()->AddCollision(this);
 
 	knockBackFlag_ = false;
@@ -79,6 +83,9 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 
 	sound_ = MyXAudio::GetInstance();
 	jumpSE_ = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
+
+	donatu_->Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\donatu\\rasu.obj", pipeline_);
+	donatu_->mat_.scale_ = { 3,3,3 };
 }
 
 void Player::Draw(size_t tex, size_t tex2)
@@ -96,6 +103,11 @@ void Player::Draw(size_t tex, size_t tex2)
 	for (size_t i = 0; i < attack_.size(); i++)
 	{
 		attack_[i]->Draw();
+	}
+
+	if (jumpAnimationF_)
+	{
+		donatu_->Draw(tex2);
 	}
 }
 
@@ -195,6 +207,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	//座標Update
 	model_->MatUpdate(matView, matProjection);
 	playerAttack_.MatUpdate(matView, matProjection);
+	donatu_->MatUpdate(matView, matProjection);
 }
 
 void Player::Reset()
@@ -245,16 +258,31 @@ void Player::Jump()
 		{
 			if (jumpCount < maxJunpCount)
 			{
+				//跳躍力を最大に
 				jumpPower_ = maxJunp;
+
+				//重力を0に
 				gravityPower_ = 0;
 
+				//連続ジャンプ数
 				jumpCount++;
 
+				//ジャンプ音
 				sound_->SoundPlayWave(jumpSE_);
 
+				//2回目のジャンプ時にアニメーション
 				if (jumpCount == maxJunpCount)
 				{
+					//ジャンプアニメーションフラグをonに
 					jumpAnimationF_ = true;
+
+					//ドーナツ型のモデルの場所をplayerの下に
+					donatu_->mat_.trans_ = model_->mat_.trans_;
+					donatu_->mat_.trans_.y_ += 1;
+					donatu_->mat_.scale_ = { 1,1,1 };
+					donatu_->mat_.rotAngle_.x_ = 1.7f;
+
+					time_ = 0;
 				}
 			}
 		}
@@ -430,7 +458,15 @@ void Player::JumpAnimation()
 {
 	if (jumpAnimationF_)
 	{
+		time_++;
+
 		model_->mat_.rotAngle_.x_ += 0.3f;
+
+		//donatu_->mat_.scale_.x_ = (float)Easing::EaseIn(static_cast<double>(1), static_cast<double>(10), static_cast<double>(time_ / 10), static_cast<float>(10));
+		//donatu_->mat_.scale_.y_ = (float)Easing::EaseIn(static_cast<double>(1), static_cast<double>(3), static_cast<double>(time_ / 10), static_cast<float>(10));
+
+		donatu_->mat_.scale_.x_ += 0.5f;
+		donatu_->mat_.scale_.y_ += 0.1f;
 
 		if (model_->mat_.rotAngle_.x_ > 5.5f)
 		{
@@ -732,7 +768,10 @@ bool Player::StageCollsionX(MyMath::ObjMatrix stage)
 				colY = DisY <= playerScaleY + stageScaleY;
 
 				//leftKick
-				leftKick_ = true;
+				if (jumpCount != 0)
+				{
+					leftKick_ = true;
+				}
 			}
 		}
 		else
@@ -756,7 +795,10 @@ bool Player::StageCollsionX(MyMath::ObjMatrix stage)
 				colY = DisY <= playerScaleY + stageScaleY;
 
 				//rightKick
-				rightKick_ = true;
+				if (jumpCount != 0)
+				{
+					rightKick_ = true;
+				}
 			}
 		}
 
