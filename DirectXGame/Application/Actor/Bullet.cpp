@@ -20,8 +20,14 @@ void Bullet::Initialize(Shader shader, GPipeline* pipeline)
 	shader_ = shader;
 	pipeline_ = pipeline;
 
+	//モデル読み込み
+	ModelManager::GetInstance()->LoadModel("Resources\\Model\\kyu\\kyu.obj");
+
+	//モデルセット
+	model_ = SetModel("Resources\\Model\\kyu\\kyu.obj");
+
 	//読み込み
-	model_->Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
+	//model_->Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\kyu\\kyu.obj", pipeline_);
 
 	//初期化
 	model_->mat_.Initialize();

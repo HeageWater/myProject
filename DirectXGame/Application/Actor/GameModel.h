@@ -2,6 +2,7 @@
 #include"myMath.h"
 #include <string>
 #include"Model.h"
+#include"ModelManager.h"
 //#include"Camera.h"
 //#include"Transform.h"
 //#include"DrawOversight.h"
@@ -124,7 +125,7 @@ public:
 	/// <summary>
 	/// モデル読み込み
 	/// </summary>
-	/*void LoadMode(const std::string& filename)
+	void LoadModel(const std::string& filename)
 	{
 		ModelManager::GetInstance()->LoadModel(filename);
 	};
@@ -133,10 +134,11 @@ public:
 	/// モデルをセットする
 	/// </summary>
 	/// <returns></returns>
-	Model* SetModel(const std::string& filename)
+	std::unique_ptr<Model> SetModel(const std::string& filename)
 	{
-		return ModelManager::GetInstance()->FindModel(filename);
-	};*/
+		//model_ = std::move(ModelManager::GetInstance()->FindModel(filename));
+		return  std::move(ModelManager::GetInstance()->FindModel(filename));
+	};
 
 public:
 	//static void SetCamera(Camera* camera) { camera_ = camera; };

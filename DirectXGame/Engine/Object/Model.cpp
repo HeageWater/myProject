@@ -94,6 +94,7 @@ void Model::Draw(size_t handle)
 	dx_->GetCmdList()->SetGraphicsRootConstantBufferView(1, transform_->GetGPUVirtualAddress());
 
 	dx_->GetCmdList()->DrawInstanced(vertexSize_, 1, 0, 0);
+	//dx_->GetCmdList()->DrawIndexedInstanced(vertexSize_, 1, 0, 0, 0);
 }
 
 void Model::SetCamera(Matrix View, Matrix Projection)

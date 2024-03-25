@@ -15,7 +15,13 @@ void BulletEnemy::Initialize(Shader shader, GPipeline* pipeline)
 	shader_ = shader;
 	pipeline_ = pipeline;
 
-	model_->Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
+	//モデル読み込み
+	ModelManager::GetInstance()->LoadModel("Resources\\Model\\enemy\\enemy.obj");
+
+	//モデルセット
+	model_ = SetModel("Resources\\Model\\enemy\\enemy.obj");
+
+	//model_->Initialize(MyDirectX::GetInstance(), shader_, "Resources\\Model\\enemy\\enemy.obj", pipeline_);
 
 	//mat初期化
 	model_->mat_.Initialize();

@@ -17,7 +17,7 @@ void SceneManager::Update()
 		//シーン切り替え
 		scene_ = std::move(nextScene_);
 
-		//
+		//リセット
 		CollisionManager::GetInstance()->Reset();
 
 		//次シーンを初期化する

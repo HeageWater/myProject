@@ -53,11 +53,11 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 {
 	pipeline_ = pipeline;
 
-	//ModelManager::GetInstance()->LoadModel("Resources\\Model\\Player\\Player.obj");
+	//モデル読み込み
+	ModelManager::GetInstance()->LoadModel("Resources\\Model\\Player\\Player.obj");
 
-	//SetModel("Resources\\Model\\Player\\Player.obj");
-
-	model_->Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\Player\\Player.obj", pipeline_);
+	//モデルセット
+	model_ = SetModel("Resources\\Model\\Player\\Player.obj");
 
 	model_->mat_.Initialize();
 	model_->mat_.scale_ = { 3,3,3 };
@@ -84,7 +84,11 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 	sound_ = MyXAudio::GetInstance();
 	jumpSE_ = sound_->SoundLoadWave("Resources/sound/SE_jump.wav");
 
-	donatu_->Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\donatu\\rasu.obj", pipeline_);
+	//モデル読み込み
+	ModelManager::GetInstance()->LoadModel("Resources\\Model\\donatu\\rasu.obj");
+
+	//モデルセット
+	donatu_ = SetModel("Resources\\Model\\donatu\\rasu.obj");
 	donatu_->mat_.scale_ = { 3,3,3 };
 }
 
@@ -280,7 +284,7 @@ void Player::Jump()
 					donatu_->mat_.trans_ = model_->mat_.trans_;
 					donatu_->mat_.trans_.y_ += 1;
 					donatu_->mat_.scale_ = { 1,1,1 };
-					donatu_->mat_.rotAngle_.x_ = 1.7f;
+					donatu_->mat_.rotAngle_.x_ = 1.3f;
 
 					time_ = 0;
 				}
@@ -362,7 +366,7 @@ void Player::Attack(Shader shader)
 
 void Player::WallRightKick()
 {
-	float moveX = 7;
+	float moveX = 6;
 	float moveY = 6;
 	float gen = 0.5f;
 
@@ -402,7 +406,7 @@ void Player::WallRightKick()
 
 void Player::WallLeftKick()
 {
-	float moveX = 7;
+	float moveX = 6;
 	float moveY = 6;
 	float gen = 0.5f;
 
@@ -988,7 +992,6 @@ bool Player::WarpAction()
 
 	return false;
 }
-
 
 void Player::Sheik()
 {

@@ -3,8 +3,6 @@
 #include "DirectX.h"
 #include "GPipeline.h"
 #include "VertBuff.h"
-#include "ModelManager.h"
-
 /// <summary>
 /// モデルクラス
 /// </summary>

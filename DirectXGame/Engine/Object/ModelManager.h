@@ -11,7 +11,7 @@ class ModelManager
 {
 private:
 	//読み込んだことのあるモデルをここに格納
-	//std::map<std::string, std::unique_ptr<Model>> models_;
+	std::map<std::string, std::unique_ptr<Model>> models_;
 
 	//pipeline
 	std::unique_ptr<GPipeline> pipeline_;
@@ -40,8 +40,12 @@ public:
 	/// 指定されたモデルを返す
 	/// </summary>
 	/// <returns></returns>
-	//Model* FindModel(const std::string& filename);
+	std::unique_ptr<Model> FindModel(const std::string& filename);
 
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
 public:
 
 	/// <summary>
