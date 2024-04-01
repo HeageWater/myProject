@@ -65,7 +65,7 @@ void BulletEnemy::Update(Matrix matView, Matrix matProjection)
 
 	if (deadVec_)
 	{
-		spd = 0.01f;
+		spd = 0.5f;
 	}
 
 	model_->mat_.rotAngle_.y_ += spd;
@@ -113,7 +113,7 @@ bool BulletEnemy::BoxCollision(MyMath::ObjMatrix model)
 		//あたり判定
 		if (a + b < c * (float)TWO)
 		{
-			float spd = TWO;
+			float spd = FIVE;
 			vec_ = model.trans_ - model_->mat_.trans_;
 			vec_.normalize();
 			vec_ *= spd;
@@ -130,7 +130,7 @@ bool BulletEnemy::BoxCollision(MyMath::ObjMatrix model)
 		//あたり判定
 		if (a + b < c)
 		{
-			float spd = TWO;
+			float spd = FIVE;
 			vec_ = model.trans_ - model_->mat_.trans_;
 			vec_ *= spd;
 			deadVec_ = true;
@@ -212,11 +212,11 @@ void BulletEnemy::EnemyAttack()
 
 	attackTime_++;
 
-	const size_t AttackTime = 300;
+	const size_t AttackTime = 100;
 
 	if (attackTime_ > AttackTime)
 	{
-		attackTime_ = ZERO;
+		attackTime_ = -200;
 
 		//弾生成
 		CreateBullet();

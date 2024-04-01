@@ -93,7 +93,7 @@ void GameOverScene::Update()
 
 	if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
 	{
-		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
 	}
 
 	//

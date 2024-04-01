@@ -129,6 +129,7 @@ void TitleScene::Update()
 		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
 	}
 
+	//
 	if (titleObject->IsMovie_)
 	{
 		const float MaxTime = 50;
@@ -223,14 +224,17 @@ void TitleScene::Initialize()
 	//音読み込み
 	hitSound_ = sound_->SoundLoadWave("Resources/sound/se_hit_008.wav");
 
+	//
 	time_ = 0;
 
 	//targetをplayerに
 	matView_.eye_.x_ = player_->GetPos().x_;
 	matView_.target_.x_ = player_->GetPos().x_;
 
+	//
 	float prusTargetY = 10;
 
+	//
 	matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY;
 	matView_.target_.y_ = player_->GetPos().y_ + prusTargetY;
 
@@ -240,6 +244,7 @@ void TitleScene::Initialize()
 	//透過するかどうか
 	spriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 
+	//
 	matView_.eye_.y_ += 15;
 
 	//attack誘導
@@ -263,6 +268,7 @@ void TitleScene::Draw()
 	//スクリーン描画
 	screen_.Draw(blockTex_);
 
+	//
 	if (!titleObject->IsMovie_)
 	{
 		attack_.Draw(attackTex_);

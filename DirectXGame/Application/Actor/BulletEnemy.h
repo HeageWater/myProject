@@ -119,7 +119,7 @@ private:
 	//撃つフラグ
 	bool fireFlag_;
 
-	size_t attackTime_ = 0;
+	float attackTime_ = 0;
 
 	Shader shader_;
 	GPipeline* pipeline_;

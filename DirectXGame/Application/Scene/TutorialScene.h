@@ -73,9 +73,15 @@ private:
 	//注意事項
 	size_t tutorialTex_ = 0;
 
+	size_t pressTex_ = 0;
+	size_t aButtonTex_ = 0;
+
 	//sprite
 	SpriteCommon* spriteCommon_ = new  SpriteCommon();
-	Sprite* sprite_ = new Sprite();
+	Sprite* tutorial_ = new Sprite();
+
+	Sprite* press_ = new Sprite();
+	Sprite* aButton_ = new Sprite();
 
 	Vector4D color_ = { 0,0,0,0 };
 
@@ -97,4 +103,7 @@ private:
 
 	//カウント用
 	size_t time_ = 0;
+
+	//
+	bool wait_;
 };

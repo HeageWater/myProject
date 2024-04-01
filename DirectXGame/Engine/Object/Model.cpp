@@ -33,6 +33,7 @@ void Model::Initialize(Shader shader, const std::string& filename)
 
 	ObjFile objfile(filename, vertices_);
 	vertexSize_ = (UINT)vertices_.size();
+
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertexSize_);
 

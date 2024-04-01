@@ -43,7 +43,7 @@ void Bullet::Initialize(Shader shader, GPipeline* pipeline)
 void Bullet::Update()
 {
 	//進む速度
-	const float SPEED = 0.1f;
+	const float SPEED = 0.2f;
 
 	//移動
 	model_->mat_.trans_ -= vec_ * SPEED;

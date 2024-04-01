@@ -136,8 +136,7 @@ public:
 	/// <returns></returns>
 	std::unique_ptr<Model> SetModel(const std::string& filename)
 	{
-		//model_ = std::move(ModelManager::GetInstance()->FindModel(filename));
-		return  std::move(ModelManager::GetInstance()->FindModel(filename));
+		return ModelManager::GetInstance()->FindModel(filename);
 	};
 
 public:

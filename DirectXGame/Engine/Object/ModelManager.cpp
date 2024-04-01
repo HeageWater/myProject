@@ -20,7 +20,7 @@ void ModelManager::LoadModel(const std::string& filename)
 	//重複排除
 	if (models_.contains(filename))
 	{
-		return;
+		//return;
 	}
 
 	//モデル作成
@@ -41,11 +41,22 @@ std::unique_ptr<Model> ModelManager::FindModel(const std::string& filename)
 		std::unique_ptr<Model> data;
 		data = std::make_unique<Model>();
 
+
+		//data.get();
+
 		//
 		data = std::move(models_.at(filename));
 
+		models_.erase(filename);
+
 		return data;
 	}
+
+	//一回読み込んだことがあるファイルはそのまま返す
+	auto itr = find_if(models_.begin(), models_.end(), [&](std::pair<const std::string, std::unique_ptr<Model, std::default_delete<Model>>>& p)
+		{
+			return p.first == filename;
+		});
 
 	//ない時
 	return nullptr;

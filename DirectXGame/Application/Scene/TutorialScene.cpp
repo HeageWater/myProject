@@ -49,7 +49,8 @@ void TutorialScene::Update()
 	time_++;
 
 	//一定カウントで次に
-	if (time_ == 250)
+	if (time_ == 200)
+	//if (wait_)
 	{
 		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
 	}
@@ -63,9 +64,21 @@ void TutorialScene::Update()
 		color_.w_ += 0.003f;
 	}
 
+	//aボタンを押したとき進む
+	/*if (controller_->ButtonTriggerPush(A))
+	{
+		wait_ = true;
+	}*/
+
 	//スプライト更新
-	sprite_->SetColor(color_);
-	sprite_->Update();
+	tutorial_->SetColor(color_);
+	tutorial_->Update();
+
+	press_->SetColor(color_);
+	press_->Update();
+
+	aButton_->SetColor(color_);
+	aButton_->Update();
 
 	//カメラ更新
 	matView_.MatUpdate();
@@ -84,8 +97,10 @@ void TutorialScene::Initialize()
 
 	//白画像
 	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
-	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
-	tutorialTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/tutorial.png");
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+	tutorialTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/tutorial.png");
+	pressTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/press.png");
+	aButtonTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/Abutton.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -113,10 +128,24 @@ void TutorialScene::Initialize()
 	spriteCommon_->Inilialize(MyDirectX::GetInstance(), false);
 
 	//注意事項
-	sprite_->Inilialize(spriteCommon_, &matProjection_);
-	sprite_->position_ = { -640,-200,0 };
-	sprite_->scale_ = { 3200,700,1 };
-	sprite_->SetColor(color_);
+	tutorial_->Inilialize(spriteCommon_, &matProjection_);
+	tutorial_->position_ = { -640,-200,0 };
+	tutorial_->scale_ = { 3200,800,1 };
+	tutorial_->SetColor(color_);
+
+	//press
+	press_->Inilialize(spriteCommon_, &matProjection_);
+	press_->position_ = { -640,-200,0 };
+	press_->scale_ = { 3200,800,1 };
+	press_->SetColor(color_);
+
+	//Aボタン
+	aButton_->Inilialize(spriteCommon_, &matProjection_);
+	aButton_->position_ = { -640,-200,0 };
+	aButton_->scale_ = { 3200,800,1 };
+	aButton_->SetColor(color_);
+
+	wait_ = false;
 }
 
 void TutorialScene::Draw()
@@ -134,7 +163,9 @@ void TutorialScene::Draw()
 	screen_.Draw(blackTex_);
 
 	//注意事項
-	sprite_->Draw(tutorialTex_);
+	tutorial_->Draw(tutorialTex_);
+	//press_->Draw(pressTex_);
+	//aButton_->Draw(aButtonTex_);
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();

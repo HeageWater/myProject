@@ -26,6 +26,9 @@ void FlameWork::Update()
 
 	//当たり判定
 	CollisionManager::GetInstance()->Update();
+
+	//
+	MyDirectX::GetInstance()->UpdateFPS();
 }
 
 void FlameWork::Initialize()

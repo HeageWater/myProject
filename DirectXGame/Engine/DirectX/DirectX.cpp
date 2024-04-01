@@ -335,6 +335,9 @@ void MyDirectX::Initialize(Window* win)
 	viewPort_.Init(Window::window_width_, Window::window_height_, 0, 0);
 	// シザー矩形
 	scissorRect_.Init(0, Window::window_width_, 0, Window::window_height_);
+
+	//FPS初期設定
+	InitializeFPS();
 }
 
 void MyDirectX::SetResourceBarrier(D3D12_RESOURCE_BARRIER& desc, D3D12_RESOURCE_STATES StateBefore, D3D12_RESOURCE_STATES StateAfter, ID3D12Resource* pResource)

@@ -7,11 +7,16 @@
 #include "Model.h"
 #include "ObjFile.h"
 
+#include "atlbase.h"
+#include "atlstr.h"
+#include "comutil.h"
+
 class ModelManager
 {
 private:
 	//読み込んだことのあるモデルをここに格納
 	std::map<std::string, std::unique_ptr<Model>> models_;
+	//std::unordered_map<std::string, std::unique_ptr<Model>> models_;
 
 	//pipeline
 	std::unique_ptr<GPipeline> pipeline_;

@@ -90,6 +90,9 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 	//モデルセット
 	donatu_ = SetModel("Resources\\Model\\donatu\\rasu.obj");
 	donatu_->mat_.scale_ = { 3,3,3 };
+
+	//
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources\\sprite\\white1x1.png");
 }
 
 void Player::Draw(size_t tex, size_t tex2)
@@ -111,7 +114,7 @@ void Player::Draw(size_t tex, size_t tex2)
 
 	if (jumpAnimationF_)
 	{
-		donatu_->Draw(tex2);
+		donatu_->Draw(whiteTex_);
 	}
 }
 

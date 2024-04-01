@@ -3,6 +3,7 @@
 #include <string>
 #include "MyMath.h"
 #include "VertBuff.h"
+#include "Model.h"
 
 /// <summary>
 /// objを開くクラス
@@ -43,6 +44,21 @@ private:
 	bool ReadFile();
 public:
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="filename"></param>
+	/// <param name="out_vertices"></param>
 	ObjFile(const std::string& filename, std::vector<Vertex>& out_vertices);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="filename"></param>
+	/// <param name="model"></param>
+	/// <param name="out_vertices"></param>
+	ObjFile(const std::string& filename, Model* model, std::vector<Vertex>& out_vertices);
+
+	//ObjFile(const std::string& filename, std::vector<Vertex>& out_vertices);
 };
 

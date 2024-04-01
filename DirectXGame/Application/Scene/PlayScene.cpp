@@ -168,6 +168,19 @@ void PlayScene::Update()
 
 				Shake::GetInstance()->SetTime(30);
 			}
+
+			////playerの攻撃との判定
+			//for (auto& attack : player_->GetAttack())
+			//{
+			//	if (object->BoxCollision(attack->GetMat()))
+			//	{
+			//		setStopTime += FIVE;
+			//		sound_->SoundPlayWave(hitSound_);
+			//		ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
+
+			//		Shake::GetInstance()->SetTime(30);
+			//	}
+			//}
 		}
 
 		//保存したヒットストップの時間をセット
@@ -238,13 +251,6 @@ void PlayScene::Update()
 		{
 			movieOverFlag_ = true;
 			player_->SetDeadAnimation();
-		}
-
-		//Spaceキーでテスト
-		if (input_->GetTrigger(DIK_SPACE))
-		{
-			//player_->SetLife(ZERO);
-			//ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
 		}
 	}
 	else

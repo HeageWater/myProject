@@ -30,11 +30,6 @@ private:
 	void InitializeFPS();
 
 	/// <summary>
-	/// FPS更新
-	/// </summary>
-	void UpdateFPS();
-
-	/// <summary>
 	/// セットリソースバリア
 	/// </summary>
 	/// <param name="desc"></param>
@@ -92,6 +87,11 @@ public:
 	/// 深度クリア
 	/// </summary>
 	void ClearDepthBuff();
+
+	/// <summary>
+	/// FPS更新
+	/// </summary>
+	void UpdateFPS();
 
 	/// <summary>
 	/// 画像読み込み

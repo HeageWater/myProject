@@ -111,6 +111,34 @@ void UiManager::Draw()
 	//今のシーンを取得
 	std::string nowScene = ChengeScene::GetInstance()->GetNowScene();
 
+	//動いているか
+	bool isPlay = ChengeScene::GetInstance()->GetPlayFlag();
+
+	//UIの透明度の増減する速度
+	float spd = 0.03f;
+
+	//
+	if (isPlay)
+	{
+		if (color_.x_ > 0.0f)
+		{
+			color_.x_ -= spd;
+			color_.y_ -= spd;
+			color_.z_ -= spd;
+			color_.w_ -= spd;
+		}
+	}
+	else
+	{
+		if (color_.x_ < 1.0f)
+		{
+			color_.x_ += spd;
+			color_.y_ += spd;
+			color_.z_ += spd;
+			color_.w_ += spd;
+		}
+	}
+
 	//今のシーンがTITLEかPLAYなら描画する
 	if (nowScene == "PLAY" || nowScene == "TITLE")
 	{
@@ -119,7 +147,7 @@ void UiManager::Draw()
 	}
 
 	//今のシーンがPLAYなら描画する
-	if (nowScene == "PLAY")
+	if (nowScene == "PLAY" && !isPlay)
 	{
 		//ライフ描画
 		LifeDraw();
@@ -134,12 +162,15 @@ void UiManager::UiDraw()
 {
 	//操作(UI描画一つにまとめる)
 	UILStick_->Update();
+	UILStick_->SetColor(color_);
 	UILStick_->Draw(LTex_);
 
 	UIRStick_->Update();
+	UIRStick_->SetColor(color_);
 	UIRStick_->Draw(RTex_);
 
 	UILT_->Update();
+	UILT_->SetColor(color_);
 	UILT_->Draw(LTTex_);
 }
 
@@ -147,6 +178,7 @@ void UiManager::LifeDraw()
 {
 	//HP表示
 	lifePng_->Update();
+	lifePng_->SetColor(color_);
 	lifePng_->Draw(lifeTex_);
 
 	//描画用の最大HP(HitPoint用のクラスを作る)
@@ -162,18 +194,21 @@ void UiManager::LifeDraw()
 			{
 				havePng_->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 				havePng_->Update();
+				havePng_->SetColor(color_);
 				havePng_->Draw(heartHaveTex_);
 			}
 			else if (i == 1)
 			{
 				havePng2_->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 				havePng2_->Update();
+				havePng2_->SetColor(color_);
 				havePng2_->Draw(heartHaveTex_);
 			}
 			else
 			{
 				havePng3_->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 				havePng3_->Update();
+				havePng3_->SetColor(color_);
 				havePng3_->Draw(heartHaveTex_);
 			}
 		}
@@ -183,18 +218,21 @@ void UiManager::LifeDraw()
 			{
 				lesPng_->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 				lesPng_->Update();
+				lesPng_->SetColor(color_);
 				lesPng_->Draw(heartLesTex_);
 			}
 			else if (i == 1)
 			{
 				lesPng2_->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 				lesPng2_->Update();
+				lesPng2_->SetColor(color_);
 				lesPng2_->Draw(heartLesTex_);
 			}
 			else
 			{
 				lesPng3_->position_ = { -430.0f + (i * 128),230.0f,0.0f };
 				lesPng3_->Update();
+				lesPng3_->SetColor(color_);
 				lesPng3_->Draw(heartLesTex_);
 			}
 		}

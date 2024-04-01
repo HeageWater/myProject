@@ -123,6 +123,15 @@ public:
 	Model GetAttackModel() { return playerAttack_; };
 
 	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	std::vector<PlayerAttack*> GetAttack()
+	{
+		return attack_;
+	}
+
+	/// <summary>
 	/// 攻撃を敵の判定
 	/// </summary>
 	/// <param name="enemy"></param>
@@ -343,6 +352,9 @@ private:
 
 	//
 	size_t sheikF_;
+
+	//
+	size_t whiteTex_;
 
 	//
 	Matrix matView_;
