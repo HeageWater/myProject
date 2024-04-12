@@ -42,6 +42,11 @@ public:
 	void LoadModel(const std::string& filename);
 
 	/// <summary>
+	/// 
+	/// </summary>
+	void SetModel(const std::string& filename,Model* model);
+
+	/// <summary>
 	/// 指定されたモデルを返す
 	/// </summary>
 	/// <returns></returns>

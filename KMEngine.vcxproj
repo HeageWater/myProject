@@ -176,6 +176,7 @@
     <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp" />
+    <ClCompile Include="StageManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -283,6 +284,7 @@
     <ClInclude Include="DirectXGame\Engine\Object\ModelManager.h" />
     <ClInclude Include="DirectXGame\Application\Scene\TutorialScene.h" />
     <ClInclude Include="DirectXGame\Application\Ui\UiManager.h" />
+    <ClInclude Include="StageManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

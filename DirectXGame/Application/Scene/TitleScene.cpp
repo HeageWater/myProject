@@ -100,25 +100,27 @@ void TitleScene::Update()
 	//タイトルオブジェ更新
 	titleObject->Update(matView_.mat_, matProjection_);
 
-	//
-	if (titleObject->BoxCollision(player_->GetAttackModel()) && !titleObject->IsMovie_)
+	for (auto& attack : player_->GetAttack())
 	{
-		titleObject->Movie();
+		if (titleObject->BoxCollision(attack->model_.get()) && !titleObject->IsMovie_)
+		{
+			titleObject->Movie();
 
-		//
-		float setStopTime = 17.0f;
+			//
+			float setStopTime = 17.0f;
 
-		//止まる
-		hitStop_->SetTime(setStopTime);
+			//止まる
+			hitStop_->SetTime(setStopTime);
 
-		//hit音
-		sound_->SoundPlayWave(hitSound_);
+			//hit音
+			sound_->SoundPlayWave(hitSound_);
 
-		hozon[0] = matView_.eye_.x_;
-		hozon[1] = matView_.target_.x_;
+			hozon[0] = matView_.eye_.x_;
+			hozon[1] = matView_.target_.x_;
 
-		hozon[2] = matView_.eye_.y_;
-		hozon[3] = matView_.target_.y_;
+			hozon[2] = matView_.eye_.y_;
+			hozon[3] = matView_.target_.y_;
+		}
 	}
 
 	//
@@ -278,7 +280,7 @@ void TitleScene::Draw()
 	//sprite_->Draw(attackTex_);
 
 	//Actor描画
-	player_->Draw(plyerTex_, plyerTex_);
+	player_->Draw(plyerTex_);
 
 	//タイトル
 	titleObject->Draw(whiteTex_);

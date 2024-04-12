@@ -21,9 +21,6 @@ Player::Player()
 	model_->mat_.Initialize();
 	model_->mat_.scale_ = { 3,3,3 };
 
-	playerAttack_.mat_.Initialize();
-	playerAttack_.mat_.scale_ = { 3,3,3 };
-
 	attackF_ = false;
 
 	sound_ = nullptr;
@@ -66,12 +63,6 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 	model_->mat_.trans_.y_ = 11;
 	model_->mat_.trans_.z_ = 0;
 
-	playerAttack_.Initialize(MyDirectX::GetInstance(), shader, "Resources\\Model\\box.obj", pipeline_);
-
-	playerAttack_.mat_.Initialize();
-	playerAttack_.mat_.scale_ = { 5,5,5 };
-	playerAttack_.mat_.trans_ = model_->mat_.trans_;
-
 	controller_ = Controller::GetInstance();
 	attackF_ = false;
 	createAttackFlag_ = false;
@@ -95,16 +86,11 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources\\sprite\\white1x1.png");
 }
 
-void Player::Draw(size_t tex, size_t tex2)
+void Player::Draw(size_t tex)
 {
 	if (lesFlag_ % 2 == 0)
 	{
 		model_->Draw(tex);
-	}
-
-	if (false)
-	{
-		playerAttack_.Draw(tex2);
 	}
 
 	for (size_t i = 0; i < attack_.size(); i++)
@@ -213,7 +199,6 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 
 	//座標Update
 	model_->MatUpdate(matView, matProjection);
-	playerAttack_.MatUpdate(matView, matProjection);
 	donatu_->MatUpdate(matView, matProjection);
 }
 
@@ -224,10 +209,6 @@ void Player::Reset()
 	model_->mat_.trans_.x_ = 0;// 950;
 	model_->mat_.trans_.y_ = 11;
 	model_->mat_.trans_.z_ = 0;
-
-	playerAttack_.mat_.Initialize();
-	playerAttack_.mat_.scale_ = { 5,5,5 };
-	playerAttack_.mat_.trans_ = model_->mat_.trans_;
 
 	attackF_ = false;
 	createAttackFlag_ = false;
@@ -295,9 +276,19 @@ void Player::Jump()
 		}
 	}
 
-	//重力と跳躍力を加算
-	model_->mat_.trans_.y_ += jumpPower_;
-	model_->mat_.trans_.y_ -= gravityPower_;
+	if (wallKick)
+	{
+		//重力と跳躍力を加算
+		model_->mat_.trans_.y_ += jumpPower_;
+		model_->mat_.trans_.y_ -= gravityPower_ * 0.7f;
+	}
+	else
+	{
+
+		//重力と跳躍力を加算
+		model_->mat_.trans_.y_ += jumpPower_;
+		model_->mat_.trans_.y_ -= gravityPower_;
+	}
 
 	//ジャンプアニメーション
 	JumpAnimation();
@@ -305,10 +296,6 @@ void Player::Jump()
 
 void Player::Attack(Shader shader)
 {
-	//playreの座標
-	playerAttack_.mat_.trans_ = model_->mat_.trans_;
-	playerAttack_.mat_.trans_.x_ += 1000;
-
 	//描画しない
 	attackF_ = false;
 
@@ -325,18 +312,12 @@ void Player::Attack(Shader shader)
 	//デッドゾ－ン超えてるか
 	if (moreLineX || moreLineY)
 	{
-		playerAttack_.mat_.trans_.x_ -= 1000;
-
 		//normalize
 		Rstick.normalize();
 
 		//移動値
 		float move = 30;
 		Vector3D movePos = { move * Rstick.x_, -(move * Rstick.y_),0 };
-
-		//移送
-		playerAttack_.mat_.trans_ += movePos;
-		playerAttack_.mat_.rotAngle_.z_ = movePos.normalize().x_;
 
 		//描画する
 		attackF_ = true;
@@ -1020,7 +1001,6 @@ void Player::SetCamera(Matrix matView, Matrix matProjection)
 {
 	//座標Update
 	model_->MatUpdate(matView, matProjection);
-	playerAttack_.MatUpdate(matView, matProjection);
 
 	for (size_t i = 0; i < attack_.size(); i++)
 	{

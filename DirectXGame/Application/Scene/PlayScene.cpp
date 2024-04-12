@@ -160,27 +160,17 @@ void PlayScene::Update()
 			}
 
 			//playerの攻撃との判定
-			if (object->BoxCollision(player_->GetAttackModel().mat_))
+			for (auto& attack : player_->GetAttack())
 			{
-				setStopTime += FIVE;
-				sound_->SoundPlayWave(hitSound_);
-				ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
+				if (object->BoxCollision(attack->GetMat()))
+				{
+					setStopTime += FIVE;
+					sound_->SoundPlayWave(hitSound_);
+					ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
 
-				Shake::GetInstance()->SetTime(30);
+					Shake::GetInstance()->SetTime(30);
+				}
 			}
-
-			////playerの攻撃との判定
-			//for (auto& attack : player_->GetAttack())
-			//{
-			//	if (object->BoxCollision(attack->GetMat()))
-			//	{
-			//		setStopTime += FIVE;
-			//		sound_->SoundPlayWave(hitSound_);
-			//		ParticleManager::GetInstance()->CreateBoxParticle(object->GetPos());
-
-			//		Shake::GetInstance()->SetTime(30);
-			//	}
-			//}
 		}
 
 		//保存したヒットストップの時間をセット
@@ -337,7 +327,7 @@ void PlayScene::Initialize()
 	//白画像
 	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
 	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
-	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Sprite/white1x1.png");
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
 	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
 
 	//カウント
@@ -389,7 +379,7 @@ void PlayScene::Draw()
 	screen_.Draw(blockTex_);
 
 	//Actor描画
-	player_->Draw(plyerTex_, plyerTex_);
+	player_->Draw(plyerTex_);
 
 	//ゴール描画
 	goal_->Draw(white_);

@@ -237,6 +237,9 @@
     <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp">
       <Filter>ソースファイル\UI</Filter>
     </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
@@ -451,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Ui\UiManager.h">
       <Filter>ヘッダーファイル\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -122,7 +122,7 @@ void GameOverScene::Draw()
 	screen_.Draw(blockTex_);
 
 	//Actor描画
-	player_->Draw(plyerTex_, plyerTex_);
+	player_->Draw(plyerTex_);
 
 	//
 	overPng_->Draw(overTex_);

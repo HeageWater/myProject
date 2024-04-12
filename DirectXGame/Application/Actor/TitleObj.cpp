@@ -57,6 +57,25 @@ bool TitleObj::BoxCollision(Model model)
 	return false;
 }
 
+bool TitleObj::BoxCollision(Model* model)
+{
+	Vector3D obj = titleObj_.mat_.trans_;
+	float scale = titleObj_.mat_.scale_.x_;
+
+	float a = (model->mat_.trans_.x_ - obj.x_) * (model->mat_.trans_.x_ - obj.x_);
+	float b = (model->mat_.trans_.y_ - obj.y_) * (model->mat_.trans_.y_ - obj.y_);
+
+	float c = model->mat_.scale_.x_ * scale;
+
+	//あたり判定
+	if (a + b < c)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void TitleObj::Reset()
 {
 	titleObj_.mat_.Initialize();

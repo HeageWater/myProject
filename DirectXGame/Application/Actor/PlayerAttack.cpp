@@ -19,6 +19,12 @@ void PlayerAttack::Initialize(MyDirectX* dx_, Shader shader, GPipeline* pipeline
 	//modelを制作
 	model_ = std::make_unique<Model>();
 
+	//モデル読み込み
+	//ModelManager::GetInstance()->LoadModel("Resources\\Model\\Player\\Player.obj");
+
+	//モデルセット
+	//model_ = SetModel("Resources\\Model\\Attack\\attack2.obj");
+
 	model_->Initialize(dx_, shader, "Resources\\Model\\Attack\\attack2.obj", pipeline_);
 
 	model_->mat_.Initialize();

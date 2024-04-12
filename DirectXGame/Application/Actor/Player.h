@@ -33,7 +33,7 @@ public:
 	/// </summary>
 	/// <param name="tex"></param>
 	/// <param name="tex2"></param>
-	void Draw(size_t tex, size_t tex2);
+	void Draw(size_t tex);
 
 	/// <summary>
 	/// プレイヤー基準でカメラ動かす
@@ -99,37 +99,10 @@ public:
 	//Model* GetModel() { return model_; };
 
 	/// <summary>
-	/// 攻撃のposを返す
-	/// </summary>
-	/// <returns></returns>
-	Vector3D GetAttackPos() { return playerAttack_.mat_.trans_; };
-
-	/// <summary>
-	/// 攻撃のrotationを返す
-	/// </summary>
-	/// <returns></returns>
-	Vector3D GetAttackRot() { return playerAttack_.mat_.rotAngle_; };
-
-	/// <summary>
-	/// 攻撃のscaleを返す
-	/// </summary>
-	/// <returns></returns>
-	Vector3D GetAttackScale() { return playerAttack_.mat_.scale_; };
-
-	/// <summary>
-	/// 攻撃のmodelを返す
-	/// </summary>
-	/// <returns></returns>
-	Model GetAttackModel() { return playerAttack_; };
-
-	/// <summary>
 	/// 
 	/// </summary>
 	/// <returns></returns>
-	std::vector<PlayerAttack*> GetAttack()
-	{
-		return attack_;
-	}
+	std::vector<PlayerAttack*> GetAttack() { return attack_; }
 
 	/// <summary>
 	/// 攻撃を敵の判定
@@ -310,12 +283,6 @@ private:
 
 	//ジャンプ音
 	size_t jumpSE_ = 0;
-
-	//モデルデータ
-	//Model model_;
-
-	//攻撃用モデルデータ
-	Model playerAttack_;
 
 	//攻撃を何個も作成するための変数
 	std::vector<PlayerAttack*> attack_;

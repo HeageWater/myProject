@@ -46,6 +46,11 @@ public:
 	bool BoxCollision(Model model);
 
 	/// <summary>
+	/// 
+	/// </summary>
+	bool BoxCollision(Model* model);
+
+	/// <summary>
 	/// リセット
 	/// </summary>
 	void Reset();
