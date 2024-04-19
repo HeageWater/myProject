@@ -1,6 +1,6 @@
 #include "ChengeScene.h"
 #include "Easing.h"
-#include"SceneManager.h"
+#include "SceneManager.h"
 
 void ChengeScene::Initialize(Matrix matProjection)
 {
@@ -21,6 +21,7 @@ void ChengeScene::Initialize(Matrix matProjection)
 	//カラー
 	sprite_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 
+	//カラー
 	color_ = { 0.0f,0.0f,0.0f,0.0f };
 }
 
@@ -111,7 +112,7 @@ void ChengeScene::Reset()
 	time_ = 0;
 }
 
-//プレイフラグを外部からOnにする
+//プレイフラグを外部からonにする
 void ChengeScene::SetPlayFlag(std::string next)
 {
 	if (!isPlayFlag_)

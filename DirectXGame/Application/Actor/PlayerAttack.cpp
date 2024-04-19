@@ -115,7 +115,7 @@ void PlayerAttack::SetUpdate()
 
 	if (vec_.x_ > 0)
 	{
-		angle *= 2;
+		angle *= 3.1415f;
 	}
 
 	vec_.normalize();

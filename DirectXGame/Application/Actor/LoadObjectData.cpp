@@ -7,7 +7,9 @@ void LoadObjectData::Initialize()
 
 	//基本画像
 	enemyTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/ene/enemy.png");
-	stageTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
+	//stageTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/blockNormal.png");
+	stageTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/block.png");
+	//stageTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/floor.png");
 }
 
 void LoadObjectData::Update()

@@ -43,9 +43,6 @@ LevelData* JsonFileOpen::FileOpen(const std::string& fileName)
 	//レベルデータ格納用インスタンスを生成
 	LevelData* levelData = new LevelData();
 
-	//再帰
-	//levelData = CheckObjects(deserialised, levelData);
-
 	//objectsの全オブジェクトを走査
 	for (nlohmann::json& object : deserialised["object"])
 	{
@@ -157,41 +154,6 @@ LevelData* JsonFileOpen::CheckObjects(nlohmann::json deserialised, LevelData* le
 
 			//transform格納
 			SetMatrix(transform, objectData);
-		}
-
-		//子がいるか
-		if (object.contains("children"))
-		{
-			////チェック
-			//assert(object.contains("type"));
-
-			////種別を取得
-			//std::string type = object["type"].get<std::string>();
-
-			////種別の処理
-
-			////Mesh
-			//if (type.compare("MESH") == 0)
-			//{
-			//	//要素追加
-			//	levelData->objects.emplace_back(LevelData::ObjectData{});
-
-			//	//今追加した要素の参照を得る
-			//	LevelData::ObjectData& objectData = levelData->objects.back();
-
-			//	//ファイルネームだったら
-			//	if (object.contains("file_name"))
-			//	{
-			//		//ファイル名
-			//		objectData.fileName = object["file_name"];
-			//	}
-
-			//	//Transformのパラメータ読み込み
-			//	nlohmann::json& transform = object["transform"];
-
-			//	//transform格納
-			//	SetMatrix(transform, objectData);
-			//}
 		}
 	}
 

@@ -1,5 +1,6 @@
 #include "TitleObj.h"
 #include "Easing.h"
+#include <cmath>
 
 TitleObj::TitleObj()
 {
@@ -42,7 +43,7 @@ bool TitleObj::BoxCollision(Model model)
 {
 	Vector3D obj = titleObj_.mat_.trans_;
 	float scale = titleObj_.mat_.scale_.x_;
-
+	
 	float a = (model.mat_.trans_.x_ - obj.x_) * (model.mat_.trans_.x_ - obj.x_);
 	float b = (model.mat_.trans_.y_ - obj.y_) * (model.mat_.trans_.y_ - obj.y_);
 
@@ -60,7 +61,7 @@ bool TitleObj::BoxCollision(Model model)
 bool TitleObj::BoxCollision(Model* model)
 {
 	Vector3D obj = titleObj_.mat_.trans_;
-	float scale = titleObj_.mat_.scale_.x_;
+	float scale = titleObj_.mat_.scale_.x_ * 3;
 
 	float a = (model->mat_.trans_.x_ - obj.x_) * (model->mat_.trans_.x_ - obj.x_);
 	float b = (model->mat_.trans_.y_ - obj.y_) * (model->mat_.trans_.y_ - obj.y_);
@@ -74,6 +75,26 @@ bool TitleObj::BoxCollision(Model* model)
 	}
 
 	return false;
+
+	//// OBBの方向ベクトルeb2を分離軸と設定（すでに標準化されているとします）
+	//Vector3D L = titleObj_.mat_.trans_ - model->mat_.trans_;
+
+	//// OBB Aの軸を取得（軸の長さに定数倍します）
+	//Vector3D ea1 = model->mat_.scale_;
+	//Vector3D ea2 = titleObj_.mat_.scale_;
+
+	//// rAおよびrBを算出
+	//FLOAT ra = fabs((L.dot(ea1))) + fabs((L.dot(ea2)));
+	//FLOAT rb = fabs((L.dot(ea1))) + fabs((L.dot(ea2)));
+
+	//// 中心点間の距離を算出
+	//FLOAT Interval = fabs(((L.dot(titleObj_.mat_.trans_ - model->mat_.trans_))));
+
+	//// 衝突判定
+	//if (Interval < ra + rb)
+	//	return true;   // 衝突
+
+	//return false;   // 衝突していない
 }
 
 void TitleObj::Reset()
