@@ -109,8 +109,4 @@ private:
 
 	//コントローラー
 	Controller* controller_ = nullptr;
-
-	//
-	Model model1_;
-	Model model2_;
 };

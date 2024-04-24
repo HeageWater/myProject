@@ -131,7 +131,7 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 	//左スティックの角度代入
 	colVec_ = { controller_->GetLeftStickVec(Vector2D(0.3f,0.3f)).x_, 0,0 };
 
-	float line = 0.1f;
+	float line = 0.3f;
 
 	bool prus = colVec_.x_ >= 0.0f;
 
@@ -303,7 +303,7 @@ void Player::Attack(Shader shader)
 	Vector2D Rstick = controller_->GetRightStickVec();
 
 	//最低ライン
-	Vector2D minLine = { 0.4f,0.4f };
+	Vector2D minLine = { 0.75f,0.75f };
 
 	//デッドゾ－ン超えてるか
 	bool moreLineX = minLine.x_ < Rstick.x_ || -minLine.x_ > Rstick.x_;

@@ -103,8 +103,9 @@ private:
 
 	//現在のステージ数
 	uint32_t stageCount_ = 0;
+
 	//ステージの最大数
-	const uint32_t MaxStageCount_ = 2;
+	const uint32_t MaxStageCount_ = 4;
 
 	//
 	bool blackOutFlag_ = false;

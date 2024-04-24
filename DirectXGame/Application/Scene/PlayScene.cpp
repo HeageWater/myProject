@@ -52,6 +52,32 @@ void PlayScene::Update()
 		stageCount_ = 1;
 	}
 
+	if (ImGui::Button("stage3"))
+	{
+		LoadObjectData::GetInstance()->StageLoad("stage3");
+
+		//開始地点をセット
+		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+		//ゴール初期化
+		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+		stageCount_ = 2;
+	}
+
+	if (ImGui::Button("stage4"))
+	{
+		LoadObjectData::GetInstance()->StageLoad("stage4");
+
+		//開始地点をセット
+		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
+
+		//ゴール初期化
+		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
+
+		stageCount_ = 3;
+	}
+
 	if (ImGui::Button("stageLIBLADE"))
 	{
 		LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
@@ -62,7 +88,7 @@ void PlayScene::Update()
 		//ゴール初期化
 		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
 
-		stageCount_ = 2;
+		stageCount_ = 4;
 	}
 
 	//+x
@@ -186,16 +212,21 @@ void PlayScene::Update()
 			ParticleManager::GetInstance()->CreateCircleParticle(player_->GetPos());
 		}
 
+		//プレイヤーの先が見えるようにするボタン
+		float camera = 25;
+		float cameraX = (controller_->GetInstance()->ButtonKeepPush(B) * camera) - (controller_->GetInstance()->ButtonKeepPush(X) * camera);
+		float cameraY = (controller_->GetInstance()->ButtonKeepPush(Y) * camera) - (controller_->GetInstance()->ButtonKeepPush(A) * camera);
+
 		//targetをplayerに
-		matView_.eye_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_;
-		matView_.target_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_;
+		matView_.eye_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_ + cameraX;
+		matView_.target_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_ + cameraX;
 
 		//playerのyからどれくらい離すか
 		const float prusTargetY = 10;
 
 		//カメラに揺れを追加
-		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_;
-		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_;
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_ + cameraY;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_ + cameraY;
 
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
@@ -325,7 +356,7 @@ void PlayScene::Initialize()
 	ParticleManager::GetInstance()->SetDraw(shader_, pipeline_.get());
 
 	//白画像
-	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/back.png");
 	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
 	blackTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/black.png");
@@ -438,6 +469,14 @@ void PlayScene::BlackOut()
 					LoadObjectData::GetInstance()->StageLoad("stage2");
 				}
 				else if (stageCount_ == TWO)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stage3");
+				}
+				else if (stageCount_ == THREE)
+				{
+					LoadObjectData::GetInstance()->StageLoad("stage4");
+				}
+				else if (stageCount_ == FOUR)
 				{
 					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
 				}

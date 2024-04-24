@@ -105,33 +105,18 @@ bool BulletEnemy::BoxCollision(MyMath::ObjMatrix model)
 {
 	if (deadVec_ == false)
 	{
-		float a = (model.trans_.x_ - model_->mat_.trans_.x_) * (model.trans_.x_ - model_->mat_.trans_.x_);
-		float b = (model.trans_.y_ - model_->mat_.trans_.y_) * (model.trans_.y_ - model_->mat_.trans_.y_);
+		//scale
+		float Scale = (model_->mat_.scale_.x_ + model.scale_.x_);
 
-		float c = model.scale_.x_ + model_->mat_.scale_.x_ * 100;
+		//判定
+		float Dist = (model_->mat_.trans_ - model.trans_).length();
 
 		//あたり判定
-		if (a + b < c * (float)TWO)
+		if (Dist <= Scale)
 		{
 			float spd = FIVE;
 			vec_ = model.trans_ - model_->mat_.trans_;
 			vec_.normalize();
-			vec_ *= spd;
-			deadVec_ = true;
-
-			return true;
-		}
-
-		a = (-model.trans_.x_ - model_->mat_.trans_.x_) * (-model.trans_.x_ - model_->mat_.trans_.x_);
-		b = (-model.trans_.y_ - model_->mat_.trans_.y_) * (-model.trans_.y_ - model_->mat_.trans_.y_);
-
-		c = model.scale_.x_ + model_->mat_.scale_.x_;
-
-		//あたり判定
-		if (a + b < c)
-		{
-			float spd = FIVE;
-			vec_ = model.trans_ - model_->mat_.trans_;
 			vec_ *= spd;
 			deadVec_ = true;
 

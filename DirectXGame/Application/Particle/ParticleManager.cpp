@@ -117,6 +117,41 @@ void ParticleManager::CreateCircleParticle(Vector3D pos)
 	}
 }
 
+void ParticleManager::CreateWallParticle(Vector3D pos)
+{
+	//飛び散る範囲の最小値,最大値
+	size_t minRange = 10;
+	size_t maxRange = 30;
+
+	//どれくらい飛び散るかの値
+	size_t play = MyMath::GetRandom(minRange, maxRange);
+	//10で微妙
+	play = 5;
+
+	for (size_t i = 0; i < play; i++)
+	{
+		//仮クラス制作
+		Particle* newP = new Particle();
+
+		//初期化
+		newP->Initialize(shader_, pipeline_);
+
+		//場所をセット
+		newP->SetPos(pos);
+
+		//格納
+		particles_.push_back(newP);
+
+		//リストに要素追加
+		//particles_.emplace_front();
+
+		//追加した要素の参照
+		//Particle& p = particles_.front();
+
+		//値の設定
+	}
+}
+
 void ParticleManager::SetCamera(Matrix matview, Matrix matProdaction)
 {
 	matview_ = matview;

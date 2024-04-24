@@ -1,6 +1,8 @@
 #pragma once
 
-class
+class StageManager
 {
+public:
 
+private:
 };

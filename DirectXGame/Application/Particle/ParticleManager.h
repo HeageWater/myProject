@@ -41,6 +41,12 @@ public:
 	void CreateCircleParticle(Vector3D pos);
 
 	/// <summary>
+	/// 壁に当たってるときに出す
+	/// </summary>
+	/// <param name="pos"></param>
+	void CreateWallParticle(Vector3D pos);
+
+	/// <summary>
 	/// ViewやProdactionを送る
 	/// </summary>
 	void SetCamera(Matrix matview, Matrix matProdaction);
