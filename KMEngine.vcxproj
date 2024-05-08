@@ -103,7 +103,6 @@
     <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BossEnemy.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\DescriptorHeap.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
@@ -172,11 +171,10 @@
     <ClCompile Include="DirectXGame\Application\Actor\MoviePlayer.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp" />
     <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp" />
-    <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="DirectXGame\Application\Actor\StageManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">
@@ -284,7 +282,7 @@
     <ClInclude Include="DirectXGame\Engine\Object\ModelManager.h" />
     <ClInclude Include="DirectXGame\Application\Scene\TutorialScene.h" />
     <ClInclude Include="DirectXGame\Application\Ui\UiManager.h" />
-    <ClInclude Include="StageManager.h" />
+    <ClInclude Include="DirectXGame\Application\Actor\StageManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

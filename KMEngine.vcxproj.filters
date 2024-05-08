@@ -210,9 +210,6 @@
     <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\BaseEnemy.cpp">
-      <Filter>ソースファイル\Actor\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp">
       <Filter>ソースファイル\Actor\Enemy</Filter>
     </ClCompile>
@@ -225,9 +222,6 @@
     <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp">
       <Filter>ソースファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\GameModel.cpp">
-      <Filter>ソースファイル\Model</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp">
       <Filter>ソースファイル\Model</Filter>
     </ClCompile>
@@ -237,7 +231,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp">
       <Filter>ソースファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="StageManager.cpp">
+    <ClCompile Include="DirectXGame\Application\Actor\StageManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -455,7 +449,7 @@
     <ClInclude Include="DirectXGame\Application\Ui\UiManager.h">
       <Filter>ヘッダーファイル\Ui</Filter>
     </ClInclude>
-    <ClInclude Include="StageManager.h">
+    <ClInclude Include="DirectXGame\Application\Actor\StageManager.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

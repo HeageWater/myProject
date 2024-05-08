@@ -12,8 +12,12 @@ void PlayScene::Update()
 	ImguiManager::GetInstance()->Begin();
 	float test1 = 0.5f;
 
+	Vector2D con = controller_->GetInstance()->GetRightStickVec();
+
 	ImGui::Text("test");
 	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
+	ImGui::SliderFloat("RstickX", &con.x_, 0.01f, 0.99f);
+	ImGui::SliderFloat("RstickY", &con.y_, 0.01f, 0.99f);
 
 	//titleSceneheへ
 	if (ImGui::Button("TITLE"))

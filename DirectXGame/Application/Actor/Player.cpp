@@ -159,14 +159,11 @@ void Player::Update(Matrix matView, Matrix matProjection, Shader shader)
 		WallRightKick();
 		WallLeftKick();
 
-		leftKick_ = false;
-		rightKick_ = false;
-
 		//壁キック分加算
 		colVec_ += kickVec_;
 
 		//ノックバック
-		//KnockBack();
+		KnockBack();
 
 		//座標に演算
 		//player_.mat.trans += colVec;
@@ -386,6 +383,8 @@ void Player::WallRightKick()
 		kickVec_.y_ = moveY;
 		rightKick_ = false;
 	}
+
+	rightKick_ = false;
 }
 
 void Player::WallLeftKick()
@@ -426,6 +425,8 @@ void Player::WallLeftKick()
 		kickVec_.y_ = moveY;
 		leftKick_ = false;
 	}
+
+	leftKick_ = false;
 }
 
 void Player::SetDeadAnimation()

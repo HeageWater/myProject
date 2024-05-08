@@ -10,6 +10,8 @@ void GameCamera::Initialize(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void GameCamera::Update()
 {
+	//カメラ更新
+	matView_.MatUpdate();
 	//matView_ = MyMath::LookAtLH(eye_, target_, up_);
 }
 
