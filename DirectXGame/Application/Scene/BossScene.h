@@ -21,11 +21,12 @@
 
 #include "LoadObjectData.h"
 #include "ParticleManager.h"
+#include "BossEnemy.h"
 
 /// <summary>
 /// 基本的なゲーム用シーン
 /// </summary>
-class PlayScene : public BaseScene
+class BossScene : public BaseScene
 {
 private:
 	//キーボード
@@ -42,6 +43,9 @@ private:
 
 	//player
 	std::unique_ptr<Player> player_;
+
+	//Boss
+	std::unique_ptr<BossEnemy> bossEnemy_;
 
 	Goal* goal_ = new Goal();
 
@@ -72,6 +76,9 @@ private:
 	size_t texP_ = 0;
 	size_t blackTex_ = 0;
 
+	//タイム
+	size_t time_;
+
 	//sprite
 	SpriteCommon* normalSpriteCommon_ = new  SpriteCommon();
 	Sprite* sprite_ = new Sprite();
@@ -85,38 +92,19 @@ private:
 	//BGM
 	size_t hitSound_;
 
+	//カラー
+	Vector4D color_ = { 0,0,0,0 };
+
+	//
+	bool blackOutFlag_ = false;
+
 	//
 	bool movieF_ = false;
-
-	//
-	size_t time_ = 0;
-
-	//
-	//std::vector<BoxParticle*> boxParticles_;
 
 	//ムービー
 	bool movieClearFlag_;
 	bool movieOverFlag_;
 
-	//カラー
-	Vector4D color_ = { 0,0,0,0 };
-
-	//現在のステージ数
-	uint32_t stageCount_ = 0;
-
-	//ステージの最大数
-	const uint32_t MaxStageCount_ = 4;
-
-	//
-	bool blackOutFlag_ = false;
-
-	//先カメラテスト用変数
-	float moveCameraX = 0;
-	float moveCameraY = 0;
-
-	//先確認用カメラ
-	//float cameraX = 0;
-	//float cameraY = 0;
 public:
 
 	/// <summary>

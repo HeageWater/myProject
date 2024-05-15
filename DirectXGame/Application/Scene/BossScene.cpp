@@ -1,10 +1,10 @@
-#include "PlayScene.h"
+#include "BossScene.h"
 #include "imgui.h"
 #include "ChengeScene.h"
 #include "Enum.h"
 #include "UiManager.h"
 
-void PlayScene::Update()
+void BossScene::Update()
 {
 #ifdef _DEBUG
 
@@ -41,58 +41,6 @@ void PlayScene::Update()
 	if (ImGui::Button("GAMEOVER"))
 	{
 		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
-	}
-
-	if (ImGui::Button("stage2"))
-	{
-		LoadObjectData::GetInstance()->StageLoad("stage2");
-
-		//開始地点をセット
-		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
-		//ゴール初期化
-		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
-
-		stageCount_ = 1;
-	}
-
-	if (ImGui::Button("stage3"))
-	{
-		LoadObjectData::GetInstance()->StageLoad("stage3");
-
-		//開始地点をセット
-		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
-		//ゴール初期化
-		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
-
-		stageCount_ = 2;
-	}
-
-	if (ImGui::Button("stage4"))
-	{
-		LoadObjectData::GetInstance()->StageLoad("stage4");
-
-		//開始地点をセット
-		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
-		//ゴール初期化
-		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
-
-		stageCount_ = 3;
-	}
-
-	if (ImGui::Button("stageLIBLADE"))
-	{
-		LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
-
-		//開始地点をセット
-		player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
-
-		//ゴール初期化
-		goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
-
-		stageCount_ = 4;
 	}
 
 	//+x
@@ -223,41 +171,18 @@ void PlayScene::Update()
 		float cameraX = (controller_->GetInstance()->ButtonKeepPush(B) * camera) - (controller_->GetInstance()->ButtonKeepPush(X) * camera);
 		float cameraY = (controller_->GetInstance()->ButtonKeepPush(Y) * camera) - (controller_->GetInstance()->ButtonKeepPush(A) * camera);
 
-		Vector2D leftVec= controller_->GetLeftStickVec();
-
-		//カメラが先に行く
-		if (leftVec.x_ > 0.7)
-			moveCameraX++;
-		else if (leftVec.x_ < -0.7)
-			moveCameraX--;
-		else
-		{
-			if (moveCameraX > 0)
-				moveCameraX--;
-			else if (moveCameraX < 0)
-				moveCameraX++;
-			else
-				moveCameraX = 0;
-		}
-
-		//moveCameraY += 0;
-		const float maxCamera = 15;
-
-		if (moveCameraX > maxCamera)
-			moveCameraX = maxCamera;
-		if (moveCameraX < -maxCamera)
-			moveCameraX = -maxCamera;
+		Vector2D leftVec = controller_->GetLeftStickVec();
 
 		//targetをplayerに
-		matView_.eye_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_ + cameraX + moveCameraX;
-		matView_.target_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_ + cameraX + moveCameraX;
+		matView_.eye_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_ + cameraX;
+		matView_.target_.x_ = player_->GetPos().x_ + Shake::GetInstance()->GetShake().x_ + cameraX;
 
 		//playerのyからどれくらい離すか
 		const float prusTargetY = 10;
 
 		//カメラに揺れを追加
-		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_ + cameraY + moveCameraY;
-		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_ + cameraY + moveCameraY;
+		matView_.eye_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_ + cameraY;
+		matView_.target_.y_ = player_->GetPos().y_ + prusTargetY + Shake::GetInstance()->GetShake().y_ + cameraY;
 
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
@@ -283,19 +208,7 @@ void PlayScene::Update()
 		//GameClear条件が達成されたら
 		if (checkGoal && !blackOutFlag_)
 		{
-			//ステージの最大数より多いか
-			if (MaxStageCount_ > stageCount_)
-			{
-				//ステージカウントプラス
-				stageCount_++;
-
-				//ブラックアウト
-				blackOutFlag_ = true;
-			}
-			else
-			{
-				movieClearFlag_ = true;
-			}
+			movieClearFlag_ = true;
 		}
 
 		//GameOver条件が達成されたら
@@ -310,8 +223,7 @@ void PlayScene::Update()
 		//GameClear条件が達成されたら
 		if (movieClearFlag_)
 		{
-			//ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
-			ChengeScene::GetInstance()->SetPlayFlag("BOSS");
+			ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
 		}
 
 		//GameOver条件が達成されたら
@@ -333,7 +245,7 @@ void PlayScene::Update()
 	UiManager::GetInstance()->SetLife(player_->GetLife());
 }
 
-void PlayScene::Initialize()
+void BossScene::Initialize()
 {
 	//描画用行列
 	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
@@ -427,7 +339,7 @@ void PlayScene::Initialize()
 	Shake::GetInstance()->Initalize();
 }
 
-void PlayScene::Draw()
+void BossScene::Draw()
 {
 	//Draw
 	MyDirectX::GetInstance()->PrevDrawScreen();
@@ -474,13 +386,13 @@ void PlayScene::Draw()
 	MyDirectX::GetInstance()->PostDraw();
 }
 
-void PlayScene::Finalize()
+void BossScene::Finalize()
 {
 	//パーティクル削除
 	ParticleManager::GetInstance()->Finalize();
 }
 
-void PlayScene::BlackOut()
+void BossScene::BlackOut()
 {
 	//ブラックアウト
 	if (blackOutFlag_)
@@ -495,30 +407,13 @@ void PlayScene::BlackOut()
 
 			if (color_.x_ >= 1.0f)
 			{
-				//ステージ読み込み
-				if (stageCount_ == ONE)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stage2");
-				}
-				else if (stageCount_ == TWO)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stage3");
-				}
-				else if (stageCount_ == THREE)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stage4");
-				}
-				else if (stageCount_ == FOUR)
-				{
-					LoadObjectData::GetInstance()->StageLoad("stageLIBLADE");
-				}
-
 				//開始地点をセット
 				player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
 
 				//ゴール初期化
 				goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
 
+				//
 				blackOutFlag_ = false;
 			}
 		}

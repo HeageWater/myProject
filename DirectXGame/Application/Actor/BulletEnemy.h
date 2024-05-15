@@ -11,7 +11,7 @@ public://継承しているもの
 	/// </summary>
 	/// <param name="shader"></param>
 	/// <param name="pipeline_"></param>
-	void Initialize(Shader shader, GPipeline* pipeline_)override;
+	void Initialize(Shader shader, GPipeline* pipeline)override;
 
 	/// <summary>
 	/// 描画

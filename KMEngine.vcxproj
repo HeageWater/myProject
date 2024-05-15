@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Application\Scene\BossScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\BossEnemy.cpp" />
@@ -211,6 +212,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Application\Scene\BossScene.h" />
     <ClInclude Include="DirectXGame\Application\Actor\Bullet.h" />
     <ClInclude Include="DirectXGame\Application\Actor\BulletEnemy.h" />
     <ClInclude Include="DirectXGame\Application\Actor\BossEnemy.h" />
