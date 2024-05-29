@@ -3,10 +3,6 @@
 #include "Input.h"
 #include "Controller.h"
 #include "Sound.h"
-#include "Player.h"
-#include "TitleObj.h"
-#include "HitStop.h"
-#include "LoadObjectData.h"
 
 /// <summary>
 /// ゲームのタイトルシーン
@@ -48,10 +44,6 @@ private:
 	//screen
 	Square screen_;
 
-	//player
-	//Player* player_ = new Player();
-	std::unique_ptr<Player> player_;
-
 	//描画用行列
 	MyMath::MatView matView_;
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(
@@ -67,43 +59,12 @@ private:
 	//描画初期化
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
-	//tex
-	size_t blackTex_ = 0;
-	size_t whiteTex_ = 0;
-	//注意事項
-	size_t tutorialTex_ = 0;
-
-	size_t pressTex_ = 0;
-	size_t aButtonTex_ = 0;
-
 	//sprite
 	SpriteCommon* spriteCommon_ = new  SpriteCommon();
-	Sprite* tutorial_ = new Sprite();
-
-	Sprite* press_ = new Sprite();
-	Sprite* aButton_ = new Sprite();
 
 	Vector4D color_ = { 0,0,0,0 };
 
 	//shader
 	Shader shader_;
 	Shader bilShader_;
-
-	//BGM
-	size_t hitSound_;
-
-	//hitstop
-	HitStop* hitStop_ = new HitStop();
-
-	//3Dタイトル
-	TitleObj* titleObject = new TitleObj();
-
-	//
-	float hozon[4] = { 0,0,0,0 };
-
-	//カウント用
-	size_t time_ = 0;
-
-	//
-	bool wait_;
 };

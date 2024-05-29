@@ -3,11 +3,6 @@
 #include "Input.h"
 #include "Controller.h"
 #include "Sound.h"
-#include "Player.h"
-#include "MoviePlayer.h"
-#include "TitleObj.h"
-
-#include "LoadObjectData.h"
 
 /// <summary>
 /// ゲームのタイトルシーン
@@ -49,9 +44,6 @@ private:
 	//screen
 	Square screen_;
 
-	//player
-	MoviePlayer* moiePlayer_ = new MoviePlayer();
-
 	//描画用行列
 	MyMath::MatView matView_;
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(
@@ -67,21 +59,14 @@ private:
 	//描画初期化
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
-	//tex
-	size_t clearTex_ = 0;
-	size_t plyerTex_ = 0;
-	size_t blockTex_ = 0;
-
 	//shader
 	Shader shader_;
 	Shader bilShader_;
 
+	//tex
+	size_t whiteTex_;
+
 	//sprite
 	SpriteCommon* normalSpriteCommon_ = new  SpriteCommon();
 	Sprite* sprite_ = new Sprite();
-
-	Sprite* clearPng_ = new Sprite();
-
-	bool ClearGravity = false;
-	bool notP = false;
 };

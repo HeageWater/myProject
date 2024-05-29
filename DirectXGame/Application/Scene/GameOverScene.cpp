@@ -46,9 +46,7 @@ void GameOverScene::Initialize()
 	matView_.Init(Vector3D(0.0f, 60.0f, -50.0f), Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 1.0f, 0.0f));
 
 	//
-	overTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/gameover.png");
-	plyerTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/Model/Player/Player.png");
-	blockTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/background.png");
+	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
 
 	//shader
 	shader_.Initizlize(L"Resources/shader/BasicVS.hlsl", L"Resources/shader/BasicPS.hlsl");
@@ -67,20 +65,11 @@ void GameOverScene::Initialize()
 	screen_.obj_.trans_.z_ = 100.1f;
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
 
-	//player
-	player_->Initialize(shader_, pipeline_.get());
-
 	//透過するかどうか
 	normalSpriteCommon_->Inilialize(MyDirectX::GetInstance(), true);
 
 	//基礎
 	sprite_->Inilialize(normalSpriteCommon_, &matProjection_);
-
-	//
-	overPng_->Inilialize(normalSpriteCommon_, &matProjection_);
-	overPng_->position_ = { -680,-420,0 };
-	overPng_->scale_ = { 3600,1440,1 };
-	overPng_->SetColor(Vector4D(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void GameOverScene::Update()
@@ -89,19 +78,7 @@ void GameOverScene::Update()
 	screen_.MatUpdate(matView_.mat_, matProjection_, 0);
 
 	//
-	overPng_->Update();
-
-	if (input_->GetTrigger(DIK_SPACE) || controller_->ButtonTriggerPush(A))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
-	}
-
-	//
 	controller_->Update();
-
-	//
-	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
-	LoadObjectData::GetInstance()->Update();
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
@@ -119,13 +96,7 @@ void GameOverScene::Draw()
 	MyDirectX::GetInstance()->PrevDraw();
 
 	//スクリーン描画
-	screen_.Draw(blockTex_);
-
-	//Actor描画
-	player_->Draw(plyerTex_);
-
-	//
-	overPng_->Draw(overTex_);
+	screen_.Draw(whiteTex_);
 
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();

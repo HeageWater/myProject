@@ -100,32 +100,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Application\Scene\BossScene.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\BossEnemy.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\DescriptorHeap.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision\CollisionManager.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\BoxParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\ChengeScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\CircleParticle.cpp" />
     <ClCompile Include="DirectXGame\Application\Collision\Collision.cpp" />
     <ClCompile Include="DirectXGame\Engine\Math\Easing.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\LoadObjectData.cpp" />
     <ClCompile Include="DirectXGame\Application\main\MyGame.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\SceneFactory.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\FlameWork.cpp" />
-    <ClCompile Include="DirectXGame\Application\Scene\GameScene.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\ImguiManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\JsonFileOpen.cpp" />
     <ClCompile Include="DirectXGame\Application\main\main.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\Particle.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Player.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\ConstBuff.cpp" />
     <ClCompile Include="DirectXGame\Engine\Input\Controller.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\DirectX.cpp">
@@ -154,8 +144,6 @@
     <ClCompile Include="DirectXGame\Engine\DirectX\ViewPort.cpp" />
     <ClCompile Include="DirectXGame\Engine\DirectX\Window.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sound\Sound.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite\SpriteManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Camera\GameCamera.cpp" />
@@ -164,12 +152,9 @@
     <ClCompile Include="DirectXGame\Application\Camera\HitStop.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\Emitter.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\PlayScene.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp" />
     <ClCompile Include="DirectXGame\Application\Particle\ParticleManager.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameClearScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameOverScene.cpp" />
-    <ClCompile Include="DirectXGame\Application\Actor\MoviePlayer.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\Pause.cpp" />
     <ClCompile Include="DirectXGame\Engine\Sprite\TextureManager.cpp" />
     <ClCompile Include="DirectXGame\Engine\Object\ModelManager.cpp" />
@@ -212,33 +197,22 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Application\Scene\BossScene.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Bullet.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\BulletEnemy.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\BossEnemy.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\DescriptorHeap.h" />
     <ClInclude Include="DirectXGame\Application\Collision\CollisionManager.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Actor.h" />
     <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Particle\BoxParticle.h" />
     <ClInclude Include="DirectXGame\Application\Scene\ChengeScene.h" />
     <ClInclude Include="DirectXGame\Application\Particle\CircleParticle.h" />
     <ClInclude Include="DirectXGame\Application\Collision\Collision.h" />
     <ClInclude Include="DirectXGame\Engine\Math\Easing.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Enemy.h" />
     <ClInclude Include="DirectXGame\Application\Actor\LoadObjectData.h" />
     <ClInclude Include="DirectXGame\Application\main\MyGame.h" />
     <ClInclude Include="DirectXGame\Application\Scene\SceneFactory.h" />
     <ClInclude Include="DirectXGame\Application\Scene\SceneManager.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\FlameWork.h" />
-    <ClInclude Include="DirectXGame\Application\Scene\GameScene.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Goal.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\ImguiManager.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\JsonFileOpen.h" />
     <ClInclude Include="DirectXGame\Application\Particle\Particle.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Player.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\PlayerAttack.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\ConstBuff.h" />
     <ClInclude Include="DirectXGame\Engine\Input\Controller.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\DirectX.h" />
@@ -261,8 +235,6 @@
     <ClInclude Include="DirectXGame\Engine\DirectX\ViewPort.h" />
     <ClInclude Include="DirectXGame\Engine\DirectX\Window.h" />
     <ClInclude Include="DirectXGame\Engine\Sound\Sound.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Stage.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Skydome.h" />
     <ClInclude Include="DirectXGame\Engine\Sprite\Sprite.h" />
     <ClInclude Include="DirectXGame\Engine\Sprite\SpriteManager.h" />
     <ClInclude Include="DirectXGame\Application\Camera\GameCamera.h" />
@@ -271,13 +243,10 @@
     <ClInclude Include="DirectXGame\Application\Camera\HitStop.h" />
     <ClInclude Include="DirectXGame\Application\Particle\Emitter.h" />
     <ClInclude Include="DirectXGame\Application\Scene\PlayScene.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\Warp.h" />
     <ClInclude Include="DirectXGame\Application\Particle\ParticleManager.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameClearScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameOverScene.h" />
     <ClInclude Include="DirectXGame\Engine\Math\Enum.h" />
-    <ClInclude Include="DirectXGame\Application\Actor\MoviePlayer.h" />
     <ClInclude Include="DirectXGame\Application\Scene\Pause.h" />
     <ClInclude Include="DirectXGame\Engine\Sprite\TextureManager.h" />
     <ClInclude Include="DirectXGame\Application\Actor\GameModel.h" />

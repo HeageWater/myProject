@@ -4,8 +4,6 @@
 #include"PlayScene.h"
 #include"GameClearScene.h"
 #include"GameOverScene.h"
-#include"GameScene.h"
-#include"BossScene.h"
 
 //
 std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName)
@@ -33,10 +31,6 @@ std::unique_ptr<BaseScene> SceneCreate::CreateScene(const std::string& sceneName
 	else if (sceneName == "GAMEOVER")
 	{
 		newScene = new GameOverScene();
-	}
-	else if (sceneName == "BOSS")
-	{
-		newScene = new BossScene();
 	}
 
 	return std::unique_ptr<BaseScene>(newScene);

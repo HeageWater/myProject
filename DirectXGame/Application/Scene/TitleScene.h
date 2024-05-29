@@ -3,10 +3,6 @@
 #include "Input.h"
 #include "Controller.h"
 #include "Sound.h"
-#include "Player.h"
-#include "TitleObj.h"
-#include "HitStop.h"
-#include "LoadObjectData.h"
 
 /// <summary>
 /// ゲームのタイトルシーン
@@ -47,11 +43,6 @@ private:
 
 	//screen
 	Square screen_;
-	Square attack_;
-
-	//player
-	//Player* player_ = new Player();
-	std::unique_ptr<Player> player_;
 
 	//描画用行列
 	MyMath::MatView matView_;
@@ -69,10 +60,7 @@ private:
 	std::unique_ptr<GPipeline> multipathPipeline_;
 
 	//tex
-	size_t blockTex_ = 0;
-	size_t plyerTex_ = 0;
 	size_t whiteTex_ = 0;
-	size_t attackTex_ = 0;
 
 	//sprite
 	SpriteCommon* spriteCommon_ = new  SpriteCommon();
@@ -83,19 +71,4 @@ private:
 	//shader
 	Shader shader_;
 	Shader bilShader_;
-
-	//BGM
-	size_t hitSound_;
-
-	//hitstop
-	HitStop* hitStop_ = new HitStop();
-
-	//3Dタイトル
-	TitleObj* titleObject = new TitleObj();
-
-	float hozon[4] = { 0,0,0,0 };
-
-	size_t time_ = 0;
-
-	float moveY = 0;
 };

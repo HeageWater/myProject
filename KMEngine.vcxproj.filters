@@ -27,36 +27,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\Application\Actor\BossEnemy.cpp">
-      <Filter>ソースファイル\Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Actor.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Goal.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\MoviePlayer.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Player.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\PlayerAttack.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Skydome.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Stage.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\TitleObj.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Warp.cpp">
-      <Filter>ソースファイル\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Particle\CircleParticle.cpp">
       <Filter>ソースファイル\Particle</Filter>
     </ClCompile>
@@ -94,9 +64,6 @@
       <Filter>ソースファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Application\Scene\GameOverScene.cpp">
-      <Filter>ソースファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Scene\GameScene.cpp">
       <Filter>ソースファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Engine\DirectX\FlameWork.cpp">
@@ -207,15 +174,6 @@
     <ClCompile Include="DirectXGame\Engine\Object\Square.cpp">
       <Filter>ソースファイル\Model</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Enemy.cpp">
-      <Filter>ソースファイル\Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\BulletEnemy.cpp">
-      <Filter>ソースファイル\Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Actor\Bullet.cpp">
-      <Filter>ソースファイル\Actor\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp">
       <Filter>ソースファイル\Scene</Filter>
     </ClCompile>
@@ -234,38 +192,8 @@
     <ClCompile Include="DirectXGame\Application\Actor\StageManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Application\Scene\BossScene.cpp">
-      <Filter>ソースファイル\Scene</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\Application\Actor\BaseEnemy.h">
-      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Enemy.h">
-      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\MoviePlayer.h">
-      <Filter>ヘッダーファイル\Actor\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Player.h">
-      <Filter>ヘッダーファイル\Actor\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\PlayerAttack.h">
-      <Filter>ヘッダーファイル\Actor\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\TitleObj.h">
-      <Filter>ヘッダーファイル\Actor\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Actor.h">
-      <Filter>ヘッダーファイル\Actor\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Stage.h">
-      <Filter>ヘッダーファイル\Actor\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Warp.h">
-      <Filter>ヘッダーファイル\Actor\Object</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h">
       <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
@@ -273,9 +201,6 @@
       <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\GameOverScene.h">
-      <Filter>ヘッダーファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Scene\GameScene.h">
       <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\PlayScene.h">
@@ -362,9 +287,6 @@
     <ClInclude Include="DirectXGame\Engine\DirectX\Window.h">
       <Filter>ヘッダーファイル\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Goal.h">
-      <Filter>ヘッダーファイル\Actor\Object</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Application\Camera\GameCamera.h">
       <Filter>ヘッダーファイル\Camera</Filter>
     </ClInclude>
@@ -395,9 +317,6 @@
     <ClInclude Include="DirectXGame\Engine\Sprite\SpriteManager.h">
       <Filter>ヘッダーファイル\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Skydome.h">
-      <Filter>ヘッダーファイル\Actor\Object</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Math\Easing.h">
       <Filter>ヘッダーファイル\Effect</Filter>
     </ClInclude>
@@ -425,20 +344,11 @@
     <ClInclude Include="DirectXGame\Application\Actor\LoadObjectData.h">
       <Filter>ヘッダーファイル\LoadFile</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\BossEnemy.h">
-      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\BulletEnemy.h">
-      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\Pause.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engine\Sprite\TextureManager.h">
       <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Actor\Bullet.h">
-      <Filter>ヘッダーファイル\Actor\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\GameModel.h">
       <Filter>ヘッダーファイル</Filter>
@@ -454,9 +364,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Actor\StageManager.h">
       <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Scene\BossScene.h">
-      <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -495,18 +402,6 @@
     </Filter>
     <Filter Include="ヘッダーファイル\Actor">
       <UniqueIdentifier>{aa1c777b-3f38-4147-aee6-cc5044f7d6db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダーファイル\Actor\Player">
-      <UniqueIdentifier>{700b86e0-4ccd-4099-868b-2cc89466a30f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダーファイル\Actor\Enemy">
-      <UniqueIdentifier>{1956fdb2-42cb-4508-b1fd-0957f14d1fb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダーファイル\Actor\Object">
-      <UniqueIdentifier>{6a4781d9-076f-45f1-84e1-b5fb6957b74e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダーファイル\Actor\Base">
-      <UniqueIdentifier>{a0f2d227-f17a-4c33-a7b4-33045f8b9753}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダーファイル\Scene">
       <UniqueIdentifier>{9fdd2b99-16e4-4bdb-a483-97e34206196b}</UniqueIdentifier>
@@ -552,9 +447,6 @@
     </Filter>
     <Filter Include="ソースファイル\Actor">
       <UniqueIdentifier>{6783a317-8373-463f-9d48-d85186c8fc79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソースファイル\Actor\Enemy">
-      <UniqueIdentifier>{29d480a0-f404-43cd-bca3-e4f15977f1cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソースファイル\DirectX">
       <UniqueIdentifier>{ba622d28-7c02-4859-bd62-7139ec74e01e}</UniqueIdentifier>

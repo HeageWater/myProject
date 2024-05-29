@@ -40,11 +40,6 @@ private:
 	//screen
 	Square screen_;
 
-	//player
-	std::unique_ptr<Player> player_;
-
-	Goal* goal_ = new Goal();
-
 	//描画用行列
 	MyMath::MatView matView_;
 	Matrix matProjection_ = MyMath::PerspectiveFovLH(
@@ -65,12 +60,7 @@ private:
 	Shader bilShader_;
 
 	//tex
-	size_t blockTex_ = 0;
-	size_t plyerTex_ = 0;
 	size_t whiteTex_ = 0;
-	size_t white_ = 0;
-	size_t texP_ = 0;
-	size_t blackTex_ = 0;
 
 	//sprite
 	SpriteCommon* normalSpriteCommon_ = new  SpriteCommon();
@@ -79,44 +69,8 @@ private:
 	//Sprite
 	Sprite* blackOut_ = new Sprite();
 
-	//hitstop
-	HitStop* hitStop_ = new HitStop();
-
-	//BGM
-	size_t hitSound_;
-
-	//
-	bool movieF_ = false;
-
-	//
-	size_t time_ = 0;
-
-	//
-	//std::vector<BoxParticle*> boxParticles_;
-
-	//ムービー
-	bool movieClearFlag_;
-	bool movieOverFlag_;
-
 	//カラー
 	Vector4D color_ = { 0,0,0,0 };
-
-	//現在のステージ数
-	uint32_t stageCount_ = 0;
-
-	//ステージの最大数
-	const uint32_t MaxStageCount_ = 4;
-
-	//
-	bool blackOutFlag_ = false;
-
-	//先カメラテスト用変数
-	float moveCameraX = 0;
-	float moveCameraY = 0;
-
-	//先確認用カメラ
-	//float cameraX = 0;
-	//float cameraY = 0;
 public:
 
 	/// <summary>
