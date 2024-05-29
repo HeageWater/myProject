@@ -36,6 +36,9 @@ void BossEnemy::Initialize(Shader shader, GPipeline* pipeline)
 
 	//画像読み込み
 	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/br.png");
+
+	//ヒットポイントセット
+	hitpoint = 20;
 }
 
 void BossEnemy::Draw()
@@ -46,6 +49,7 @@ void BossEnemy::Draw()
 
 void BossEnemy::Update(Matrix matView, Matrix matProjection)
 {
+
 
 
 	//カメラ位置などをセット

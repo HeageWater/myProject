@@ -31,6 +31,14 @@ public:
 	const bool GetIsDead() override;
 
 private:
+
+	void Move();
+
+	void Attack();
+
+	void GetLife();
+
+private:
 	Shader shader_;
 	GPipeline* pipeline_;
 

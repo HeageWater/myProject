@@ -187,6 +187,7 @@ void BossScene::Update()
 		//player更新
 		player_->Update(matView_.mat_, matProjection_, shader_);
 		goal_->Update(matView_.mat_, matProjection_);
+		bossEnemy_->Update(matView_.mat_, matProjection_);
 
 		//jsonファイルから読み込んだものの更新
 		LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
@@ -295,6 +296,8 @@ void BossScene::Initialize()
 	goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
 
 	//パーティクルマネージャー
+
+
 	ParticleManager::GetInstance()->Initalize();
 	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	ParticleManager::GetInstance()->SetDraw(shader_, pipeline_.get());
@@ -355,6 +358,9 @@ void BossScene::Draw()
 
 	//Actor描画
 	player_->Draw(plyerTex_);
+
+	//ボス描画
+	bossEnemy_->Draw();
 
 	//ゴール描画
 	goal_->Draw(white_);

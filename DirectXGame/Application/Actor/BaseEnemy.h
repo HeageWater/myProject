@@ -87,4 +87,6 @@ public:
 
 	//死んだときに吹っ飛ぶ
 	bool deadVec_ = false;
+
+	uint16_t hitpoint = 1;
 };
