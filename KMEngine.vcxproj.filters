@@ -192,6 +192,9 @@
     <ClCompile Include="DirectXGame\Application\Actor\StageManager.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソースファイル\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Scene\BaseScene.h">

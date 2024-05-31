@@ -161,6 +161,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\TutorialScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Ui\UiManager.cpp" />
     <ClCompile Include="DirectXGame\Application\Actor\StageManager.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\GeometryPS.hlsl">

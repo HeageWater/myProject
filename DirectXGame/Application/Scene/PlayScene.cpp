@@ -47,15 +47,19 @@ void PlayScene::Update()
 
 #endif _DEBUG
 
-		//カメラ更新
-		matView_.MatUpdate();
 
-		//スクリーン更新
-		screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
 
-		//パーティクル更新
-		ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
-		ParticleManager::GetInstance()->Update();
+
+
+	//カメラ更新
+	matView_.MatUpdate();
+
+	//スクリーン更新
+	screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
+
+	//パーティクル更新
+	ParticleManager::GetInstance()->SetCamera(matView_.mat_, matProjection_);
+	ParticleManager::GetInstance()->Update();
 
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
