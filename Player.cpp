@@ -13,7 +13,7 @@ Player::Player()
 	CollisionManager::GetInstance()->AddCollision(this);
 
 	model_->mat_.Initialize();
-	model_->mat_.scale_ = { 3,3,3 };
+	model_->mat_.scale_ = { 1,1,1 };
 
 	sound_ = nullptr;
 
@@ -27,7 +27,7 @@ Player::~Player()
 
 void Player::Initialize(Shader shader, GPipeline* pipeline)
 {
-ittan	pipeline_ = pipeline;
+	pipeline_ = pipeline;
 
 	//ModelManager::GetInstance()->LoadModel("Resources\\Model\\Player\\Player.obj");
 
@@ -37,10 +37,10 @@ ittan	pipeline_ = pipeline;
 	model_->Initialize(MyDirectX::GetInstance(), shader, "Resources\\skydome\\skydome.obj", pipeline_);
 
 	model_->mat_.Initialize();
-	model_->mat_.scale_ = { 100,100,100 };
+	model_->mat_.scale_ = { 1,1,1 };
 	model_->mat_.rotAngle_ = { 0,0,0 };
 	model_->mat_.trans_.x_ = 0;// 950;
-	model_->mat_.trans_.y_ = 11;
+	model_->mat_.trans_.y_ = 0;
 	model_->mat_.trans_.z_ = 0;
 
 	controller_ = Controller::GetInstance();

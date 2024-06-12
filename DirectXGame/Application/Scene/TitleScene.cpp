@@ -53,6 +53,7 @@ void TitleScene::Initialize()
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
 
 	//
+	player_ = std::make_unique<Player>();
 	player_->Initialize(shader_, pipeline_.get());
 }
 
@@ -100,8 +101,16 @@ void TitleScene::Debug()
 	ImguiManager::GetInstance()->Begin();
 	float test1 = 0.5f;
 
+	Vector3D scale = player_->GetScale();
+
 	ImGui::Text("test");
 	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
+	ImGui::SliderFloat("scaleX", &scale.x_, 0.01f, 50.99f);
+	ImGui::SliderFloat("scaleY", &scale.y_, 0.01f, 50.99f);
+	ImGui::SliderFloat("scaleZ", &scale.z_, 0.01f, 50.99f);
+
+	//
+	player_->SetScale(scale);
 
 	//titleSceneheへ
 	if (ImGui::Button("TITLE"))

@@ -81,6 +81,12 @@ public:
 	void SetPos(Vector3D pos) { model_->mat_.trans_ = pos; };
 
 	/// <summary>
+	/// scaleをセットする
+	/// </summary>
+	/// <param name="pos"></param>
+	void SetScale(Vector3D scale) { model_->mat_.scale_ = scale; };
+
+	/// <summary>
 	/// rotaionを返す
 	/// </summary>
 	/// <returns></returns>
