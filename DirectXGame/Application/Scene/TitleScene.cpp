@@ -14,6 +14,9 @@ void TitleScene::Update()
 	//スクリーン更新
 	screen_.MatUpdate(matView_.mat_, matProjection_, ZERO);
 
+	//
+	player_->Update(matView_.mat_, matProjection_);
+
 	//シーンチェンジ更新
 	ChengeScene::GetInstance()->Update();
 }
@@ -48,6 +51,9 @@ void TitleScene::Initialize()
 
 	//tex
 	whiteTex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources/sprite/white1x1.png");
+
+	//
+	player_->Initialize(shader_, pipeline_.get());
 }
 
 void TitleScene::Draw()
@@ -63,7 +69,10 @@ void TitleScene::Draw()
 
 	//スクリーン描画
 	screen_.Draw(whiteTex_);
-	 
+
+	//
+	player_->Draw();
+
 	//シーンチェンジ描画
 	ChengeScene::GetInstance()->Draw();
 
@@ -80,7 +89,7 @@ void TitleScene::Draw()
 
 void TitleScene::Finalize()
 {
-	
+
 }
 
 void TitleScene::Debug()

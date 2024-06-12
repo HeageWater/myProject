@@ -26,6 +26,7 @@ public:
 
 	//メインモデル
 	std::unique_ptr<Model>model_{};
+	//Model* modelTest_;
 
 	//画像
 	uint32_t modelTex_ = 0;
