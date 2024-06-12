@@ -8,6 +8,9 @@ void TitleScene::Update()
 	//デバッグ表示用
 	Debug();
 
+	matView_.eye_.x_ += input_->GetKey(DIK_D) - input_->GetKey(DIK_A);
+	matView_.eye_.z_ += input_->GetKey(DIK_W) - input_->GetKey(DIK_S);
+
 	//カメラ更新
 	matView_.MatUpdate();
 
@@ -42,6 +45,7 @@ void TitleScene::Initialize()
 	screen_.Initialize(pipeline_.get(), bilShader_);
 	screen_.obj_.trans_.z_ = 100.1f;
 	screen_.obj_.scale_ = { Window::window_width_ * 2,Window::window_height_ / 2,0.2f };
+	screen_.obj_.scale_ = { 0,0,0 };
 
 	//画像色
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
@@ -108,6 +112,8 @@ void TitleScene::Debug()
 	ImGui::SliderFloat("scaleX", &scale.x_, 0.01f, 50.99f);
 	ImGui::SliderFloat("scaleY", &scale.y_, 0.01f, 50.99f);
 	ImGui::SliderFloat("scaleZ", &scale.z_, 0.01f, 50.99f);
+	ImGui::SliderFloat("eyeX", &matView_.eye_.x_, 0.01f, 50.99f);
+	ImGui::SliderFloat("eyeZ", &matView_.eye_.z_, 0.01f, 50.99f);
 
 	//
 	player_->SetScale(scale);

@@ -132,44 +132,44 @@ void MyMath::MatView::Init(Vector3D _eye, Vector3D _target, Vector3D _up)
 
 void MyMath::MatView::MatUpdate()
 {
-	//float back = 120;
-	float back = 50;
+	////float back = 120;
+	//float back = 50;
 
-	if (eye_.x_ < back)
-	{
-		if (eye_.z_ > -back)
-		{
-			eye_.z_--;
-		}
-	}
-	else if (eye_.x_ > 33 && eye_.x_ < 114)
-	{
-		if (eye_.z_ > -150)
-		{
-			eye_.z_--;
-		}
-		else if(eye_.z_ < -150)
-		{
-			eye_.z_++;
-		}
-		else
-		{
-			eye_.z_ = -150;
-		}
-	}
-	/*else if (eye.x > 119)
-	{
-		if (eye.z > -250)
-		{
-			eye.z--;
-		}
-	}*/
+	//if (eye_.x_ < back)
+	//{
+	//	if (eye_.z_ > -back)
+	//	{
+	//		eye_.z_--;
+	//	}
+	//}
+	//else if (eye_.x_ > 33 && eye_.x_ < 114)
+	//{
+	//	if (eye_.z_ > -150)
+	//	{
+	//		eye_.z_--;
+	//	}
+	//	else if(eye_.z_ < -150)
+	//	{
+	//		eye_.z_++;
+	//	}
+	//	else
+	//	{
+	//		eye_.z_ = -150;
+	//	}
+	//}
+	///*else if (eye.x > 119)
+	//{
+	//	if (eye.z > -250)
+	//	{
+	//		eye.z--;
+	//	}
+	//}*/
 
-	if (eye_.x_ < 30)
-	{
-		if (eye_.z_ > -100)
-			eye_.z_--;
-	}
+	//if (eye_.x_ < 30)
+	//{
+	//	if (eye_.z_ > -100)
+	//		eye_.z_--;
+	//}
 
 	mat_ = LookAtLH(eye_, target_, up_);
 }

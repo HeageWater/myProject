@@ -37,7 +37,7 @@ void Player::Initialize(Shader shader, GPipeline* pipeline)
 	model_->Initialize(MyDirectX::GetInstance(), shader, "Resources\\skydome\\skydome.obj", pipeline_);
 
 	model_->mat_.Initialize();
-	model_->mat_.scale_ = { 1,1,1 };
+	model_->mat_.scale_ = { 10,10,10 };
 	model_->mat_.rotAngle_ = { 0,0,0 };
 	model_->mat_.trans_.x_ = 0;// 950;
 	model_->mat_.trans_.y_ = 0;
