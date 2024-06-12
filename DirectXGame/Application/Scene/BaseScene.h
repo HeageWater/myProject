@@ -40,5 +40,11 @@ public:
 	virtual void Finalize() = 0;
 
 	virtual ~BaseScene() = default;
+
 private:
+
+	/// <summary>
+	/// Imguiなどのデバッグ用
+	/// </summary>
+	virtual void Debug() = 0;
 };

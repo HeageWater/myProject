@@ -36,43 +36,8 @@ void GameOverScene::Initialize()
 
 void GameOverScene::Update()
 {
-#ifdef _DEBUG
-
-	//ImGui受付開始
-	ImguiManager::GetInstance()->Begin();
-	float test1 = 0.5f;
-
-	ImGui::Text("test");
-	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
-
-	//titleSceneheへ
-	if (ImGui::Button("TITLE"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
-	}
-
-	//playSceneheへ
-	if (ImGui::Button("Play"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
-	}
-
-	//clearSceneheへ
-	if (ImGui::Button("GAMECLEAR"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
-	}
-
-	//goalSceneheへ
-	if (ImGui::Button("GAMEOVER"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
-	}
-
-	//ImGui受付終了
-	ImguiManager::GetInstance()->End();
-
-#endif _DEBUG
+	//
+	Debug();
 
 	//カメラ更新
 	matView_.MatUpdate();
@@ -114,4 +79,45 @@ void GameOverScene::Draw()
 
 void GameOverScene::Finalize()
 {
+}
+
+void GameOverScene::Debug()
+{
+#ifdef _DEBUG
+
+	//ImGui受付開始
+	ImguiManager::GetInstance()->Begin();
+	float test1 = 0.5f;
+
+	ImGui::Text("test");
+	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
+
+	//titleSceneheへ
+	if (ImGui::Button("TITLE"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
+	}
+
+	//playSceneheへ
+	if (ImGui::Button("Play"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+	}
+
+	//clearSceneheへ
+	if (ImGui::Button("GAMECLEAR"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
+	}
+
+	//goalSceneheへ
+	if (ImGui::Button("GAMEOVER"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
+	}
+
+	//ImGui受付終了
+	ImguiManager::GetInstance()->End();
+
+#endif _DEBUG
 }

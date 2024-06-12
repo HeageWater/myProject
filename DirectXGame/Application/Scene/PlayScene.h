@@ -97,4 +97,12 @@ public:
 	/// ステージが切り替わるときの暗転
 	/// </summary>
 	void BlackOut();
+
+private:
+
+	/// <summary>
+	/// Imguiなどのデバッグ用
+	/// </summary>
+	void Debug()override;
+
 };

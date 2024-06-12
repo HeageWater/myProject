@@ -32,6 +32,13 @@ public:
 	void Finalize()override;
 
 private:
+
+	/// <summary>
+	/// Imguiなどのデバッグ用
+	/// </summary>
+	void Debug()override;
+
+private:
 	//キーボード
 	Input* input_ = Input::GetInstance();
 

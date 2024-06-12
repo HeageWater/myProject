@@ -5,51 +5,8 @@
 
 void PlayScene::Update()
 {
-#ifdef _DEBUG
-
-	//ImGui受付開始
-	ImguiManager::GetInstance()->Begin();
-	float test1 = 0.5f;
-
-	Vector2D con = controller_->GetInstance()->GetRightStickVec();
-
-	ImGui::Text("test");
-	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
-	ImGui::SliderFloat("RstickX", &con.x_, 0.01f, 0.99f);
-	ImGui::SliderFloat("RstickY", &con.y_, 0.01f, 0.99f);
-
-	//titleSceneheへ
-	if (ImGui::Button("TITLE"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
-	}
-
-	//playSceneheへ
-	if (ImGui::Button("Play"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
-	}
-
-	//clearSceneheへ
-	if (ImGui::Button("GAMECLEAR"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
-	}
-
-	//goalSceneheへ
-	if (ImGui::Button("GAMEOVER"))
-	{
-		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
-	}
-
-	//ImGui受付終了
-	ImguiManager::GetInstance()->End();
-
-#endif _DEBUG
-
-
-
-
+	//
+	Debug();
 
 	//カメラ更新
 	matView_.MatUpdate();
@@ -202,4 +159,49 @@ void PlayScene::BlackOut()
 	//		color_.w_ -= 0.01f;
 	//	}
 	//}
+}
+
+void PlayScene::Debug()
+{
+#ifdef _DEBUG
+
+	//ImGui受付開始
+	ImguiManager::GetInstance()->Begin();
+	float test1 = 0.5f;
+
+	Vector2D con = controller_->GetInstance()->GetRightStickVec();
+
+	ImGui::Text("test");
+	ImGui::SliderFloat("Test", &test1, 0.01f, 0.99f);
+	ImGui::SliderFloat("RstickX", &con.x_, 0.01f, 0.99f);
+	ImGui::SliderFloat("RstickY", &con.y_, 0.01f, 0.99f);
+
+	//titleSceneheへ
+	if (ImGui::Button("TITLE"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("TITLE");
+	}
+
+	//playSceneheへ
+	if (ImGui::Button("Play"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("PLAY");
+	}
+
+	//clearSceneheへ
+	if (ImGui::Button("GAMECLEAR"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("GAMECLEAR");
+	}
+
+	//goalSceneheへ
+	if (ImGui::Button("GAMEOVER"))
+	{
+		ChengeScene::GetInstance()->SetPlayFlag("GAMEOVER");
+	}
+
+	//ImGui受付終了
+	ImguiManager::GetInstance()->End();
+
+#endif _DEBUG
 }
