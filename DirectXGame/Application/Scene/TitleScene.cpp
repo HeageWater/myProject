@@ -155,6 +155,9 @@ void TitleScene::Update()
 	LoadObjectData::GetInstance()->SetCamera(matView_.mat_, matProjection_);
 	LoadObjectData::GetInstance()->Update();
 
+	//skydome更新
+	skydome_->Update(matView_.mat_, matProjection_);
+
 	//カメラ更新
 	matView_.MatUpdate();
 
@@ -216,6 +219,10 @@ void TitleScene::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Initialize(shader_, pipeline_.get());
 
+	//
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize(shader_, pipeline_.get());
+
 	//タイトルモデルの初期化
 	titleObject->Initialize(shader_, pipeline_.get());
 
@@ -269,6 +276,9 @@ void TitleScene::Draw()
 
 	//スクリーン描画
 	screen_.Draw(blockTex_);
+
+	//
+	skydome_->Draw();
 
 	//
 	if (!titleObject->IsMovie_)

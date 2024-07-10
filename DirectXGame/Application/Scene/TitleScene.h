@@ -7,6 +7,7 @@
 #include "TitleObj.h"
 #include "HitStop.h"
 #include "LoadObjectData.h"
+#include "Skydome.h"
 
 /// <summary>
 /// ゲームのタイトルシーン
@@ -52,6 +53,9 @@ private:
 	//player
 	//Player* player_ = new Player();
 	std::unique_ptr<Player> player_;
+
+	//天球
+	std::unique_ptr<Skydome> skydome_;
 
 	//描画用行列
 	MyMath::MatView matView_;

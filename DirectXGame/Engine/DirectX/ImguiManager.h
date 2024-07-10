@@ -1,5 +1,6 @@
 #pragma once
 #include "DirectX.h"
+#include <imgui.h>
 
 /// <summary>
 /// ImGuiを使うためのクラス
