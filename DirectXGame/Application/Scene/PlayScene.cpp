@@ -378,6 +378,10 @@ void PlayScene::Initialize()
 	//開始地点をセット
 	player_->SetPos(LoadObjectData::GetInstance()->GetStartPos());
 
+	//
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize(shader_, pipeline_.get());
+
 	//ゴール初期化
 	goal_->Initialize(MyDirectX::GetInstance(), shader_, pipeline_.get());
 	goal_->SetPos(LoadObjectData::GetInstance()->GetEndPos());
@@ -440,6 +444,10 @@ void PlayScene::Draw()
 
 	//スクリーン描画
 	screen_.Draw(blockTex_);
+
+	//
+	skydome_->Draw();
+
 
 	//Actor描画
 	player_->Draw(plyerTex_);

@@ -44,7 +44,6 @@ private:
 	//player
 	std::unique_ptr<Player> player_;
 
-
 	//天球
 	std::unique_ptr<Skydome> skydome_;
 
