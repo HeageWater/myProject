@@ -18,6 +18,7 @@
 #include "TitleObj.h"
 #include "Shake.h"
 #include "GameCamera.h"
+#include "Skydome.h"
 
 #include "LoadObjectData.h"
 #include "ParticleManager.h"
@@ -42,6 +43,10 @@ private:
 
 	//player
 	std::unique_ptr<Player> player_;
+
+
+	//天球
+	std::unique_ptr<Skydome> skydome_;
 
 	Goal* goal_ = new Goal();
 
