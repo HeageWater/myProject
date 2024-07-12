@@ -6,7 +6,7 @@ Skydome::Skydome()
 	model_ = std::make_unique<Model>();
 
 	model_->mat_.Initialize();
-	model_->mat_.scale_ = { 3,3,3 };
+	model_->mat_.scale_ = { 0.1f,0.1f,0.1f };
 
 	time_ = 0;
 }
@@ -21,13 +21,15 @@ void Skydome::Initialize(Shader shader, GPipeline* pipeline)
 	pipeline_ = pipeline;
 
 	//画像読み込み
-	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources\\skydome\\skydome.png");
+	tex_ = MyDirectX::GetInstance()->LoadTextureGraph(L"Resources\\skydome\\skydome.jpg");
 
 	//モデル読み込み
 	ModelManager::GetInstance()->LoadModel("Resources\\skydome\\skydome.obj");
 
 	//モデルセット
 	model_ = SetModel("Resources\\skydome\\skydome.obj");
+
+	model_->mat_.scale_ = { 0.1f,0.1f,0.1f };
 }
 
 void Skydome::Draw()
